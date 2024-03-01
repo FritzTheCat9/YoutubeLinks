@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  youtubelinks.api:
+    image: ${DOCKER_REGISTRY-}youtubelinksapi
+    container_name: youtubelinks.api
+    build:
+      context: .
+      dockerfile: YoutubeLinks.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ASPNETCORE_HTTPS_PORTS=5001
+    ports:
+      - 5000:5000
+      - 5001:5001
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  youtubelinks.blazor:
+    image: ${DOCKER_REGISTRY-}youtubelinksblazor
+    container_name: youtubelinks.blazor
+    build:
+      context: .
+      dockerfile: YoutubeLinks.Blazor/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=7000
+      - ASPNETCORE_HTTPS_PORTS=7001
+    ports:
+      - 7000:80
+      - 7001:443
+
+  youtubelinks.database:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: youtubelinks.database
+    shm_size: 4gb
+    restart: unless-stopped
+    ports:
+      - 1433:1433
+    environment:
+      MSSQL_SA_PASSWORD: 'Password1!'
+      ACCEPT_EULA: 'Y'
+    volumes:
+      - mssql_volume:/var/opt/mssql
+      
+volumes:
+  mssql_volume:
+    driver: local

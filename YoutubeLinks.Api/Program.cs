@@ -1,20 +1,25 @@
+using YoutubeLinks.Api.Data.Database;
+using YoutubeLinks.Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCORS(builder.Configuration)
+                .AddDatabase(builder.Configuration);
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "youtubelinks.api");
+        options.RoutePrefix = string.Empty;
+    });
 }
-
-app.UseHttpsRedirection();
 
 var summaries = new[]
 {
@@ -33,8 +38,9 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+.WithTags("WeatherForecast");
+
+app.UseCORS();
 
 app.Run();
 
