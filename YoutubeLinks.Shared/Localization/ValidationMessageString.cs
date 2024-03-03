@@ -1,0 +1,18 @@
+﻿namespace YoutubeLinks.Shared.Localization
+{
+    public enum ValidationMessageString
+    {
+        EmailNotEmpty,
+        EmailMaximumLength,
+        EmailIsEmailAddress,
+        UserNameNotEmpty,
+        UserNameMinimumLength,
+        UserNameMaximumLength,
+        UserNameMatchesRegex,
+        PasswordNotEmpty,
+        PasswordMinimumLength,
+        RepeatPasswordEqualPassword,
+        PasswordMaximumLength,
+        TokenNotEmpty
+    }
+}

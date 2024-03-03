@@ -1,0 +1,18 @@
+﻿@inherits MudTextField<string>
+
+<MudTextField T="string"
+              Value="Value"
+              ValueChanged="OnValueChanged"
+              For="For"
+              Label="@Label"
+              OnlyValidateIfDirty="true"
+              style="@(HideField ? $"display: none;" : "")" />
+
+@code {
+    [Parameter] public bool HideField { get; set; }
+
+    private void OnValueChanged(string value)
+    {
+        SetValueAsync(value);
+    }
+}

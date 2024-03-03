@@ -1,8 +1,15 @@
 ﻿@inherits LayoutComponentBase
+@inject IStringLocalizer<App> Localizer
 
 <MudThemeProvider />
 <MudDialogProvider FullWidth="true" />
 <MudSnackbarProvider />
+
+<style>
+    .mud-input-control-helper-container {
+        display: none !important;
+    }
+</style>
 
 <MudLayout>
     <MudAppBar>
@@ -10,7 +17,9 @@
                        Color="Color.Inherit"
                        Edge="Edge.Start"
                        OnClick="DrawerToggle" />
-            YoutubeLinks
+        @Localizer[nameof(AppStrings.AppName)]
+        <MudSpacer />
+        <Auth />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen">
         <NavMenu />

@@ -65,6 +65,30 @@ namespace YoutubeLinks.Api.Data.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885),
+                            Email = "freakfightsfan@gmail.com",
+                            EmailConfirmed = true,
+                            IsAdmin = true,
+                            Modified = new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885),
+                            Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+                            UserName = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Created = new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885),
+                            Email = "freakfightsfan1@gmail.com",
+                            EmailConfirmed = true,
+                            IsAdmin = false,
+                            Modified = new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885),
+                            Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+                            UserName = "User"
+                        });
                 });
 #pragma warning restore 612, 618
         }

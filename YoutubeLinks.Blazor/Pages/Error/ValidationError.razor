@@ -1,0 +1,31 @@
+﻿@page "/error/validation-error"
+@attribute [AllowAnonymous]
+
+@inject ValidationErrors ValidationErrors
+@inject IStringLocalizer<App> Localizer
+
+<PageTitle>
+    @Localizer[nameof(AppStrings.ValidationError)]
+</PageTitle>
+
+<h1>
+    @Localizer[nameof(AppStrings.ValidationError)]
+</h1>
+
+@foreach (var propName in ValidationErrors.Errors.Keys)
+{
+    <p>
+        @propName:
+    </p>
+
+    @foreach (var error in ValidationErrors.Errors[propName])
+    {
+        <li>
+            @error
+        </li>
+    }
+}
+
+@code {
+
+}

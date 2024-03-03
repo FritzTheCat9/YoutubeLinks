@@ -1,0 +1,89 @@
+﻿@inject IDialogService DialogService
+@inject IJwtProvider JwtProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> Localizer
+
+<AuthorizeView>
+    <Authorized>
+        <MudStack Row="true"
+                  Spacing="2"
+                  AlignItems="AlignItems.Center">
+            <MudText>
+                @context.User.Identity.Name
+            </MudText>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Secondary"
+                       OnClick="Logout">
+                @Localizer[nameof(AppStrings.Logout)]
+            </MudButton>
+        </MudStack>
+    </Authorized>
+    <NotAuthorized>
+        <MudStack Row="true" Spacing="2">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Secondary"
+                       OnClick="Login">
+                @Localizer[nameof(AppStrings.Login)]
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Tertiary"
+                       OnClick="Register">
+                @Localizer[nameof(AppStrings.Register)]
+            </MudButton>
+        </MudStack>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private async Task Login()
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<LoginDialog>();
+        parameters.Add(x => x.Command, new());
+
+        var dialog = await DialogService.ShowAsync<LoginDialog>(Localizer[nameof(AppStrings.Login)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            if (result.Data is JwtDto token)
+            {
+                await JwtProvider.SetJwtDto(token);
+
+                var authStateProvider = (AuthenticationStateProvider as AuthStateProvider);
+                authStateProvider.NotifyAuthStateChanged();
+            }
+        }
+    }
+
+    private async Task Register()
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<RegisterDialog>();
+        parameters.Add(x => x.Command, new());
+
+        var dialog = await DialogService.ShowAsync<RegisterDialog>(Localizer[nameof(AppStrings.Register)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            await OpenRegistrationSuccessDialog();
+    }
+
+    private async Task OpenRegistrationSuccessDialog()
+    {
+        var dialogOptions = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<SuccessDialog>();
+        parameters.Add(x => x.ContentText, Localizer[nameof(AppStrings.AccountCreated)]);
+
+        var dialog = await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, dialogOptions);
+    }
+
+    private async Task Logout()
+    {
+        await JwtProvider.RemoveJwtDto();
+
+        var authStateProvider = (AuthenticationStateProvider as AuthStateProvider);
+        authStateProvider.NotifyAuthStateChanged();
+
+        NavigationManager.NavigateTo("/");
+    }
+}

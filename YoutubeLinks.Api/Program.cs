@@ -1,13 +1,25 @@
+using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Database;
+using YoutubeLinks.Api.Emails;
+using YoutubeLinks.Api.Exceptions;
 using YoutubeLinks.Api.Extensions;
+using YoutubeLinks.Api.Localization;
+using YoutubeLinks.Api.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.AddCORS(builder.Configuration)
-                .AddDatabase(builder.Configuration);
+builder.Services.AddSwagger()
+                .AddCORS(builder.Configuration)
+                .AddMediatr()
+                .AddDatabase(builder.Configuration)
+                .AddAuth(builder.Configuration)
+                .AddEmails(builder.Configuration)
+                .AddExceptionMiddleware()
+                .AddMyLocalization()
+                .AddLogging(builder.Configuration)
+                .AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -21,6 +33,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCORS();
+app.UseMyLocalization()
+   .UseExceptionMiddleware()
+   .AddEndpoints()
+   .UseCORS()
+   .UseAuth();
 
 app.Run();

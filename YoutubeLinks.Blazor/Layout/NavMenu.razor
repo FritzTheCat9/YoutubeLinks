@@ -1,15 +1,13 @@
-﻿<MudNavMenu>
+﻿@inject IStringLocalizer<App> Localizer
+
+<MudNavMenu>
     <MudNavLink Href="/"
                 Match="NavLinkMatch.All">
         Home
     </MudNavLink>
-    <MudNavLink Href="/counter"
+    <MudNavLink Href="/users"
                 Match="NavLinkMatch.Prefix">
-        Counter
-    </MudNavLink>
-    <MudNavLink Href="/weather"
-                Match="NavLinkMatch.Prefix">
-        Weather
+        @Localizer[nameof(AppStrings.Users)]
     </MudNavLink>
 </MudNavMenu>
 

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace YoutubeLinks.Api.Data.Migrations
 {
     /// <inheritdoc />
@@ -29,6 +31,15 @@ namespace YoutubeLinks.Api.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Created", "Email", "EmailConfirmationToken", "EmailConfirmed", "IsAdmin", "Modified", "Password", "UserName" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885), "freakfightsfan@gmail.com", null, true, true, new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885), "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", "Admin" },
+                    { 2, new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885), "freakfightsfan1@gmail.com", null, true, false, new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885), "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", "User" }
                 });
 
             migrationBuilder.CreateIndex(

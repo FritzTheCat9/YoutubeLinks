@@ -1,0 +1,70 @@
+﻿@inject IUserApiClient UserApiClient
+@inject IExceptionHandler ExceptionHandler
+@inject IStringLocalizer<App> Localizer
+
+<EditForm Model="Command"
+          OnValidSubmit="HandleValidSubmit">
+    <CustomValidator @ref="CustomValidator" />
+    <FluentValidationValidator />
+
+    <MudDialog DefaultFocus="DefaultFocus.LastChild">
+        <DialogContent>
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Email)]"
+                            @bind-Value="Command.Email"
+                            For="() => Command.Email" />
+            <FritzValidationMessage For="() => Command.Email" />
+
+            <FritzTextField Label="@Localizer[nameof(AppStrings.UserName)]"
+                            @bind-Value="Command.UserName"
+                            For="() => Command.UserName" />
+            <FritzValidationMessage For="() => Command.UserName" />
+
+            <FritzPasswordField Label="@Localizer[nameof(AppStrings.Password)]"
+                                @bind-Value="Command.Password"
+                                For="() => Command.Password" />
+            <FritzValidationMessage For="() => Command.Password" />
+
+            <FritzPasswordField Label="@Localizer[nameof(AppStrings.RepeatPassword)]"
+                                @bind-Value="Command.RepeatPassword"
+                                For="() => Command.RepeatPassword" />
+            <FritzValidationMessage For="() => Command.RepeatPassword" />
+        </DialogContent>
+        <DialogActions>
+            <FritzProcessingButton @ref="ProcessingButton"
+                                   ButtonType="ButtonType.Submit"
+                                   Color="Color.Primary"
+                                   ButtonText="@Localizer[nameof(AppStrings.Register)]" />
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Register.Command Command { get; set; } = new();
+
+    private CustomValidator CustomValidator = new();
+    private FritzProcessingButton ProcessingButton;
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            ProcessingButton.SetProcessing(true);
+
+            await UserApiClient.Register(Command);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (MyValidationException validationException)
+        {
+            CustomValidator.DisplayErrors(validationException.Errors);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.HandleExceptions(ex);
+        }
+        finally
+        {
+            ProcessingButton.SetProcessing(false);
+        }
+    }
+}
