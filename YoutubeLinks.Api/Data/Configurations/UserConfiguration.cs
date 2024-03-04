@@ -15,6 +15,11 @@ namespace YoutubeLinks.Api.Data.Configurations
 
             builder.HasIndex(e => e.UserName)
                    .IsUnique();
+
+            builder.HasMany(u => u.Playlists)
+                   .WithOne(p => p.User)
+                   .HasForeignKey(p => p.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

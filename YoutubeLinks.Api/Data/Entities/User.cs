@@ -8,5 +8,7 @@
         public bool EmailConfirmed { get; set; }
         public string EmailConfirmationToken { get; set; }
         public bool IsAdmin { get; set; }
+
+        public List<Playlist> Playlists { get; } = [];
     }
 }

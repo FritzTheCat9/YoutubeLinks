@@ -10,6 +10,8 @@ namespace YoutubeLinks.Api.Data.Database
         private readonly IClock _clock;
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Playlist> Playlists { get; set; }
+        public DbSet<Link> Links { get; set; }
 
         public AppDbContext(
             DbContextOptions<AppDbContext> options,
