@@ -26,6 +26,7 @@ namespace YoutubeLinks.Api.Data.Database
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+            services.AddScoped<ILinkRepository, LinkRepository>();
 
             return services;
         }
