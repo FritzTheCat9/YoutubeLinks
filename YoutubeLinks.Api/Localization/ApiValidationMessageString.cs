@@ -8,6 +8,7 @@
         EmailIsNotConfirmed,
         PasswordIsIncorrect,
         EmailAlreadyConfirmed,
-        TokenIsNotAssignedToThisUser
+        TokenIsNotAssignedToThisUser,
+        UrlMustBeUnique,
     }
 }

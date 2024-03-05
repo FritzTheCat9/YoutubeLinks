@@ -13,6 +13,10 @@
         PasswordMinimumLength,
         RepeatPasswordEqualPassword,
         PasswordMaximumLength,
-        TokenNotEmpty
+        TokenNotEmpty,
+        NameNotEmpty,
+        NameMaximumLength,
+        UrlNotEmpty,
+        VideoUrlMatchesRegex
     }
 }

@@ -135,6 +135,9 @@
   <data name="TokenIsNotAssignedToThisUser" xml:space="preserve">
     <value>Provided token is not assigned to this user.</value>
   </data>
+  <data name="UrlMustBeUnique" xml:space="preserve">
+    <value>Url must be unique.</value>
+  </data>
   <data name="UserNameIsAlreadyTaken" xml:space="preserve">
     <value>The username is already taken.</value>
   </data>
