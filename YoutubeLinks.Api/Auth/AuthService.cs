@@ -7,6 +7,9 @@ namespace YoutubeLinks.Api.Auth
     {
         bool IsInRole(string roleName);
         bool IsInAnyRole(params string[] roleNames);
+        bool IsLoggedInUser(int userId);
+        int? GetCurrentUserId();
+
         ClaimsPrincipal User { get; }
     }
 
@@ -38,6 +41,40 @@ namespace YoutubeLinks.Api.Auth
             }
 
             return false;
+        }
+
+        public bool IsLoggedInUser(int userId)
+        {
+            var userIdString = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdString == null)
+                return false;
+
+            if (!int.TryParse(userIdString, out int userIdInt))
+                return false;
+
+            if (userId != userIdInt)
+                return false;
+
+            return true;
+        }
+
+        public int? GetCurrentUserId()
+        {
+            if (_user.Identity?.IsAuthenticated ?? false)
+            {
+                var userIdString = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (userIdString == null)
+                    return null;
+
+                if (!int.TryParse(userIdString, out int userIdInt))
+                    return null;
+
+                return userIdInt;
+            }
+
+            return null;
         }
     }
 }
