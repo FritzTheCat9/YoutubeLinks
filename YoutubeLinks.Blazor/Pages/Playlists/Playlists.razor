@@ -1,0 +1,196 @@
+﻿@page "/playlists/{UserId:int}"
+@attribute [AllowAnonymous]
+
+@inject IExceptionHandler ExceptionHandler
+@inject IPlaylistApiClient PlaylistApiClient
+@inject IAuthService AuthService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> Localizer
+
+<PageTitle>
+    @Localizer[nameof(AppStrings.Playlists)]
+</PageTitle>
+
+<FritzBreadcrumbs Items="_items" />
+
+<MudTable ServerData="new Func<TableState, Task<TableData<PlaylistDto>>>(ServerReload)"
+          @ref="table"
+          Dense="true"
+          Hover="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            @Localizer[nameof(AppStrings.Playlists)]
+        </MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Add"
+                       Size="Size.Small"
+                       OnClick="() => CreateUserPlaylist()" />
+        <MudSpacer />
+        <FritzSearchTextField @bind-Value="searchString"
+                              OnSearch="() => table.ReloadServerData()" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="name"
+                               T="PlaylistDto">
+                @Localizer[nameof(AppStrings.Name)]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Public)]
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Links)]
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Actions)]
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">
+            @context.Name
+        </MudTd>
+        <MudTd DataLabel="Public">
+            @if (context.Public)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Visibility" />
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.VisibilityOff" />
+            }
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.List"
+                           Size="Size.Small"
+                           OnClick="() => RedirectToLinksPage(context.Id)" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                           Size="Size.Small"
+                           OnClick="() => UpdateUserPlaylist(context)" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                           Size="Size.Small"
+                           OnClick="() => DeleteUserPlaylist(context.Id)" />
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>
+            @Localizer[nameof(AppStrings.NoMatchingRecordsFound)]
+        </MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>
+            @Localizer[nameof(AppStrings.Loading)]
+        </MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="@Localizer[nameof(AppStrings.RowsPerPage)]"
+                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]" />
+    </PagerContent>
+</MudTable>
+
+@code {
+    [Parameter] public int UserId { get; set; }
+
+    private List<BreadcrumbItem> _items;
+    private string searchString = "";
+    private MudTable<PlaylistDto> table;
+    private PagedList<PlaylistDto> PlaylistPagedList { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _items = new()
+        {
+            new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
+            new(Localizer[nameof(AppStrings.Playlists)], href: null, disabled: true),
+        };
+    }
+
+    private async Task<TableData<PlaylistDto>> ServerReload(TableState state)
+    {
+        var query = new GetAllUserPlaylists.Query
+            {
+                Page = state.Page + 1,
+                PageSize = state.PageSize,
+                SortColumn = state.SortLabel,
+                SortOrder = ((SortOrder)state.SortDirection),
+                SearchTerm = searchString,
+                UserId = UserId,
+            };
+
+        try
+        {
+            PlaylistPagedList = await PlaylistApiClient.GetAllUserPlaylists(query);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.HandleExceptions(ex);
+            return new() { TotalItems = 0, Items = [] };
+        }
+
+        return new()
+            {
+                TotalItems = PlaylistPagedList.TotalCount,
+                Items = PlaylistPagedList.Items
+            };
+    }
+
+    private void RedirectToLinksPage(int id)
+    {
+        NavigationManager.NavigateTo($"/links/{UserId}/{id}");
+    }
+
+    private async Task DeleteUserPlaylist(int id)
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var dialog = await DialogService.ShowAsync<DeleteDialog>(Localizer[nameof(AppStrings.Delete)], options);
+
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            try
+            {
+                await PlaylistApiClient.DeletePlaylist(id);
+                await table.ReloadServerData();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExceptions(ex);
+            }
+        }
+    }
+
+    private async Task UpdateUserPlaylist(PlaylistDto playlistDto)
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<UpdatePlaylistDialog>();
+        parameters.Add(x => x.Command, new()
+            {
+                Id = playlistDto.Id,
+                Name = playlistDto.Name,
+                Public = playlistDto.Public,
+            });
+
+        var dialog = await DialogService.ShowAsync<UpdatePlaylistDialog>(Localizer[nameof(AppStrings.UpdatePlaylist)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            await table.ReloadServerData();
+    }
+
+    private async Task CreateUserPlaylist()
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<CreatePlaylistDialog>();
+        parameters.Add(x => x.Command, new()
+            {
+                Name = "",
+                Public = true,
+            });
+
+        var dialog = await DialogService.ShowAsync<CreatePlaylistDialog>(Localizer[nameof(AppStrings.CreatePlaylist)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            await table.ReloadServerData();
+    }
+}

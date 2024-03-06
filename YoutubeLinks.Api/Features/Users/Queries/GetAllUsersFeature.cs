@@ -3,7 +3,6 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Users.Extensions;
 using YoutubeLinks.Shared.Abstractions;
-using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Queries;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
@@ -21,7 +20,7 @@ namespace YoutubeLinks.Api.Features.Users.Queries
                 return Results.Ok(await mediator.Send(query, cancellationToken));
             })
                 .WithTags("Users")
-                .RequireAuthorization(Policy.Admin);
+                .AllowAnonymous();
 
             return app;
         }

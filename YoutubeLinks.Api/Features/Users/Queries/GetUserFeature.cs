@@ -22,7 +22,7 @@ namespace YoutubeLinks.Api.Features.Users.Queries
             })
                 .WithName("GetUser")
                 .WithTags("Users")
-                .RequireAuthorization(Policy.Admin);
+                .AllowAnonymous();
 
             return app;
         }

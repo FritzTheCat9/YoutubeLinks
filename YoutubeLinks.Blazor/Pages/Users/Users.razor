@@ -1,10 +1,11 @@
 ﻿@page "/users"
-@attribute [Authorize(Policy = Policy.Admin)]
+@attribute [AllowAnonymous]
 
 @inject IExceptionHandler ExceptionHandler
 @inject IUserApiClient UserApiClient
 @inject IDialogService DialogService
 @inject IStringLocalizer<App> Localizer
+@inject NavigationManager NavigationManager
 
 <PageTitle>
     @Localizer[nameof(AppStrings.Users)]
@@ -41,6 +42,9 @@
         <MudTh>
             @Localizer[nameof(AppStrings.Role)]
         </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Playlists)]
+        </MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="UserName">
@@ -55,6 +59,11 @@
                 @GetUserHighestPolicy(user)
             </MudChip>
         </MudTh>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.List"
+                           Size="Size.Small"
+                           OnClick="() => RedirectToUserPlaylistsPage(user.Id)" />
+        </MudTd>
     </RowTemplate>
     <NoRecordsContent>
         <MudText>
@@ -79,7 +88,7 @@
     private MudTable<UserDto> table;
     private PagedList<UserDto> MyUsers { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         _items = new()
         {
@@ -129,5 +138,10 @@
             return Color.Error;
 
         return Color.Success;
+    }
+
+    private void RedirectToUserPlaylistsPage(int id)
+    {
+        NavigationManager.NavigateTo($"/playlists/{id}");
     }
 }

@@ -23,6 +23,7 @@ namespace YoutubeLinks.Blazor.Auth
             });
 
             services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
 
             return services;
