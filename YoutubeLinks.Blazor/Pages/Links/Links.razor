@@ -1,0 +1,184 @@
+﻿@page "/links/{UserId:int}/{PlaylistId:int}"
+@attribute [AllowAnonymous]
+
+@inject IExceptionHandler ExceptionHandler
+@inject ILinkApiClient LinkApiClient
+@inject IAuthService AuthService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> Localizer
+
+<PageTitle>
+    @Localizer[nameof(AppStrings.Links)]
+</PageTitle>
+
+<FritzBreadcrumbs Items="_items" />
+
+<MudTable ServerData="new Func<TableState, Task<TableData<LinkDto>>>(ServerReload)"
+          @ref="table"
+          Dense="true"
+          Hover="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            @Localizer[nameof(AppStrings.Links)]
+        </MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Add"
+                       Size="Size.Small"
+                       OnClick="() => CreatePlaylistLink()" />
+        <MudSpacer />
+        <FritzSearchTextField @bind-Value="searchString"
+                              OnSearch="() => table.ReloadServerData()" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="title"
+                               T="LinkDto">
+                @Localizer[nameof(AppStrings.Title)]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Url)]
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Downloaded)]
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Actions)]
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Title">
+            @context.Title
+        </MudTd>
+        <MudTd DataLabel="Url">
+            @context.Url
+        </MudTd>
+        <MudTd DataLabel="Downloaded">
+            @context.Downloaded
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                           Size="Size.Small"
+                           OnClick="() => UpdatePlaylistLink(context)" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                           Size="Size.Small"
+                           OnClick="() => DeletePlaylistLink(context.Id)" />
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>
+            @Localizer[nameof(AppStrings.NoMatchingRecordsFound)]
+        </MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>
+            @Localizer[nameof(AppStrings.Loading)]
+        </MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="@Localizer[nameof(AppStrings.RowsPerPage)]"
+                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]" />
+    </PagerContent>
+</MudTable>
+
+@code {
+    [Parameter] public int UserId { get; set; }
+    [Parameter] public int PlaylistId { get; set; }
+
+    private List<BreadcrumbItem> _items;
+    private string searchString = "";
+    private MudTable<LinkDto> table;
+    private PagedList<LinkDto> LinkPagedList { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _items = new()
+        {
+            new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
+            new(Localizer[nameof(AppStrings.Playlists)], href: $"/playlists/{UserId}"),
+            new(Localizer[nameof(AppStrings.Links)], href: null, disabled: true),
+        };
+    }
+
+    private async Task<TableData<LinkDto>> ServerReload(TableState state)
+    {
+        var query = new GetAllLinks.Query
+            {
+                Page = state.Page + 1,
+                PageSize = state.PageSize,
+                SortColumn = state.SortLabel,
+                SortOrder = ((SortOrder)state.SortDirection),
+                SearchTerm = searchString,
+                PlaylistId = PlaylistId,
+            };
+
+        try
+        {
+            LinkPagedList = await LinkApiClient.GetAllLinks(query);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.HandleExceptions(ex);
+            return new() { TotalItems = 0, Items = [] };
+        }
+
+        return new()
+            {
+                TotalItems = LinkPagedList.TotalCount,
+                Items = LinkPagedList.Items
+            };
+    }
+
+    private async Task DeletePlaylistLink(int id)
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var dialog = await DialogService.ShowAsync<DeleteDialog>(Localizer[nameof(AppStrings.Delete)], options);
+
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            try
+            {
+                await LinkApiClient.DeleteLink(id);
+                await table.ReloadServerData();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExceptions(ex);
+            }
+        }
+    }
+
+    private async Task UpdatePlaylistLink(LinkDto linkDto)
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<UpdateLinkDialog>();
+        parameters.Add(x => x.Command, new()
+            {
+                Id = linkDto.Id,
+                Url = linkDto.Url,
+                Downloaded = linkDto.Downloaded,
+            });
+
+        var dialog = await DialogService.ShowAsync<UpdateLinkDialog>(Localizer[nameof(AppStrings.UpdateLink)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            await table.ReloadServerData();
+    }
+
+    private async Task CreatePlaylistLink()
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<CreateLinkDialog>();
+        parameters.Add(x => x.Command, new()
+            {
+                Url = "",
+                PlaylistId = PlaylistId,
+            });
+
+        var dialog = await DialogService.ShowAsync<CreateLinkDialog>(Localizer[nameof(AppStrings.CreateLink)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            await table.ReloadServerData();
+    }
+}

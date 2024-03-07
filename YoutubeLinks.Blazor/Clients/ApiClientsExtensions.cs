@@ -18,6 +18,7 @@ namespace YoutubeLinks.Blazor.Clients
             services.AddScoped<IApiClient, ApiClient>();
             services.AddScoped<IUserApiClient, UserApiClient>();
             services.AddScoped<IPlaylistApiClient, PlaylistApiClient>();
+            services.AddScoped<ILinkApiClient, LinkApiClient>();
 
             return services;
         }
