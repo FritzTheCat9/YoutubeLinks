@@ -1,5 +1,6 @@
+﻿using YoutubeLinks.Api.Features.Links.Extensions;
 using YoutubeLinks.Api.Features.Playlists.Extensions;
-﻿using YoutubeLinks.Api.Features.Users.Extensions;
+using YoutubeLinks.Api.Features.Users.Extensions;
 
 namespace YoutubeLinks.Api.Extensions
 {
@@ -9,6 +10,7 @@ namespace YoutubeLinks.Api.Extensions
         {
             app.AddUserEndpoints();
             app.AddPlaylistsEndpoints();
+            app.AddLinksEndpoints();
 
             return app;
         }
