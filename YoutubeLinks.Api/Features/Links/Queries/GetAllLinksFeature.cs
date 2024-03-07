@@ -55,11 +55,11 @@ namespace YoutubeLinks.Api.Features.Links.Queries
                 linkQuery = linkQuery.FilterLinks(query);
                 linkQuery = linkQuery.SortLinks(query);
 
-                var dictionaryItemsPagedList = PageListExtensions<LinkDto>.Create(linkQuery.Select(x => x.ToDto()),
+                var linksPagedList = PageListExtensions<LinkDto>.Create(linkQuery.Select(x => x.ToDto()),
                                                                                   query.Page,
                                                                                   query.PageSize);
 
-                return dictionaryItemsPagedList;
+                return linksPagedList;
             }
         }
     }

@@ -48,11 +48,11 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
                 playlistQuery = playlistQuery.FilterPlaylists(query);
                 playlistQuery = playlistQuery.SortPlaylists(query);
 
-                var dictionaryItemsPagedList = PageListExtensions<PlaylistDto>.Create(playlistQuery.Select(x => x.ToDto()),
+                var playlistsPagedList = PageListExtensions<PlaylistDto>.Create(playlistQuery.Select(x => x.ToDto()),
                                                                                       query.Page,
                                                                                       query.PageSize);
 
-                return dictionaryItemsPagedList;
+                return playlistsPagedList;
             }
         }
     }
