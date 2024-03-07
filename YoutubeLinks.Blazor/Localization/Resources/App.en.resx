@@ -237,6 +237,15 @@
   <data name="SuccessfulEmailConfirmation" xml:space="preserve">
     <value>Your email has been successfully confirmed.</value>
   </data>
+  <data name="SwitchToDarkTheme" xml:space="preserve">
+    <value>Switch to Dark Theme</value>
+  </data>
+  <data name="SwitchToLightTheme" xml:space="preserve">
+    <value>Switch to Light Theme</value>
+  </data>
+  <data name="SwitchToSystemTheme" xml:space="preserve">
+    <value>Switch to System Theme</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Title</value>
   </data>

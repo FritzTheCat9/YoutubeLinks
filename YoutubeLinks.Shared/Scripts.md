@@ -26,6 +26,6 @@ dotnet ef database update
 ## Update docker-compose.yaml
 ``` 
 cd C:\Users\bartl\source\repos\YoutubeLinks
-docker compose up -d
+docker compose up --build -d
 docker ps
 ``` 

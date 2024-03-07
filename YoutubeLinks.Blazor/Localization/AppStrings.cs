@@ -53,5 +53,8 @@
         Downloaded,
         UpdateLink,
         CreateLink,
+        SwitchToLightTheme,
+        SwitchToDarkTheme,
+        SwitchToSystemTheme,
     }
 }

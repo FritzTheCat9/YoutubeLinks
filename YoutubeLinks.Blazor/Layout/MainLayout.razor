@@ -1,7 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @inject IStringLocalizer<App> Localizer
 
-<MudThemeProvider />
+<MudThemeProvider @ref="@_mudThemeProvider"
+                  @bind-IsDarkMode="@_isDarkMode" />
 <MudDialogProvider FullWidth="true" />
 <MudSnackbarProvider />
 
@@ -19,6 +20,11 @@
                        OnClick="DrawerToggle" />
         @Localizer[nameof(AppStrings.AppName)]
         <MudSpacer />
+        <MudTooltip Text="@_text">
+            <MudIconButton Icon="@_icon"
+                           OnClick="OnThemeChange"
+                           Style="margin-right: 5px;" />
+        </MudTooltip>
         <Auth />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen">
@@ -34,6 +40,69 @@
 
 @code {
     private bool _drawerOpen = true;
+
+    public enum ThemeColor
+    {
+        System,
+        Light,
+        Dark,
+    }
+
+    private ThemeColor _themeColor = ThemeColor.System;
+    private bool _isDarkMode = false;
+    private string _icon = Icons.Material.Rounded.LightMode;
+    private string _text;
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override void OnParametersSet()
+    {
+        _text = Localizer[nameof(AppStrings.AppName)];
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+        }
+    }
+
+    private Task OnSystemPreferenceChanged(bool newValue)
+    {
+        if (_themeColor != ThemeColor.System)
+            return Task.CompletedTask;
+
+        _isDarkMode = newValue;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private async Task OnThemeChange()
+    {
+        switch (_themeColor)
+        {
+            case ThemeColor.System:
+                _themeColor = ThemeColor.Light;
+                _isDarkMode = false;
+                _icon = Icons.Material.Rounded.DarkMode;
+                _text = Localizer[nameof(AppStrings.SwitchToDarkTheme)];
+                break;
+            case ThemeColor.Light:
+                _themeColor = ThemeColor.Dark;
+                _isDarkMode = true;
+                _icon = Icons.Material.Rounded.SettingsBrightness;
+                _text = Localizer[nameof(AppStrings.SwitchToSystemTheme)];
+                break;
+            case ThemeColor.Dark:
+                _themeColor = ThemeColor.System;
+                _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+                _icon = Icons.Material.Rounded.LightMode;
+                _text = Localizer[nameof(AppStrings.SwitchToLightTheme)];
+                break;
+        }
+    }
 
     private void DrawerToggle()
     {
