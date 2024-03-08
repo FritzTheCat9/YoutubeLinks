@@ -22,9 +22,16 @@
         <MudText Typo="Typo.h6">
             @Localizer[nameof(AppStrings.Playlists)]
         </MudText>
-        <MudIconButton Icon="@Icons.Material.Filled.Add"
-                       Size="Size.Small"
-                       OnClick="() => CreateUserPlaylist()" />
+        <AuthorizeView Policy="@Policy.User">
+            <Authorized>
+                @if (_isUserPlaylist)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                   Size="Size.Small"
+                                   OnClick="() => CreateUserPlaylist()" />
+                }
+            </Authorized>
+        </AuthorizeView>
         <MudSpacer />
         <FritzSearchTextField @bind-Value="searchString"
                               OnSearch="() => table.ReloadServerData()" />
@@ -66,12 +73,19 @@
                            OnClick="() => RedirectToLinksPage(context.Id)" />
         </MudTd>
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                           Size="Size.Small"
-                           OnClick="() => UpdateUserPlaylist(context)" />
-            <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                           Size="Size.Small"
-                           OnClick="() => DeleteUserPlaylist(context.Id)" />
+            <AuthorizeView Policy="@Policy.User" Context="auth">
+                <Authorized>
+                    @if (_isUserPlaylist)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                       Size="Size.Small"
+                                       OnClick="() => UpdateUserPlaylist(context)" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                       Size="Size.Small"
+                                       OnClick="() => DeleteUserPlaylist(context.Id)" />
+                    }
+                </Authorized>
+            </AuthorizeView>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -97,14 +111,17 @@
     private string searchString = "";
     private MudTable<PlaylistDto> table;
     private PagedList<PlaylistDto> PlaylistPagedList { get; set; }
+    private bool _isUserPlaylist = false;
 
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
         _items = new()
         {
             new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
             new(Localizer[nameof(AppStrings.Playlists)], href: null, disabled: true),
         };
+
+        _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
     }
 
     private async Task<TableData<PlaylistDto>> ServerReload(TableState state)

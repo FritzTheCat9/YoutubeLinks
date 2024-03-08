@@ -46,8 +46,7 @@ namespace YoutubeLinks.Api.Auth
 
             var claims = new List<Claim>()
             {
-                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Name, user.UserName),
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.Role, Policy.User),

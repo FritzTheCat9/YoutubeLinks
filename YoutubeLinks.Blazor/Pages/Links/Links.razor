@@ -22,9 +22,16 @@
         <MudText Typo="Typo.h6">
             @Localizer[nameof(AppStrings.Links)]
         </MudText>
-        <MudIconButton Icon="@Icons.Material.Filled.Add"
-                       Size="Size.Small"
-                       OnClick="() => CreatePlaylistLink()" />
+        <AuthorizeView Policy="@Policy.User">
+            <Authorized>
+                @if (_isUserPlaylist)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                   Size="Size.Small"
+                                   OnClick="() => CreatePlaylistLink()" />
+                }
+            </Authorized>
+        </AuthorizeView>
         <MudSpacer />
         <FritzSearchTextField @bind-Value="searchString"
                               OnSearch="() => table.ReloadServerData()" />
@@ -40,7 +47,14 @@
             @Localizer[nameof(AppStrings.Url)]
         </MudTh>
         <MudTh>
-            @Localizer[nameof(AppStrings.Downloaded)]
+            <AuthorizeView Policy="@Policy.User">
+                <Authorized>
+                    @if (_isUserPlaylist)
+                    {
+                        @Localizer[nameof(AppStrings.Downloaded)]
+                    }
+                </Authorized>
+            </AuthorizeView>
         </MudTh>
         <MudTh>
             @Localizer[nameof(AppStrings.Actions)]
@@ -53,16 +67,30 @@
         <MudTd DataLabel="Url">
             @context.Url
         </MudTd>
-        <MudTd DataLabel="Downloaded">
-            @context.Downloaded
-        </MudTd>
+        <AuthorizeView Policy="@Policy.User" Context="auth">
+            <Authorized>
+                @if (_isUserPlaylist)
+                {
+                    <MudTd DataLabel="Downloaded">
+                        @context.Downloaded
+                    </MudTd>
+                }
+            </Authorized>
+        </AuthorizeView>
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                           Size="Size.Small"
-                           OnClick="() => UpdatePlaylistLink(context)" />
-            <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                           Size="Size.Small"
-                           OnClick="() => DeletePlaylistLink(context.Id)" />
+            <AuthorizeView Policy="@Policy.User" Context="auth">
+                <Authorized>
+                    @if (_isUserPlaylist)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                       Size="Size.Small"
+                                       OnClick="() => UpdatePlaylistLink(context)" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                       Size="Size.Small"
+                                       OnClick="() => DeletePlaylistLink(context.Id)" />
+                    }
+                </Authorized>
+            </AuthorizeView>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -89,8 +117,9 @@
     private string searchString = "";
     private MudTable<LinkDto> table;
     private PagedList<LinkDto> LinkPagedList { get; set; }
+    private bool _isUserPlaylist = false;
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         _items = new()
         {
@@ -98,6 +127,8 @@
             new(Localizer[nameof(AppStrings.Playlists)], href: $"/playlists/{UserId}"),
             new(Localizer[nameof(AppStrings.Links)], href: null, disabled: true),
         };
+
+        _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
     }
 
     private async Task<TableData<LinkDto>> ServerReload(TableState state)
