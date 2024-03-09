@@ -10,5 +10,6 @@
         EmailAlreadyConfirmed,
         TokenIsNotAssignedToThisUser,
         UrlMustBeUnique,
+        UrlIdNotValid,
     }
 }

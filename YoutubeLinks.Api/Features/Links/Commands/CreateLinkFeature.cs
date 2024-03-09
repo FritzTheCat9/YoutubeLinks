@@ -5,8 +5,10 @@ using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Localization;
+using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Api.Features.Links.Commands
@@ -34,6 +36,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             private readonly ILinkRepository _linkRepository;
             private readonly IPlaylistRepository _playlistRepository;
             private readonly IAuthService _authService;
+            private readonly IYoutubeService _youtubeService;
             private readonly IClock _clock;
             private readonly IStringLocalizer<ApiValidationMessage> _localizer;
 
@@ -41,12 +44,14 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 ILinkRepository linkRepository,
                 IPlaylistRepository playlistRepository,
                 IAuthService authService,
+                IYoutubeService youtubeService,
                 IClock clock,
                 IStringLocalizer<ApiValidationMessage> localizer)
             {
                 _linkRepository = linkRepository;
                 _playlistRepository = playlistRepository;
                 _authService = authService;
+                _youtubeService = youtubeService;
                 _clock = clock;
                 _localizer = localizer;
             }
@@ -55,6 +60,14 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 CreateLink.Command command,
                 CancellationToken cancellationToken)
             {
+                var videoId = YoutubeHelpers.GetVideoId(command.Url);
+                if (string.IsNullOrWhiteSpace(videoId))
+                    throw new MyValidationException(nameof(CreateLink.Command.Url),
+                                                    _localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+
+                command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
+                var videoTitle = await _youtubeService.GetVideoTitle(videoId);
+
                 await ValidateCommand(command, _localizer);
 
                 var link = new Link
@@ -62,8 +75,9 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                     Id = 0,
                     Created = _clock.Current(),
                     Modified = _clock.Current(),
-                    Url = command.Url,              // only video id is important, we can truncate some url (channel etc.)
-                    Title = "",                     // read yt title
+                    Url = command.Url,
+                    VideoId = videoId,
+                    Title = videoTitle,
                     Downloaded = false,
                     PlaylistId = command.PlaylistId,
                 };

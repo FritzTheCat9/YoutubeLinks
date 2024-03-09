@@ -3,6 +3,7 @@ using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Features.Links.Commands;
 using YoutubeLinks.Api.Features.Links.Queries;
 using YoutubeLinks.Shared.Abstractions;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
 namespace YoutubeLinks.Api.Features.Links.Extensions
@@ -28,6 +29,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
                 Created = link.Created,
                 Modified = link.Modified,
                 Url = link.Url,
+                VideoId = link.VideoId,
                 Title = link.Title,
                 Downloaded = link.Downloaded,
                 PlaylistId = link.PlaylistId,

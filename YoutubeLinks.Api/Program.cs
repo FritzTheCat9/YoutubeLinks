@@ -5,6 +5,7 @@ using YoutubeLinks.Api.Exceptions;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Api.Logging;
+using YoutubeLinks.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddSwagger()
                 .AddMediatr()
                 .AddDatabase(builder.Configuration)
                 .AddAuth(builder.Configuration)
+                .AddServices()
                 .AddEmails(builder.Configuration)
                 .AddExceptionMiddleware()
                 .AddMyLocalization()
