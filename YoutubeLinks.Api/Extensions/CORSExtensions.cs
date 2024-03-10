@@ -21,7 +21,8 @@ namespace YoutubeLinks.Api.Extensions
                 {
                     policy.WithOrigins(authOptions.FrontendUrl)
                           .AllowAnyHeader()
-                          .AllowAnyMethod();
+                          .AllowAnyMethod()
+                          .WithExposedHeaders("Content-Disposition");
                 });
             });
 

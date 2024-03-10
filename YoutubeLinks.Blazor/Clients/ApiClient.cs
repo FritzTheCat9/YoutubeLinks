@@ -9,6 +9,7 @@ namespace YoutubeLinks.Blazor.Clients
 {
     public interface IApiClient
     {
+        Task<HttpResponseMessage> Get(string url);
         Task<TResponse> Get<TResponse>(string url);
         Task Post<TRequest>(string url, TRequest tRequest);
         Task<TResponse> Post<TRequest, TResponse>(string url, TRequest tRequest);
@@ -32,6 +33,17 @@ namespace YoutubeLinks.Blazor.Clients
             _client = client;
             _jwtProvider = jwtProvider;
             _baseUrl = client.BaseAddress.ToString();
+        }
+
+        public async Task<HttpResponseMessage> Get(string url)
+        {
+            await AddHeaderValues();
+            var response = await _client.GetAsync($"{_baseUrl}{url}");
+
+            if (!response.IsSuccessStatusCode)
+                await HandleErrors(response);
+
+            return response;
         }
 
         public async Task<TResponse> Get<TResponse>(string url)

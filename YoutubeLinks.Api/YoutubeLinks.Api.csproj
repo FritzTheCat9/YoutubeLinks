@@ -43,6 +43,7 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Logging\Logs\" />
+    <Folder Include="Tmp\" />
   </ItemGroup>
 
   <ItemGroup>

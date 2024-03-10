@@ -7,6 +7,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> Localizer
+@inject IJSRuntime JSRuntime
 
 <PageTitle>
     @Localizer[nameof(AppStrings.Links)]
@@ -89,6 +90,9 @@
         <MudTd>
             <FritzCopyToClipboardButton TooltipText="@Localizer[nameof(AppStrings.CopyUrlToClipboard)]"
                                         CopiedText="@context.Url" />
+            <MudIconButton Icon="@Icons.Material.Filled.Download"
+                           Size="Size.Small"
+                           OnClick="() => DownloadPlaylistLink(context.Id)" />
             <AuthorizeView Policy="@Policy.User" Context="auth">
                 <Authorized>
                     @if (_isUserPlaylist)
@@ -226,4 +230,13 @@
 
     private static string ConvertToEmbedUrl(string url)
         => url.Replace("/watch?v=", "/embed/");
+
+    private async Task DownloadPlaylistLink(int id)
+    {
+        var response = await LinkApiClient.DownloadLink(id);
+        var content = await response.Content.ReadAsByteArrayAsync();
+        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? "default_name.mp3";
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+    }
 }
