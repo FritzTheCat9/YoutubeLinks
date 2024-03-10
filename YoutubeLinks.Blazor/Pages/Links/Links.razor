@@ -44,18 +44,18 @@
             </MudTableSortLabel>
         </MudTh>
         <MudTh>
-            @Localizer[nameof(AppStrings.Url)]
+            @Localizer[nameof(AppStrings.VideoId)]
         </MudTh>
-        <MudTh>
             <AuthorizeView Policy="@Policy.User">
                 <Authorized>
                     @if (_isUserPlaylist)
                     {
+                        <MudTh>
                         @Localizer[nameof(AppStrings.Downloaded)]
+                        </MudTh>
                     }
                 </Authorized>
             </AuthorizeView>
-        </MudTh>
         <MudTh>
             @Localizer[nameof(AppStrings.Actions)]
         </MudTh>
@@ -65,7 +65,8 @@
             @context.Title
         </MudTd>
         <MudTd DataLabel="Url">
-            @context.Url
+
+            @context.VideoId
         </MudTd>
         <AuthorizeView Policy="@Policy.User" Context="auth">
             <Authorized>
@@ -78,6 +79,8 @@
             </Authorized>
         </AuthorizeView>
         <MudTd>
+            <FritzCopyToClipboardButton TooltipText="@Localizer[nameof(AppStrings.CopyUrlToClipboard)]"
+                                        CopiedText="@context.Url" />
             <AuthorizeView Policy="@Policy.User" Context="auth">
                 <Authorized>
                     @if (_isUserPlaylist)

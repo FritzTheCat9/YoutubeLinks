@@ -56,5 +56,8 @@
         SwitchToLightTheme,
         SwitchToDarkTheme,
         SwitchToSystemTheme,
+        CopyToClipboard,
+        CopyUrlToClipboard,
+        VideoId,
     }
 }

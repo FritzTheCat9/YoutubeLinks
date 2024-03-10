@@ -26,4 +26,9 @@
     <ProjectReference Include="..\YoutubeLinks.Shared\YoutubeLinks.Shared.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="wwwroot\js\clipboard.js" />
+  </ItemGroup>
+
 </Project>

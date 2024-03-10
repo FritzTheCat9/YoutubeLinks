@@ -135,6 +135,12 @@
   <data name="ConfirmEmailInfo" xml:space="preserve">
     <value>Confirm your email by clicking on the button below.</value>
   </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="CopyUrlToClipboard" xml:space="preserve">
+    <value>Copy url to clipboard</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
@@ -272,6 +278,9 @@
   </data>
   <data name="ValidationError" xml:space="preserve">
     <value>Validation error</value>
+  </data>
+  <data name="VideoId" xml:space="preserve">
+    <value>VideoId</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
