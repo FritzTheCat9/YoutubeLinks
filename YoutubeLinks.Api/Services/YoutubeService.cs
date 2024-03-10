@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using YoutubeLinks.Shared.Features.Links.Helpers;
 
 namespace YoutubeLinks.Api.Services
@@ -15,16 +14,13 @@ namespace YoutubeLinks.Api.Services
         private readonly ILogger<YoutubeService> _logger;
         private readonly string _ytDlpPath;
 
-        [StringSyntax(StringSyntaxAttribute.Regex)]
-        public static readonly string YoutubeVideoIdRegex = @"(?:\?|&)v=([^&]+)";
-
         public YoutubeService(
             IWebHostEnvironment webHostEnvironment,
             ILogger<YoutubeService> logger)
         {
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
-            _ytDlpPath = $"{Path.GetFullPath(_webHostEnvironment.ContentRootPath)}\\yt-dlp.exe";
+            _ytDlpPath = $"{Path.GetFullPath(_webHostEnvironment.ContentRootPath)}/yt-dlp.exe";
         }
 
         public async Task<string> GetVideoTitle(string videoId)

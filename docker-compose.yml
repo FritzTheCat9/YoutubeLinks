@@ -44,6 +44,15 @@ services:
       ACCEPT_EULA: 'Y'
     volumes:
       - mssql_volume:/var/opt/mssql
+
+  youtubelinks.seq:
+    image: datalust/seq:latest
+    container_name: youtubelinks.seq
+    environment:
+      ACCEPT_EULA: 'Y'
+    ports:
+      - 5341:5341
+      - 8081:80
       
 volumes:
   mssql_volume:

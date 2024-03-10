@@ -18,6 +18,7 @@ namespace YoutubeLinks.Api.Logging
                 x.Enrich.WithCorrelationIdHeader();
                 x.WriteTo.Console(outputTemplate: _logTemplate);
                 x.WriteTo.File(logOptions.FilePath, rollingInterval: RollingInterval.Day, outputTemplate: _logTemplate);
+                x.WriteTo.Seq(logOptions.SeqUrl);
                 x.MinimumLevel.Information();
                 x.MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Information);
                 x.MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning);
