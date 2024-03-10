@@ -1,5 +1,6 @@
 ﻿@page "/"
 @attribute [AllowAnonymous]
+@inject ILogger<Home> Logger
 
 @inject IStringLocalizer<App> Localizer
 
@@ -11,3 +12,9 @@
     @Localizer[nameof(AppStrings.Greetings)]
 </MudText>
 
+@code {
+    protected override void OnInitialized()
+    {
+        Logger.LogInformation("Initializing HOME COMPONENT ...");
+    }
+}

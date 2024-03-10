@@ -1,3 +1,4 @@
+using MediatR;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Api.Emails;
@@ -34,6 +35,21 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
+//app.MapPost("/api/log", async (
+//    string logMessage,
+//    IMediator mediator,
+//    CancellationToken cancellationToken) =>
+//{
+//    //    // Store logMessage in a file or log storage
+//    //    using (StreamWriter sw = System.IO.File.AppendText("log.txt"))
+//    //    {
+//    //        await sw.WriteLineAsync(logMessage);
+//    //    }
+//    return Results.Ok(logMessage);
+//})
+//    .WithTags("Logs")
+//    .AllowAnonymous();
 
 app.UseMyLocalization()
    .UseExceptionMiddleware()
