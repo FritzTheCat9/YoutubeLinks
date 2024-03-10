@@ -285,4 +285,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="YoutubeVideo" xml:space="preserve">
+    <value>Youtube Video</value>
+  </data>
 </root>

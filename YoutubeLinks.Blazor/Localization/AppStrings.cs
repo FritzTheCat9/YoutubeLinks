@@ -59,5 +59,6 @@
         CopyToClipboard,
         CopyUrlToClipboard,
         VideoId,
+        YoutubeVideo,
     }
 }

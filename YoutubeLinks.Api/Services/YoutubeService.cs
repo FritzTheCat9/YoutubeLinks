@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using YoutubeLinks.Shared.Features.Links.Helpers;
 
 namespace YoutubeLinks.Api.Services
@@ -35,8 +36,10 @@ namespace YoutubeLinks.Api.Services
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
-            };
+                CreateNoWindow = true,
+                StandardOutputEncoding = Encoding.UTF8, 
+                StandardErrorEncoding = Encoding.UTF8,
+        };
 
             using (var process = new Process())
             {

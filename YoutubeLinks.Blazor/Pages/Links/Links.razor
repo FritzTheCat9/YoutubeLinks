@@ -38,6 +38,9 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
+            @Localizer[nameof(AppStrings.YoutubeVideo)]
+        </MudTh>
+        <MudTh>
             <MudTableSortLabel SortLabel="title"
                                T="LinkDto">
                 @Localizer[nameof(AppStrings.Title)]
@@ -46,26 +49,31 @@
         <MudTh>
             @Localizer[nameof(AppStrings.VideoId)]
         </MudTh>
-            <AuthorizeView Policy="@Policy.User">
-                <Authorized>
-                    @if (_isUserPlaylist)
-                    {
-                        <MudTh>
+        <AuthorizeView Policy="@Policy.User">
+            <Authorized>
+                @if (_isUserPlaylist)
+                {
+                    <MudTh>
                         @Localizer[nameof(AppStrings.Downloaded)]
-                        </MudTh>
-                    }
-                </Authorized>
-            </AuthorizeView>
+                    </MudTh>
+                }
+            </Authorized>
+        </AuthorizeView>
         <MudTh>
             @Localizer[nameof(AppStrings.Actions)]
         </MudTh>
     </HeaderContent>
     <RowTemplate>
+        <MudTd>
+            @if (!string.IsNullOrWhiteSpace(context.Url))
+            {
+                <iframe src="@ConvertToEmbedUrl(context.Url)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            }
+        </MudTd>
         <MudTd DataLabel="Title">
             @context.Title
         </MudTd>
-        <MudTd DataLabel="Url">
-
+        <MudTd DataLabel="VideoId">
             @context.VideoId
         </MudTd>
         <AuthorizeView Policy="@Policy.User" Context="auth">
@@ -215,4 +223,7 @@
         if (!result.Canceled)
             await table.ReloadServerData();
     }
+
+    private static string ConvertToEmbedUrl(string url)
+        => url.Replace("/watch?v=", "/embed/");
 }

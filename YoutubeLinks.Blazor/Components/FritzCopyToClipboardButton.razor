@@ -3,7 +3,9 @@
 @inject IJSRuntime JSRuntime
 
 <MudTooltip Text="@TooltipText">
-    <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" OnClick="CopyTextToClipboard"/>
+    <MudIconButton Icon="@Icons.Material.Filled.ContentCopy"
+                   Size="Size.Small" 
+                   OnClick="CopyTextToClipboard" />
 </MudTooltip>
 
 @code {
