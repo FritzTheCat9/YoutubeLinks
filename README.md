@@ -1,6 +1,8 @@
 # YoutubeLinks
 The YoutubeLinks app will allow users to save YouTube links as playlists. Users will be able to download mp3 files from the playlists they create.
 
+Update: Creating playlists works, downloading single link as .mp3 and .mp4 works. More improvements will be added.
+
 ## Table of contents
 * [Technologies](#technologies)
 * [Architecture](#architecture)
