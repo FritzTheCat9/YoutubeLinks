@@ -17,6 +17,7 @@
         NameNotEmpty,
         NameMaximumLength,
         UrlNotEmpty,
-        VideoUrlMatchesRegex
+        VideoUrlMatchesRegex,
+        YoutubeFileTypeIsInEnum
     }
 }

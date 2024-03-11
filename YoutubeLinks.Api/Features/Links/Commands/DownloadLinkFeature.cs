@@ -11,12 +11,11 @@ namespace YoutubeLinks.Api.Features.Links.Commands
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/links/{id}/download", async (
-                int id,
+            app.MapPost("/api/links/download", async (
+                DownloadLink.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var command = new DownloadLink.Command() { Id = id };
                 var mp3File = await mediator.Send(command, cancellationToken);
                 return Results.File(mp3File.FileBytes, "audio/mpeg", mp3File.FileName);
             })
@@ -53,15 +52,17 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 
                 if (isUserPlaylist || isPublicPlaylist)
                 {
-                    var (fileBytes, fileName) = await _youtubeService.GetMp3File(link.VideoId);
-
-                    var response = new DownloadLink.Response
+                    var youtubeFile = command.YoutubeFileType switch
                     {
-                        FileBytes = fileBytes,
-                        FileName = fileName,
+                        DownloadLink.YoutubeFileType.MP4 => await _youtubeService.GetMP4File(link.VideoId),
+                        _ => await _youtubeService.GetMP3File(link.VideoId),
                     };
 
-                    return response;
+                    return new DownloadLink.Response
+                    {
+                        FileBytes = youtubeFile.FileBytes,
+                        FileName = youtubeFile.FileName,
+                    };
                 }
                 else
                 {

@@ -60,5 +60,7 @@
         CopyUrlToClipboard,
         VideoId,
         YoutubeVideo,
+        DownloadToMp3,
+        DownloadToMp4,
     }
 }

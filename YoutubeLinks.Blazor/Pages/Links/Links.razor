@@ -90,9 +90,16 @@
         <MudTd>
             <FritzCopyToClipboardButton TooltipText="@Localizer[nameof(AppStrings.CopyUrlToClipboard)]"
                                         CopiedText="@context.Url" />
-            <MudIconButton Icon="@Icons.Material.Filled.Download"
-                           Size="Size.Small"
-                           OnClick="() => DownloadPlaylistLink(context.Id)" />
+            <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadToMp3)]">
+                <MudIconButton Icon="@Icons.Material.Filled.Download"
+                               Size="Size.Small"
+                               OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP3)" />
+            </MudTooltip>
+            <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadToMp4)]">
+                <MudIconButton Icon="@Icons.Material.Filled.VideoLibrary"
+                               Size="Size.Small"
+                               OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP4)" />
+            </MudTooltip>
             <AuthorizeView Policy="@Policy.User" Context="auth">
                 <Authorized>
                     @if (_isUserPlaylist)
@@ -231,12 +238,27 @@
     private static string ConvertToEmbedUrl(string url)
         => url.Replace("/watch?v=", "/embed/");
 
-    private async Task DownloadPlaylistLink(int id)
+    private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
     {
-        var response = await LinkApiClient.DownloadLink(id);
+        var command = new DownloadLink.Command
+            {
+                Id = id,
+                YoutubeFileType = youtubeFileType,
+            };
+
+        var response = await LinkApiClient.DownloadLink(command);
         var content = await response.Content.ReadAsByteArrayAsync();
-        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? "default_name.mp3";
+        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
 
         await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+    }
+
+    private string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)
+    {
+        return youtubeFileType switch
+        {
+            DownloadLink.YoutubeFileType.MP4 => "mp4",
+            _ => "mp3",
+        };
     }
 }

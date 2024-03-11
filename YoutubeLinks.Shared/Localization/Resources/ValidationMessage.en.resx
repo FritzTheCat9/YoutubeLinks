@@ -165,4 +165,7 @@
   <data name="VideoUrlMatchesRegex" xml:space="preserve">
     <value>This is not a valid link to the YouTube video.</value>
   </data>
+  <data name="YoutubeFileTypeIsInEnum" xml:space="preserve">
+    <value>YoutubeFileType has a range of values which does not include: {PropertyValue}.</value>
+  </data>
 </root>

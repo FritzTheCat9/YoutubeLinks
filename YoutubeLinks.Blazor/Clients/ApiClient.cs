@@ -13,6 +13,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task<TResponse> Get<TResponse>(string url);
         Task Post<TRequest>(string url, TRequest tRequest);
         Task<TResponse> Post<TRequest, TResponse>(string url, TRequest tRequest);
+        Task<HttpResponseMessage> PostReturnHttpResponseMessage<TRequest>(string url, TRequest tRequest);
         Task Put<TRequest>(string url, TRequest tRequest);
         Task Put(string url);
         Task Delete(string url);
@@ -77,6 +78,17 @@ namespace YoutubeLinks.Blazor.Clients
 
             var tResponse = await response.Content.ReadFromJsonAsync<TResponse>();
             return tResponse;
+        }
+
+        public async Task<HttpResponseMessage> PostReturnHttpResponseMessage<TRequest>(string url, TRequest tRequest)
+        {
+            await AddHeaderValues();
+            var response = await _client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
+
+            if (!response.IsSuccessStatusCode)
+                await HandleErrors(response);
+
+            return response;
         }
 
         public async Task Put<TRequest>(string url, TRequest tRequest)
