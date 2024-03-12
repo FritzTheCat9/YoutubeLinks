@@ -61,6 +61,7 @@ namespace YoutubeLinks.Api.Services
             options.AudioQuality = 0;
             options.AudioFormat = AudioConversionFormat.Mp3;
             options.Output = Path.Combine(_tmpFolderPath, fileName);
+            options.EmbedThumbnail = true;
 
             var runResult = await youtubeDL.RunAudioDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
             if (!runResult.Success)
@@ -94,6 +95,7 @@ namespace YoutubeLinks.Api.Services
             var options = new OptionSet();
             options.Output = Path.Combine(_tmpFolderPath, fileName);
             options.Format = "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best";
+            options.EmbedThumbnail = true;
 
             var runResult = await youtubeDL.RunVideoDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
             if (!runResult.Success)
