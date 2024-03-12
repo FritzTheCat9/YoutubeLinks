@@ -62,5 +62,6 @@
         YoutubeVideo,
         DownloadToMp3,
         DownloadToMp4,
+        ExportPlaylistToJson,
     }
 }

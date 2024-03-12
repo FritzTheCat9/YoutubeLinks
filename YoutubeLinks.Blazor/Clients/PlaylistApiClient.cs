@@ -13,6 +13,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task CreatePlaylist(CreatePlaylist.Command command);
         Task UpdatePlaylist(UpdatePlaylist.Command command);
         Task DeletePlaylist(int id);
+        Task<HttpResponseMessage> ExportPlaylistToJson(ExportPlaylistToJson.Command command);
     }
 
     public class PlaylistApiClient : IPlaylistApiClient
@@ -42,5 +43,8 @@ namespace YoutubeLinks.Blazor.Clients
 
         public async Task DeletePlaylist(int id)
             => await _apiClient.Delete($"{_url}/{id}");
+
+        public async Task<HttpResponseMessage> ExportPlaylistToJson(ExportPlaylistToJson.Command command)
+            => await _apiClient.PostReturnHttpResponseMessage($"{_url}/export", command);
     }
 }

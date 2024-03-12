@@ -7,6 +7,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> Localizer
+@inject IJSRuntime JSRuntime
 
 <PageTitle>
     @Localizer[nameof(AppStrings.Playlists)]
@@ -73,6 +74,11 @@
                            OnClick="() => RedirectToLinksPage(context.Id)" />
         </MudTd>
         <MudTd>
+            <MudTooltip Text="@Localizer[nameof(AppStrings.ExportPlaylistToJson)]">
+                <MudIconButton Icon="@Icons.Material.Filled.Save"
+                               Size="Size.Small"
+                               OnClick="() => ExportPlaylistToJSON(context.Id)" />
+            </MudTooltip>
             <AuthorizeView Policy="@Policy.User" Context="auth">
                 <Authorized>
                     @if (_isUserPlaylist)
@@ -209,5 +215,19 @@
         var result = await dialog.Result;
         if (!result.Canceled)
             await table.ReloadServerData();
+    }
+
+    private async Task ExportPlaylistToJSON(int id)
+    {
+        var command = new ExportPlaylistToJson.Command
+            {
+                Id = id,
+            };
+
+        var response = await PlaylistApiClient.ExportPlaylistToJson(command);
+        var content = await response.Content.ReadAsByteArrayAsync();
+        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.json";
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
     }
 }
