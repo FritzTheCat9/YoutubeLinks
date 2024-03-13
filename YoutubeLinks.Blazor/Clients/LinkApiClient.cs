@@ -12,7 +12,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task CreateLink(CreateLink.Command command);
         Task UpdateLink(UpdateLink.Command command);
         Task DeleteLink(int id);
-        Task<HttpResponseMessage> DownloadLink(DownloadLink.Command command);
+        Task<HttpResponseMessage> DownloadLink(DownloadLink.DownloadLinkCommand command);
     }
 
     public class LinkApiClient : ILinkApiClient
@@ -40,7 +40,7 @@ namespace YoutubeLinks.Blazor.Clients
         public async Task DeleteLink(int id)
             => await _apiClient.Delete($"{_url}/{id}");
 
-        public async Task<HttpResponseMessage> DownloadLink(DownloadLink.Command command)
+        public async Task<HttpResponseMessage> DownloadLink(DownloadLink.DownloadLinkCommand command)
             => await _apiClient.PostReturnHttpResponseMessage($"{_url}/download", command);
     }
 }

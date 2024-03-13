@@ -10,6 +10,8 @@ namespace YoutubeLinks.Api.Behaviors
 
         private static bool IsNotCommand
             => !typeof(TRequest).Name.EndsWith("Command");
+        private static bool IsDownloadLinkCommand
+            => typeof(TRequest).Name.EndsWith("DownloadLinkCommand");
 
         public UnitOfWorkBehavior(
             AppDbContext dbContext,
@@ -24,7 +26,7 @@ namespace YoutubeLinks.Api.Behaviors
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-            if (IsNotCommand)
+            if (IsNotCommand || IsDownloadLinkCommand)
             {
                 return await next();
             }

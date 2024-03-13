@@ -12,6 +12,7 @@ namespace YoutubeLinks.Api.Data.Repositories
         Task<int> Create(Link link);
         Task Update(Link link);
         Task Delete(Link link);
+        Task SaveChanges();
     }
 
     public class LinkRepository : ILinkRepository
@@ -60,6 +61,10 @@ namespace YoutubeLinks.Api.Data.Repositories
         {
             _dbContext.Remove(link);
             return Task.CompletedTask;
+        }
+        public async Task SaveChanges()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
