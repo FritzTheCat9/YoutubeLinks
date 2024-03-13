@@ -251,6 +251,7 @@
         var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
 
         await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+        await table.ReloadServerData();
     }
 
     private string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)

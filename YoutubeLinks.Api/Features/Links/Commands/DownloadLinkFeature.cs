@@ -58,6 +58,12 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                         _ => await _youtubeService.GetMP3File(link.VideoId),
                     };
 
+                    if (isUserPlaylist)
+                    {
+                        link.Downloaded = true;
+                        await _linkRepository.Update(link);
+                    }
+
                     return new DownloadLink.Response
                     {
                         FileBytes = youtubeFile.FileBytes,
