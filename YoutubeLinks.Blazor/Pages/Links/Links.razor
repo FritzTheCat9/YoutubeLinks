@@ -240,7 +240,7 @@
 
     private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
     {
-        var command = new DownloadLink.Command
+        var command = new DownloadLink.DownloadLinkCommand
             {
                 Id = id,
                 YoutubeFileType = youtubeFileType,
