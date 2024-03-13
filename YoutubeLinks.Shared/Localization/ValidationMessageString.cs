@@ -18,6 +18,9 @@
         NameMaximumLength,
         UrlNotEmpty,
         VideoUrlMatchesRegex,
-        YoutubeFileTypeIsInEnum
+        YoutubeFileTypeIsInEnum,
+        FileNotEmpty,
+        FileMaxFileSize,
+        FileContentTypeShouldBeJson,
     }
 }

@@ -120,6 +120,9 @@
   <data name="AccountCreated" xml:space="preserve">
     <value>The account has been successfully created. To log in, please confirm your email address by clicking on the activation link sent to your email inbox.</value>
   </data>
+  <data name="AddPlaylistJsonFile" xml:space="preserve">
+    <value>Add .json file</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>Youtube Links</value>
   </data>
@@ -176,6 +179,12 @@
   </data>
   <data name="Greetings" xml:space="preserve">
     <value>Welcome to Youtube Links App</value>
+  </data>
+  <data name="ImportPlaylist" xml:space="preserve">
+    <value>Import Playlist</value>
+  </data>
+  <data name="ImportPlaylistFromJson" xml:space="preserve">
+    <value>Import playlist from .json</value>
   </data>
   <data name="InformationConfirmInfo" xml:space="preserve">
     <value>Are you sure you want to perform the selected action? This process cannot be undone.</value>

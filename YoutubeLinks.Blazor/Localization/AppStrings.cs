@@ -63,5 +63,8 @@
         DownloadToMp3,
         DownloadToMp4,
         ExportPlaylistToJson,
+        ImportPlaylistFromJson,
+        ImportPlaylist,
+        AddPlaylistJsonFile,
     }
 }

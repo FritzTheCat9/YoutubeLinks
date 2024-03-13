@@ -1,0 +1,102 @@
+﻿@inject IPlaylistApiClient PlaylistApiClient
+@inject IExceptionHandler ExceptionHandler
+@inject IStringLocalizer<App> Localizer
+@inject IStringLocalizer<ValidationMessage> SharedLocalizer
+
+<EditForm Model="FormModel"
+          OnValidSubmit="HandleValidSubmit"
+          @ref="form">
+    <CustomValidator @ref="CustomValidator" />
+    <FluentValidationValidator />
+
+    <MudDialog DefaultFocus="DefaultFocus.LastChild">
+        <DialogContent>
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
+                            @bind-Value="FormModel.Name"
+                            For="() => FormModel.Name" />
+            <FritzValidationMessage For="() => FormModel.Name" />
+
+            <FritzCheckbox Label="@Localizer[nameof(AppStrings.Public)]"
+                           @bind-Value="FormModel.Public"
+                           For="() => FormModel.Public" />
+            <FritzValidationMessage For="() => FormModel.Public" />
+
+            <MudFileUpload T="IBrowserFile"
+                           @bind-Files="FormModel.File"
+                           OnFilesChanged="UploadFile"
+                           For="() => FormModel.File"
+                           Accept=".json"
+                           AppendMultipleFiles="false"
+                           Context="file">
+                <ButtonTemplate>
+                    <MudButton HtmlTag="label"
+                               for="@file"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.FileUpload">
+                        @Localizer[nameof(AppStrings.AddPlaylistJsonFile)]
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload>
+            <FritzValidationMessage For="() => FormModel.File" />
+            @if (FormModel?.File != null)
+            {
+                <FritzValidationMessage For="() => FormModel.File.Size" />
+                <FritzValidationMessage For="() => FormModel.File.ContentType" />
+            }
+            <FritzValidationMessage For="() => FormModel.ExportedLinks" />
+        </DialogContent>
+        <DialogActions>
+            <MudButton ButtonType="ButtonType.Submit"
+                       Color="Color.Primary">
+                @Localizer[nameof(AppStrings.ImportPlaylist)]
+            </MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [Parameter] public ImportPlaylistFromJson.FormModel FormModel { get; set; } = new();
+
+    private EditForm form;
+    private CustomValidator CustomValidator = new();
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await PlaylistApiClient.ImportPlaylistFromJson(FormModel);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (MyValidationException validationException)
+        {
+            CustomValidator.DisplayErrors(validationException.Errors);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.HandleExceptions(ex);
+        }
+    }
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        var fileValidator = new FileValidator(SharedLocalizer);
+        var validationResult = await fileValidator.ValidateAsync(FormModel.File);
+        if (!validationResult.IsValid)
+            return;
+
+        var file = e.File;
+        if (file is null)
+            return;
+
+        var stream = file.OpenReadStream(5242880);
+        var fileContent = await new StreamReader(stream).ReadToEndAsync();
+        var exportedLinks = JsonConvert.DeserializeObject<List<ExportedLinkModel>>(fileContent);
+
+        FormModel.Name = file.Name.Split('.')[0];
+        FormModel.ExportedLinks = exportedLinks;
+
+        form.EditContext.Validate();
+    }
+}

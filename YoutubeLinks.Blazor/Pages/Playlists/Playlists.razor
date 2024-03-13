@@ -30,6 +30,11 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Add"
                                    Size="Size.Small"
                                    OnClick="() => CreateUserPlaylist()" />
+                    <MudTooltip Text="@Localizer[nameof(AppStrings.ImportPlaylistFromJson)]">
+                        <MudIconButton Icon="@Icons.Material.Filled.ImportExport"
+                                       Size="Size.Small"
+                                       OnClick="() => ImportPlaylistFromJSON()" />
+                    </MudTooltip>
                 }
             </Authorized>
         </AuthorizeView>
@@ -229,5 +234,23 @@
         var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.json";
 
         await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+    }
+
+    private async Task ImportPlaylistFromJSON()
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters<ImportPlaylistDialog>();
+        parameters.Add(x => x.FormModel, new()
+            {
+                Name = "",
+                Public = true,
+                ExportedLinks = new List<ExportPlaylistToJson.ExportedLinkModel>(), 
+                File = null,
+            });
+
+        var dialog = await DialogService.ShowAsync<ImportPlaylistDialog>(Localizer[nameof(AppStrings.ImportPlaylist)], parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            await table.ReloadServerData();
     }
 }
