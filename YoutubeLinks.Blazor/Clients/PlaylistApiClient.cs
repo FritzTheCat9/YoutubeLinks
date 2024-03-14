@@ -1,4 +1,5 @@
 ﻿using YoutubeLinks.Shared.Abstractions;
+using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
@@ -15,6 +16,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task DeletePlaylist(int id);
         Task<HttpResponseMessage> ExportPlaylistToJson(ExportPlaylistToJson.Command command);
         Task ImportPlaylistFromJson(ImportPlaylistFromJson.Command command);
+        Task ResetLinksDownloadedFlag(ResetLinksDownloadedFlag.Command command);
     }
 
     public class PlaylistApiClient : IPlaylistApiClient
@@ -50,5 +52,8 @@ namespace YoutubeLinks.Blazor.Clients
 
         public async Task ImportPlaylistFromJson(ImportPlaylistFromJson.Command command)
             => await _apiClient.Post($"{_url}/import", command);
+
+        public async Task ResetLinksDownloadedFlag(ResetLinksDownloadedFlag.Command command)
+            => await _apiClient.Post($"{_url}/resetDownloadedFlag", command);
     }
 }

@@ -3,6 +3,7 @@
 
 @inject IExceptionHandler ExceptionHandler
 @inject ILinkApiClient LinkApiClient
+@inject IPlaylistApiClient PlaylistApiClient
 @inject IAuthService AuthService
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
@@ -30,6 +31,9 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Add"
                                    Size="Size.Small"
                                    OnClick="() => CreatePlaylistLink()" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Flag"
+                                   Size="Size.Small"
+                                   OnClick="() => ResetPlaylistLinksDownloadedFlag()" />
                 }
             </Authorized>
         </AuthorizeView>
@@ -261,5 +265,17 @@
             DownloadLink.YoutubeFileType.MP4 => "mp4",
             _ => "mp3",
         };
+    }
+
+    private async Task ResetPlaylistLinksDownloadedFlag()
+    {
+        var command = new ResetLinksDownloadedFlag.Command
+            {
+                Id = PlaylistId,
+                IsDownloaded = false,
+            };
+
+        await PlaylistApiClient.ResetLinksDownloadedFlag(command);
+        await table.ReloadServerData();
     }
 }

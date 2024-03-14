@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Api.Data.Entities;
 
@@ -16,6 +15,7 @@ namespace YoutubeLinks.Api.Data.Repositories
         Task<bool> LinkUrlExistsInOtherLinksThan(string url, int playlistId, int id);
         Task<int> Create(Playlist playlist);
         Task Update(Playlist playlist);
+        Task SetLinksDownloadedFlag(Playlist playlist, bool flag);
         Task Delete(Playlist playlist);
     }
 
@@ -85,6 +85,13 @@ namespace YoutubeLinks.Api.Data.Repositories
 
         public Task Update(Playlist playlist)
         {
+            _dbContext.Update(playlist);
+            return Task.CompletedTask;
+        }
+
+        public Task SetLinksDownloadedFlag(Playlist playlist, bool flag)
+        {
+            playlist.Links.ForEach(x => x.Downloaded = flag);
             _dbContext.Update(playlist);
             return Task.CompletedTask;
         }

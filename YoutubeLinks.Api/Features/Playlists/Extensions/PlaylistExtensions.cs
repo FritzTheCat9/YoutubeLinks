@@ -16,6 +16,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             DeletePlaylistFeature.Endpoint(app);
             ExportPlaylistToJsonFeature.Endpoint(app);
             ImportPlaylistFromJsonFeature.Endpoint(app);
+            ResetLinksDownloadedFlagFeature.Endpoint(app);
             UpdatePlaylistFeature.Endpoint(app);
             GetAllPublicPlaylistsFeature.Endpoint(app);
             GetAllUserPlaylistsFeature.Endpoint(app);
