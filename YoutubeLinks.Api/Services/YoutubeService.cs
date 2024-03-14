@@ -1,4 +1,5 @@
-﻿using YoutubeDLSharp;
+﻿using System.Text.RegularExpressions;
+using YoutubeDLSharp;
 using YoutubeDLSharp.Options;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Helpers;
@@ -44,7 +45,25 @@ namespace YoutubeLinks.Api.Services
             if (!videoDataRequest.Success)
                 throw new MyServerException();
 
-            return videoDataRequest.Data.Title;
+            var title = videoDataRequest.Data.Title;
+            var normalizedTitle = NormalizeVideoTitle(title);
+
+            return normalizedTitle;
+        }
+
+        private static string NormalizeVideoTitle(string title)
+        {
+            string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+
+            string sanitizedTitle = Regex.Replace(title, "[" + Regex.Escape(invalidChars) + "]", "");
+            sanitizedTitle = Regex.Replace(sanitizedTitle, @"\s+", " ");
+            sanitizedTitle = sanitizedTitle.Trim();
+
+            int maxLength = 255;
+            if (sanitizedTitle.Length > maxLength)
+                sanitizedTitle = sanitizedTitle.Substring(0, maxLength);
+
+            return sanitizedTitle;
         }
 
         public async Task<YoutubeFile> GetMP3File(string videoId)
