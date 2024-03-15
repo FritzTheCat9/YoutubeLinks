@@ -2,12 +2,14 @@
 using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
+using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
 
 namespace YoutubeLinks.Blazor.Clients
 {
     public interface ILinkApiClient
     {
-        Task<PagedList<LinkDto>> GetAllLinks(GetAllLinks.Query query);
+        Task<PagedList<LinkDto>> GetAllPaginatedLinks(GetAllPaginatedLinks.Query query);
+        Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query);
         Task<LinkDto> GetLink(int id);
         Task CreateLink(CreateLink.Command command);
         Task UpdateLink(UpdateLink.Command command);
@@ -25,8 +27,11 @@ namespace YoutubeLinks.Blazor.Clients
             _apiClient = apiClient;
         }
 
-        public async Task<PagedList<LinkDto>> GetAllLinks(GetAllLinks.Query query)
-            => await _apiClient.Post<GetAllLinks.Query, PagedList<LinkDto>>($"{_url}/all", query);
+        public async Task<PagedList<LinkDto>> GetAllPaginatedLinks(GetAllPaginatedLinks.Query query)
+            => await _apiClient.Post<GetAllPaginatedLinks.Query, PagedList<LinkDto>>($"{_url}/allPaginated", query);
+
+        public async Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query)
+            => await _apiClient.Post<Query, IEnumerable<LinkInfoDto>>($"{_url}/all", query);
 
         public async Task<LinkDto> GetLink(int id)
             => await _apiClient.Get<LinkDto>($"{_url}/{id}");

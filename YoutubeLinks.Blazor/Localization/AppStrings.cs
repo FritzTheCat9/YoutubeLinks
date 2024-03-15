@@ -66,5 +66,6 @@
         ImportPlaylistFromJson,
         ImportPlaylist,
         AddPlaylistJsonFile,
+        DownloadPlaylist,
     }
 }

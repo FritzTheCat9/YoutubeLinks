@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Playlists.Extensions;
@@ -29,14 +28,11 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
         public class Handler : IRequestHandler<GetAllPublicPlaylists.Query, PagedList<PlaylistDto>>
         {
             private readonly IPlaylistRepository _playlistRepository;
-            private readonly IAuthService _authService;
 
             public Handler(
-                IPlaylistRepository playlistRepository,
-                IAuthService authService)
+                IPlaylistRepository playlistRepository)
             {
                 _playlistRepository = playlistRepository;
-                _authService = authService;
             }
 
             public async Task<PagedList<PlaylistDto>> Handle(

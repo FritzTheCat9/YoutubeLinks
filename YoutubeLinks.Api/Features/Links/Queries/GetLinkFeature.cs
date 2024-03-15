@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Auth;
-using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Links.Extensions;
 using YoutubeLinks.Shared.Exceptions;

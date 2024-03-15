@@ -1,19 +1,21 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Links.Extensions;
+using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Exceptions;
-using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
+using YoutubeLinks.Shared.Features.Links.Queries;
+using YoutubeLinks.Shared.Features.Links.Responses;
 
 namespace YoutubeLinks.Api.Features.Links.Queries
 {
-    public static class GetAllLinksFeature
+    public static class GetAllPaginatedLinksFeature
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/links/all", async (
-                Query query,
+            app.MapPost("/api/links/allPaginated", async (
+                GetAllPaginatedLinks.Query query,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -25,7 +27,7 @@ namespace YoutubeLinks.Api.Features.Links.Queries
             return app;
         }
 
-        public class Handler : IRequestHandler<Query, IEnumerable<LinkInfoDto>>
+        public class Handler : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>
         {
             private readonly ILinkRepository _linkRepository;
             private readonly IPlaylistRepository _playlistRepository;
@@ -41,8 +43,8 @@ namespace YoutubeLinks.Api.Features.Links.Queries
                 _authService = authService;
             }
 
-            public async Task<IEnumerable<LinkInfoDto>> Handle(
-                Query query,
+            public async Task<PagedList<LinkDto>> Handle(
+                GetAllPaginatedLinks.Query query,
                 CancellationToken cancellationToken)
             {
                 var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
@@ -50,13 +52,14 @@ namespace YoutubeLinks.Api.Features.Links.Queries
                 var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
                 var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
 
-                if (isUserPlaylist)
-                    linkQuery = linkQuery.FilterDownloaded(query);
+                linkQuery = linkQuery.FilterLinks(query);
+                linkQuery = linkQuery.SortLinks(query);
 
-                var linkInfoDtos = await linkQuery.Select(x => x.ToLinkInfoDto())
-                                                  .ToListAsync();
+                var linksPagedList = PageListExtensions<LinkDto>.Create(linkQuery.Select(x => x.ToDto()),
+                                                                                  query.Page,
+                                                                                  query.PageSize);
 
-                return linkInfoDtos;
+                return linksPagedList;
             }
         }
     }

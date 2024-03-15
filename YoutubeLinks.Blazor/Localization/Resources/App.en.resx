@@ -162,6 +162,9 @@
   <data name="Downloaded" xml:space="preserve">
     <value>Downloaded</value>
   </data>
+  <data name="DownloadPlaylist" xml:space="preserve">
+    <value>Download Playlist</value>
+  </data>
   <data name="DownloadToMp3" xml:space="preserve">
     <value>Download to .mp3 file</value>
   </data>

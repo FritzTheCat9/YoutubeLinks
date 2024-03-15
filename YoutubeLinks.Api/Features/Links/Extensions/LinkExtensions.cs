@@ -3,9 +3,9 @@ using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Features.Links.Commands;
 using YoutubeLinks.Api.Features.Links.Queries;
 using YoutubeLinks.Shared.Abstractions;
-using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
+using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
 namespace YoutubeLinks.Api.Features.Links.Extensions
 {
     public static class LinkExtensions
@@ -17,6 +17,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             DownloadLinkFeature.Endpoint(app);
             UpdateLinkFeature.Endpoint(app);
             GetAllLinksFeature.Endpoint(app);
+            GetAllPaginatedLinksFeature.Endpoint(app);
             GetLinkFeature.Endpoint(app);
 
             return app;
@@ -37,9 +38,22 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             };
         }
 
+        public static LinkInfoDto ToLinkInfoDto(this Link link)
+        {
+            return new()
+            {
+                Id = link.Id,
+                Url = link.Url,
+                VideoId = link.VideoId,
+                Title = link.Title,
+            };
+        }
+
+        /* GetAllPaginatedLinks.Query */
+
         public static IQueryable<Link> FilterLinks(
             this IQueryable<Link> links,
-            GetAllLinks.Query query)
+            GetAllPaginatedLinks.Query query)
         {
             var searchTerm = query.SearchTerm.ToLower().Trim();
 
@@ -52,7 +66,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
 
         public static IQueryable<Link> SortLinks(
             this IQueryable<Link> links,
-            GetAllLinks.Query query)
+            GetAllPaginatedLinks.Query query)
         {
             return query.SortOrder switch
             {
@@ -63,13 +77,23 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             };
         }
 
-        private static Expression<Func<Link, object>> GetLinkSortProperty(GetAllLinks.Query query)
+        private static Expression<Func<Link, object>> GetLinkSortProperty(GetAllPaginatedLinks.Query query)
         {
             return query.SortColumn.ToLowerInvariant() switch
             {
                 "title" => link => link.Title,
                 _ => link => link.Title,
             };
+        }
+
+        /* GetAllLinks.Query */
+
+        public static IQueryable<Link> FilterDownloaded(
+            this IQueryable<Link> links,
+            Query query)
+        {
+            links = links.Where(x => x.Downloaded == query.Downloaded);
+            return links;
         }
     }
 }

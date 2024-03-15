@@ -84,6 +84,11 @@
                                Size="Size.Small"
                                OnClick="() => ExportPlaylistToJSON(context.Id)" />
             </MudTooltip>
+            <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadPlaylist)]">
+                <MudIconButton Icon="@Icons.Material.Filled.Download"
+                               Size="Size.Small"
+                               OnClick="() => RedirectToDownloadPlaylistPage(context.Id)" />
+            </MudTooltip>
             <AuthorizeView Policy="@Policy.User" Context="auth">
                 <Authorized>
                     @if (_isUserPlaylist)
@@ -163,10 +168,15 @@
                 Items = PlaylistPagedList.Items
             };
     }
-
+    
     private void RedirectToLinksPage(int id)
     {
         NavigationManager.NavigateTo($"/links/{UserId}/{id}");
+    }
+
+    private void RedirectToDownloadPlaylistPage(int id)
+    {
+        NavigationManager.NavigateTo($"/downloadPlaylist/{id}");
     }
 
     private async Task DeleteUserPlaylist(int id)

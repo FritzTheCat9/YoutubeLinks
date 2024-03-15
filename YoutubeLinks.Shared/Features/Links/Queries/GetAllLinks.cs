@@ -1,26 +1,27 @@
 ﻿using FluentValidation;
 using MediatR;
-using YoutubeLinks.Shared.Abstractions;
-using YoutubeLinks.Shared.Features.Links.Responses;
 
 namespace YoutubeLinks.Shared.Features.Links.Queries
 {
     public class GetAllLinks
     {
-        public class Query : IRequest<PagedList<LinkDto>>, IPagedQuery, ISortedQuery
+        public class Query : IRequest<IEnumerable<LinkInfoDto>>
         {
-            public int Page { get; set; }
-            public int PageSize { get; set; }
-            public string SortColumn { get; set; }
-            public SortOrder SortOrder { get; set; }
-            public string SearchTerm { get; set; }
-
             public int PlaylistId { get; set; }
+            public bool Downloaded { get; set; }
         }
 
         public class Validator : AbstractValidator<Query>
         {
 
+        }
+
+        public class LinkInfoDto
+        {
+            public int Id { get; set; }
+            public string Url { get; set; }
+            public string VideoId { get; set; }
+            public string Title { get; set; }
         }
     }
 }
