@@ -23,7 +23,11 @@
     </MudText>
 
     <MudText Typo="Typo.subtitle1">
-        @DownloadPercent
+        @((int)DownloadPercent)%
+    </MudText>
+
+    <MudText>
+        @DownloadingSongTitle
     </MudText>
 
     <FritzProcessingButton @ref="ProcessingButton"
@@ -62,6 +66,7 @@
     private int AllSongsNumber;
     private bool Downloading;
     public double DownloadPercent { get; set; }
+    public string DownloadingSongTitle { get; set; } = "";
 
     protected override async Task OnParametersSetAsync()
     {
@@ -117,6 +122,7 @@
 
             foreach (var link in LinkInfoList)
             {
+                DownloadingSongTitle = link.Title;
                 await DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
             }
         }

@@ -7,7 +7,10 @@ Playlists view:
 Links view:
 ![Links image](./images/UI_links.png)
 
-Update: Creating playlists works, downloading single link as .mp3 and .mp4 works. More improvements will be added.
+Download playlist view (now you can open winamp and be happy with your newly downloaded playlist):
+![Download playlists image](./images/UI_playlist_download.png)
+
+Update: Creating playlists works, downloading single link as .mp3 and .mp4 works, downloading playlist works. More improvements will be added.
 
 ## Table of contents
 * [Technologies](#technologies)
