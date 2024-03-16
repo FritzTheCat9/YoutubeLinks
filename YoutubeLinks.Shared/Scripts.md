@@ -1,8 +1,8 @@
 ## Docker containers links
 - Api https (swagger): 
 	https://localhost:5001
-- Api http (swagger):  
-	http://localhost:5000
+- Api http (swagger): 
+    http://localhost:5000
 - MSSQL database:
 	Host: localhost 
 	Port: 1433 

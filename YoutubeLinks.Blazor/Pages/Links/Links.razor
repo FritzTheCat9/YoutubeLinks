@@ -28,12 +28,16 @@
             <Authorized>
                 @if (_isUserPlaylist)
                 {
-                    <MudIconButton Icon="@Icons.Material.Filled.Add"
-                                   Size="Size.Small"
-                                   OnClick="() => CreatePlaylistLink()" />
-                    <MudIconButton Icon="@Icons.Material.Filled.Flag"
-                                   Size="Size.Small"
-                                   OnClick="() => ResetPlaylistLinksDownloadedFlag()" />
+                    <MudTooltip Text="@Localizer[nameof(AppStrings.CreateLink)]">
+                        <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                       Size="Size.Small"
+                                       OnClick="() => CreatePlaylistLink()" />
+                    </MudTooltip>
+                    <MudTooltip Text="@Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)]">
+                        <MudIconButton Icon="@Icons.Material.Filled.Flag"
+                                       Size="Size.Small"
+                                       OnClick="() => ResetPlaylistLinksDownloadedFlag()" />
+                    </MudTooltip>
                 }
             </Authorized>
         </AuthorizeView>
@@ -108,12 +112,16 @@
                 <Authorized>
                     @if (_isUserPlaylist)
                     {
-                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                       Size="Size.Small"
-                                       OnClick="() => UpdatePlaylistLink(context)" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                       Size="Size.Small"
-                                       OnClick="() => DeletePlaylistLink(context.Id)" />
+                        <MudTooltip Text="@Localizer[nameof(AppStrings.UpdateLink)]">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           Size="Size.Small"
+                                           OnClick="() => UpdatePlaylistLink(context)" />
+                        </MudTooltip>
+                        <MudTooltip Text="@Localizer[nameof(AppStrings.DeleteLink)]">
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Size="Size.Small"
+                                           OnClick="() => DeletePlaylistLink(context.Id)" />
+                        </MudTooltip>
                     }
                 </Authorized>
             </AuthorizeView>

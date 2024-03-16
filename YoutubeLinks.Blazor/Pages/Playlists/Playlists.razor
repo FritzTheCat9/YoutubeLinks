@@ -27,9 +27,11 @@
             <Authorized>
                 @if (_isUserPlaylist)
                 {
-                    <MudIconButton Icon="@Icons.Material.Filled.Add"
-                                   Size="Size.Small"
-                                   OnClick="() => CreateUserPlaylist()" />
+                    <MudTooltip Text="@Localizer[nameof(AppStrings.CreatePlaylist)]">
+                        <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                       Size="Size.Small"
+                                       OnClick="() => CreateUserPlaylist()" />
+                    </MudTooltip>
                     <MudTooltip Text="@Localizer[nameof(AppStrings.ImportPlaylistFromJson)]">
                         <MudIconButton Icon="@Icons.Material.Filled.ImportExport"
                                        Size="Size.Small"
@@ -66,17 +68,23 @@
         <MudTd DataLabel="Public">
             @if (context.Public)
             {
-                <MudIcon Icon="@Icons.Material.Filled.Visibility" />
+                <MudTooltip Text="@Localizer[nameof(AppStrings.Public)]">
+                    <MudIcon Icon="@Icons.Material.Filled.Visibility" />
+                </MudTooltip>
             }
             else
             {
-                <MudIcon Icon="@Icons.Material.Filled.VisibilityOff" />
+                <MudTooltip Text="@Localizer[nameof(AppStrings.Private)]">
+                    <MudIcon Icon="@Icons.Material.Filled.VisibilityOff" />
+                </MudTooltip>
             }
         </MudTd>
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.List"
-                           Size="Size.Small"
-                           OnClick="() => RedirectToLinksPage(context.Id)" />
+            <MudTooltip Text="@Localizer[nameof(AppStrings.Links)]">
+                <MudIconButton Icon="@Icons.Material.Filled.List"
+                               Size="Size.Small"
+                               OnClick="() => RedirectToLinksPage(context.Id)" />
+            </MudTooltip>
         </MudTd>
         <MudTd>
             <MudTooltip Text="@Localizer[nameof(AppStrings.ExportPlaylistToJson)]">
@@ -93,12 +101,16 @@
                 <Authorized>
                     @if (_isUserPlaylist)
                     {
-                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                       Size="Size.Small"
-                                       OnClick="() => UpdateUserPlaylist(context)" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                       Size="Size.Small"
-                                       OnClick="() => DeleteUserPlaylist(context.Id)" />
+                        <MudTooltip Text="@Localizer[nameof(AppStrings.UpdatePlaylist)]">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           Size="Size.Small"
+                                           OnClick="() => UpdateUserPlaylist(context)" />
+                        </MudTooltip>
+                        <MudTooltip Text="@Localizer[nameof(AppStrings.DeletePlaylist)]">
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Size="Size.Small"
+                                           OnClick="() => DeleteUserPlaylist(context.Id)" />
+                        </MudTooltip>
                     }
                 </Authorized>
             </AuthorizeView>
@@ -168,7 +180,7 @@
                 Items = PlaylistPagedList.Items
             };
     }
-    
+
     private void RedirectToLinksPage(int id)
     {
         NavigationManager.NavigateTo($"/links/{UserId}/{id}");
@@ -254,7 +266,7 @@
             {
                 Name = "",
                 Public = true,
-                ExportedLinks = new List<ExportPlaylistToJson.ExportedLinkModel>(), 
+                ExportedLinks = new List<ExportPlaylistToJson.ExportedLinkModel>(),
                 File = null,
             });
 

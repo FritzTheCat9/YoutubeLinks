@@ -159,6 +159,12 @@
   <data name="DeleteConfirmInfo" xml:space="preserve">
     <value>Do you really want to delete this record? This process cannot be undone.</value>
   </data>
+  <data name="DeleteLink" xml:space="preserve">
+    <value>Delete Link</value>
+  </data>
+  <data name="DeletePlaylist" xml:space="preserve">
+    <value>Delete Playlist</value>
+  </data>
   <data name="Downloaded" xml:space="preserve">
     <value>Downloaded</value>
   </data>
@@ -166,10 +172,10 @@
     <value>Download Playlist</value>
   </data>
   <data name="DownloadToMp3" xml:space="preserve">
-    <value>Download to .mp3 file</value>
+    <value>Download .mp3 file</value>
   </data>
   <data name="DownloadToMp4" xml:space="preserve">
-    <value>Download to .mp4 file</value>
+    <value>Download .mp4 file</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
@@ -234,6 +240,9 @@
   <data name="Playlists" xml:space="preserve">
     <value>Playlists</value>
   </data>
+  <data name="Private" xml:space="preserve">
+    <value>Private</value>
+  </data>
   <data name="Processing" xml:space="preserve">
     <value>Processing...</value>
   </data>
@@ -245,6 +254,9 @@
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat Password</value>
+  </data>
+  <data name="ResetPlaylistLinksDownloadedFlag" xml:space="preserve">
+    <value>Reset Playlist Links Downloaded Flag</value>
   </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>

@@ -67,5 +67,9 @@
         ImportPlaylist,
         AddPlaylistJsonFile,
         DownloadPlaylist,
+        Private,
+        DeletePlaylist,
+        ResetPlaylistLinksDownloadedFlag,
+        DeleteLink,
     }
 }

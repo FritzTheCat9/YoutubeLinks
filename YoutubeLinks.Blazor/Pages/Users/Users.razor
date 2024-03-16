@@ -60,9 +60,11 @@
             </MudChip>
         </MudTh>
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.List"
-                           Size="Size.Small"
-                           OnClick="() => RedirectToUserPlaylistsPage(user.Id)" />
+            <MudTooltip Text="@Localizer[nameof(AppStrings.Playlists)]">
+                <MudIconButton Icon="@Icons.Material.Filled.List"
+                               Size="Size.Small"
+                               OnClick="() => RedirectToUserPlaylistsPage(user.Id)" />
+            </MudTooltip>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
