@@ -277,13 +277,27 @@
 
     private async Task ResetPlaylistLinksDownloadedFlag()
     {
-        var command = new ResetLinksDownloadedFlag.Command
-            {
-                Id = PlaylistId,
-                IsDownloaded = false,
-            };
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var dialog = await DialogService.ShowAsync<InformationDialog>(Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)], options);
 
-        await PlaylistApiClient.ResetLinksDownloadedFlag(command);
-        await table.ReloadServerData();
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            try
+            {
+                var command = new ResetLinksDownloadedFlag.Command
+                    {
+                        Id = PlaylistId,
+                        IsDownloaded = false,
+                    };
+
+                await PlaylistApiClient.ResetLinksDownloadedFlag(command);
+                await table.ReloadServerData();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExceptions(ex);
+            }
+        }
     }
 }
