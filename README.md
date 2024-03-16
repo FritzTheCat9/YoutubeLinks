@@ -1,14 +1,17 @@
 # YoutubeLinks
 The YoutubeLinks app will allow users to save YouTube links as playlists. Users will be able to download mp3 files from the playlists they create.
 
+Users view:
+![Users image](./images/1_users.png)
+
 Playlists view:
-![Playlists image](./images/UI_playlist.png)
+![Playlists image](./images/2_playlists.png)
 
 Links view:
-![Links image](./images/UI_links.png)
+![Links image](./images/3_links.png)
 
 Download playlist view (now you can open winamp and be happy with your newly downloaded playlist):
-![Download playlists image](./images/UI_playlist_download.png)
+![Download playlists image](./images/4_download_playlist.png)
 
 Update: Creating playlists works, downloading single link as .mp3 and .mp4 works, downloading playlist works. More improvements will be added.
 
