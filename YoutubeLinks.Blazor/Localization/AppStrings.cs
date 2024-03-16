@@ -71,5 +71,6 @@
         DeletePlaylist,
         ResetPlaylistLinksDownloadedFlag,
         DeleteLink,
+        NotDownloaded,
     }
 }

@@ -30,11 +30,13 @@
                 {
                     <MudTooltip Text="@Localizer[nameof(AppStrings.CreateLink)]">
                         <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                       Color="Color.Warning"
                                        Size="Size.Small"
                                        OnClick="() => CreatePlaylistLink()" />
                     </MudTooltip>
                     <MudTooltip Text="@Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)]">
                         <MudIconButton Icon="@Icons.Material.Filled.Flag"
+                                       Color="Color.Info"
                                        Size="Size.Small"
                                        OnClick="() => ResetPlaylistLinksDownloadedFlag()" />
                     </MudTooltip>
@@ -46,18 +48,18 @@
                               OnSearch="() => table.ReloadServerData()" />
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>
-            @Localizer[nameof(AppStrings.YoutubeVideo)]
-        </MudTh>
+        @* <MudTh>
+        @Localizer[nameof(AppStrings.YoutubeVideo)]
+        </MudTh> *@
         <MudTh>
             <MudTableSortLabel SortLabel="title"
                                T="LinkDto">
                 @Localizer[nameof(AppStrings.Title)]
             </MudTableSortLabel>
         </MudTh>
-        <MudTh>
-            @Localizer[nameof(AppStrings.VideoId)]
-        </MudTh>
+        @*   <MudTh>
+        @Localizer[nameof(AppStrings.VideoId)]
+        </MudTh> *@
         <AuthorizeView Policy="@Policy.User">
             <Authorized>
                 @if (_isUserPlaylist)
@@ -73,38 +75,54 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd>
-            @if (!string.IsNullOrWhiteSpace(context.Url))
-            {
-                <iframe src="@ConvertToEmbedUrl(context.Url)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            }
-        </MudTd>
+        @* <MudTd>
+        @if (!string.IsNullOrWhiteSpace(context.Url))
+        {
+        <iframe src="@ConvertToEmbedUrl(context.Url)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        }
+        </MudTd> *@
         <MudTd DataLabel="Title">
             @context.Title
         </MudTd>
-        <MudTd DataLabel="VideoId">
-            @context.VideoId
-        </MudTd>
+        @*  <MudTd DataLabel="VideoId">
+        @context.VideoId
+        </MudTd> *@
         <AuthorizeView Policy="@Policy.User" Context="auth">
             <Authorized>
                 @if (_isUserPlaylist)
                 {
                     <MudTd DataLabel="Downloaded">
-                        @context.Downloaded
+                        @if (context.Downloaded)
+                        {
+                            <MudTooltip Text="@Localizer[nameof(AppStrings.Downloaded)]">
+                                <MudIcon Icon="@Icons.Material.Filled.FileDownloadDone"
+                                         Color="Color.Success" />
+                            </MudTooltip>
+                        }
+                        else
+                        {
+                            <MudTooltip Text="@Localizer[nameof(AppStrings.NotDownloaded)]">
+                                <MudIcon Icon="@Icons.Material.Filled.FileDownload"
+                                         Color="Color.Error" />
+                            </MudTooltip>
+                        }
                     </MudTd>
                 }
             </Authorized>
         </AuthorizeView>
         <MudTd>
             <FritzCopyToClipboardButton TooltipText="@Localizer[nameof(AppStrings.CopyUrlToClipboard)]"
+                                        Color="Color.Info"
                                         CopiedText="@context.Url" />
             <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadToMp3)]">
                 <MudIconButton Icon="@Icons.Material.Filled.Download"
+                               Color="Color.Info"
                                Size="Size.Small"
                                OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP3)" />
             </MudTooltip>
             <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadToMp4)]">
                 <MudIconButton Icon="@Icons.Material.Filled.VideoLibrary"
+                               Color="Color.Info"
                                Size="Size.Small"
                                OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP4)" />
             </MudTooltip>
@@ -114,11 +132,13 @@
                     {
                         <MudTooltip Text="@Localizer[nameof(AppStrings.UpdateLink)]">
                             <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           Color="Color.Warning"
                                            Size="Size.Small"
                                            OnClick="() => UpdatePlaylistLink(context)" />
                         </MudTooltip>
                         <MudTooltip Text="@Localizer[nameof(AppStrings.DeleteLink)]">
                             <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Color="Color.Warning"
                                            Size="Size.Small"
                                            OnClick="() => DeletePlaylistLink(context.Id)" />
                         </MudTooltip>

@@ -222,6 +222,9 @@
   <data name="NoMatchingRecordsFound" xml:space="preserve">
     <value>No matching records found</value>
   </data>
+  <data name="NotDownloaded" xml:space="preserve">
+    <value>Not Downloaded</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not found</value>
   </data>
