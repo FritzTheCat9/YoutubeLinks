@@ -318,6 +318,9 @@
   <data name="UpdatePlaylist" xml:space="preserve">
     <value>Update Playlist</value>
   </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Updating...</value>
+  </data>
   <data name="Url" xml:space="preserve">
     <value>Url</value>
   </data>

@@ -76,6 +76,7 @@
         Download,
         Creating,
         SwitchViewToGrid,
-        SwitchViewToTable,
+        SwitchViewToTable, 
+        Updating,
     }
 }

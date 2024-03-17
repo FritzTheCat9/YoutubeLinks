@@ -20,10 +20,11 @@
             <FritzValidationMessage For="() => Command.Downloaded" />
         </DialogContent>
         <DialogActions>
-            <MudButton ButtonType="ButtonType.Submit"
-                       Color="Color.Primary">
-                @Localizer[nameof(AppStrings.Update)]
-            </MudButton>
+            <FritzProcessingButton @ref="ProcessingButton"
+                                   ButtonType="ButtonType.Submit"
+                                   Color="Color.Primary"
+                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Updating)]"
+                                   ButtonText="@Localizer[nameof(AppStrings.Update)]" />
         </DialogActions>
     </MudDialog>
 </EditForm>
@@ -33,12 +34,16 @@
     [Parameter] public UpdateLink.Command Command { get; set; } = new();
 
     private CustomValidator CustomValidator = new();
+    private FritzProcessingButton ProcessingButton;
 
     private async Task HandleValidSubmit()
     {
         try
         {
+            ProcessingButton.SetProcessing(true);
+
             await LinkApiClient.UpdateLink(Command);
+
             MudDialog.Close(DialogResult.Ok(true));
         }
         catch (MyValidationException validationException)
@@ -48,6 +53,10 @@
         catch (Exception ex)
         {
             ExceptionHandler.HandleExceptions(ex);
+        }
+        finally
+        {
+            ProcessingButton.SetProcessing(false);
         }
     }
 }
