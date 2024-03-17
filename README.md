@@ -10,6 +10,9 @@ Playlists view:
 Links view:
 ![Links image](./images/3_links.png)
 
+Links grid view:
+![Links grid image](./images/5_links_grid_view.png)
+
 Download playlist view (now you can open winamp and be happy with your newly downloaded playlist):
 ![Download playlists image](./images/4_download_playlist.png)
 
