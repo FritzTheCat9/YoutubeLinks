@@ -72,5 +72,10 @@
         ResetPlaylistLinksDownloadedFlag,
         DeleteLink,
         NotDownloaded,
+        Downloading,
+        Download,
+        Creating,
+        SwitchViewToGrid,
+        SwitchViewToTable,
     }
 }

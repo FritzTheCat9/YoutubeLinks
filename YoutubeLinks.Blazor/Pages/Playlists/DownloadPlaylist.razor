@@ -32,8 +32,8 @@
 
     <FritzProcessingButton @ref="ProcessingButton"
                            Color="Color.Primary"
-                           ProcessingButtonText="Downloading..."
-                           ButtonText="Download"
+                           ProcessingButtonText="@Localizer[nameof(AppStrings.Downloading)]"
+                           ButtonText="@Localizer[nameof(AppStrings.Download)]"
                            OnClick="DownloadPlaylistLinks" />
 
     @if (Downloading)

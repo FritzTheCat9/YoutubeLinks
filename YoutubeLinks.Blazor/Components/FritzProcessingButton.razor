@@ -3,13 +3,14 @@
 
 <MudButton ButtonType="ButtonType"
            Color="Color"
-           Disabled="_processing" 
+           Disabled="_processing"
            OnClick="OnClick">
     @if (_processing)
     {
-        <MudProgressCircular Size="Size.Small"
+        <MudProgressCircular Class="ms-n1"
+                             Size="Size.Small"
                              Indeterminate="true" />
-        <MudText>
+        <MudText Class="ms-2">
             @ProcessingButtonText
         </MudText>
     }
