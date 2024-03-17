@@ -132,12 +132,14 @@
                         <MudIconButton Icon="@Icons.Material.Filled.Download"
                                        Color="Color.Info"
                                        Size="Size.Small"
+                                       Disabled=_disableDownloadPlaylistLinkButtons
                                        OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP3)" />
                     </MudTooltip>
                     <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadToMp4)]">
                         <MudIconButton Icon="@Icons.Material.Filled.VideoLibrary"
                                        Color="Color.Info"
                                        Size="Size.Small"
+                                       Disabled=_disableDownloadPlaylistLinkButtons
                                        OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP4)" />
                     </MudTooltip>
                     <AuthorizeView Policy="@Policy.User" Context="auth">
@@ -264,12 +266,14 @@
                                     <MudIconButton Icon="@Icons.Material.Filled.Download"
                                                    Color="Color.Info"
                                                    Size="Size.Medium"
+                                                   Disabled=_disableDownloadPlaylistLinkButtons
                                                    OnClick="() => DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP3)" />
                                 </MudTooltip>
                                 <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadToMp4)]">
                                     <MudIconButton Icon="@Icons.Material.Filled.VideoLibrary"
                                                    Color="Color.Info"
                                                    Size="Size.Medium"
+                                                   Disabled=_disableDownloadPlaylistLinkButtons
                                                    OnClick="() => DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP4)" />
                                 </MudTooltip>
                                 <AuthorizeView Policy="@Policy.User" Context="auth">
@@ -325,6 +329,7 @@
     private bool _tableView = true;
     private GetAllPaginatedLinks.Query query = new();
     private MudPagination _paginator;
+    private bool _disableDownloadPlaylistLinkButtons;
 
     private async Task Paginate(int page)
     {
@@ -464,18 +469,31 @@
 
     private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
     {
-        var command = new DownloadLink.DownloadLinkCommand
-            {
-                Id = id,
-                YoutubeFileType = youtubeFileType,
-            };
+        _disableDownloadPlaylistLinkButtons = true;
 
-        var response = await LinkApiClient.DownloadLink(command);
-        var content = await response.Content.ReadAsByteArrayAsync();
-        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
+        try
+        {
+            var command = new DownloadLink.DownloadLinkCommand
+                {
+                    Id = id,
+                    YoutubeFileType = youtubeFileType,
+                };
 
-        await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
-        await RefreshView();
+            var response = await LinkApiClient.DownloadLink(command);
+            var content = await response.Content.ReadAsByteArrayAsync();
+            var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
+
+            await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+            await RefreshView();
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.HandleExceptions(ex);
+        }
+        finally
+        {
+            _disableDownloadPlaylistLinkButtons = false;
+        }
     }
 
     private string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)
