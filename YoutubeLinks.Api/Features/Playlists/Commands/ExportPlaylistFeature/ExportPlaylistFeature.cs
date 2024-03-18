@@ -1,24 +1,23 @@
 ﻿using MediatR;
-using System.Text.Json;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Shared.Exceptions;
-using YoutubeLinks.Shared.Features.Playlists.Commands;
+using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylist;
 
-namespace YoutubeLinks.Api.Features.Playlists.Commands
+namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
 {
 
-    public static class ExportPlaylistToJsonFeature
+    public static class ExportPlaylistFeature
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/export", async (
-                ExportPlaylistToJson.Command command,
+                Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var jsonFile = await mediator.Send(command, cancellationToken);
-                return Results.File(jsonFile.FileBytes, "application/json", jsonFile.FileName);
+                var playlistFile = await mediator.Send(command, cancellationToken);
+                return Results.File(playlistFile.FileBytes, playlistFile.ContentType, playlistFile.FileName);
             })
                 .WithTags("Playlists")
                 .AllowAnonymous();
@@ -26,7 +25,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<ExportPlaylistToJson.Command, ExportPlaylistToJson.PlaylistJsonFile>
+        public class Handler : IRequestHandler<Command, PlaylistFile>
         {
             private readonly IPlaylistRepository _playlistRepository;
             private readonly IAuthService _authService;
@@ -39,8 +38,8 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
                 _authService = authService;
             }
 
-            public async Task<ExportPlaylistToJson.PlaylistJsonFile> Handle(
-                ExportPlaylistToJson.Command command,
+            public async Task<PlaylistFile> Handle(
+                Command command,
                 CancellationToken cancellationToken)
             {
                 var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
@@ -50,17 +49,19 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
                     && !isUserPlaylist)
                     throw new MyForbiddenException();
 
-                var links = playlist.Links.Select(x => new ExportPlaylistToJson.ExportedLinkModel()
-                {
-                    Title = x.Title,
-                    Url = x.Url,
-                    VideoId = x.VideoId
-                }).OrderBy(x => x.Title);
+                var exporter = GetExporter(command.PlaylistFileType);
 
-                return new ExportPlaylistToJson.PlaylistJsonFile()
+                var playlistFile = exporter.Export(playlist);
+
+                return playlistFile;
+            }
+
+            private IPlaylistExporter GetExporter(PlaylistFileType fileType)
+            {
+                return fileType switch
                 {
-                    FileBytes = JsonSerializer.SerializeToUtf8Bytes(links),
-                    FileName = $"{playlist.Name}.json",
+                    PlaylistFileType.TXT => new TXTPlaylistExporter(),
+                    _ => new JSONPlaylistExporter(),
                 };
             }
         }

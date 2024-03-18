@@ -7,13 +7,13 @@ namespace YoutubeLinks.Shared.Features.Links.Commands
 {
     public class DownloadLink
     {
-        public class DownloadLinkCommand : IRequest<Response>
+        public class Command : IRequest<Response>
         {
             public int Id { get; set; }
             public YoutubeFileType YoutubeFileType { get; set; }
         }
 
-        public class Validator : AbstractValidator<DownloadLinkCommand>
+        public class Validator : AbstractValidator<Command>
         {
             public Validator(IStringLocalizer<ValidationMessage> localizer)
             {

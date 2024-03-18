@@ -189,8 +189,14 @@
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="ExportPlaylist" xml:space="preserve">
+    <value>Export Playlist</value>
+  </data>
   <data name="ExportPlaylistToJson" xml:space="preserve">
     <value>Export playlist to .json</value>
+  </data>
+  <data name="ExportPlaylistToTxt" xml:space="preserve">
+    <value>Export playlist to .txt</value>
   </data>
   <data name="ForbiddenError" xml:space="preserve">
     <value>Forbidden error</value>

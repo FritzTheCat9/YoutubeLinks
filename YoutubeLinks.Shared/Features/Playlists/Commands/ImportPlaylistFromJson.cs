@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using YoutubeLinks.Shared.Localization;
-using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylistToJson;
+using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylist;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Commands
 {
@@ -13,7 +13,7 @@ namespace YoutubeLinks.Shared.Features.Playlists.Commands
         {
             public string Name { get; set; }
             public bool Public { get; set; }
-            public List<ExportedLinkModel> ExportedLinks { get; set; }
+            public List<LinkModel> ExportedLinks { get; set; }
         }
 
         public class Validator : AbstractValidator<Command>

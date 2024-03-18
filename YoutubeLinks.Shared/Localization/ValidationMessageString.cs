@@ -22,5 +22,6 @@
         FileNotEmpty,
         FileMaxFileSize,
         FileContentTypeShouldBeJson,
+        PlaylistFileTypeIsInEnum,
     }
 }

@@ -19,7 +19,7 @@ namespace YoutubeLinks.Api.Services
         Task<YoutubeFile> GetMP4File(string videoId);
     }
 
-    public partial class YoutubeService : IYoutubeService
+    public class YoutubeService : IYoutubeService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<YoutubeService> _logger;

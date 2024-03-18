@@ -92,10 +92,10 @@
 
         var stream = file.OpenReadStream(5242880);
         var fileContent = await new StreamReader(stream).ReadToEndAsync();
-        var exportedLinks = JsonConvert.DeserializeObject<List<ExportedLinkModel>>(fileContent);
+        var exportedLinks = JsonConvert.DeserializeObject<ExportPlaylist.PlaylistModel>(fileContent);
 
         FormModel.Name = file.Name.Split('.')[0];
-        FormModel.ExportedLinks = exportedLinks;
+        FormModel.ExportedLinks = exportedLinks.LinkModels.ToList();
 
         form.EditContext.Validate();
     }

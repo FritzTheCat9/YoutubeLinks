@@ -150,6 +150,9 @@
   <data name="PasswordNotEmpty" xml:space="preserve">
     <value>Password should not be empty.</value>
   </data>
+  <data name="PlaylistFileTypeIsInEnum" xml:space="preserve">
+    <value>PlaylistFileType has a range of values which does not include: {PropertyValue}.</value>
+  </data>
   <data name="RepeatPasswordEqualPassword" xml:space="preserve">
     <value>The passwords entered must match.</value>
   </data>

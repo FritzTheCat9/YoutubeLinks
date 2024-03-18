@@ -63,6 +63,8 @@
         DownloadToMp3,
         DownloadToMp4,
         ExportPlaylistToJson,
+        ExportPlaylistToTxt,
+        ExportPlaylist,
         ImportPlaylistFromJson,
         ImportPlaylist,
         AddPlaylistJsonFile,

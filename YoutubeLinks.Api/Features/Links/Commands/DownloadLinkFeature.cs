@@ -12,7 +12,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/links/download", async (
-                DownloadLink.DownloadLinkCommand command,
+                DownloadLink.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -25,7 +25,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<DownloadLink.DownloadLinkCommand, DownloadLink.Response>
+        public class Handler : IRequestHandler<DownloadLink.Command, DownloadLink.Response>
         {
             private readonly IAuthService _authService;
             private readonly ILinkRepository _linkRepository;
@@ -42,7 +42,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             }
 
             public async Task<DownloadLink.Response> Handle(
-                DownloadLink.DownloadLinkCommand command,
+                DownloadLink.Command command,
                 CancellationToken cancellationToken)
             {
                 var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();

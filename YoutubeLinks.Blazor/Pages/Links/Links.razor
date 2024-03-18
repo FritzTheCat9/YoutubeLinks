@@ -97,14 +97,14 @@
                 </MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Title">
+                <MudTd DataLabel="@Localizer[nameof(AppStrings.Title)]">
                     @context.Title
                 </MudTd>
                 <AuthorizeView Policy="@Policy.User" Context="auth">
                     <Authorized>
                         @if (_isUserPlaylist)
                         {
-                            <MudTd DataLabel="Downloaded">
+                            <MudTd DataLabel="@Localizer[nameof(AppStrings.Downloaded)]">
                                 @if (context.Downloaded)
                                 {
                                     <MudTooltip Text="@Localizer[nameof(AppStrings.Downloaded)]">
@@ -123,7 +123,7 @@
                         }
                     </Authorized>
                 </AuthorizeView>
-                <MudTd>
+                <MudTd DataLabel="@Localizer[nameof(AppStrings.Actions)]">
                     <FritzCopyToClipboardButton TooltipText="@Localizer[nameof(AppStrings.CopyUrlToClipboard)]"
                                                 Color="Color.Info"
                                                 Size="Size.Small"
@@ -473,7 +473,7 @@
 
         try
         {
-            var command = new DownloadLink.DownloadLinkCommand
+            var command = new DownloadLink.Command
                 {
                     Id = id,
                     YoutubeFileType = youtubeFileType,

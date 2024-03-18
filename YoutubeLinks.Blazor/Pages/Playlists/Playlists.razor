@@ -64,10 +64,10 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Name">
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Name)]">
             @context.Name
         </MudTd>
-        <MudTd DataLabel="Public">
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Public)]">
             @if (context.Public)
             {
                 <MudTooltip Text="@Localizer[nameof(AppStrings.Public)]">
@@ -81,7 +81,7 @@
                 </MudTooltip>
             }
         </MudTd>
-        <MudTd>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Links)]">
             <MudTooltip Text="@Localizer[nameof(AppStrings.Links)]">
                 <MudIconButton Icon="@Icons.Material.Filled.List"
                                Color="Color.Primary"
@@ -89,38 +89,46 @@
                                OnClick="() => RedirectToLinksPage(context.Id)" />
             </MudTooltip>
         </MudTd>
-        <MudTd>
-            <MudTooltip Text="@Localizer[nameof(AppStrings.ExportPlaylistToJson)]">
-                <MudIconButton Icon="@Icons.Material.Filled.Save"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               OnClick="() => ExportPlaylistToJSON(context.Id)" />
-            </MudTooltip>
-            <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadPlaylist)]">
-                <MudIconButton Icon="@Icons.Material.Filled.Download"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               OnClick="() => RedirectToDownloadPlaylistPage(context.Id)" />
-            </MudTooltip>
-            <AuthorizeView Policy="@Policy.User" Context="auth">
-                <Authorized>
-                    @if (_isUserPlaylist)
-                    {
-                        <MudTooltip Text="@Localizer[nameof(AppStrings.UpdatePlaylist)]">
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                           Color="Color.Warning"
-                                           Size="Size.Small"
-                                           OnClick="() => UpdateUserPlaylist(context)" />
-                        </MudTooltip>
-                        <MudTooltip Text="@Localizer[nameof(AppStrings.DeletePlaylist)]">
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                           Color="Color.Warning"
-                                           Size="Size.Small"
-                                           OnClick="() => DeleteUserPlaylist(context.Id)" />
-                        </MudTooltip>
-                    }
-                </Authorized>
-            </AuthorizeView>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Actions)]">
+            <MudStack Row=true AlignItems="AlignItems.Center">
+                <MudTooltip Text="@Localizer[nameof(AppStrings.ExportPlaylist)]">
+                    <MudMenu Icon="@Icons.Material.Filled.Save"
+                             Color="Color.Info"
+                             Size="Size.Small">
+                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, ExportPlaylist.PlaylistFileType.JSON)">
+                            @Localizer[nameof(AppStrings.ExportPlaylistToJson)]
+                        </MudMenuItem>
+                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, ExportPlaylist.PlaylistFileType.TXT)">
+                            @Localizer[nameof(AppStrings.ExportPlaylistToTxt)]
+                        </MudMenuItem>
+                    </MudMenu>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer[nameof(AppStrings.DownloadPlaylist)]">
+                    <MudIconButton Icon="@Icons.Material.Filled.Download"
+                                   Color="Color.Info"
+                                   Size="Size.Small"
+                                   OnClick="() => RedirectToDownloadPlaylistPage(context.Id)" />
+                </MudTooltip>
+                <AuthorizeView Policy="@Policy.User" Context="auth">
+                    <Authorized>
+                        @if (_isUserPlaylist)
+                        {
+                            <MudTooltip Text="@Localizer[nameof(AppStrings.UpdatePlaylist)]">
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                               Color="Color.Warning"
+                                               Size="Size.Small"
+                                               OnClick="() => UpdateUserPlaylist(context)" />
+                            </MudTooltip>
+                            <MudTooltip Text="@Localizer[nameof(AppStrings.DeletePlaylist)]">
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                               Color="Color.Warning"
+                                               Size="Size.Small"
+                                               OnClick="() => DeleteUserPlaylist(context.Id)" />
+                            </MudTooltip>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+            </MudStack>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -251,16 +259,23 @@
             await table.ReloadServerData();
     }
 
-    private async Task ExportPlaylistToJSON(int id)
+    private async Task ExportPlaylistToFile(int id, ExportPlaylist.PlaylistFileType playlistFileType)
     {
-        var command = new ExportPlaylistToJson.Command
+        var command = new ExportPlaylist.Command
             {
                 Id = id,
+                PlaylistFileType = playlistFileType,
             };
 
-        var response = await PlaylistApiClient.ExportPlaylistToJson(command);
+        var fileExtension = playlistFileType switch
+        {
+            PlaylistFileType.TXT => ".txt",
+            _ => ".json",
+        };
+
+        var response = await PlaylistApiClient.ExportPlaylist(command);
         var content = await response.Content.ReadAsByteArrayAsync();
-        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.json";
+        var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name{fileExtension}";
 
         await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
     }
@@ -273,7 +288,7 @@
             {
                 Name = "",
                 Public = true,
-                ExportedLinks = new List<ExportPlaylistToJson.ExportedLinkModel>(),
+                ExportedLinks = new List<ExportPlaylist.LinkModel>(),
                 File = null,
             });
 

@@ -47,19 +47,19 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="UserName">
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.UserName)]">
             @user.UserName
         </MudTd>
-        <MudTd DataLabel="Email">
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Email)]">
             @user.Email
         </MudTd>
-        <MudTh>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Role)]">
             <MudChip Variant="Variant.Outlined"
                      Color="GetColorBasedOnPolicy(GetUserHighestPolicy(user))">
                 @GetUserHighestPolicy(user)
             </MudChip>
-        </MudTh>
-        <MudTd>
+        </MudTd>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Playlists)]">
             <MudTooltip Text="@Localizer[nameof(AppStrings.Playlists)]">
                 <MudIconButton Icon="@Icons.Material.Filled.List"
                                Color="Color.Primary"
