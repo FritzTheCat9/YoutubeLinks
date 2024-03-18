@@ -64,7 +64,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             this IQueryable<Playlist> playlists,
             GetAllPublicPlaylists.Query query)
         {
-            var searchTerm = query.SearchTerm.ToLower().Trim();
+            var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 playlists = playlists.Where(x =>
@@ -101,7 +101,8 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             this IQueryable<Playlist> playlists,
             GetAllUserPlaylists.Query query)
         {
-            var searchTerm = query.SearchTerm.ToLower().Trim();
+            var searchTerm = query.SearchTerm?.ToLower()?.Trim();
+
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 playlists = playlists.Where(x =>
                     x.Name.ToLower().Contains(searchTerm));

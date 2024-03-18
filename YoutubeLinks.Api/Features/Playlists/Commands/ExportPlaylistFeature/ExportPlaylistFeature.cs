@@ -56,7 +56,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
                 return playlistFile;
             }
 
-            private IPlaylistExporter GetExporter(PlaylistFileType fileType)
+            private static IPlaylistExporter GetExporter(PlaylistFileType fileType)
             {
                 return fileType switch
                 {

@@ -1,16 +1,6 @@
 ﻿@page "/links/{UserId:int}/{PlaylistId:int}"
 @attribute [AllowAnonymous]
 
-@inject IExceptionHandler ExceptionHandler
-@inject ILinkApiClient LinkApiClient
-@inject IPlaylistApiClient PlaylistApiClient
-@inject IAuthService AuthService
-@inject ITableViewProvider TableViewProvider
-@inject IDialogService DialogService
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<App> Localizer
-@inject IJSRuntime JSRuntime
-
 <PageTitle>
     @Localizer[nameof(AppStrings.Links)]
 </PageTitle>
@@ -24,15 +14,14 @@
             <MudText Class="mb-3">
                 @Localizer[nameof(AppStrings.CreateLink)]
             </MudText>
-            <CreateLinkForm Command="CreateLinkCommand"
+            <CreateLinkForm Command="_createLinkCommand"
                             ParentReloadFunction="(async () => await RefreshView())" />
         </MudPaper>
     }
-
     @if (_tableView)
     {
         <MudTable ServerData="new Func<TableState, Task<TableData<LinkDto>>>(ServerReload)"
-                  @ref="table"
+                  @ref="_table"
                   Dense="true"
                   Hover="true">
             <ToolBarContent>
@@ -60,7 +49,7 @@
                     </Authorized>
                 </AuthorizeView>
                 <MudSpacer />
-                <FritzSearchTextField @bind-Value="searchString"
+                <FritzSearchTextField @bind-Value="_searchString"
                                       OnSearch="(async () => await RefreshView())" />
             </ToolBarContent>
             <HeaderContent>
@@ -88,7 +77,8 @@
                 <MudTd DataLabel="@Localizer[nameof(AppStrings.Title)]">
                     @context.Title
                 </MudTd>
-                <AuthorizeView Policy="@Policy.User" Context="auth">
+                <AuthorizeView Policy="@Policy.User"
+                               Context="auth">
                     <Authorized>
                         @if (_isUserPlaylist)
                         {
@@ -130,7 +120,8 @@
                                        Disabled=_disableDownloadPlaylistLinkButtons
                                        OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP4)" />
                     </MudTooltip>
-                    <AuthorizeView Policy="@Policy.User" Context="auth">
+                    <AuthorizeView Policy="@Policy.User"
+                                   Context="auth">
                         <Authorized>
                             @if (_isUserPlaylist)
                             {
@@ -169,7 +160,7 @@
     }
     else
     {
-        if (LinkPagedList != null)
+        if (_linkPagedList != null)
         {
             <MudPaper Class="pa-4">
                 <MudStack Row=true>
@@ -197,17 +188,22 @@
                     </MudTooltip>
                     <MudSpacer />
                 </MudStack>
-                <FritzSearchTextField @bind-Value="searchString"
+                <FritzSearchTextField @bind-Value="_searchString"
                                       OnSearch="(async () => await RefreshView())" />
             </MudPaper>
             <MudGrid Spacing="2">
-                @foreach (var link in LinkPagedList.Items)
+                @foreach (var link in _linkPagedList.Items)
                 {
                     <MudItem xs="12" sm="6">
                         <MudCard>
                             @if (!string.IsNullOrWhiteSpace(link.Url))
                             {
-                                <iframe src="@ConvertToEmbedUrl(link.Url)" style="height: 300px" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                <iframe src="@ConvertToEmbedUrl(link.Url)"
+                                        style="height: 300px"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen>
+                                </iframe>
                             }
                             <MudCardContent>
                                 <MudText Typo="Typo.body1">
@@ -251,7 +247,8 @@
                                                    Disabled=_disableDownloadPlaylistLinkButtons
                                                    OnClick="() => DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP4)" />
                                 </MudTooltip>
-                                <AuthorizeView Policy="@Policy.User" Context="auth">
+                                <AuthorizeView Policy="@Policy.User"
+                                               Context="auth">
                                     <Authorized>
                                         @if (_isUserPlaylist)
                                         {
@@ -279,9 +276,8 @@
 
             <MudPaper Class="pa-4 mb-4">
                 <MudStack AlignItems="AlignItems.Center">
-                    <MudPagination @ref="_paginator"
-                                   Color="Color.Primary"
-                                   Count="LinkPagedList.PagesCount"
+                    <MudPagination Color="Color.Primary"
+                                   Count="_linkPagedList.PagesCount"
                                    SelectedChanged="Paginate"
                                    ShowFirstButton=true
                                    ShowLastButton=true />
@@ -290,222 +286,3 @@
         }
     }
 </MudStack>
-
-@code {
-    [Parameter] public int UserId { get; set; }
-    [Parameter] public int PlaylistId { get; set; }
-
-    private CreateLink.Command CreateLinkCommand { get; set; }
-    private List<BreadcrumbItem> _items;
-    private string searchString = "";
-    private MudTable<LinkDto> table;
-    private PagedList<LinkDto> LinkPagedList { get; set; }
-    private bool _isUserPlaylist = false;
-    private bool _tableView = true;
-    private GetAllPaginatedLinks.Query query = new();
-    private MudPagination _paginator;
-    private bool _disableDownloadPlaylistLinkButtons;
-
-    private async Task Paginate(int page)
-    {
-        query.Page = page;
-        await RefreshView();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        _items = new()
-        {
-            new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
-            new(Localizer[nameof(AppStrings.Playlists)], href: $"/playlists/{UserId}"),
-            new(Localizer[nameof(AppStrings.Links)], href: null, disabled: true),
-        };
-
-        _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
-
-        CreateLinkCommand = new CreateLink.Command
-            {
-                PlaylistId = PlaylistId,
-                Url = "",
-            };
-
-        query = new GetAllPaginatedLinks.Query()
-            {
-                Page = 1,
-                PageSize = 10,
-                SortColumn = "title",
-                SortOrder = SortOrder.Ascending,
-                SearchTerm = searchString,
-                PlaylistId = PlaylistId,
-            };
-
-        _tableView = await TableViewProvider.GetTableView();
-
-        await RefreshView();
-    }
-
-    private async Task RefreshView()
-    {
-        if (_tableView)
-            await table.ReloadServerData();
-        else
-            await ReloadLinks();
-    }
-
-    private async Task SwitchView()
-    {
-        _tableView = !_tableView;
-        await TableViewProvider.SetTableView(_tableView);
-    }
-
-    private async Task ReloadLinks()
-    {
-        try
-        {
-            query.SearchTerm = searchString;
-            LinkPagedList = await LinkApiClient.GetAllPaginatedLinks(query);
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-    }
-
-    private async Task<TableData<LinkDto>> ServerReload(TableState state)
-    {
-        query = new GetAllPaginatedLinks.Query
-            {
-                Page = state.Page + 1,
-                PageSize = state.PageSize,
-                SortColumn = state.SortLabel,
-                SortOrder = ((SortOrder)state.SortDirection),
-                SearchTerm = searchString,
-                PlaylistId = PlaylistId,
-            };
-
-        // if (_paginator != null)
-        // {
-        //     query.Page = _paginator.Selected;
-        // }
-
-        try
-        {
-            LinkPagedList = await LinkApiClient.GetAllPaginatedLinks(query);
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-            return new() { TotalItems = 0, Items = [] };
-        }
-
-        return new()
-            {
-                TotalItems = LinkPagedList.TotalCount,
-                Items = LinkPagedList.Items
-            };
-    }
-
-    private async Task DeletePlaylistLink(int id)
-    {
-        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-        var dialog = await DialogService.ShowAsync<DeleteDialog>(Localizer[nameof(AppStrings.Delete)], options);
-
-        var result = await dialog.Result;
-        if (!result.Canceled)
-        {
-            try
-            {
-                await LinkApiClient.DeleteLink(id);
-                await RefreshView();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleExceptions(ex);
-            }
-        }
-    }
-
-    private async Task UpdatePlaylistLink(LinkDto linkDto)
-    {
-        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-        var parameters = new DialogParameters<UpdateLinkDialog>();
-        parameters.Add(x => x.Command, new()
-            {
-                Id = linkDto.Id,
-                Url = linkDto.Url,
-                Downloaded = linkDto.Downloaded,
-            });
-
-        var dialog = await DialogService.ShowAsync<UpdateLinkDialog>(Localizer[nameof(AppStrings.UpdateLink)], parameters, options);
-        var result = await dialog.Result;
-        if (!result.Canceled)
-            await RefreshView();
-    }
-
-    private static string ConvertToEmbedUrl(string url)
-        => url.Replace("/watch?v=", "/embed/");
-
-    private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
-    {
-        _disableDownloadPlaylistLinkButtons = true;
-
-        try
-        {
-            var command = new DownloadLink.Command
-                {
-                    Id = id,
-                    YoutubeFileType = youtubeFileType,
-                };
-
-            var response = await LinkApiClient.DownloadLink(command);
-            var content = await response.Content.ReadAsByteArrayAsync();
-            var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
-
-            await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
-            await RefreshView();
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-        finally
-        {
-            _disableDownloadPlaylistLinkButtons = false;
-        }
-    }
-
-    private string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)
-    {
-        return youtubeFileType switch
-        {
-            DownloadLink.YoutubeFileType.MP4 => "mp4",
-            _ => "mp3",
-        };
-    }
-
-    private async Task ResetPlaylistLinksDownloadedFlag()
-    {
-        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-        var dialog = await DialogService.ShowAsync<InformationDialog>(Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)], options);
-
-        var result = await dialog.Result;
-        if (!result.Canceled)
-        {
-            try
-            {
-                var command = new ResetLinksDownloadedFlag.Command
-                    {
-                        Id = PlaylistId,
-                        IsDownloaded = false,
-                    };
-
-                await PlaylistApiClient.ResetLinksDownloadedFlag(command);
-                await RefreshView();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleExceptions(ex);
-            }
-        }
-    }
-}

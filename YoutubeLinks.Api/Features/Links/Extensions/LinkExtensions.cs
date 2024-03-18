@@ -55,7 +55,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             this IQueryable<Link> links,
             GetAllPaginatedLinks.Query query)
         {
-            var searchTerm = query.SearchTerm.ToLower().Trim();
+            var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 links = links.Where(x =>

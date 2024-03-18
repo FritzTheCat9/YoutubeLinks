@@ -38,7 +38,7 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
             this IQueryable<User> users,
             GetAllUsers.Query query)
         {
-            var searchTerm = query.SearchTerm.ToLower().Trim();
+            var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {

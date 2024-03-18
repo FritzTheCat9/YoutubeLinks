@@ -1,63 +1,21 @@
-﻿@inject ILinkApiClient LinkApiClient
-@inject IExceptionHandler ExceptionHandler
-@inject IStringLocalizer<App> Localizer
+﻿<EditForm Model=Command
+          OnValidSubmit=HandleValidSubmit>
+    <CustomValidator @ref=_customValidator />
+    <FluentValidationValidator />
+    <MudStack Row=true
+              Justify=Justify.Center
+              AlignItems=AlignItems.Center>
+        <FritzTextField Label=@Localizer[nameof(AppStrings.Url)]
+                        @bind-Value=Command.Url
+                        For="() => Command.Url"
+                        Variant=Variant.Outlined
+                        ShrinkLabel />
 
-@if (Command != null)
-{
-    <EditForm Model="Command"
-              OnValidSubmit="HandleValidSubmit">
-        <CustomValidator @ref="CustomValidator" />
-        <FluentValidationValidator />
-
-        <MudStack Row="true"
-                  Justify="Justify.Center"
-                  AlignItems="AlignItems.Center">
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Url)]"
-                            @bind-Value="Command.Url"
-                            For="() => Command.Url"
-                            Variant="Variant.Outlined"
-                            ShrinkLabel />
-
-            <FritzProcessingButton @ref="ProcessingButton"
-                                   ButtonType="ButtonType.Submit"
-                                   Color="Color.Primary"
-                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Creating)]"
-                                   ButtonText="@Localizer[nameof(AppStrings.Create)]" />
-        </MudStack>
-
-        <FritzValidationMessage For="() => Command.Url" />
-    </EditForm>
-}
-
-@code {
-    [Parameter] public CreateLink.Command Command { get; set; } = new();
-    [Parameter] public EventCallback ParentReloadFunction { get; set; }
-
-    private CustomValidator CustomValidator = new();
-    private FritzProcessingButton ProcessingButton;
-
-    private async Task HandleValidSubmit()
-    {
-        try
-        {
-            ProcessingButton.SetProcessing(true);
-
-            await LinkApiClient.CreateLink(Command);
-
-            Command.Url = "";
-            await ParentReloadFunction.InvokeAsync();
-        }
-        catch (MyValidationException validationException)
-        {
-            CustomValidator.DisplayErrors(validationException.Errors);
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-        finally
-        {
-            ProcessingButton.SetProcessing(false);
-        }
-    }
-}
+        <FritzProcessingButton @ref="_processingButton"
+                               ButtonType="ButtonType.Submit"
+                               Color="Color.Primary"
+                               ProcessingButtonText="@Localizer[nameof(AppStrings.Creating)]"
+                               ButtonText="@Localizer[nameof(AppStrings.Create)]" />
+    </MudStack>
+    <FritzValidationMessage For="() => Command.Url" />
+</EditForm>
