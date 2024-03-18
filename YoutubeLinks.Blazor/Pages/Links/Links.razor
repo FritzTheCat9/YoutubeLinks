@@ -5,6 +5,7 @@
 @inject ILinkApiClient LinkApiClient
 @inject IPlaylistApiClient PlaylistApiClient
 @inject IAuthService AuthService
+@inject ITableViewProvider TableViewProvider
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> Localizer
@@ -49,26 +50,13 @@
                                                OnClick="() => ResetPlaylistLinksDownloadedFlag()" />
                             </MudTooltip>
                         }
-                        @if (_tableView)
-                        {
-                            <MudTooltip Text="@Localizer[nameof(AppStrings.SwitchViewToGrid)]">
-                                <MudIconButton Icon="@Icons.Material.Filled.GridView"
-                                               Color="Color.Info"
-                                               Size="Size.Small"
-                                               OnClick="SwitchView" />
-                            </MudTooltip>
-                            <MudSpacer />
-                        }
-                        else
-                        {
-                            <MudTooltip Text="@Localizer[nameof(AppStrings.SwitchViewToTable)]">
-                                <MudIconButton Icon="@Icons.Material.Filled.ViewList"
-                                               Color="Color.Info"
-                                               Size="Size.Small"
-                                               OnClick="SwitchView" />
-                            </MudTooltip>
-                            <MudSpacer />
-                        }
+                        <MudTooltip Text="@Localizer[nameof(AppStrings.SwitchViewToGrid)]">
+                            <MudIconButton Icon="@Icons.Material.Filled.GridView"
+                                           Color="Color.Info"
+                                           Size="Size.Small"
+                                           OnClick="SwitchView" />
+                        </MudTooltip>
+                        <MudSpacer />
                     </Authorized>
                 </AuthorizeView>
                 <MudSpacer />
@@ -201,26 +189,13 @@
                             }
                         </Authorized>
                     </AuthorizeView>
-                    @if (_tableView)
-                    {
-                        <MudTooltip Text="@Localizer[nameof(AppStrings.SwitchViewToGrid)]">
-                            <MudIconButton Icon="@Icons.Material.Filled.GridView"
-                                           Color="Color.Info"
-                                           Size="Size.Small"
-                                           OnClick="SwitchView" />
-                        </MudTooltip>
-                        <MudSpacer />
-                    }
-                    else
-                    {
-                        <MudTooltip Text="@Localizer[nameof(AppStrings.SwitchViewToTable)]">
-                            <MudIconButton Icon="@Icons.Material.Filled.ViewList"
-                                           Color="Color.Info"
-                                           Size="Size.Small"
-                                           OnClick="SwitchView" />
-                        </MudTooltip>
-                        <MudSpacer />
-                    }
+                    <MudTooltip Text="@Localizer[nameof(AppStrings.SwitchViewToTable)]">
+                        <MudIconButton Icon="@Icons.Material.Filled.ViewList"
+                                       Color="Color.Info"
+                                       Size="Size.Small"
+                                       OnClick="SwitchView" />
+                    </MudTooltip>
+                    <MudSpacer />
                 </MudStack>
                 <FritzSearchTextField @bind-Value="searchString"
                                       OnSearch="(async () => await RefreshView())" />
@@ -364,6 +339,8 @@
                 PlaylistId = PlaylistId,
             };
 
+        _tableView = await TableViewProvider.GetTableView();
+
         await RefreshView();
     }
 
@@ -375,9 +352,10 @@
             await ReloadLinks();
     }
 
-    private void SwitchView()
+    private async Task SwitchView()
     {
         _tableView = !_tableView;
+        await TableViewProvider.SetTableView(_tableView);
     }
 
     private async Task ReloadLinks()
