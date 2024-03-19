@@ -100,13 +100,18 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private async Task UpdateUserPlaylist(PlaylistDto playlistDto)
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<UpdatePlaylistDialog>();
-            parameters.Add(x => x.Command, new()
+            var parameters = new DialogParameters<UpdatePlaylistDialog>
             {
-                Id = playlistDto.Id,
-                Name = playlistDto.Name,
-                Public = playlistDto.Public,
-            });
+                {
+                    x => x.Command,
+                    new()
+                    {
+                        Id = playlistDto.Id,
+                        Name = playlistDto.Name,
+                        Public = playlistDto.Public,
+                    }
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<UpdatePlaylistDialog>(Localizer[nameof(AppStrings.UpdatePlaylist)], parameters, options);
             var result = await dialog.Result;
@@ -117,12 +122,17 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private async Task CreateUserPlaylist()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<CreatePlaylistDialog>();
-            parameters.Add(x => x.Command, new()
+            var parameters = new DialogParameters<CreatePlaylistDialog>
             {
-                Name = "",
-                Public = true,
-            });
+                {
+                    x => x.Command,
+                    new()
+                    {
+                        Name = "",
+                        Public = true,
+                    }
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<CreatePlaylistDialog>(Localizer[nameof(AppStrings.CreatePlaylist)], parameters, options);
             var result = await dialog.Result;
@@ -156,14 +166,19 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private async Task ImportPlaylistFromJSON()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<ImportPlaylistDialog>();
-            parameters.Add(x => x.FormModel, new()
+            var parameters = new DialogParameters<ImportPlaylistDialog>
             {
-                Name = "",
-                Public = true,
-                ExportedLinks = [],
-                File = null,
-            });
+                {
+                    x => x.FormModel,
+                    new()
+                    {
+                        Name = "",
+                        Public = true,
+                        ExportedLinks = [],
+                        File = null,
+                    }
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<ImportPlaylistDialog>(Localizer[nameof(AppStrings.ImportPlaylist)], parameters, options);
             var result = await dialog.Result;

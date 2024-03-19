@@ -156,13 +156,18 @@ namespace YoutubeLinks.Blazor.Pages.Links
         private async Task UpdatePlaylistLink(LinkDto linkDto)
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<UpdateLinkDialog>();
-            parameters.Add(x => x.Command, new()
+            var parameters = new DialogParameters<UpdateLinkDialog>
             {
-                Id = linkDto.Id,
-                Url = linkDto.Url,
-                Downloaded = linkDto.Downloaded,
-            });
+                {
+                    x => x.Command,
+                    new()
+                    {
+                        Id = linkDto.Id,
+                        Url = linkDto.Url,
+                        Downloaded = linkDto.Downloaded,
+                    }
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<UpdateLinkDialog>(Localizer[nameof(AppStrings.UpdateLink)], parameters, options);
             var result = await dialog.Result;

@@ -21,8 +21,13 @@ namespace YoutubeLinks.Blazor.Pages.Users
         private async Task Login()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<LoginDialog>();
-            parameters.Add(x => x.Command, new());
+            var parameters = new DialogParameters<LoginDialog>
+            {
+                { 
+                    x => x.Command, 
+                    new() 
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<LoginDialog>(Localizer[nameof(AppStrings.Login)], parameters, options);
             var result = await dialog.Result;
@@ -41,8 +46,13 @@ namespace YoutubeLinks.Blazor.Pages.Users
         private async Task Register()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<RegisterDialog>();
-            parameters.Add(x => x.Command, new());
+            var parameters = new DialogParameters<RegisterDialog>
+            {
+                { 
+                    x => x.Command, 
+                    new() 
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<RegisterDialog>(Localizer[nameof(AppStrings.Register)], parameters, options);
             var result = await dialog.Result;
@@ -53,8 +63,13 @@ namespace YoutubeLinks.Blazor.Pages.Users
         private async Task OpenRegistrationSuccessDialog()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var parameters = new DialogParameters<SuccessDialog>();
-            parameters.Add(x => x.ContentText, Localizer[nameof(AppStrings.AccountCreated)]);
+            var parameters = new DialogParameters<SuccessDialog>
+            {
+                { 
+                    x => x.ContentText, 
+                    Localizer[nameof(AppStrings.AccountCreated)] 
+                }
+            };
 
             var dialog = await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
         }
