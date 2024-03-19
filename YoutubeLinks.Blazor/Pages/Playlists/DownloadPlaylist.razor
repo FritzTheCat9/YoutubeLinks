@@ -1,47 +1,38 @@
 ﻿@page "/downloadPlaylist/{PlaylistId:int}"
 @attribute [AllowAnonymous]
 
-@inject IExceptionHandler ExceptionHandler
-@inject ILinkApiClient LinkApiClient
-@inject IPlaylistApiClient PlaylistApiClient
-@inject IAuthService AuthService
-@inject IDialogService DialogService
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<App> Localizer
-@inject IJSRuntime JSRuntime
-
 <PageTitle>
     @Localizer[nameof(AppStrings.DownloadPlaylist)]
 </PageTitle>
 
-@if (Playlist != null && LinkInfoList != null)
+@if (_playlist != null && _linkInfoList != null)
 {
-    <FritzBreadcrumbs Items="_items" />
+    <FritzBreadcrumbs Items=_items />               @* TODO: Refactor this page to be beautifull ok ok *@
 
-    <MudText Typo="Typo.subtitle1">
-        @($"Loaded {LinkInfoList.Count} links with flag downloaded = false (important - only false are loaded, when its user playlist, all when is public and not owned)")
+    <MudText Typo=Typo.subtitle1>
+        @($"Loaded {_linkInfoList.Count} links with flag downloaded = false (important - only false are loaded, when its user playlist, all when is public and not owned)")
     </MudText>
 
-    <MudText Typo="Typo.subtitle1">
-        @((int)DownloadPercent)%
+    <MudText Typo=Typo.subtitle1>
+        @((int)_downloadPercent)%
     </MudText>
 
     <MudText>
-        @DownloadingSongTitle
+        @_downloadingSongTitle
     </MudText>
 
-    <FritzProcessingButton @ref="ProcessingButton"
-                           Color="Color.Primary"
-                           ProcessingButtonText="@Localizer[nameof(AppStrings.Downloading)]"
-                           ButtonText="@Localizer[nameof(AppStrings.Download)]"
-                           OnClick="DownloadPlaylistLinks" />
+    <FritzProcessingButton @ref=_processingButton
+                           Color=Color.Primary
+                           ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
+                           ButtonText=@Localizer[nameof(AppStrings.Download)]
+                           OnClick=DownloadPlaylistLinks />
 
-    @if (Downloading)
+    @if (_downloading)
     {
-        <MudProgressLinear Color="Color.Primary"
-                           Striped="true"
-                           Size="Size.Large"
-                           Value="DownloadPercent"
+        <MudProgressLinear Color=Color.Primary
+                           Striped=true
+                           Size=Size.Large
+                           Value=_downloadPercent
                            Class="my-7" />
     }
     else
@@ -49,127 +40,5 @@
         <MudText>
             Done
         </MudText>
-    }
-}
-
-@code {
-    [Parameter] public int PlaylistId { get; set; }
-
-    public PlaylistDto Playlist { get; set; }
-    public List<GetAllLinks.LinkInfoDto> LinkInfoList { get; set; }
-
-    private List<BreadcrumbItem> _items;
-    private FritzProcessingButton ProcessingButton;
-    private bool _isUserPlaylist = false;
-
-    private int DownloadedSongsNumber;
-    private int AllSongsNumber;
-    private bool Downloading;
-    public double DownloadPercent { get; set; }
-    public string DownloadingSongTitle { get; set; } = "";
-
-    protected override async Task OnParametersSetAsync()
-    {
-        try
-        {
-            Playlist = await PlaylistApiClient.GetPlaylist(PlaylistId);
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-
-        _items = new()
-        {
-            new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
-            new(Localizer[nameof(AppStrings.Playlists)],  href: $"/playlists/{Playlist.UserId}"),
-            new(Localizer[nameof(AppStrings.DownloadPlaylist)], href: null, disabled: true),
-        };
-
-        _isUserPlaylist = await AuthService.IsLoggedInUser(Playlist.UserId);
-
-        if (!_isUserPlaylist || !Playlist.Public)
-            NavigationManager.NavigateTo("/error/forbidden-error");
-
-        await LoadLinkInformation();
-    }
-
-    private async Task LoadLinkInformation()
-    {
-        try
-        {
-            var query = new GetAllLinks.Query
-                {
-                    PlaylistId = PlaylistId,
-                    Downloaded = false,
-                };
-
-            LinkInfoList = (await LinkApiClient.GetAllLinks(query)).ToList();
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-    }
-
-    private async Task DownloadPlaylistLinks()
-    {
-        try
-        {
-            Downloading = true;
-            AllSongsNumber = LinkInfoList.Count;
-            ProcessingButton.SetProcessing(true);
-
-            foreach (var link in LinkInfoList)
-            {
-                DownloadingSongTitle = link.Title;
-                await DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
-            }
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-        finally
-        {
-            Downloading = false;
-            ProcessingButton.SetProcessing(false);
-        }
-    }
-
-    private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
-    {
-        try
-        {
-            var command = new DownloadLink.Command
-                {
-                    Id = id,
-                    YoutubeFileType = youtubeFileType,
-                };
-
-            var response = await LinkApiClient.DownloadLink(command);
-            var content = await response.Content.ReadAsByteArrayAsync();
-            var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
-
-            await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
-
-            DownloadedSongsNumber++;
-            DownloadPercent = (((double)DownloadedSongsNumber / AllSongsNumber) * 100);
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-    }
-
-
-    private string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)
-    {
-        return youtubeFileType switch
-        {
-            DownloadLink.YoutubeFileType.MP4 => "mp4",
-            _ => "mp3",
-        };
     }
 }

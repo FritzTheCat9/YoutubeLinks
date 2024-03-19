@@ -1,26 +1,26 @@
-﻿<EditForm Model="Command"
-          OnValidSubmit="HandleValidSubmit">
-    <CustomValidator @ref="_customValidator" />
+﻿<EditForm Model=Command
+          OnValidSubmit=HandleValidSubmit>
+    <CustomValidator @ref=_customValidator />
     <FluentValidationValidator />
 
-    <MudDialog DefaultFocus="DefaultFocus.LastChild">
+    <MudDialog DefaultFocus=DefaultFocus.LastChild>
         <DialogContent>
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Url)]"
-                            @bind-Value="Command.Url"
+            <FritzTextField Label=@Localizer[nameof(AppStrings.Url)]
+                            @bind-Value=Command.Url
                             For="() => Command.Url" />
             <FritzValidationMessage For="() => Command.Url" />
 
-            <FritzCheckbox Label="@Localizer[nameof(AppStrings.Downloaded)]"
-                           @bind-Value="Command.Downloaded"
+            <FritzCheckbox Label=@Localizer[nameof(AppStrings.Downloaded)]
+                           @bind-Value=Command.Downloaded
                            For="() => Command.Downloaded" />
             <FritzValidationMessage For="() => Command.Downloaded" />
         </DialogContent>
         <DialogActions>
-            <FritzProcessingButton @ref="_processingButton"
-                                   ButtonType="ButtonType.Submit"
-                                   Color="Color.Primary"
-                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Updating)]"
-                                   ButtonText="@Localizer[nameof(AppStrings.Update)]" />
+            <FritzProcessingButton @ref=_processingButton
+                                   ButtonType=ButtonType.Submit
+                                   Color=Color.Primary
+                                   ProcessingButtonText=@Localizer[nameof(AppStrings.Updating)]
+                                   ButtonText=@Localizer[nameof(AppStrings.Update)] />
         </DialogActions>
     </MudDialog>
 </EditForm>

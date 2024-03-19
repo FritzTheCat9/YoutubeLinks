@@ -1,95 +1,44 @@
 ﻿@page "/confirmEmail"
 @attribute [AllowAnonymous]
 
-@inject IUserApiClient UserApiClient
-@inject IExceptionHandler ExceptionHandler
-@inject IStringLocalizer<App> Localizer
-
-@if (!success)
+@if (!_success)
 {
     <MudText>
         @Localizer[nameof(AppStrings.ConfirmEmailInfo)]
     </MudText>
 
-    <EditForm Model="Command"
-              OnValidSubmit="OnValidSubmit">
-        <CustomValidator @ref="CustomValidator" />
+    <EditForm Model=_command
+              OnValidSubmit=OnValidSubmit>
+        <CustomValidator @ref=_customValidator />
         <FluentValidationValidator />
 
-        <FritzTextField @bind-Value="Command.Email"
-                        For="() => Command.Email"
-                        HideField="true" />
-        <FritzValidationMessage For="() => Command.Email" />
+        <FritzTextField @bind-Value=_command.Email
+                        For="() => _command.Email"
+                        HideField=true />
+        <FritzValidationMessage For="() => _command.Email" />
 
-        <FritzTextField @bind-Value="Command.Token"
-                        For="() => Command.Token"
-                        HideField="true" />
-        <FritzValidationMessage For="() => Command.Token" />
+        <FritzTextField @bind-Value=_command.Token
+                        For="() => _command.Token"
+                        HideField=true />
+        <FritzValidationMessage For="() => _command.Token" />
 
-        <FritzProcessingButton @ref="ProcessingButton"
-                               ButtonType="ButtonType.Submit"
-                               Color="Color.Primary"
-                               Variant="Variant.Filled"
-                               ButtonText="@Localizer[nameof(AppStrings.ConfirmEmail)]" />
+        <FritzProcessingButton @ref=_processingButton
+                               ButtonType=ButtonType.Submit
+                               Color=Color.Primary
+                               Variant=Variant.Filled
+                               ButtonText=@Localizer[nameof(AppStrings.ConfirmEmail)] />
     </EditForm>
 }
 else
 {
-    <MudText Color="Color.Success">
+    <MudText Color=Color.Success>
         @Localizer[nameof(AppStrings.SuccessfulEmailConfirmation)]
     </MudText>
 }
 
-@if (parsingError)
+@if (_parsingError)
 {
-    <MudText Color="Color.Error">
+    <MudText Color=Color.Error>
         @Localizer[nameof(AppStrings.InvalidEmailOrToken)]
     </MudText>
-}
-
-@code {
-    [SupplyParameterFromQuery] public string Email { get; set; }
-    [SupplyParameterFromQuery] public string Token { get; set; }
-
-    private ConfirmEmail.Command Command { get; set; } = new();
-    private CustomValidator CustomValidator = new();
-
-    private FritzProcessingButton ProcessingButton = new();
-    private bool success;
-    private bool parsingError;
-
-    protected override void OnParametersSet()
-    {
-        try
-        {
-            Command.Email = Uri.UnescapeDataString(Email);
-            Command.Token = Uri.UnescapeDataString(Token);
-        }
-        catch (Exception ex)
-        {
-            parsingError = true;
-        }
-    }
-
-    private async Task OnValidSubmit()
-    {
-        try
-        {
-            ProcessingButton.SetProcessing(true);
-
-            success = await UserApiClient.ConfirmEmail(Command);
-        }
-        catch (MyValidationException validationException)
-        {
-            CustomValidator.DisplayErrors(validationException.Errors);
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-        finally
-        {
-            ProcessingButton.SetProcessing(false);
-        }
-    }
 }

@@ -1,53 +1,26 @@
-﻿@inject IPlaylistApiClient PlaylistApiClient
-@inject IExceptionHandler ExceptionHandler
-@inject IStringLocalizer<App> Localizer
-
-<EditForm Model="Command"
-          OnValidSubmit="HandleValidSubmit">
-    <CustomValidator @ref="CustomValidator" />
+﻿<EditForm Model=Command
+          OnValidSubmit=HandleValidSubmit>
+    <CustomValidator @ref=_customValidator />
     <FluentValidationValidator />
 
-    <MudDialog DefaultFocus="DefaultFocus.LastChild">
+    <MudDialog DefaultFocus=DefaultFocus.LastChild>
         <DialogContent>
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
-                            @bind-Value="Command.Name"
+            <FritzTextField Label=@Localizer[nameof(AppStrings.Name)]
+                            @bind-Value=Command.Name
                             For="() => Command.Name" />
             <FritzValidationMessage For="() => Command.Name" />
 
-            <FritzCheckbox Label="@Localizer[nameof(AppStrings.Public)]"
-                           @bind-Value="Command.Public"
+            <FritzCheckbox Label=@Localizer[nameof(AppStrings.Public)]
+                           @bind-Value=Command.Public
                            For="() => Command.Public" />
             <FritzValidationMessage For="() => Command.Public" />
         </DialogContent>
         <DialogActions>
-            <MudButton ButtonType="ButtonType.Submit"
-                       Color="Color.Primary">
+            <MudButton ButtonType=ButtonType.Submit
+                       Color=Color.Primary>
                 @Localizer[nameof(AppStrings.Create)]
             </MudButton>
         </DialogActions>
     </MudDialog>
 </EditForm>
 
-@code {
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-    [Parameter] public CreatePlaylist.Command Command { get; set; } = new();
-
-    private CustomValidator CustomValidator = new();
-
-    private async Task HandleValidSubmit()
-    {
-        try
-        {
-            await PlaylistApiClient.CreatePlaylist(Command);
-            MudDialog.Close(DialogResult.Ok(true));
-        }
-        catch (MyValidationException validationException)
-        {
-            CustomValidator.DisplayErrors(validationException.Errors);
-        }
-        catch (Exception ex)
-        {
-            ExceptionHandler.HandleExceptions(ex);
-        }
-    }
-}

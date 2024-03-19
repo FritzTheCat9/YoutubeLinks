@@ -2,6 +2,7 @@
           OnValidSubmit=HandleValidSubmit>
     <CustomValidator @ref=_customValidator />
     <FluentValidationValidator />
+
     <MudStack Row=true
               Justify=Justify.Center
               AlignItems=AlignItems.Center>
@@ -11,11 +12,11 @@
                         Variant=Variant.Outlined
                         ShrinkLabel />
 
-        <FritzProcessingButton @ref="_processingButton"
-                               ButtonType="ButtonType.Submit"
-                               Color="Color.Primary"
-                               ProcessingButtonText="@Localizer[nameof(AppStrings.Creating)]"
-                               ButtonText="@Localizer[nameof(AppStrings.Create)]" />
+        <FritzProcessingButton @ref=_processingButton
+                               ButtonType=ButtonType.Submit
+                               Color=Color.Primary
+                               ProcessingButtonText=@Localizer[nameof(AppStrings.Creating)]
+                               ButtonText=@Localizer[nameof(AppStrings.Create)] />
     </MudStack>
     <FritzValidationMessage For="() => Command.Url" />
 </EditForm>

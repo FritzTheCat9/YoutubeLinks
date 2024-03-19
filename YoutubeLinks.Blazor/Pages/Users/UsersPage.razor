@@ -1,0 +1,79 @@
+﻿@page "/users"
+@attribute [AllowAnonymous]
+
+<PageTitle>
+    @Localizer[nameof(AppStrings.Users)]
+</PageTitle>
+
+<FritzBreadcrumbs Items=_items />
+
+<MudTable ServerData=ServerReload
+          Dense=true
+          Hover=true
+          @ref=_table
+          Context="user">
+    <ToolBarContent>
+        <MudText Typo=Typo.h6>
+            @Localizer[nameof(AppStrings.Users)]
+        </MudText>
+        <MudSpacer />
+        <FritzSearchTextField @bind-Value=_searchString
+                              OnSearch="() => _table.ReloadServerData()" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="username"
+                               T=UserDto>
+                @Localizer[nameof(AppStrings.UserName)]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="email"
+                               T=UserDto>
+                @Localizer[nameof(AppStrings.Email)]
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Role)]
+        </MudTh>
+        <MudTh>
+            @Localizer[nameof(AppStrings.Playlists)]
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel=@Localizer[nameof(AppStrings.UserName)]>
+            @user.UserName
+        </MudTd>
+        <MudTd DataLabel=@Localizer[nameof(AppStrings.Email)]>
+            @user.Email
+        </MudTd>
+        <MudTd DataLabel=@Localizer[nameof(AppStrings.Role)]>
+            <MudChip Variant=Variant.Outlined
+                     Color=GetColorBasedOnPolicy(GetUserHighestPolicy(user))>
+                @GetUserHighestPolicy(user)
+            </MudChip>
+        </MudTd>
+        <MudTd DataLabel=@Localizer[nameof(AppStrings.Playlists)]>
+            <MudTooltip Text=@Localizer[nameof(AppStrings.Playlists)]>
+                <MudIconButton Icon=@Icons.Material.Filled.List
+                               Color=Color.Primary
+                               Size=Size.Small
+                               OnClick="() => RedirectToUserPlaylistsPage(user.Id)" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>
+            @Localizer[nameof(AppStrings.NoMatchingRecordsFound)]
+        </MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>
+            @Localizer[nameof(AppStrings.Loading)]
+        </MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString=@Localizer[nameof(AppStrings.RowsPerPage)]
+                       InfoFormat=@Localizer[nameof(AppStrings.PaginationInfoFormat)] />
+    </PagerContent>
+</MudTable>
