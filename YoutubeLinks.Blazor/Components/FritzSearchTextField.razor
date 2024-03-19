@@ -1,20 +1,9 @@
 ﻿@inherits MudTextField<string>
-@inject IStringLocalizer<App> Localizer
 
-<MudTextField T="string"
-              Value="Value"
-              ValueChanged="OnValueChanged"
-              Placeholder="@Localizer[nameof(AppStrings.Search)]"
-              Adornment="Adornment.Start"
-              AdornmentIcon="@Icons.Material.Filled.Search"
-              IconSize="Size.Medium" />
-
-@code {
-    [Parameter] public EventCallback<string> OnSearch { get; set; }
-
-    private async Task OnValueChanged(string value)
-    {
-        await SetValueAsync(value);
-        await OnSearch.InvokeAsync(value);
-    }
-}
+<MudTextField T=string
+              Value=Value
+              ValueChanged=OnValueChanged
+              Placeholder=@Localizer[nameof(AppStrings.Search)]
+              Adornment=Adornment.Start
+              AdornmentIcon=@Icons.Material.Filled.Search
+              IconSize=Size.Medium />

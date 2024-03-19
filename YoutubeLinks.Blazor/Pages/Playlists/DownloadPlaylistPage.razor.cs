@@ -13,7 +13,7 @@ using YoutubeLinks.Shared.Features.Playlists.Responses;
 
 namespace YoutubeLinks.Blazor.Pages.Playlists
 {
-    public partial class DownloadPlaylist : ComponentBase
+    public partial class DownloadPlaylistPage : ComponentBase
     {
         private List<BreadcrumbItem> _items;
         private FritzProcessingButton _processingButton;

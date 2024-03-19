@@ -1,13 +1,10 @@
 ﻿@page "/"
 @attribute [AllowAnonymous]
 
-@inject IStringLocalizer<App> Localizer
-
 <PageTitle>
     @Localizer[nameof(AppStrings.AppName)]
 </PageTitle>
 
-<MudText Typo="Typo.h5">
+<MudText Typo=Typo.h5>
     @Localizer[nameof(AppStrings.Greetings)]
 </MudText>
-

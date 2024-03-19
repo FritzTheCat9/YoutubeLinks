@@ -1,9 +1,6 @@
 ﻿@page "/error/validation-error"
 @attribute [AllowAnonymous]
 
-@inject ValidationErrors ValidationErrors
-@inject IStringLocalizer<App> Localizer
-
 <PageTitle>
     @Localizer[nameof(AppStrings.ValidationError)]
 </PageTitle>
@@ -24,8 +21,4 @@
             @error
         </li>
     }
-}
-
-@code {
-
 }

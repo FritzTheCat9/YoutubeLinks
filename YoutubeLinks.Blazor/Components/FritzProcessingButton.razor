@@ -1,47 +1,22 @@
 ﻿@inherits MudButton
-@inject IStringLocalizer<App> Localizer
 
-<MudButton ButtonType="ButtonType"
-           Color="Color"
-           Disabled="_processing"
-           OnClick="OnClick">
+<MudButton ButtonType=ButtonType
+           Color=Color
+           Disabled=_processing
+           OnClick=OnClick>
     @if (_processing)
     {
         <MudProgressCircular Class="ms-n1"
-                             Size="Size.Small"
-                             Indeterminate="true" />
+                             Size=Size.Small
+                             Indeterminate=true />
         <MudText Class="ms-2">
             @ProcessingButtonText
         </MudText>
     }
     else
     {
-        <MudText Typo="Typo.subtitle2">
+        <MudText Typo=Typo.subtitle2>
             @ButtonText
         </MudText>
     }
 </MudButton>
-
-@code {
-    [Parameter] public string ProcessingButtonText { get; set; }
-    [Parameter] public string ButtonText { get; set; }
-
-    private bool _processing;
-
-    protected override void OnParametersSet()
-    {
-        if (string.IsNullOrWhiteSpace(ProcessingButtonText))
-            ProcessingButtonText = Localizer[nameof(AppStrings.Processing)];
-    }
-
-    public void SetProcessing(bool processing)
-    {
-        _processing = processing;
-        StateHasChanged();
-    }
-
-    public bool IsProcessing()
-    {
-        return _processing;
-    }
-}

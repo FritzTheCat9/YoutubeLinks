@@ -1,13 +1,9 @@
 ﻿@inherits MudBreadcrumbs
 
-<MudBreadcrumbs Items="Items">
+<MudBreadcrumbs Items=Items>
     <ItemTemplate Context="item">
-        <MudLink Href="@item.Href">
+        <MudLink Href=@item.Href>
             @item.Text
         </MudLink>
     </ItemTemplate>
 </MudBreadcrumbs>
-
-@code {
-
-}

@@ -204,6 +204,9 @@
   <data name="Greetings" xml:space="preserve">
     <value>Welcome to Youtube Links App</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="ImportPlaylist" xml:space="preserve">
     <value>Import Playlist</value>
   </data>

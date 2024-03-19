@@ -1,26 +1,8 @@
 ﻿@inherits MudButton
-@inject IStringLocalizer<App> Localizer
-@inject IJSRuntime JSRuntime
 
-<MudTooltip Text="@TooltipText">
-    <MudIconButton Icon="@Icons.Material.Filled.ContentCopy"
-                   Color="Color"
-                   OnClick="CopyTextToClipboard"
-                   Size="Size" />
+<MudTooltip Text=@TooltipText>
+    <MudIconButton Icon=@Icons.Material.Filled.ContentCopy
+                   Color=Color
+                   OnClick=CopyTextToClipboard
+                   Size=Size />
 </MudTooltip>
-
-@code {
-    [Parameter] public string TooltipText { get; set; }
-    [Parameter] public string CopiedText { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        if (string.IsNullOrWhiteSpace(TooltipText))
-            TooltipText = Localizer[nameof(AppStrings.CopyToClipboard)];
-    }
-
-    private async Task CopyTextToClipboard()
-    {
-        await JSRuntime.InvokeVoidAsync("copyToClipboard", CopiedText);
-    }
-}

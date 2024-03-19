@@ -80,5 +80,6 @@
         SwitchViewToGrid,
         SwitchViewToTable, 
         Updating,
+        Home,
     }
 }

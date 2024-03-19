@@ -1,38 +1,17 @@
-﻿@inject IStringLocalizer<App> Localizer
-
-<MudDialog>
+﻿<MudDialog>
     <DialogContent>
         <MudText>
             @ContentText
         </MudText>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">
+        <MudButton OnClick=Cancel>
             @Localizer[nameof(AppStrings.Cancel)]
         </MudButton>
-        <MudButton Color="Color"
-                   Variant="Variant.Filled"
-                   OnClick="Submit">
+        <MudButton Color=Color
+                   Variant=Variant.Filled
+                   OnClick=Submit>
             @ButtonText
         </MudButton>
     </DialogActions>
 </MudDialog>
-
-@code {
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-    [Parameter] public string ContentText { get; set; }
-    [Parameter] public string ButtonText { get; set; }
-    [Parameter] public Color Color { get; set; } = Color.Error;
-
-    protected override void OnParametersSet()
-    {
-        if (string.IsNullOrWhiteSpace(ContentText))
-            ContentText = Localizer[nameof(AppStrings.DeleteConfirmInfo)];
-
-        if (string.IsNullOrWhiteSpace(ButtonText))
-            ButtonText = Localizer[nameof(AppStrings.Delete)];
-    }
-
-    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    private void Cancel() => MudDialog.Cancel();
-}
