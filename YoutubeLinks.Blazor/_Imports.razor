@@ -1,50 +1,21 @@
-﻿@using System.Text
-@using System.Net.Http
-@using System.Net.Http.Json
-@using System.Net.Http.Headers
-@using System.Globalization
+﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.AspNetCore.Components.Web.Virtualization
-@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.Extensions.DependencyInjection;
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.Extensions.Localization
-@using Microsoft.JSInterop
-@using Newtonsoft.Json
 
-@using YoutubeLinks.Blazor
-@using YoutubeLinks.Blazor.Auth
-@using YoutubeLinks.Blazor.Clients
+@using MudBlazor
+@using Blazored.FluentValidation
+
 @using YoutubeLinks.Blazor.Components
-@using YoutubeLinks.Blazor.Exceptions
 @using YoutubeLinks.Blazor.Pages.Error
 @using YoutubeLinks.Blazor.Pages.Users
 @using YoutubeLinks.Blazor.Localization
 @using YoutubeLinks.Blazor.Layout
-@using YoutubeLinks.Blazor.Services
-@using YoutubeLinks.Blazor.Shared
 
-@using YoutubeLinks.Shared
-@using YoutubeLinks.Shared.Abstractions
-@using YoutubeLinks.Shared.Exceptions
-@using YoutubeLinks.Shared.Features.Users.Commands
 @using YoutubeLinks.Shared.Features.Users.Helpers
-@using YoutubeLinks.Shared.Features.Users.Queries
 @using YoutubeLinks.Shared.Features.Users.Responses
 @using YoutubeLinks.Shared.Features.Playlists.Commands
-@using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylist
-@using static YoutubeLinks.Shared.Features.Playlists.Commands.ImportPlaylistFromJson
-@using YoutubeLinks.Shared.Features.Playlists.Queries
 @using YoutubeLinks.Shared.Features.Playlists.Responses
 @using YoutubeLinks.Shared.Features.Links.Commands
-@using YoutubeLinks.Shared.Features.Links.Queries
 @using YoutubeLinks.Shared.Features.Links.Responses
-@using YoutubeLinks.Shared.Localization
-
-@using MudBlazor
-@using FluentValidation
-@using Blazored.FluentValidation
-@using Blazored.LocalStorage
