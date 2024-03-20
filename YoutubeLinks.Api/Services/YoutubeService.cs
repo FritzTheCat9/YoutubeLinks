@@ -69,7 +69,7 @@ namespace YoutubeLinks.Api.Services
         public async Task<YoutubeFile> GetMP3File(string videoId)
         {
             var title = await GetVideoTitle(videoId);
-            var fileName = $"{title}.mp3";
+            var fileName = $"{Guid.NewGuid()}.mp3";
 
             var youtubeDL = new YoutubeDL();
             youtubeDL.YoutubeDLPath = _ytDlpPath;
@@ -91,13 +91,18 @@ namespace YoutubeLinks.Api.Services
             if (!File.Exists(filePath))
                 throw new MyServerException();
 
+            var normalizedFileName = $"{title}.mp3";
+            var normalizedFilePath = Path.Combine(_tmpFolderPath, normalizedFileName);
+
+            File.Move(filePath, normalizedFilePath);
+
             var youtubeFile = new YoutubeFile
             {
-                FileBytes = File.ReadAllBytes(filePath),
-                FileName = fileName,
+                FileBytes = File.ReadAllBytes(normalizedFilePath),
+                FileName = normalizedFileName,
             };
 
-            File.Delete(filePath);
+            File.Delete(normalizedFilePath);
 
             return youtubeFile;
         }
@@ -105,7 +110,7 @@ namespace YoutubeLinks.Api.Services
         public async Task<YoutubeFile> GetMP4File(string videoId)
         {
             var title = await GetVideoTitle(videoId);
-            var fileName = $"{title}.mp4";
+            var fileName = $"{Guid.NewGuid()}.mp4";
 
             var youtubeDL = new YoutubeDL();
             youtubeDL.YoutubeDLPath = _ytDlpPath;
@@ -125,13 +130,18 @@ namespace YoutubeLinks.Api.Services
             if (!File.Exists(filePath))
                 throw new MyServerException();
 
+            var normalizedFileName = $"{title}.mp4";
+            var normalizedFilePath = Path.Combine(_tmpFolderPath, normalizedFileName);
+
+            File.Move(filePath, normalizedFilePath);
+
             var youtubeFile = new YoutubeFile
             {
-                FileBytes = File.ReadAllBytes(filePath),
-                FileName = fileName,
+                FileBytes = File.ReadAllBytes(normalizedFilePath),
+                FileName = normalizedFileName,
             };
 
-            File.Delete(filePath);
+            File.Delete(normalizedFilePath);
 
             return youtubeFile;
         }
