@@ -1,13 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
 <MudThemeProvider @ref=@_mudThemeProvider
-                  @bind-IsDarkMode=@_isDarkMode />
+                  @bind-IsDarkMode=@_isDarkMode 
+                  Theme="_customTheme" />
 <MudDialogProvider FullWidth=true />
 <MudSnackbarProvider />
 
 <style>
     .mud-input-control-helper-container {
         display: none !important;
+    }
+
+    .validation-message {
+        color: #F44336 !important;
+        margin-top: 5px;
     }
 </style>
 

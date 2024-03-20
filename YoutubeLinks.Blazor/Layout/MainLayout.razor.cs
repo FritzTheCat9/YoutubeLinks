@@ -22,6 +22,24 @@ namespace YoutubeLinks.Blazor.Layout
             Dark,
         }
 
+        private readonly MudTheme _customTheme = new()
+        {
+            Palette = new PaletteLight()
+            {
+                Error = Colors.Red.Default,
+                ErrorContrastText = Colors.Red.Default,
+                ErrorDarken = Colors.Red.Default,
+                ErrorLighten = Colors.Red.Default,
+            },
+            PaletteDark = new PaletteDark()
+            {
+                Error = Colors.Red.Default,
+                ErrorContrastText = Colors.Red.Default,
+                ErrorDarken = Colors.Red.Default,
+                ErrorLighten = Colors.Red.Default,
+            },
+        };
+
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
         protected override void OnParametersSet()
