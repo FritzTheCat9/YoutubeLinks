@@ -14,7 +14,7 @@ Links grid view:
 ![Links grid image](./images/5_links_grid_view.png)
 
 Download playlist view (now you can open winamp and be happy with your newly downloaded playlist):
-![Download playlists image](./images/4_download_playlist.png)
+![Download playlists image](./images/4_playlist_downloading.png)
 
 Update: Creating playlists works, downloading single link as .mp3 and .mp4 works, downloading playlist works. More improvements will be added.
 
