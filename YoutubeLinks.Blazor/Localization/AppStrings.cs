@@ -81,5 +81,10 @@
         SwitchViewToTable, 
         Updating,
         Home,
+        LoadedLinks,
+        PublicPlaylistDownloadInfo,
+        PrivatePlaylistDownloadInfo,
+        Fail,
+        DownloadedLinksCountResults,
     }
 }

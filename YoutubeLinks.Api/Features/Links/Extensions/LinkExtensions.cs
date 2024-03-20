@@ -95,5 +95,12 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             links = links.Where(x => x.Downloaded == query.Downloaded);
             return links;
         }
+
+        public static IQueryable<Link> SortLinks(
+            this IQueryable<Link> links)
+        {
+            links = links.OrderBy(link => link.Title);
+            return links;
+        }
     }
 }

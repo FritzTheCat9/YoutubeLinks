@@ -7,18 +7,18 @@
 
 @if (_playlist != null && _linkInfoList != null)
 {
-    <FritzBreadcrumbs Items=_items />               @* TODO: Refactor this page to be beautifull ok ok *@
+    <FritzBreadcrumbs Items=_items />
 
     <MudText Typo=Typo.subtitle1>
-        @($"Loaded {_linkInfoList.Count} links with flag downloaded = false (important - only false are loaded, when its user playlist, all when is public and not owned)")
+        @Localizer[nameof(AppStrings.LoadedLinks), _linkInfoList.Count]
     </MudText>
-
-    <MudText Typo=Typo.subtitle1>
-        @((int)_downloadPercent)%
+    <MudText Typo=Typo.subtitle2
+             Color="Color.Warning">
+        @Localizer[nameof(AppStrings.PublicPlaylistDownloadInfo)]
     </MudText>
-
-    <MudText>
-        @_downloadingSongTitle
+    <MudText Typo=Typo.subtitle2
+             Color="Color.Warning">
+        @Localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
     </MudText>
 
     <FritzProcessingButton @ref=_processingButton
@@ -33,12 +33,42 @@
                            Striped=true
                            Size=Size.Large
                            Value=_downloadPercent
-                           Class="my-7" />
+                           Class="my-7"
+                           Style="height: 30px;">
+            <MudText Typo=Typo.h6
+                     Style="@($"color:{Colors.Grey.Darken4};")">
+                @((int)_downloadPercent)% - @_downloadingSongTitle
+            </MudText>
+        </MudProgressLinear>
     }
-    else
+
+    @if (_downloadLinkResults is not null)
     {
-        <MudText>
-            Done
-        </MudText>
+        <MudItem xs=12>
+            <MudPaper Class="pa-4 mt-4">
+                <MudText Typo=Typo.subtitle2>
+                    @Localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
+                </MudText>
+                @foreach (var result in _downloadLinkResults)
+                {
+                    @if (result.Success)
+                    {
+                        <a href="@result.Link.Url" target="_blank">
+                            <MudText Color=@Color.Success>
+                                [@Localizer[nameof(AppStrings.Success)]] - @result.Link.Title
+                            </MudText>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@result.Link.Url" target="_blank">
+                            <MudText Color=@Color.Error>
+                                [@Localizer[nameof(AppStrings.Fail)]] - @result.Link.Title
+                            </MudText>
+                        </a>
+                    }
+                }
+            </MudPaper>
+        </MudItem>
     }
 }

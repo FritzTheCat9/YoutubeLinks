@@ -53,6 +53,8 @@ namespace YoutubeLinks.Api.Features.Links.Queries
                 if (isUserPlaylist)
                     linkQuery = linkQuery.FilterDownloaded(query);
 
+                linkQuery = linkQuery.SortLinks();
+
                 var linkInfoDtos = await linkQuery.Select(x => x.ToLinkInfoDto())
                                                   .ToListAsync();
 

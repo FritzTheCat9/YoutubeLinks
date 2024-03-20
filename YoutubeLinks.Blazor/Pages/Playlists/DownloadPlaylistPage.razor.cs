@@ -23,6 +23,14 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private PlaylistDto _playlist;
         private List<GetAllLinks.LinkInfoDto> _linkInfoList;
 
+        private List<DownloadLinkResult> _downloadLinkResults = [];
+
+        private class DownloadLinkResult
+        {
+            public GetAllLinks.LinkInfoDto Link { get; set; }
+            public bool Success { get; set; }
+        }
+
         private bool _downloading;
         private int _downloadedSongsNumber;
         private int _allSongsNumber;
@@ -90,14 +98,24 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         {
             try
             {
+                await LoadLinkInformation();
+
                 _downloading = true;
                 _allSongsNumber = _linkInfoList.Count;
                 _processingButton.SetProcessing(true);
 
+                _downloadLinkResults = [];
+                _downloadedSongsNumber = 0;
+                _downloadPercent = 0;
+                _downloadingSongTitle = "";
+
                 foreach (var link in _linkInfoList)
                 {
                     _downloadingSongTitle = link.Title;
-                    await DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
+
+                    StateHasChanged();
+
+                    await DownloadPlaylistLink(link, DownloadLink.YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
                 }
             }
             catch (Exception ex)
@@ -111,13 +129,13 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             }
         }
 
-        private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
+        private async Task DownloadPlaylistLink(GetAllLinks.LinkInfoDto link, DownloadLink.YoutubeFileType youtubeFileType)
         {
             try
             {
                 var command = new DownloadLink.Command
                 {
-                    Id = id,
+                    Id = link.Id,
                     YoutubeFileType = youtubeFileType,
                 };
 
@@ -127,14 +145,26 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
 
-                _downloadedSongsNumber++;
-                _downloadPercent = (((double)_downloadedSongsNumber / _allSongsNumber) * 100);
-                StateHasChanged();
+                _downloadLinkResults.Add(new()
+                {
+                     Link = link,
+                     Success = true,
+                });
+
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ExceptionHandler.HandleExceptions(ex);
+                _downloadLinkResults.Add(new()
+                {
+                    Link = link,
+                    Success = false,
+                });
             }
+
+            _downloadedSongsNumber++;
+            _downloadPercent = (double)_downloadedSongsNumber / _allSongsNumber * 100;
+
+            StateHasChanged();
         }
 
         private static string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)     // TODO: duplicated method refactor
