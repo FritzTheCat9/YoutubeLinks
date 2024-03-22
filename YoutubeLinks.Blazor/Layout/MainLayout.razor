@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudThemeProvider @ref=@_mudThemeProvider
-                  @bind-IsDarkMode=@_isDarkMode 
+                  @bind-IsDarkMode=@_isDarkMode
                   Theme="_customTheme" />
 <MudDialogProvider FullWidth=true />
 <MudSnackbarProvider />
@@ -12,8 +12,12 @@
     }
 
     .validation-message {
-        color: #F44336 !important;
+        color: var(--mud-palette-error) !important;
         margin-top: 5px;
+    }
+
+    .my-link:hover {
+        color: var(--mud-palette-primary) !important;
     }
 </style>
 

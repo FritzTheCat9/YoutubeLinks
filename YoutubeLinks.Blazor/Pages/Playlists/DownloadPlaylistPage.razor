@@ -5,7 +5,7 @@
     @Localizer[nameof(AppStrings.DownloadPlaylist)]
 </PageTitle>
 
-@if (_playlist != null && _linkInfoList != null)
+@if (_playlist is not null && _linkInfoList is not null)
 {
     <FritzBreadcrumbs Items=_items />
 

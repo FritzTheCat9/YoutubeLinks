@@ -75,7 +75,14 @@
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@Localizer[nameof(AppStrings.Title)]>
-                    @context.Title
+                    <MudLink Href="@context.Url"
+                             Target="_blank"
+                             Color="Color.Default"
+                             Class="my-link">
+                        <MudText Typo="Typo.body2">
+                            @context.Title
+                        </MudText>
+                    </MudLink>
                 </MudTd>
                 <AuthorizeView Policy=@Policy.User
                                Context="auth">
@@ -160,7 +167,7 @@
     }
     else
     {
-        if (_linkPagedList != null)
+        if (_linkPagedList is not null)
         {
             <MudPaper Class="pa-4">
                 <MudStack Row=true>
@@ -206,9 +213,14 @@
                                 </iframe>
                             }
                             <MudCardContent>
-                                <MudText Typo=Typo.body1>
-                                    @link.Title
-                                </MudText>
+                                <MudLink Href="@link.Url"
+                                         Target="_blank"
+                                         Color="Color.Default"
+                                         Class="my-link">
+                                    <MudText Typo="Typo.body2">
+                                        @link.Title
+                                    </MudText>
+                                </MudLink>
                             </MudCardContent>
                             <MudCardActions>
                                 @if (link.Downloaded)

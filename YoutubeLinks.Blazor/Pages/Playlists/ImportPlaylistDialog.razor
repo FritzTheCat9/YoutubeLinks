@@ -34,7 +34,7 @@
                 </ButtonTemplate>
             </MudFileUpload>
             <FritzValidationMessage For="() => FormModel.File" />
-            @if (FormModel?.File != null)
+            @if (FormModel?.File is not null)
             {
                 <FritzValidationMessage For="() => FormModel.File.Size" />
                 <FritzValidationMessage For="() => FormModel.File.ContentType" />
