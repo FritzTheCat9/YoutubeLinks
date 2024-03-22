@@ -111,14 +111,14 @@
                                        Color=Color.Info
                                        Size=Size.Small
                                        Disabled=_disableDownloadPlaylistLinkButtons
-                                       OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP3)" />
+                                       OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.MP3)" />
                     </MudTooltip>
                     <MudTooltip Text=@Localizer[nameof(AppStrings.DownloadToMp4)]>
                         <MudIconButton Icon=@Icons.Material.Filled.VideoLibrary
                                        Color=Color.Info
                                        Size=Size.Small
                                        Disabled=_disableDownloadPlaylistLinkButtons
-                                       OnClick="() => DownloadPlaylistLink(context.Id, DownloadLink.YoutubeFileType.MP4)" />
+                                       OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.MP4)" />
                     </MudTooltip>
                     <AuthorizeView Policy=@Policy.User
                                    Context="auth">
@@ -238,14 +238,14 @@
                                                    Color=Color.Info
                                                    Size=Size.Medium
                                                    Disabled=_disableDownloadPlaylistLinkButtons
-                                                   OnClick="() => DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP3)" />
+                                                   OnClick="() => DownloadPlaylistLink(link.Id, YoutubeFileType.MP3)" />
                                 </MudTooltip>
                                 <MudTooltip Text=@Localizer[nameof(AppStrings.DownloadToMp4)]>
                                     <MudIconButton Icon=@Icons.Material.Filled.VideoLibrary
                                                    Color=Color.Info
                                                    Size=Size.Medium
                                                    Disabled=_disableDownloadPlaylistLinkButtons
-                                                   OnClick="() => DownloadPlaylistLink(link.Id, DownloadLink.YoutubeFileType.MP4)" />
+                                                   OnClick="() => DownloadPlaylistLink(link.Id, YoutubeFileType.MP4)" />
                                 </MudTooltip>
                                 <AuthorizeView Policy=@Policy.User
                                                Context="auth">

@@ -10,6 +10,7 @@ using YoutubeLinks.Blazor.Services;
 using YoutubeLinks.Blazor.Shared;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
@@ -176,7 +177,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 await RefreshView();
         }
 
-        private async Task DownloadPlaylistLink(int id, DownloadLink.YoutubeFileType youtubeFileType)
+        private async Task DownloadPlaylistLink(int id, YoutubeFileType youtubeFileType)
         {
             try
             {
@@ -190,7 +191,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
                 var response = await LinkApiClient.DownloadLink(command);
                 var content = await response.Content.ReadAsByteArrayAsync();
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
+                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
                 await RefreshView();
@@ -229,15 +230,6 @@ namespace YoutubeLinks.Blazor.Pages.Links
                     ExceptionHandler.HandleExceptions(ex);
                 }
             }
-        }
-
-        private static string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)
-        {
-            return youtubeFileType switch
-            {
-                DownloadLink.YoutubeFileType.MP4 => "mp4",
-                _ => "mp3",
-            };
         }
 
         private static string ConvertToEmbedUrl(string url)

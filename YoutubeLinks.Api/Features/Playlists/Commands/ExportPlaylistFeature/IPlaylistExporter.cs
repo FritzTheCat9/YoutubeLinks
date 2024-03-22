@@ -2,7 +2,7 @@
 using System.Text.Json;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Features.Playlists.Extensions;
-using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylist;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 
 namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
 {
@@ -57,6 +57,18 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
 
             var fileBytes = Encoding.UTF8.GetBytes(fileText);
             return fileBytes;
+        }
+    }
+
+    public static class PlaylistExporterHelpers
+    {
+        public static IPlaylistExporter GetExporter(PlaylistFileType fileType)
+        {
+            return fileType switch
+            {
+                PlaylistFileType.TXT => new TXTPlaylistExporter(),
+                _ => new JSONPlaylistExporter(),
+            };
         }
     }
 }

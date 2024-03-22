@@ -9,6 +9,7 @@ using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Shared;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
@@ -140,7 +141,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                 await _table.ReloadServerData();
         }
 
-        private async Task ExportPlaylistToFile(int id, ExportPlaylist.PlaylistFileType playlistFileType)
+        private async Task ExportPlaylistToFile(int id, PlaylistFileType playlistFileType)
         {
             try
             {
@@ -149,7 +150,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                     Id = id,
                     PlaylistFileType = playlistFileType,
                 };
-                string fileExtension = GetPlaylistFileType(playlistFileType);
+                string fileExtension = PlaylistHelpers.PlaylistFileTypeToString(playlistFileType);
 
                 var response = await PlaylistApiClient.ExportPlaylist(command);
                 var content = await response.Content.ReadAsByteArrayAsync();
@@ -184,15 +185,6 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             var result = await dialog.Result;
             if (!result.Canceled)
                 await _table.ReloadServerData();
-        }
-
-        private static string GetPlaylistFileType(ExportPlaylist.PlaylistFileType playlistFileType)
-        {
-            return playlistFileType switch
-            {
-                ExportPlaylist.PlaylistFileType.TXT => "txt",
-                _ => "json",
-            };
         }
 
         private void RedirectToLinksPage(int id)

@@ -2,6 +2,7 @@
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Shared.Exceptions;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylist;
 
 namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
@@ -49,20 +50,11 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
                     && !isUserPlaylist)
                     throw new MyForbiddenException();
 
-                var exporter = GetExporter(command.PlaylistFileType);
+                var exporter = PlaylistExporterHelpers.GetExporter(command.PlaylistFileType);
 
                 var playlistFile = exporter.Export(playlist);
 
                 return playlistFile;
-            }
-
-            private static IPlaylistExporter GetExporter(PlaylistFileType fileType)
-            {
-                return fileType switch
-                {
-                    PlaylistFileType.TXT => new TXTPlaylistExporter(),
-                    _ => new JSONPlaylistExporter(),
-                };
             }
         }
     }

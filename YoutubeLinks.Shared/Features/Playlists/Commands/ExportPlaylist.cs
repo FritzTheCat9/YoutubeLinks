@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Localization;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Commands
@@ -21,33 +22,6 @@ namespace YoutubeLinks.Shared.Features.Playlists.Commands
                     .IsInEnum()
                     .WithMessage(x => localizer[nameof(ValidationMessageString.PlaylistFileTypeIsInEnum)]);
             }
-        }
-
-        public class PlaylistFile
-        {
-            public byte[] FileBytes { get; set; }
-            public string FileName { get; set; }
-            public PlaylistFileType PlaylistFileType { get; set; }
-            public string ContentType { get; set; }
-        }
-
-        public class PlaylistModel
-        {
-            public int LinksCount { get; set; }
-            public IEnumerable<LinkModel> LinkModels { get; set; }
-        }
-
-        public class LinkModel
-        {
-            public string Title { get; set; }
-            public string Url { get; set; }
-            public string VideoId { get; set; }
-        }
-
-        public enum PlaylistFileType
-        {
-            JSON,
-            TXT,
         }
     }
 }

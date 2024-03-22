@@ -9,6 +9,7 @@ using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Pages.Error;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 
 namespace YoutubeLinks.Blazor.Pages.Links
 {
@@ -43,7 +44,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
                 var response = await LinkApiClient.DownloadSingleLink(Command);
                 var content = await response.Content.ReadAsByteArrayAsync();
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(Command.YoutubeFileType)}";
+                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
 
@@ -61,15 +62,6 @@ namespace YoutubeLinks.Blazor.Pages.Links
             {
                 _processingButton.SetProcessing(false);
             }
-        }
-
-        private static string YoutubeFileTypeToString(DownloadSingleLink.YoutubeFileType youtubeFileType)
-        {
-            return youtubeFileType switch
-            {
-                DownloadSingleLink.YoutubeFileType.MP4 => "mp4",
-                _ => "mp3",
-            };
         }
     }
 }

@@ -6,13 +6,6 @@ using YoutubeLinks.Shared.Features.Links.Helpers;
 
 namespace YoutubeLinks.Api.Services
 {
-    public class YoutubeFile
-    {
-        public byte[] FileBytes { get; set; }
-        public string ContentType { get; set; }
-        public string FileName { get; set; }
-    }
-
     public interface IYoutubeService
     {
         Task<string> GetVideoTitle(string videoId);
@@ -100,8 +93,9 @@ namespace YoutubeLinks.Api.Services
             var youtubeFile = new YoutubeFile
             {
                 FileBytes = File.ReadAllBytes(normalizedFilePath),
-                FileName = normalizedFileName,
                 ContentType = "audio/mpeg",
+                FileName = normalizedFileName,
+                YoutubeFileType = YoutubeFileType.MP3,
             };
 
             File.Delete(normalizedFilePath);
@@ -140,8 +134,9 @@ namespace YoutubeLinks.Api.Services
             var youtubeFile = new YoutubeFile
             {
                 FileBytes = File.ReadAllBytes(normalizedFilePath),
-                FileName = normalizedFileName,
                 ContentType = "video/mp4",
+                FileName = normalizedFileName,
+                YoutubeFileType = YoutubeFileType.MP4,
             };
 
             File.Delete(normalizedFilePath);

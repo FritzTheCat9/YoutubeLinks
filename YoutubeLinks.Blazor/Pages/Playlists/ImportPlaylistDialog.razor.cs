@@ -9,6 +9,7 @@ using YoutubeLinks.Blazor.Pages.Error;
 using YoutubeLinks.Shared;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 
 namespace YoutubeLinks.Blazor.Pages.Playlists
 {
@@ -57,7 +58,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
             var stream = file.OpenReadStream(5242880);
             var fileContent = await new StreamReader(stream).ReadToEndAsync();
-            var exportedLinks = JsonConvert.DeserializeObject<ExportPlaylist.PlaylistModel>(fileContent);
+            var exportedLinks = JsonConvert.DeserializeObject<PlaylistModel>(fileContent);
 
             FormModel.Name = file.Name.Split('.')[0];
             FormModel.ExportedLinks = exportedLinks.LinkModels.ToList();

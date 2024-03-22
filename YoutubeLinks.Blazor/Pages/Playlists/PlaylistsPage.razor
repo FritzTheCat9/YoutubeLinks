@@ -88,10 +88,10 @@
                     <MudMenu Icon=@Icons.Material.Filled.Save
                              Color=Color.Info
                              Size=Size.Small>
-                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, ExportPlaylist.PlaylistFileType.JSON)">
+                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, PlaylistFileType.JSON)">
                             @Localizer[nameof(AppStrings.ExportPlaylistToJson)]
                         </MudMenuItem>
-                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, ExportPlaylist.PlaylistFileType.TXT)">
+                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, PlaylistFileType.TXT)">
                             @Localizer[nameof(AppStrings.ExportPlaylistToTxt)]
                         </MudMenuItem>
                     </MudMenu>

@@ -8,6 +8,7 @@ using YoutubeLinks.Blazor.Components;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
@@ -115,7 +116,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                     StateHasChanged();
 
-                    await DownloadPlaylistLink(link, DownloadLink.YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
+                    await DownloadPlaylistLink(link, YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
                 }
             }
             catch (Exception ex)
@@ -129,7 +130,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             }
         }
 
-        private async Task DownloadPlaylistLink(GetAllLinks.LinkInfoDto link, DownloadLink.YoutubeFileType youtubeFileType)
+        private async Task DownloadPlaylistLink(GetAllLinks.LinkInfoDto link, YoutubeFileType youtubeFileType)
         {
             try
             {
@@ -141,7 +142,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                 var response = await LinkApiClient.DownloadLink(command);
                 var content = await response.Content.ReadAsByteArrayAsync();
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeFileTypeToString(command.YoutubeFileType)}";
+                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
 
@@ -165,15 +166,6 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             _downloadPercent = (double)_downloadedSongsNumber / _allSongsNumber * 100;
 
             StateHasChanged();
-        }
-
-        private static string YoutubeFileTypeToString(DownloadLink.YoutubeFileType youtubeFileType)     // TODO: duplicated method refactor
-        {
-            return youtubeFileType switch
-            {
-                DownloadLink.YoutubeFileType.MP4 => "mp4",
-                _ => "mp3",
-            };
         }
     }
 }

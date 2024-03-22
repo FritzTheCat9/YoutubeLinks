@@ -4,7 +4,7 @@ using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature;
 using YoutubeLinks.Api.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Abstractions;
-using YoutubeLinks.Shared.Features.Playlists.Commands;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
@@ -40,16 +40,16 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             };
         }
 
-        public static ExportPlaylist.PlaylistModel GetPlaylistModel(this Playlist playlist)
+        public static PlaylistModel GetPlaylistModel(this Playlist playlist)
         {
-            var links = playlist.Links.Select(x => new ExportPlaylist.LinkModel()
+            var links = playlist.Links.Select(x => new LinkModel()
             {
                 Title = x.Title,
                 Url = x.Url,
                 VideoId = x.VideoId
             }).OrderBy(x => x.Title);
 
-            var playlistModel = new ExportPlaylist.PlaylistModel()
+            var playlistModel = new PlaylistModel()
             {
                 LinksCount = links.Count(),
                 LinkModels = links,

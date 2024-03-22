@@ -4,6 +4,7 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 
 namespace YoutubeLinks.Api.Features.Links.Commands
 {
@@ -25,7 +26,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<DownloadLink.Command, DownloadLink.Response>
+        public class Handler : IRequestHandler<DownloadLink.Command, YoutubeFile>
         {
             private readonly IAuthService _authService;
             private readonly ILinkRepository _linkRepository;
@@ -41,7 +42,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 _youtubeService = youtubeService;
             }
 
-            public async Task<DownloadLink.Response> Handle(
+            public async Task<YoutubeFile> Handle(
                 DownloadLink.Command command,
                 CancellationToken cancellationToken)
             {
@@ -52,11 +53,8 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 
                 if (isUserPlaylist || isPublicPlaylist)
                 {
-                    var youtubeFile = command.YoutubeFileType switch
-                    {
-                        DownloadLink.YoutubeFileType.MP4 => await _youtubeService.GetMP4File(link.VideoId),
-                        _ => await _youtubeService.GetMP3File(link.VideoId),
-                    };
+                    var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
+                    var youtubeFile = await downloader.Download(link.VideoId);
 
                     if (isUserPlaylist)
                     {
@@ -65,12 +63,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                         await _linkRepository.SaveChanges();
                     }
 
-                    return new DownloadLink.Response
-                    {
-                        FileBytes = youtubeFile.FileBytes,
-                        ContentType = youtubeFile.ContentType,
-                        FileName = youtubeFile.FileName,
-                    };
+                    return youtubeFile;
                 }
                 else
                 {

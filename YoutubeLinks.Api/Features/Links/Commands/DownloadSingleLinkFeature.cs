@@ -23,7 +23,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<DownloadSingleLink.Command, DownloadSingleLink.Response>
+        public class Handler : IRequestHandler<DownloadSingleLink.Command, YoutubeFile>
         {
             private readonly IYoutubeService _youtubeService;
 
@@ -33,24 +33,16 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 _youtubeService = youtubeService;
             }
 
-            public async Task<DownloadSingleLink.Response> Handle(
+            public async Task<YoutubeFile> Handle(
                 DownloadSingleLink.Command command,
                 CancellationToken cancellationToken)
             {
                 var videoId = YoutubeHelpers.GetVideoId(command.Url);
 
-                var youtubeFile = command.YoutubeFileType switch
-                {
-                    DownloadSingleLink.YoutubeFileType.MP4 => await _youtubeService.GetMP4File(videoId),
-                    _ => await _youtubeService.GetMP3File(videoId),
-                };
+                var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
+                var youtubeFile = await downloader.Download(videoId);
 
-                return new DownloadSingleLink.Response
-                {
-                    FileBytes = youtubeFile.FileBytes,
-                    ContentType = youtubeFile.ContentType,
-                    FileName = youtubeFile.FileName,
-                };
+                return youtubeFile;
             }
         }
     }

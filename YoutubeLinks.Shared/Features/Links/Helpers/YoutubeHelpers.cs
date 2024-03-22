@@ -17,5 +17,14 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers
 
             return match.Success ? match.Groups[1].Value : null;
         }
+
+        public static string YoutubeFileTypeToString(YoutubeFileType youtubeFileType)
+        {
+            return youtubeFileType switch
+            {
+                YoutubeFileType.MP4 => "mp4",
+                _ => "mp3",
+            };
+        }
     }
 }
