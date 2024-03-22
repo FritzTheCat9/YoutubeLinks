@@ -12,6 +12,7 @@ using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
+using YoutubeLinks.Shared.Features.Playlists.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Links
 {

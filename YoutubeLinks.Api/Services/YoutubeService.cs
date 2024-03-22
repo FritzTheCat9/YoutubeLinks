@@ -9,6 +9,7 @@ namespace YoutubeLinks.Api.Services
     public class YoutubeFile
     {
         public byte[] FileBytes { get; set; }
+        public string ContentType { get; set; }
         public string FileName { get; set; }
     }
 
@@ -100,6 +101,7 @@ namespace YoutubeLinks.Api.Services
             {
                 FileBytes = File.ReadAllBytes(normalizedFilePath),
                 FileName = normalizedFileName,
+                ContentType = "audio/mpeg",
             };
 
             File.Delete(normalizedFilePath);
@@ -139,6 +141,7 @@ namespace YoutubeLinks.Api.Services
             {
                 FileBytes = File.ReadAllBytes(normalizedFilePath),
                 FileName = normalizedFileName,
+                ContentType = "video/mp4",
             };
 
             File.Delete(normalizedFilePath);

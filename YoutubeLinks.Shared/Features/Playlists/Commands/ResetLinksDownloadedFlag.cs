@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace YoutubeLinks.Shared.Features.Links.Commands
+namespace YoutubeLinks.Shared.Features.Playlists.Commands
 {
     public class ResetLinksDownloadedFlag
     {

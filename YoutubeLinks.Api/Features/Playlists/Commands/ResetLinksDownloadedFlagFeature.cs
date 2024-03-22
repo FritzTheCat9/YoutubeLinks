@@ -2,7 +2,7 @@
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Shared.Exceptions;
-using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Api.Features.Playlists.Commands

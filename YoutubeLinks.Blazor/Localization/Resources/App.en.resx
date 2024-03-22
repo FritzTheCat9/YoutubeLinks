@@ -180,6 +180,9 @@
   <data name="Downloading" xml:space="preserve">
     <value>Downloading...</value>
   </data>
+  <data name="DownloadLink" xml:space="preserve">
+    <value>Download Link</value>
+  </data>
   <data name="DownloadPlaylist" xml:space="preserve">
     <value>Download Playlist</value>
   </data>

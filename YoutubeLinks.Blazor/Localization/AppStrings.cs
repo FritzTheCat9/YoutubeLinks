@@ -86,5 +86,6 @@
         PrivatePlaylistDownloadInfo,
         Fail,
         DownloadedLinksCountResults,
+        DownloadLink,
     }
 }

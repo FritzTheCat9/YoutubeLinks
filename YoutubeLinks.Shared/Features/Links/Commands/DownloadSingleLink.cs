@@ -5,11 +5,11 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
 {
-    public class DownloadLink
+    public class DownloadSingleLink
     {
         public class Command : IRequest<Response>
         {
-            public int Id { get; set; }
+            public string Url { get; set; }
             public YoutubeFileType YoutubeFileType { get; set; }
         }
 
@@ -17,6 +17,12 @@ namespace YoutubeLinks.Shared.Features.Links.Commands
         {
             public Validator(IStringLocalizer<ValidationMessage> localizer)
             {
+                RuleFor(x => x.Url)
+                    .NotEmpty()
+                    .WithMessage(x => localizer[nameof(ValidationMessageString.UrlNotEmpty)])
+                    .Matches(ValidationConsts.YoutubeVideoUrlRegex)
+                    .WithMessage(x => localizer[nameof(ValidationMessageString.VideoUrlMatchesRegex)]);
+
                 RuleFor(x => x.YoutubeFileType)
                     .IsInEnum()
                     .WithMessage(x => localizer[nameof(ValidationMessageString.YoutubeFileTypeIsInEnum)]);

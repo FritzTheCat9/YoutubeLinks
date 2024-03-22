@@ -6,6 +6,7 @@ using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
 using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
+
 namespace YoutubeLinks.Api.Features.Links.Extensions
 {
     public static class LinkExtensions
@@ -15,6 +16,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             CreateLinkFeature.Endpoint(app);
             DeleteLinkFeature.Endpoint(app);
             DownloadLinkFeature.Endpoint(app);
+            DownloadSingleLinkFeature.Endpoint(app);
             UpdateLinkFeature.Endpoint(app);
             GetAllLinksFeature.Endpoint(app);
             GetAllPaginatedLinksFeature.Endpoint(app);

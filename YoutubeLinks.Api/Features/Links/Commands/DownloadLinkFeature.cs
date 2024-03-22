@@ -16,8 +16,8 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var mp3File = await mediator.Send(command, cancellationToken);
-                return Results.File(mp3File.FileBytes, "audio/mpeg", mp3File.FileName);
+                var file = await mediator.Send(command, cancellationToken);
+                return Results.File(file.FileBytes, file.ContentType, file.FileName);
             })
                 .WithTags("Links")
                 .AllowAnonymous();
@@ -68,6 +68,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                     return new DownloadLink.Response
                     {
                         FileBytes = youtubeFile.FileBytes,
+                        ContentType = youtubeFile.ContentType,
                         FileName = youtubeFile.FileName,
                     };
                 }
