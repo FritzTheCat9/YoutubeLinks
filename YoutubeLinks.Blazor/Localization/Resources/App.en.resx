@@ -120,8 +120,8 @@
   <data name="AccountCreated" xml:space="preserve">
     <value>The account has been successfully created. To log in, please confirm your email address by clicking on the activation link sent to your email inbox.</value>
   </data>
-  <data name="AddPlaylistJsonFile" xml:space="preserve">
-    <value>Add .json file</value>
+  <data name="AddPlaylistJsonOrTxtFile" xml:space="preserve">
+    <value>Add .json or .txt file</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Youtube Links</value>
@@ -216,11 +216,20 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Importing" xml:space="preserve">
+    <value>Importing...</value>
+  </data>
   <data name="ImportPlaylist" xml:space="preserve">
     <value>Import Playlist</value>
   </data>
   <data name="ImportPlaylistFromJson" xml:space="preserve">
     <value>Import playlist from .json</value>
+  </data>
+  <data name="ImportPlaylistInfo" xml:space="preserve">
+    <value>Importing playlists from a JSON file is faster compared to importing from a TXT file. This is due to the absence of saved link titles in TXT files, necessitating the retrieval of titles from YouTube during import. Therefore, it's advisable to export/import playlists using JSON rather than TXT files for a smoother and more efficient process.</value>
   </data>
   <data name="InformationConfirmInfo" xml:space="preserve">
     <value>Are you sure you want to perform the selected action? This process cannot be undone.</value>

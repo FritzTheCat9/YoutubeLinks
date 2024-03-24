@@ -2,6 +2,7 @@
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature;
+using YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature;
 using YoutubeLinks.Api.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Helpers;
@@ -17,7 +18,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             CreatePlaylistFeature.Endpoint(app);
             DeletePlaylistFeature.Endpoint(app);
             ExportPlaylistFeature.Endpoint(app);
-            ImportPlaylistFromJsonFeature.Endpoint(app);
+            ImportPlaylistFeature.Endpoint(app);
             ResetLinksDownloadedFlagFeature.Endpoint(app);
             UpdatePlaylistFeature.Endpoint(app);
             GetAllPublicPlaylistsFeature.Endpoint(app);
@@ -40,16 +41,16 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             };
         }
 
-        public static PlaylistModel GetPlaylistModel(this Playlist playlist)
+        public static PlaylistJSONModel GetPlaylistModel(this Playlist playlist)
         {
-            var links = playlist.Links.Select(x => new LinkModel()
+            var links = playlist.Links.Select(x => new LinkJSONModel()
             {
                 Title = x.Title,
                 Url = x.Url,
                 VideoId = x.VideoId
             }).OrderBy(x => x.Title);
 
-            var playlistModel = new PlaylistModel()
+            var playlistModel = new PlaylistJSONModel()
             {
                 LinksCount = links.Count(),
                 LinkModels = links,

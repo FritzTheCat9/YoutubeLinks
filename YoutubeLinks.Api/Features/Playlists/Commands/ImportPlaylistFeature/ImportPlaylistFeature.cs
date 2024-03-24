@@ -1,20 +1,23 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Localization;
 using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature;
+using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
-namespace YoutubeLinks.Api.Features.Playlists.Commands
+namespace YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature
 {
-    public static class ImportPlaylistFromJsonFeature
+    public static class ImportPlaylistFeature
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/import", async (
-                ImportPlaylistFromJson.Command command,
+                ImportPlaylist.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -27,24 +30,30 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<ImportPlaylistFromJson.Command, int>
+        public class Handler : IRequestHandler<ImportPlaylist.Command, int>
         {
             private readonly IPlaylistRepository _playlistRepository;
             private readonly IAuthService _authService;
+            private readonly IYoutubeService _youtubeService;
             private readonly IClock _clock;
+            private readonly IStringLocalizer<ApiValidationMessage> _localizer;
 
             public Handler(
                 IPlaylistRepository playlistRepository,
                 IAuthService authService,
-                IClock clock)
+                IYoutubeService youtubeService,
+                IClock clock,
+                IStringLocalizer<ApiValidationMessage> localizer)
             {
                 _playlistRepository = playlistRepository;
                 _authService = authService;
+                _youtubeService = youtubeService;
                 _clock = clock;
+                _localizer = localizer;
             }
 
             public async Task<int> Handle(
-                ImportPlaylistFromJson.Command command,
+                ImportPlaylist.Command command,
                 CancellationToken cancellationToken)
             {
                 var currentUserId = _authService.GetCurrentUserId() ?? throw new MyForbiddenException();
@@ -59,23 +68,9 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
                     UserId = currentUserId,
                 };
 
-                var links = new List<Link>();
+                var importer = PlaylistImporterHelpers.GetImporter(command.PlaylistFileType);
 
-                foreach (var exportedLink in command.ExportedLinks)
-                {
-                    var link = new Link
-                    {
-                        Id = 0,
-                        Created = _clock.Current(),
-                        Modified = _clock.Current(),
-                        Url = exportedLink.Url,
-                        VideoId = exportedLink.VideoId,
-                        Title = exportedLink.Title,
-                        Downloaded = false,
-                    };
-
-                    links.Add(link);
-                }
+                var links = (await importer.Import(_youtubeService, _clock, _localizer, command)).ToList();
 
                 playlist.Links.AddRange(links);
 

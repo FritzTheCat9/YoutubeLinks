@@ -46,7 +46,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
             return txtPlaylistFile;
         }
 
-        private static byte[] GetPlaylistTxtFileBytes(IEnumerable<LinkModel> links)
+        private static byte[] GetPlaylistTxtFileBytes(IEnumerable<LinkJSONModel> links)
         {
             var stringBuilder = new StringBuilder();
             foreach (var link in links)

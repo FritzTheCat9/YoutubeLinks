@@ -67,7 +67,7 @@
         ExportPlaylist,
         ImportPlaylistFromJson,
         ImportPlaylist,
-        AddPlaylistJsonFile,
+        AddPlaylistJsonOrTxtFile,
         DownloadPlaylist,
         Private,
         DeletePlaylist,
@@ -87,5 +87,8 @@
         Fail,
         DownloadedLinksCountResults,
         DownloadLink,
+        Importing,
+        Import,
+        ImportPlaylistInfo,
     }
 }

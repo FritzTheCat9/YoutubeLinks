@@ -20,7 +20,7 @@
                            @bind-Files=FormModel.File
                            OnFilesChanged=UploadFile
                            For="() => FormModel.File"
-                           Accept=".json"
+                           Accept=".json, .txt"
                            AppendMultipleFiles=false
                            Context="file">
                 <ButtonTemplate>
@@ -29,7 +29,7 @@
                                Variant=Variant.Filled
                                Color=Color.Primary
                                StartIcon=@Icons.Material.Filled.FileUpload>
-                        @Localizer[nameof(AppStrings.AddPlaylistJsonFile)]
+                        @Localizer[nameof(AppStrings.AddPlaylistJsonOrTxtFile)]
                     </MudButton>
                 </ButtonTemplate>
             </MudFileUpload>
@@ -40,12 +40,18 @@
                 <FritzValidationMessage For="() => FormModel.File.ContentType" />
             }
             <FritzValidationMessage For="() => FormModel.ExportedLinks" />
+            <FritzValidationMessage For="() => FormModel.ExportedLinkUrls" />
+            <MudText Typo=Typo.subtitle2
+                     Color="Color.Warning">
+                @Localizer[nameof(AppStrings.ImportPlaylistInfo)]
+            </MudText>
         </DialogContent>
         <DialogActions>
-            <MudButton ButtonType=ButtonType.Submit
-                       Color=Color.Primary>
-                @Localizer[nameof(AppStrings.ImportPlaylist)]
-            </MudButton>
+            <FritzProcessingButton @ref=_processingButton
+                                   ButtonType=ButtonType.Submit
+                                   Color=Color.Primary
+                                   ProcessingButtonText=@Localizer[nameof(AppStrings.Importing)]
+                                   ButtonText=@Localizer[nameof(AppStrings.Import)] />
         </DialogActions>
     </MudDialog>
 </EditForm>

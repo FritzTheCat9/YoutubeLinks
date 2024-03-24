@@ -126,8 +126,8 @@
   <data name="EmailNotEmpty" xml:space="preserve">
     <value>Email should not be empty.</value>
   </data>
-  <data name="FileContentTypeShouldBeJson" xml:space="preserve">
-    <value>The file should be in .json format.</value>
+  <data name="FileContentTypeShouldBeJsonOrTxt" xml:space="preserve">
+    <value>The file should be in .json or .txt format.</value>
   </data>
   <data name="FileMaxFileSize" xml:space="preserve">
     <value>The file size must be less than or equal to {ComparisonValue} bytes. The added file have {PropertyValue} bytes.</value>

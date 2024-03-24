@@ -21,7 +21,7 @@
         YoutubeFileTypeIsInEnum,
         FileNotEmpty,
         FileMaxFileSize,
-        FileContentTypeShouldBeJson,
+        FileContentTypeShouldBeJsonOrTxt,
         PlaylistFileTypeIsInEnum,
     }
 }

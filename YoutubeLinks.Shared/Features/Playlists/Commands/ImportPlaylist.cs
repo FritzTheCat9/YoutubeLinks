@@ -7,13 +7,15 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Commands
 {
-    public class ImportPlaylistFromJson
+    public class ImportPlaylist
     {
         public class Command : IRequest<int>
         {
             public string Name { get; set; }
             public bool Public { get; set; }
-            public List<LinkModel> ExportedLinks { get; set; }
+            public List<LinkJSONModel> ExportedLinks { get; set; }
+            public List<string> ExportedLinkUrls { get; set; }
+            public PlaylistFileType PlaylistFileType { get; set; }
         }
 
         public class Validator : AbstractValidator<Command>
@@ -53,7 +55,7 @@ namespace YoutubeLinks.Shared.Features.Playlists.Commands
         public class FileValidator : AbstractValidator<IBrowserFile>
         {
             private readonly int _maxFileSize = 5242880;
-            private readonly List<string> _allowedFileTypes = ["application/json"];
+            private readonly List<string> _allowedFileTypes = ["application/json", "text/plain"];
 
             public FileValidator(IStringLocalizer<ValidationMessage> localizer)
             {
@@ -63,7 +65,7 @@ namespace YoutubeLinks.Shared.Features.Playlists.Commands
 
                 RuleFor(x => x.ContentType)
                     .Must(x => _allowedFileTypes.Contains(x))
-                    .WithMessage(x => localizer[nameof(ValidationMessageString.FileContentTypeShouldBeJson)]);
+                    .WithMessage(x => localizer[nameof(ValidationMessageString.FileContentTypeShouldBeJsonOrTxt)]);
             }
         }
     }
