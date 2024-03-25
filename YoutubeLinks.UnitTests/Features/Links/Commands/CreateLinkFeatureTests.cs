@@ -59,7 +59,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
 
             var playlistRepository = Substitute.For<IPlaylistRepository>();
 
-            playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist?>(null));
+            playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
             var handler = new CreateLinkFeature.Handler(_linkRepository, playlistRepository, _authService, _youtubeService, _clock, _localizer);
             var action = async () => await handler.Handle(command, CancellationToken.None);
