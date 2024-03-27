@@ -29,7 +29,8 @@ namespace YoutubeLinks.Api.Features.Users.Queries
         {
             private readonly IUserRepository _userRepository;
 
-            public Handler(IUserRepository userRepository)
+            public Handler(
+                IUserRepository userRepository)
             {
                 _userRepository = userRepository;
             }

@@ -55,8 +55,7 @@ namespace YoutubeLinks.Api.Features.Links.Queries
 
                 linkQuery = linkQuery.SortLinks();
 
-                var linkInfoDtos = await linkQuery.Select(x => x.ToLinkInfoDto())
-                                                  .ToListAsync();
+                var linkInfoDtos = linkQuery.ToLinkInfoDtos();
 
                 return linkInfoDtos;
             }

@@ -62,7 +62,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         {
             var command = new CreateLink.Command
             {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 PlaylistId = 1,
             };
 
@@ -89,7 +89,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         {
             var command = new CreateLink.Command
             {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 PlaylistId = 1,
             };
 
@@ -118,7 +118,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         {
             var command = new CreateLink.Command
             {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 PlaylistId = 1,
             };
 
@@ -148,7 +148,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         {
             var command = new CreateLink.Command
             {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley",
+                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 PlaylistId = 1,
             };
 

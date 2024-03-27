@@ -104,5 +104,13 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             links = links.OrderBy(link => link.Title);
             return links;
         }
+
+        public static List<LinkInfoDto> ToLinkInfoDtos(
+            this IQueryable<Link> links)
+        {
+            var dtos = links.Select(x => x.ToLinkInfoDto())
+                            .ToList();
+            return dtos;
+        }
     }
 }
