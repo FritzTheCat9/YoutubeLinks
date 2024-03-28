@@ -2,7 +2,6 @@
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Users.Extensions;
 using YoutubeLinks.Shared.Exceptions;
-using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Queries;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
