@@ -2,8 +2,8 @@
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Shared.Exceptions;
+using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Helpers;
-using static YoutubeLinks.Shared.Features.Playlists.Commands.ExportPlaylist;
 
 namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
 {
@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/export", async (
-                Command command,
+                ExportPlaylist.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -26,7 +26,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
             return app;
         }
 
-        public class Handler : IRequestHandler<Command, PlaylistFile>
+        public class Handler : IRequestHandler<ExportPlaylist.Command, PlaylistFile>
         {
             private readonly IPlaylistRepository _playlistRepository;
             private readonly IAuthService _authService;
@@ -40,7 +40,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
             }
 
             public async Task<PlaylistFile> Handle(
-                Command command,
+                ExportPlaylist.Command command,
                 CancellationToken cancellationToken)
             {
                 var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();

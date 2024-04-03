@@ -194,6 +194,16 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+
+                //var command2 = new UpdateLink.Command         // update downloaded flag feature
+                //{
+                //    Id = id,
+                //    Url = filename,
+                //    Downloaded = true,
+                //};
+
+                //await LinkApiClient.UpdateLink(command2);
+
                 await RefreshView();
             }
             catch (Exception ex)
