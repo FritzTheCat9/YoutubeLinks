@@ -31,7 +31,7 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers
 
         public static string NormalizeVideoTitle(string title)
         {
-            var invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var invalidChars = GetInvalidPathAndFileNameCharacters();
 
             var sanitizedTitle = Regex.Replace(title, "[" + Regex.Escape(invalidChars) + "]", "");
             sanitizedTitle = Regex.Replace(sanitizedTitle, @"\s+", " ");
