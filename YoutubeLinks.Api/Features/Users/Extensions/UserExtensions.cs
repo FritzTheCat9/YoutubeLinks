@@ -31,6 +31,7 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
                 UserName = user.UserName,
                 Email = user.Email,
                 IsAdmin = user.IsAdmin,
+                ThemeColor = user.ThemeColor,
             };
         }
 

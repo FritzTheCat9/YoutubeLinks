@@ -3,14 +3,23 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using YoutubeLinks.Blazor.Auth;
+using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Shared;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Pages.Users
 {
     public partial class Auth : ComponentBase
     {
+        [Parameter] public EventCallback<ThemeColor> ChangeThemeColor { get; set; }
+
+        [Inject] public IExceptionHandler ExceptionHandler { get; set; }
+        [Inject] public IUserApiClient UserApiClient { get; set; }
+        [Inject] public IAuthService AuthService { get; set; }
+
         [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public IJwtProvider JwtProvider { get; set; }
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
@@ -23,9 +32,9 @@ namespace YoutubeLinks.Blazor.Pages.Users
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
             var parameters = new DialogParameters<LoginDialog>
             {
-                { 
-                    x => x.Command, 
-                    new() 
+                {
+                    x => x.Command,
+                    new()
                 }
             };
 
@@ -39,7 +48,27 @@ namespace YoutubeLinks.Blazor.Pages.Users
 
                     var authStateProvider = (AuthenticationStateProvider as AuthStateProvider);
                     authStateProvider.NotifyAuthStateChanged();
+
+                    await LoadUserTheme();
                 }
+            }
+        }
+
+        private async Task LoadUserTheme()
+        {
+            var userId = await AuthService.GetCurrentUserId();
+            if (userId is null)
+                return;
+
+            try
+            {
+                var user = await UserApiClient.GetUser(userId.Value);
+
+                await ChangeThemeColor.InvokeAsync(user.ThemeColor);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExceptions(ex);
             }
         }
 
@@ -48,9 +77,9 @@ namespace YoutubeLinks.Blazor.Pages.Users
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
             var parameters = new DialogParameters<RegisterDialog>
             {
-                { 
-                    x => x.Command, 
-                    new() 
+                {
+                    x => x.Command,
+                    new()
                 }
             };
 
@@ -65,9 +94,9 @@ namespace YoutubeLinks.Blazor.Pages.Users
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
             var parameters = new DialogParameters<SuccessDialog>
             {
-                { 
-                    x => x.ContentText, 
-                    Localizer[nameof(AppStrings.AccountCreated)] 
+                {
+                    x => x.ContentText,
+                    Localizer[nameof(AppStrings.AccountCreated)]
                 }
             };
 

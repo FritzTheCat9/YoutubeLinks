@@ -49,20 +49,31 @@ namespace YoutubeLinks.Blazor.Layout
             {
                 _themeColor = await ThemeColorProvider.GetThemeColor();
 
-                switch (_themeColor)
-                {
-                    case ThemeColor.System:
-                        await SetSystemMode();
-                        break;
-                    case ThemeColor.Light:
-                        await SetLightMode();
-                        break;
-                    case ThemeColor.Dark:
-                        await SetDarkMode();
-                        break;
-                }
+                await RefreshThemeColor();
 
                 await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            }
+        }
+
+        public async Task ChangeThemeColor(ThemeColor themeColor)
+        {
+            _themeColor = themeColor;
+            await RefreshThemeColor();
+        }
+
+        private async Task RefreshThemeColor()
+        {
+            switch (_themeColor)
+            {
+                case ThemeColor.System:
+                    await SetSystemMode();
+                    break;
+                case ThemeColor.Light:
+                    await SetLightMode();
+                    break;
+                case ThemeColor.Dark:
+                    await SetDarkMode();
+                    break;
             }
         }
 

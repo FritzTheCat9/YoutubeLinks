@@ -1,4 +1,6 @@
-﻿namespace YoutubeLinks.Shared.Features.Users.Responses
+﻿using YoutubeLinks.Shared.Features.Users.Helpers;
+
+namespace YoutubeLinks.Shared.Features.Users.Responses
 {
     public class UserDto
     {
@@ -9,5 +11,6 @@
         public string UserName { get; set; }
         public string Email { get; set; }
         public bool IsAdmin { get; set; }
+        public ThemeColor ThemeColor { get; set; }
     }
 }
