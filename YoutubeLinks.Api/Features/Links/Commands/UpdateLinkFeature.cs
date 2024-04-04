@@ -79,6 +79,8 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 
                 if (string.IsNullOrWhiteSpace(link.Title) || command.Url != link.Url)
                     link.Title = await _youtubeService.GetVideoTitle(videoId);
+                else
+                    link.Title = YoutubeHelpers.NormalizeVideoTitle(command.Title);
 
                 link.Modified = _clock.Current();
                 link.Url = command.Url;

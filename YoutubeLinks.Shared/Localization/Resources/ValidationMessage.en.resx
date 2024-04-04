@@ -156,6 +156,12 @@
   <data name="RepeatPasswordEqualPassword" xml:space="preserve">
     <value>The passwords entered must match.</value>
   </data>
+  <data name="TitleHaveValidCharacters" xml:space="preserve">
+    <value>Title contains invalid characters.</value>
+  </data>
+  <data name="TitleMaximumLength" xml:space="preserve">
+    <value>The length of title must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
+  </data>
   <data name="TokenNotEmpty" xml:space="preserve">
     <value>Token should not be empty.</value>
   </data>

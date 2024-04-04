@@ -54,7 +54,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 if (isUserPlaylist || isPublicPlaylist)
                 {
                     var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
-                    var youtubeFile = await downloader.Download(link.VideoId);
+                    var youtubeFile = await downloader.Download(link.VideoId, link.Title);
 
                     if (isUserPlaylist) // this should be part of set link downloaded flag feature (make new feature)
                     {

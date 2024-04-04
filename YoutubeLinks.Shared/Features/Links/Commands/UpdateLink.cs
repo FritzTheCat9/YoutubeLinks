@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Localization;
+using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
@@ -11,6 +12,7 @@ namespace YoutubeLinks.Shared.Features.Links.Commands
         {
             public int Id { get; set; }
             public string Url { get; set; }
+            public string Title { get; set; }
             public bool Downloaded { get; set; }
         }
 
@@ -23,6 +25,15 @@ namespace YoutubeLinks.Shared.Features.Links.Commands
                     .WithMessage(x => localizer[nameof(ValidationMessageString.UrlNotEmpty)])
                     .Matches(ValidationConsts.YoutubeVideoUrlRegex)
                     .WithMessage(x => localizer[nameof(ValidationMessageString.VideoUrlMatchesRegex)]);
+
+                When(x => !string.IsNullOrWhiteSpace(x.Title), () =>
+                {
+                    RuleFor(x => x.Title)
+                        .Must(x => YoutubeHelpers.HaveValidCharactersInTitle(x))
+                        .WithMessage(x => localizer[nameof(ValidationMessageString.TitleHaveValidCharacters)])
+                        .MaximumLength(YoutubeHelpers.MaximumTitleLength)
+                        .WithMessage(x => localizer[nameof(ValidationMessageString.TitleMaximumLength)]);
+                });
             }
         }
     }

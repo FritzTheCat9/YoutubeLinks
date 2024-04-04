@@ -4,7 +4,7 @@ namespace YoutubeLinks.Api.Services
 {
     public interface IYoutubeDownloader
     {
-        Task<YoutubeFile> Download(string videoId);
+        Task<YoutubeFile> Download(string videoId, string videoTitle = null);
     }
 
     public class MP3YoutubeDownloader : IYoutubeDownloader
@@ -17,9 +17,9 @@ namespace YoutubeLinks.Api.Services
             _youtubeService = youtubeService;
         }
 
-        public async Task<YoutubeFile> Download(string videoId)
+        public async Task<YoutubeFile> Download(string videoId, string videoTitle = null)
         {
-            return await _youtubeService.GetMP3File(videoId);
+            return await _youtubeService.GetMP3File(videoId, videoTitle);
         }
     }
 
@@ -33,9 +33,9 @@ namespace YoutubeLinks.Api.Services
             _youtubeService = youtubeService;
         }
 
-        public async Task<YoutubeFile> Download(string videoId)
+        public async Task<YoutubeFile> Download(string videoId, string videoTitle = null)
         {
-            return await _youtubeService.GetMP4File(videoId);
+            return await _youtubeService.GetMP4File(videoId, videoTitle);
         }
     }
 

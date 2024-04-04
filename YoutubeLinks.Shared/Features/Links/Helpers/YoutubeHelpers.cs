@@ -10,12 +10,14 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers
 
         public static readonly string VideoPathBase = "https://www.youtube.com/watch?v=";
 
+        public static readonly int MaximumTitleLength = 255;
+
         public static string GetVideoId(string videoUrl)
         {
             var regex = new Regex(VideoIdRegex);
             var match = regex.Match(videoUrl);
 
-            return match.Success ? match.Groups[1].Value : null;
+            return match.Success ? match.Groups[1].Value.Trim() : null;
         }
 
         public static string YoutubeFileTypeToString(YoutubeFileType youtubeFileType)
@@ -26,5 +28,31 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers
                 _ => "mp3",
             };
         }
+
+        public static string NormalizeVideoTitle(string title)
+        {
+            var invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+
+            var sanitizedTitle = Regex.Replace(title, "[" + Regex.Escape(invalidChars) + "]", "");
+            sanitizedTitle = Regex.Replace(sanitizedTitle, @"\s+", " ");
+            sanitizedTitle = sanitizedTitle.Trim();
+
+            if (sanitizedTitle.Length > MaximumTitleLength)
+                sanitizedTitle = sanitizedTitle.Substring(0, MaximumTitleLength);
+
+            return sanitizedTitle;
+        }
+
+        public static bool HaveValidCharactersInTitle(string title)
+        {
+            var invalidChars = GetInvalidPathAndFileNameCharacters();
+            return !ContainsInvalidChars(title, invalidChars);
+        }
+
+        private static string GetInvalidPathAndFileNameCharacters() 
+            => new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+
+        private static bool ContainsInvalidChars(string input, string invalidChars) 
+            => input.IndexOfAny(invalidChars.ToCharArray()) != -1;
     }
 }

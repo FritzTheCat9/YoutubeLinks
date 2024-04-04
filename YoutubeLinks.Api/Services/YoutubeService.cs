@@ -9,8 +9,8 @@ namespace YoutubeLinks.Api.Services
     public interface IYoutubeService
     {
         Task<string> GetVideoTitle(string videoId);
-        Task<YoutubeFile> GetMP3File(string videoId);
-        Task<YoutubeFile> GetMP4File(string videoId);
+        Task<YoutubeFile> GetMP3File(string videoId, string videoTitle = null);
+        Task<YoutubeFile> GetMP4File(string videoId, string videoTitle = null);
     }
 
     public class YoutubeService : IYoutubeService
@@ -40,29 +40,14 @@ namespace YoutubeLinks.Api.Services
                 throw new MyServerException();
 
             var title = videoDataRequest.Data.Title;
-            var normalizedTitle = NormalizeVideoTitle(title);
+            var normalizedTitle = YoutubeHelpers.NormalizeVideoTitle(title);
 
             return normalizedTitle;
         }
 
-        private static string NormalizeVideoTitle(string title)
+        public async Task<YoutubeFile> GetMP3File(string videoId, string videoTitle = null)
         {
-            string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-
-            string sanitizedTitle = Regex.Replace(title, "[" + Regex.Escape(invalidChars) + "]", "");
-            sanitizedTitle = Regex.Replace(sanitizedTitle, @"\s+", " ");
-            sanitizedTitle = sanitizedTitle.Trim();
-
-            int maxLength = 255;
-            if (sanitizedTitle.Length > maxLength)
-                sanitizedTitle = sanitizedTitle.Substring(0, maxLength);
-
-            return sanitizedTitle;
-        }
-
-        public async Task<YoutubeFile> GetMP3File(string videoId)
-        {
-            var title = await GetVideoTitle(videoId);
+            var title = videoTitle ?? await GetVideoTitle(videoId);
             var fileName = $"{Guid.NewGuid()}.mp3";
 
             var youtubeDL = new YoutubeDL();
@@ -103,9 +88,9 @@ namespace YoutubeLinks.Api.Services
             return youtubeFile;
         }
 
-        public async Task<YoutubeFile> GetMP4File(string videoId)
+        public async Task<YoutubeFile> GetMP4File(string videoId, string videoTitle = null)
         {
-            var title = await GetVideoTitle(videoId);
+            var title = videoTitle ?? await GetVideoTitle(videoId);
             var fileName = $"{Guid.NewGuid()}.mp4";
 
             var youtubeDL = new YoutubeDL();

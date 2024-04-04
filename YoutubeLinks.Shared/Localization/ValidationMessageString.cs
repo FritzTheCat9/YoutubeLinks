@@ -23,5 +23,7 @@
         FileMaxFileSize,
         FileContentTypeShouldBeJsonOrTxt,
         PlaylistFileTypeIsInEnum,
+        TitleHaveValidCharacters,
+        TitleMaximumLength,
     }
 }

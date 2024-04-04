@@ -10,6 +10,11 @@
                             For="() => Command.Url" />
             <FritzValidationMessage For="() => Command.Url" />
 
+            <FritzTextField Label=@Localizer[nameof(AppStrings.Title)]
+                            @bind-Value=Command.Title
+                            For="() => Command.Title" />
+            <FritzValidationMessage For="() => Command.Title" />
+
             <FritzCheckbox Label=@Localizer[nameof(AppStrings.Downloaded)]
                            @bind-Value=Command.Downloaded
                            For="() => Command.Downloaded" />
