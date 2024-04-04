@@ -266,6 +266,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new UpdateLink.Command
             {
                 Id = 1,
+                Title = "Rick Astley - Never Gonna Give You Up",
                 Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 Downloaded = false,
             };
