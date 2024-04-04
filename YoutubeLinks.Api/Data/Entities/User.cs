@@ -1,4 +1,6 @@
-﻿namespace YoutubeLinks.Api.Data.Entities
+﻿using YoutubeLinks.Shared.Features.Users.Helpers;
+
+namespace YoutubeLinks.Api.Data.Entities
 {
     public class User : Entity
     {
@@ -8,6 +10,7 @@
         public bool EmailConfirmed { get; set; }
         public string EmailConfirmationToken { get; set; }
         public bool IsAdmin { get; set; }
+        public ThemeColor ThemeColor { get; set; }
 
         public List<Playlist> Playlists { get; } = [];
     }

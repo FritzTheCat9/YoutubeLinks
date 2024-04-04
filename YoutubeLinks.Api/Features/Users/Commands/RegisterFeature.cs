@@ -72,6 +72,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
                     EmailConfirmed = false,
                     EmailConfirmationToken = _emailConfirmationService.GenerateEmailConfirmationToken(command.Email),
                     IsAdmin = false,
+                    ThemeColor = command.ThemeColor,
                 };
 
                 var userId = await _userRepository.Create(user);

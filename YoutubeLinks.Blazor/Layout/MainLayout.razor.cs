@@ -3,6 +3,7 @@ using Microsoft.Extensions.Localization;
 using MudBlazor;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Services;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Blazor.Layout
 {
@@ -15,13 +16,6 @@ namespace YoutubeLinks.Blazor.Layout
         private bool _isDarkMode = false;
         private string _icon = Icons.Material.Rounded.LightMode;
         private string _text;
-
-        public enum ThemeColor
-        {
-            System,
-            Light,
-            Dark,
-        }
 
         private readonly MudTheme _customTheme = new()
         {

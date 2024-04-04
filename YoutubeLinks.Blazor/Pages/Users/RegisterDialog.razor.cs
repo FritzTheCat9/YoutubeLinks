@@ -5,6 +5,7 @@ using YoutubeLinks.Blazor.Clients;
 using YoutubeLinks.Blazor.Components;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Pages.Error;
+using YoutubeLinks.Blazor.Services;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
 
@@ -23,12 +24,15 @@ namespace YoutubeLinks.Blazor.Pages.Users
         [Inject] public IUserApiClient UserApiClient { get; set; }
 
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
+        [Inject] public IThemeColorProvider ThemeColorProvider { get; set; }
 
         private async Task HandleValidSubmit()
         {
             try
             {
                 _processingButton.SetProcessing(true);
+
+                Command.ThemeColor = await ThemeColorProvider.GetThemeColor();
 
                 await UserApiClient.Register(Command);
 

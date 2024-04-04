@@ -25,5 +25,6 @@
         PlaylistFileTypeIsInEnum,
         TitleHaveValidCharacters,
         TitleMaximumLength,
+        ThemeColorIsInEnum,
     }
 }

@@ -156,6 +156,9 @@
   <data name="RepeatPasswordEqualPassword" xml:space="preserve">
     <value>The passwords entered must match.</value>
   </data>
+  <data name="ThemeColorIsInEnum" xml:space="preserve">
+    <value>ThemeColor has a range of values which does not include: {PropertyValue}.</value>
+  </data>
   <data name="TitleHaveValidCharacters" xml:space="preserve">
     <value>Title contains invalid characters.</value>
   </data>

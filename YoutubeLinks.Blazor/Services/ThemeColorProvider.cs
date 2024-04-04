@@ -1,5 +1,5 @@
 ﻿using Blazored.LocalStorage;
-using static YoutubeLinks.Blazor.Layout.MainLayout;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Blazor.Services
 {
