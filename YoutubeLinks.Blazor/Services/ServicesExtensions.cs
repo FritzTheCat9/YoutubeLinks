@@ -5,6 +5,7 @@
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<ITableViewProvider, TableViewProvider>();
+            services.AddScoped<IThemeColorProvider, ThemeColorProvider>();
 
             return services;
         }

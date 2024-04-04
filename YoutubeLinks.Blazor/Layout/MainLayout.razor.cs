@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using YoutubeLinks.Blazor.Localization;
+using YoutubeLinks.Blazor.Services;
 
 namespace YoutubeLinks.Blazor.Layout
 {
@@ -41,6 +42,7 @@ namespace YoutubeLinks.Blazor.Layout
         };
 
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
+        [Inject] public IThemeColorProvider ThemeColorProvider { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -51,9 +53,22 @@ namespace YoutubeLinks.Blazor.Layout
         {
             if (firstRender)
             {
-                _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+                _themeColor = await ThemeColorProvider.GetThemeColor();
+
+                switch (_themeColor)
+                {
+                    case ThemeColor.System:
+                        await SetSystemMode();
+                        break;
+                    case ThemeColor.Light:
+                        await SetLightMode();
+                        break;
+                    case ThemeColor.Dark:
+                        await SetDarkMode();
+                        break;
+                }
+
                 await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
-                StateHasChanged();
             }
         }
 
@@ -72,24 +87,51 @@ namespace YoutubeLinks.Blazor.Layout
             switch (_themeColor)
             {
                 case ThemeColor.System:
-                    _themeColor = ThemeColor.Light;
-                    _isDarkMode = false;
-                    _icon = Icons.Material.Rounded.DarkMode;
-                    _text = Localizer[nameof(AppStrings.SwitchToDarkTheme)];
+                    await SetLightMode();
                     break;
                 case ThemeColor.Light:
-                    _themeColor = ThemeColor.Dark;
-                    _isDarkMode = true;
-                    _icon = Icons.Material.Rounded.SettingsBrightness;
-                    _text = Localizer[nameof(AppStrings.SwitchToSystemTheme)];
+                    await SetDarkMode();
                     break;
                 case ThemeColor.Dark:
-                    _themeColor = ThemeColor.System;
-                    _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-                    _icon = Icons.Material.Rounded.LightMode;
-                    _text = Localizer[nameof(AppStrings.SwitchToLightTheme)];
+                    await SetSystemMode();
                     break;
             }
+        }
+
+        private async Task SetLightMode()
+        {
+            await ThemeColorProvider.SetThemeColor(ThemeColor.Light);
+
+            _themeColor = ThemeColor.Light;
+            _isDarkMode = false;
+            _icon = Icons.Material.Rounded.DarkMode;
+            _text = Localizer[nameof(AppStrings.SwitchToDarkTheme)];
+
+            StateHasChanged();
+        }
+
+        private async Task SetDarkMode()
+        {
+            await ThemeColorProvider.SetThemeColor(ThemeColor.Dark);
+
+            _themeColor = ThemeColor.Dark;
+            _isDarkMode = true;
+            _icon = Icons.Material.Rounded.SettingsBrightness;
+            _text = Localizer[nameof(AppStrings.SwitchToSystemTheme)];
+
+            StateHasChanged();
+        }
+
+        private async Task SetSystemMode()
+        {
+            await ThemeColorProvider.SetThemeColor(ThemeColor.System);
+
+            _themeColor = ThemeColor.System;
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            _icon = Icons.Material.Rounded.LightMode;
+            _text = Localizer[nameof(AppStrings.SwitchToLightTheme)];
+
+            StateHasChanged();
         }
 
         private void DrawerToggle()

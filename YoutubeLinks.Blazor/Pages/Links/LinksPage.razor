@@ -39,15 +39,14 @@
                                                OnClick=ResetPlaylistLinksDownloadedFlag />
                             </MudTooltip>
                         }
-                        <MudTooltip Text=@Localizer[nameof(AppStrings.SwitchViewToGrid)]>
-                            <MudIconButton Icon=@Icons.Material.Filled.GridView
-                                           Color=Color.Info
-                                           Size=Size.Small
-                                           OnClick=SwitchView />
-                        </MudTooltip>
-                        <MudSpacer />
                     </Authorized>
                 </AuthorizeView>
+                <MudTooltip Text=@Localizer[nameof(AppStrings.SwitchViewToGrid)]>
+                    <MudIconButton Icon=@Icons.Material.Filled.GridView
+                                   Color=Color.Info
+                                   Size=Size.Small
+                                   OnClick=SwitchView />
+                </MudTooltip>
                 <MudSpacer />
                 <FritzSearchTextField @bind-Value=_searchString
                                       OnSearch=RefreshView />
