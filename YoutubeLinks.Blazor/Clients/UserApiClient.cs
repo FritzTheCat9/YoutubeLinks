@@ -10,6 +10,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task<bool> ConfirmEmail(ConfirmEmail.Command command);
         Task<JwtDto> Login(Login.Command command);
         Task Register(Register.Command command);
+        Task UpdateUserTheme(UpdateUserTheme.Command command);
         Task<PagedList<UserDto>> GetAllUsers(GetAllUsers.Query query);
         Task<UserDto> GetUser(int id);
     }
@@ -32,6 +33,9 @@ namespace YoutubeLinks.Blazor.Clients
 
         public async Task Register(Register.Command command)
             => await _apiClient.Post($"{_url}/register", command);
+
+        public async Task UpdateUserTheme(UpdateUserTheme.Command command)
+            => await _apiClient.Put($"{_url}/{command.Id}/theme", command);
 
         public async Task<PagedList<UserDto>> GetAllUsers(GetAllUsers.Query query)
             => await _apiClient.Post<GetAllUsers.Query, PagedList<UserDto>>($"{_url}/all", query);

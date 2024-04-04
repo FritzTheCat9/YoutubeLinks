@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
+using YoutubeLinks.Blazor.Auth;
+using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Services;
+using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Blazor.Layout
@@ -35,6 +39,10 @@ namespace YoutubeLinks.Blazor.Layout
             },
         };
 
+        [Inject] public IExceptionHandler ExceptionHandler { get; set; }
+        [Inject] public IUserApiClient UserApiClient { get; set; }
+
+        [Inject] public IAuthService AuthService { get; set; }
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
         [Inject] public IThemeColorProvider ThemeColorProvider { get; set; }
 
@@ -100,6 +108,30 @@ namespace YoutubeLinks.Blazor.Layout
                 case ThemeColor.Dark:
                     await SetSystemMode();
                     break;
+            }
+
+            await UpdateLoggedUserTheme();
+        }
+
+        private async Task UpdateLoggedUserTheme()
+        {
+            var userId = await AuthService.GetCurrentUserId();
+            if (userId is null)
+                return;
+
+            try
+            {
+                var command = new UpdateUserTheme.Command()
+                {
+                    Id = userId.Value,
+                    ThemeColor = _themeColor,
+                };
+
+                await UserApiClient.UpdateUserTheme(command);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExceptions(ex);
             }
         }
 
