@@ -32,11 +32,17 @@
                     <Authorized>
                         @if (_isUserPlaylist)
                         {
-                            <MudTooltip Text=@Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)]>
+                            <MudTooltip Text=@Localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)]>
+                                <MudIconButton Icon=@Icons.Material.Filled.OutlinedFlag
+                                               Color=Color.Info
+                                               Size=Size.Small
+                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false)) />
+                            </MudTooltip>
+                            <MudTooltip Text=@Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]>
                                 <MudIconButton Icon=@Icons.Material.Filled.Flag
                                                Color=Color.Info
                                                Size=Size.Small
-                                               OnClick=ResetPlaylistLinksDownloadedFlag />
+                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true)) />
                             </MudTooltip>
                         }
                     </Authorized>
@@ -187,11 +193,17 @@
                         <Authorized>
                             @if (_isUserPlaylist)
                             {
-                                <MudTooltip Text=@Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)]>
+                                <MudTooltip Text=@Localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)]>
+                                    <MudIconButton Icon=@Icons.Material.Filled.OutlinedFlag
+                                                   Color=Color.Info
+                                                   Size=Size.Small
+                                                   OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false)) />
+                                </MudTooltip>
+                                <MudTooltip Text=@Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]>
                                     <MudIconButton Icon=@Icons.Material.Filled.Flag
                                                    Color=Color.Info
                                                    Size=Size.Small
-                                                   OnClick=ResetPlaylistLinksDownloadedFlag />
+                                                   OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true)) />
                                 </MudTooltip>
                             }
                         </Authorized>

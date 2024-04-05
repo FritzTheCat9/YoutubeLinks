@@ -306,9 +306,6 @@
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat Password</value>
   </data>
-  <data name="ResetPlaylistLinksDownloadedFlag" xml:space="preserve">
-    <value>Reset Playlist Links Downloaded Flag</value>
-  </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>
   </data>
@@ -320,6 +317,12 @@
   </data>
   <data name="ServerError" xml:space="preserve">
     <value>Server error</value>
+  </data>
+  <data name="SetAllPlaylistLinksAsDownloaded" xml:space="preserve">
+    <value>Set All Playlist Links As Downloaded</value>
+  </data>
+  <data name="SetAllPlaylistLinksAsUndownloaded" xml:space="preserve">
+    <value>Set All Playlist Links As Undownloaded</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>

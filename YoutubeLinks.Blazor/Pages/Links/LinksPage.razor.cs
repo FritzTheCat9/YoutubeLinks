@@ -217,10 +217,13 @@ namespace YoutubeLinks.Blazor.Pages.Links
             }
         }
 
-        private async Task ResetPlaylistLinksDownloadedFlag()
+        private async Task ResetPlaylistLinksDownloadedFlag(bool flag)
         {
+            var dialogText = flag ? Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)] : 
+                Localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)];
+
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-            var dialog = await DialogService.ShowAsync<InformationDialog>(Localizer[nameof(AppStrings.ResetPlaylistLinksDownloadedFlag)], options);
+            var dialog = await DialogService.ShowAsync<InformationDialog>(dialogText, options);
 
             var result = await dialog.Result;
             if (!result.Canceled)
@@ -230,7 +233,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                     var command = new ResetLinksDownloadedFlag.Command
                     {
                         Id = PlaylistId,
-                        IsDownloaded = false,
+                        IsDownloaded = flag,
                     };
 
                     await PlaylistApiClient.ResetLinksDownloadedFlag(command);

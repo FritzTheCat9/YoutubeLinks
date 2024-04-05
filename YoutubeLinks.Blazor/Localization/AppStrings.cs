@@ -71,7 +71,6 @@
         DownloadPlaylist,
         Private,
         DeletePlaylist,
-        ResetPlaylistLinksDownloadedFlag,
         DeleteLink,
         NotDownloaded,
         Downloading,
@@ -91,5 +90,7 @@
         Import,
         ImportPlaylistInfo,
         Modified,
+        SetAllPlaylistLinksAsUndownloaded, 
+        SetAllPlaylistLinksAsDownloaded
     }
 }
