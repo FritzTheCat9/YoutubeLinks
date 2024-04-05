@@ -91,6 +91,7 @@
         ImportPlaylistInfo,
         Modified,
         SetAllPlaylistLinksAsUndownloaded, 
-        SetAllPlaylistLinksAsDownloaded
+        SetAllPlaylistLinksAsDownloaded,
+        MyPlaylists,
     }
 }

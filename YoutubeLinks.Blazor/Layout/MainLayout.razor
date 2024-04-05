@@ -36,7 +36,8 @@
         </MudTooltip>
         <Auth ChangeThemeColor="ChangeThemeColor" />
     </MudAppBar>
-    <MudDrawer @bind-Open=_drawerOpen>
+    <MudDrawer @bind-Open=_drawerOpen
+               Variant=DrawerVariant.Mini>
         <NavMenu />
     </MudDrawer>
     <MudMainContent>

@@ -258,6 +258,9 @@
   <data name="Modified" xml:space="preserve">
     <value>Modified</value>
   </data>
+  <data name="MyPlaylists" xml:space="preserve">
+    <value>My Playlists</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>

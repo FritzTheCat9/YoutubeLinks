@@ -38,7 +38,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         [Inject] public IJSRuntime JSRuntime { get; set; }
 
 
-        protected override async void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
             _items =
             [
@@ -47,6 +47,8 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             ];
 
             _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
+
+            await _table.ReloadServerData();
         }
 
         private async Task<TableData<PlaylistDto>> ServerReload(TableState state)
