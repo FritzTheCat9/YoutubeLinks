@@ -90,5 +90,6 @@
         Importing,
         Import,
         ImportPlaylistInfo,
+        Modified,
     }
 }

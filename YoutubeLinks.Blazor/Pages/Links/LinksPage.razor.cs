@@ -31,8 +31,8 @@ namespace YoutubeLinks.Blazor.Pages.Links
         {
             Page = 1,
             PageSize = 10,
-            SortColumn = "title",
-            SortOrder = SortOrder.Ascending,
+            SortColumn = "modified",
+            SortOrder = SortOrder.Descending,
             SearchTerm = "",
         };
         private PagedList<LinkDto> _linkPagedList;
@@ -165,7 +165,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                     new()
                     {
                         Id = linkDto.Id,
-                        Url = linkDto.Url, 
+                        Url = linkDto.Url,
                         Title = linkDto.Title,
                         Downloaded = linkDto.Downloaded,
                     }

@@ -84,6 +84,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             return query.SortColumn.ToLowerInvariant() switch
             {
                 "title" => link => link.Title,
+                "modified" => link => link.Modified,
                 _ => link => link.Title,
             };
         }

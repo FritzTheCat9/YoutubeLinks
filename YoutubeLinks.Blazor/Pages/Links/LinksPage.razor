@@ -58,6 +58,13 @@
                         @Localizer[nameof(AppStrings.Title)]
                     </MudTableSortLabel>
                 </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortLabel="modified"
+                                       InitialDirection=SortDirection.Descending
+                                       T=LinkDto>
+                        @Localizer[nameof(AppStrings.Modified)]
+                    </MudTableSortLabel>
+                </MudTh>
                 <AuthorizeView Policy=@Policy.User>
                     <Authorized>
                         @if (_isUserPlaylist)
@@ -74,14 +81,17 @@
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@Localizer[nameof(AppStrings.Title)]>
-                    <MudLink Href="@context.Url"
+                    <MudLink Href=@context.Url
                              Target="_blank"
-                             Color="Color.Default"
+                             Color=Color.Default
                              Class="my-link">
-                        <MudText Typo="Typo.body2">
+                        <MudText Typo=Typo.body2>
                             @context.Title
                         </MudText>
                     </MudLink>
+                </MudTd>
+                <MudTd DataLabel=@Localizer[nameof(AppStrings.Modified)]>
+                    @context.Modified.ToString("dd/MM/yyyy HH:mm:ss")
                 </MudTd>
                 <AuthorizeView Policy=@Policy.User
                                Context="auth">
