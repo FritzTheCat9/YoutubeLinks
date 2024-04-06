@@ -29,7 +29,7 @@
                        Label=@Localizer[nameof(AppStrings.FileType)]
                        @bind-Value=Command.YoutubeFileType
                        For="() => Command.YoutubeFileType"
-                       Variant=Variant.Outlined >
+                       Variant=Variant.Outlined>
                 @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
                 {
                     <MudSelectItem T="YoutubeFileType"
@@ -49,3 +49,34 @@
         <FritzValidationMessage For="() => Command.YoutubeFileType" />
     </EditForm>
 </MudPaper>
+
+
+@if (_downloadLinkResults is not null && _downloadLinkResults.Count > 0)
+{
+    <MudItem xs=12>
+        <MudPaper Class="pa-4 mt-4">
+            <MudText Typo=Typo.subtitle2>
+                @Localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
+            </MudText>
+            @foreach (var result in _downloadLinkResults)
+            {
+                @if (result.Success)
+                {
+                    <a href="@result.Url" target="_blank">
+                        <MudText Color=@Color.Success>
+                            [@Localizer[nameof(AppStrings.Success)]] - @result.Url
+                        </MudText>
+                    </a>
+                }
+                else
+                {
+                    <a href="@result.Url" target="_blank">
+                        <MudText Color=@Color.Error>
+                            [@Localizer[nameof(AppStrings.Fail)]] - @result.Url
+                        </MudText>
+                    </a>
+                }
+            }
+        </MudPaper>
+    </MudItem>
+}

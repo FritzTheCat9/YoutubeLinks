@@ -19,6 +19,14 @@ namespace YoutubeLinks.Blazor.Pages.Links
         private List<BreadcrumbItem> _items;
         private FritzProcessingButton _processingButton;
 
+        private List<DownloadLinkResult> _downloadLinkResults = [];
+
+        private class DownloadLinkResult
+        {
+            public string Url { get; set; }
+            public bool Success { get; set; }
+        }
+
         [Parameter]
         public DownloadSingleLink.Command Command { get; set; } = new()
         {
@@ -53,7 +61,11 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
 
-                Command.Url = "";
+                _downloadLinkResults.Add(new()
+                {
+                    Url = Command.Url,
+                    Success = true,
+                });
             }
             catch (MyValidationException validationException)
             {
@@ -61,11 +73,16 @@ namespace YoutubeLinks.Blazor.Pages.Links
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExceptions(ex);
+                _downloadLinkResults.Add(new()
+                {
+                    Url = Command.Url,
+                    Success = false,
+                });
             }
             finally
             {
                 _processingButton.SetProcessing(false);
+                Command.Url = "";
             }
         }
     }
