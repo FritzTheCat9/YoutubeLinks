@@ -47,7 +47,7 @@ namespace YoutubeLinks.Api.Services
 
         public async Task<YoutubeFile> GetMP3File(string videoId, string videoTitle = null)
         {
-            var title = YoutubeHelpers.NormalizeVideoTitle(videoTitle) ?? await GetVideoTitle(videoId);
+            var title = videoTitle ?? await GetVideoTitle(videoId);
             var fileName = $"{Guid.NewGuid()}.mp3";
 
             var youtubeDL = new YoutubeDL();
@@ -90,7 +90,7 @@ namespace YoutubeLinks.Api.Services
 
         public async Task<YoutubeFile> GetMP4File(string videoId, string videoTitle = null)
         {
-            var title = YoutubeHelpers.NormalizeVideoTitle(videoTitle) ?? await GetVideoTitle(videoId);
+            var title = videoTitle ?? await GetVideoTitle(videoId);
             var fileName = $"{Guid.NewGuid()}.mp4";
 
             var youtubeDL = new YoutubeDL();

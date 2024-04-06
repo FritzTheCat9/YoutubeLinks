@@ -207,6 +207,9 @@
   <data name="Fail" xml:space="preserve">
     <value>Fail</value>
   </data>
+  <data name="FileType" xml:space="preserve">
+    <value>File Type</value>
+  </data>
   <data name="ForbiddenError" xml:space="preserve">
     <value>Forbidden error</value>
   </data>

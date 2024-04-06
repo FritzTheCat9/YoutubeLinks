@@ -23,6 +23,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
         private PlaylistDto _playlist;
         private List<GetAllLinks.LinkInfoDto> _linkInfoList;
+        private YoutubeFileType _youtubeFileType = YoutubeFileType.MP3;
 
         private List<DownloadLinkResult> _downloadLinkResults = [];
 
@@ -71,8 +72,10 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
             _isUserPlaylist = await AuthService.IsLoggedInUser(_playlist.UserId);
 
-            if (!_isUserPlaylist || !_playlist.Public)
+            if (!_playlist.Public && !_isUserPlaylist)
+            {
                 NavigationManager.NavigateTo("/error/forbidden-error");
+            }
 
             await LoadLinkInformation();
         }
@@ -116,7 +119,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                     StateHasChanged();
 
-                    await DownloadPlaylistLink(link, YoutubeFileType.MP3);          //TODO: should be option to pick MP3 or MP4
+                    await DownloadPlaylistLink(link, _youtubeFileType);
                 }
             }
             catch (Exception ex)
@@ -148,8 +151,8 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                 _downloadLinkResults.Add(new()
                 {
-                     Link = link,
-                     Success = true,
+                    Link = link,
+                    Success = true,
                 });
 
             }

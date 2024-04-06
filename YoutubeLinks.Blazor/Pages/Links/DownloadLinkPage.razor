@@ -25,6 +25,20 @@
                             Variant=Variant.Outlined
                             ShrinkLabel />
 
+            <MudSelect T=YoutubeFileType
+                       Label=@Localizer[nameof(AppStrings.FileType)]
+                       @bind-Value=Command.YoutubeFileType
+                       For="() => Command.YoutubeFileType"
+                       Variant=Variant.Outlined >
+                @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
+                {
+                    <MudSelectItem T="YoutubeFileType"
+                                   Value=(YoutubeFileType)youtubeFileType>
+                        @youtubeFileType.ToString()
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
             <FritzProcessingButton @ref=_processingButton
                                    ButtonType=ButtonType.Submit
                                    Color=Color.Primary
@@ -32,5 +46,6 @@
                                    ButtonText=@Localizer[nameof(AppStrings.Download)] />
         </MudStack>
         <FritzValidationMessage For="() => Command.Url" />
+        <FritzValidationMessage For="() => Command.YoutubeFileType" />
     </EditForm>
 </MudPaper>

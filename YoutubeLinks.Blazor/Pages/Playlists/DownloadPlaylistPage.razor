@@ -21,6 +21,20 @@
         @Localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
     </MudText>
 
+    <MudSelect T=YoutubeFileType
+               Label=@Localizer[nameof(AppStrings.FileType)]
+               @bind-Value=_youtubeFileType
+               Disabled=_downloading
+               Variant=Variant.Outlined>
+        @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
+        {
+            <MudSelectItem T="YoutubeFileType"
+                           Value=(YoutubeFileType)youtubeFileType>
+                @youtubeFileType.ToString()
+            </MudSelectItem>
+        }
+    </MudSelect>
+
     <FritzProcessingButton @ref=_processingButton
                            Color=Color.Primary
                            ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]

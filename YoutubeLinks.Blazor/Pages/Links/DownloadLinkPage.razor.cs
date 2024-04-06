@@ -19,7 +19,12 @@ namespace YoutubeLinks.Blazor.Pages.Links
         private List<BreadcrumbItem> _items;
         private FritzProcessingButton _processingButton;
 
-        [Parameter] public DownloadSingleLink.Command Command { get; set; } = new();
+        [Parameter]
+        public DownloadSingleLink.Command Command { get; set; } = new()
+        {
+            Url = "",
+            YoutubeFileType = YoutubeFileType.MP3
+        };
 
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }
         [Inject] public ILinkApiClient LinkApiClient { get; set; }

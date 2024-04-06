@@ -93,5 +93,6 @@
         SetAllPlaylistLinksAsUndownloaded, 
         SetAllPlaylistLinksAsDownloaded,
         MyPlaylists,
+        FileType,
     }
 }
