@@ -2,8 +2,8 @@ import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 
 export interface IApiClient {
-	get(url: string): Promise<AxiosResponse>;
-	getWithResponse<TResponse>(url: string): Promise<TResponse>;
+	getReturnAxiosResponse(url: string): Promise<AxiosResponse>;
+	get<TResponse>(url: string): Promise<TResponse>;
 	postWithoutResponse<TRequest>(url: string, tRequest: TRequest): Promise<void>;
 	post<TRequest, TResponse>(url: string, tRequest: TRequest): Promise<TResponse>;
 	postReturnAxiosResponse<TRequest>(url: string, tRequest: TRequest): Promise<AxiosResponse>;
@@ -38,11 +38,11 @@ export class ApiClient implements IApiClient {
 		});
 	}
 
-	async get(url: string): Promise<AxiosResponse> {
+	async getReturnAxiosResponse(url: string): Promise<AxiosResponse> {
 		return await this.client.get(`${this.baseUrl}${url}`);
 	}
 
-	async getWithResponse<TResponse>(url: string): Promise<TResponse> {
+	async get<TResponse>(url: string): Promise<TResponse> {
 		const response = await this.client.get<TResponse>(`${this.baseUrl}${url}`);
 		return response.data;
 	}

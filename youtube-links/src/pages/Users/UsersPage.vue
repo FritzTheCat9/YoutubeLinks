@@ -29,13 +29,6 @@
 	import type { UserDto } from '@/shared/features/users/responses/UserDto';
 	import { onMounted, ref } from 'vue';
 
-	const items = [
-		{
-			title: 'Users',
-			disabled: true,
-		},
-	];
-
 	const usersPagedList = ref<PagedList<UserDto>>();
 	const loading = ref<boolean>(false);
 	const totalCount = ref<number>(0);
@@ -74,6 +67,13 @@
 	onMounted(() => {
 		// getAllUsers();
 	});
+
+	const items = [
+		{
+			title: 'Users',
+			disabled: true,
+		},
+	];
 
 	const itemsPerPageOptions = [10, 25, 50, 100];
 	const headers = [

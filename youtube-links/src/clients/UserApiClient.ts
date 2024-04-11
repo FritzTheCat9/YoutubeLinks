@@ -58,7 +58,7 @@ export class UserApiClient implements IUserApiClient {
 	}
 
 	async GetUser(id: number): Promise<UserDto> {
-		return await this.apiClient.getWithResponse<UserDto>(`${this.url}/${id}`);
+		return await this.apiClient.get<UserDto>(`${this.url}/${id}`);
 	}
 }
 
