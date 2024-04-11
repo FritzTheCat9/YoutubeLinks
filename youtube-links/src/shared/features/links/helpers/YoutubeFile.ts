@@ -1,8 +1,8 @@
-import { YoutubeFileType } from "./YoutubeFileType";
+import { YoutubeFileType } from './YoutubeFileType';
 
 export interface YoutubeFile {
-    fileBytes: string;  //byte[]
-    contentType: string;
-    fileName: string;
-    youtubeFileType: YoutubeFileType;
+	fileBytes: string; //byte[]
+	contentType: string;
+	fileName: string;
+	youtubeFileType: YoutubeFileType;
 }

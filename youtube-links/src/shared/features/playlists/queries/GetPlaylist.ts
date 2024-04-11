@@ -1,6 +1,5 @@
 export namespace GetPlaylist {
-
-    export interface Query {
-        id: number;
-    }
+	export interface Query {
+		id: number;
+	}
 }

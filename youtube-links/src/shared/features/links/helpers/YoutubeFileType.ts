@@ -1,4 +1,4 @@
 export enum YoutubeFileType {
-    MP3,
-    MP4
+	MP3,
+	MP4,
 }

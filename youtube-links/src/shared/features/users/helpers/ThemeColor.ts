@@ -1,5 +1,5 @@
 export enum ThemeColor {
-    System,
-    Light,
-    Dark
+	System,
+	Light,
+	Dark,
 }

@@ -1,6 +1,5 @@
 export namespace DeleteLink {
-
-    export interface Command {
-        id: number;
-    }
+	export interface Command {
+		id: number;
+	}
 }

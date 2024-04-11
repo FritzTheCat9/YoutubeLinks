@@ -1,7 +1,5 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-    <h1>Playlists Page</h1>
+	<h1>Playlists Page</h1>
 </template>
+
+<script setup lang="ts"></script>
