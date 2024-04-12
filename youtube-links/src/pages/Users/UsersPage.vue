@@ -42,7 +42,7 @@
 
 	const query = ref<GetAllUsers.Query>({
 		page: 1,
-		pageSize: 1,
+		pageSize: 10,
 		sortColumn: '',
 		sortOrder: SortOrder.None,
 		searchTerm: '',
@@ -58,6 +58,13 @@
 		query.value.searchTerm = options.search;
 		getAllUsers();
 	};
+
+	const search = (e: KeyboardEvent) => {
+		const inputElement = e.target as HTMLInputElement;
+		if (inputElement) {
+			query.value.searchTerm = inputElement.value;
+		}
+	};
 </script>
 
 <template>
@@ -69,6 +76,12 @@
 
 	<h1>Users</h1>
 
+	<v-text-field
+		label="Search"
+		variant="outlined"
+		append-inner-icon="mdi-magnify"
+		class="pa-2"
+		@keydown.enter="search($event)" />
 	<v-data-table-server
 		:items-per-page="query.pageSize"
 		:items="usersPagedList?.items"
