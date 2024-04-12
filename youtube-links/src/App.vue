@@ -1,3 +1,11 @@
+<script setup lang="ts">
+	import { RouterView } from 'vue-router';
+	import { ref } from 'vue';
+
+	const drawer = ref<boolean>(true);
+	const rail = ref<boolean>(false);
+</script>
+
 <template>
 	<v-layout>
 		<v-app-bar>
@@ -34,11 +42,3 @@
 		</v-main>
 	</v-layout>
 </template>
-
-<script setup lang="ts">
-	import { RouterView } from 'vue-router';
-	import { ref } from 'vue';
-
-	const drawer = ref<boolean>(true);
-	const rail = ref<boolean>(false);
-</script>

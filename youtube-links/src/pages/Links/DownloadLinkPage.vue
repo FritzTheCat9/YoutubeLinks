@@ -1,3 +1,22 @@
+<script setup lang="ts">
+	import { ref } from 'vue';
+
+	const items = [
+		{
+			title: 'Download link',
+			disabled: true,
+		},
+	];
+	const loading = ref<boolean>(false);
+
+	const load = () => {
+		loading.value = true;
+		setTimeout(() => {
+			loading.value = false;
+		}, 1000);
+	};
+</script>
+
 <template>
 	<v-breadcrumbs :items="items">
 		<template v-slot:title="{ item }">
@@ -19,22 +38,3 @@
 		</v-col>
 	</v-row>
 </template>
-
-<script setup lang="ts">
-	import { ref } from 'vue';
-
-	const items = [
-		{
-			title: 'Download link',
-			disabled: true,
-		},
-	];
-	const loading = ref<boolean>(false);
-
-	const load = () => {
-		loading.value = true;
-		setTimeout(() => {
-			loading.value = false;
-		}, 1000);
-	};
-</script>
