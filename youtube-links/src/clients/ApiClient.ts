@@ -55,16 +55,32 @@ export class ApiClient implements IApiClient {
 	}
 
 	async getReturnAxiosResponse(url: string): Promise<AxiosResponse> {
-		return await this.client.get(`${this.baseUrl}${url}`);
+		try {
+			const response = this.client.get(`${this.baseUrl}${url}`);
+			return response;
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
 	async get<TResponse>(url: string): Promise<TResponse> {
-		const response = await this.client.get<TResponse>(`${this.baseUrl}${url}`);
-		return response.data;
+		try {
+			const response = await this.client.get<TResponse>(`${this.baseUrl}${url}`);
+			return response.data;
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
 	async postWithoutResponse<TRequest>(url: string, tRequest: TRequest): Promise<void> {
-		await this.client.post(`${this.baseUrl}${url}`, tRequest);
+		try {
+			await this.client.post(`${this.baseUrl}${url}`, tRequest);
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
 	async post<TRequest, TResponse>(url: string, tRequest: TRequest): Promise<TResponse> {
@@ -72,46 +88,66 @@ export class ApiClient implements IApiClient {
 			const response = await this.client.post(`${this.baseUrl}${url}`, tRequest);
 			return response.data;
 		} catch (error) {
-			let axiosError = error as AxiosError;
-			let apiError = axiosError.response?.data as ErrorResponse;
-			this.HandleErrors(apiError);
+			this.HandleErrors(error as AxiosError);
 			return Promise.reject();
 		}
 	}
 
 	async postReturnAxiosResponse<TRequest>(url: string, tRequest: TRequest): Promise<AxiosResponse> {
-		return await this.client.post(`${this.baseUrl}${url}`, tRequest);
+		try {
+			return await this.client.post(`${this.baseUrl}${url}`, tRequest);
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
 	async put<TRequest>(url: string, tRequest: TRequest): Promise<void> {
-		await this.client.put<TRequest>(`${this.baseUrl}${url}`, tRequest);
+		try {
+			await this.client.put<TRequest>(`${this.baseUrl}${url}`, tRequest);
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
 	async putWithoutResponse(url: string): Promise<void> {
-		await this.client.put(`${this.baseUrl}${url}`);
+		try {
+			await this.client.put(`${this.baseUrl}${url}`);
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
 	async delete(url: string): Promise<void> {
-		await this.client.delete(`${this.baseUrl}${url}`);
+		try {
+			await this.client.delete(`${this.baseUrl}${url}`);
+		} catch (error) {
+			this.HandleErrors(error as AxiosError);
+			return Promise.reject();
+		}
 	}
 
-	HandleErrors(error: ErrorResponse) {
-		switch (error.type) {
+	HandleErrors(error: AxiosError) {
+		let apiError = error.response?.data as ErrorResponse;
+
+		switch (apiError.type) {
 			case ExceptionType.Validation:
-				const validationErrorResponse = error as ValidationErrorResponse;
+				const validationErrorResponse = apiError as ValidationErrorResponse;
 				throw new MyValidationException(validationErrorResponse.errors);
 			case ExceptionType.Unauthorized:
-				const unauthorizedErrorResponse = error as UnauthorizedErrorResponse;
+				const unauthorizedErrorResponse = apiError as UnauthorizedErrorResponse;
 				throw new MyUnauthorizedException();
 			case ExceptionType.Forbidden:
-				const forbiddenErrorResponse = error as ForbiddenErrorResponse;
+				const forbiddenErrorResponse = apiError as ForbiddenErrorResponse;
 				throw new MyForbiddenException();
 			case ExceptionType.NotFound:
-				const notFoundErrorResponse = error as NotFoundErrorResponse;
+				const notFoundErrorResponse = apiError as NotFoundErrorResponse;
 				throw new MyNotFoundException();
 			case ExceptionType.Server:
 			default:
-				const serverErrorResponse = error as ServerErrorResponse;
+				const serverErrorResponse = apiError as ServerErrorResponse;
 				throw new MyServerException();
 		}
 	}

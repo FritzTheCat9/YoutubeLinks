@@ -42,13 +42,13 @@
 
 	const query = ref<GetAllUsers.Query>({
 		page: 1,
-		pageSize: 101,
+		pageSize: 10,
 		sortColumn: '',
 		sortOrder: SortOrder.None,
 		searchTerm: '',
 	});
 
-	const { usersPagedList, totalCount, loading, getAllUsers, validationErrors } = useGetAllUsers(
+	const { usersPagedList, totalCount, loading, validationErrors, getAllUsers } = useGetAllUsers(
 		query.value
 	);
 
@@ -60,7 +60,6 @@
 		query.value.searchTerm = options.search;
 
 		getAllUsers();
-		console.log(validationErrors);
 	};
 
 	const search = (e: KeyboardEvent) => {

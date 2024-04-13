@@ -21,11 +21,11 @@ const useGetAllUsers = (query: GetAllUsers.Query) => {
 			loading.value = true;
 			usersPagedList.value = await userApiClient.GetAllUsers(query);
 			totalCount.value = usersPagedList.value.totalCount;
-		} catch (exception) {
-			if (exception instanceof MyValidationException) {
-				validationErrors.value = (exception as MyValidationException).errors;
+		} catch (ex) {
+			if (ex instanceof MyValidationException) {
+				validationErrors.value = (ex as MyValidationException).errors;
 			} else {
-				handleExceptions(exception as Error);
+				handleExceptions(ex as Error);
 			}
 		} finally {
 			loading.value = false;
