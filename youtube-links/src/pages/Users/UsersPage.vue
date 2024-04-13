@@ -42,13 +42,15 @@
 
 	const query = ref<GetAllUsers.Query>({
 		page: 1,
-		pageSize: 10,
+		pageSize: 101,
 		sortColumn: '',
 		sortOrder: SortOrder.None,
 		searchTerm: '',
 	});
 
-	const { usersPagedList, totalCount, loading, getAllUsers } = useGetAllUsers(query.value);
+	const { usersPagedList, totalCount, loading, getAllUsers, validationErrors } = useGetAllUsers(
+		query.value
+	);
 
 	const updateData = async (options: any) => {
 		query.value.page = options.page;
@@ -56,7 +58,9 @@
 		query.value.sortColumn = options?.sortBy[0]?.key ?? '';
 		query.value.sortOrder = sortingDirectionToEnum(options?.sortBy[0]?.order);
 		query.value.searchTerm = options.search;
+
 		getAllUsers();
+		console.log(validationErrors);
 	};
 
 	const search = (e: KeyboardEvent) => {
@@ -82,6 +86,7 @@
 		append-inner-icon="mdi-magnify"
 		class="pa-2"
 		@keydown.enter="search($event)" />
+
 	<v-data-table-server
 		:items-per-page="query.pageSize"
 		:items="usersPagedList?.items"
@@ -93,4 +98,8 @@
 		:items-per-page-options="itemsPerPageOptions"
 		@update:options="updateData">
 	</v-data-table-server>
+
+	<div v-if="validationErrors">
+		{{ validationErrors }}
+	</div>
 </template>

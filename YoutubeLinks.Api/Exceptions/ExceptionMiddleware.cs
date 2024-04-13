@@ -61,7 +61,13 @@ namespace YoutubeLinks.Api.Exceptions
 
             context.Response.StatusCode = errorHelperModel.StatusCode;
             context.Response.ContentType = "application/json";
-            string jsonString = JsonConvert.SerializeObject(errorHelperModel.ErrorResponse);
+
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+            };
+
+            string jsonString = JsonConvert.SerializeObject(errorHelperModel.ErrorResponse, settings);
             await context.Response.WriteAsync(jsonString);
         }
 

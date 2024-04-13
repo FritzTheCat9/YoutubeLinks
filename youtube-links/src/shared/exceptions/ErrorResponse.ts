@@ -6,7 +6,7 @@ export interface ErrorResponse {
 }
 
 export interface ValidationErrorResponse extends ErrorResponse {
-	errors: { [key: string]: string[] };
+	errors: Record<string, string[]>;
 }
 
 export interface ServerErrorResponse extends ErrorResponse {}
