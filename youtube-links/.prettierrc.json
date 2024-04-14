@@ -1,12 +1,12 @@
 {
-	"$schema": "https://json.schemastore.org/prettierrc",
-	"semi": true,
-	"tabWidth": 2,
-	"singleQuote": true,
-	"jsxSingleQuote": true,
-	"printWidth": 100,
-	"trailingComma": "es5",
-	"useTabs": true,
-	"vueIndentScriptAndStyle": true,
-	"bracketSameLine": true
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "printWidth": 100,
+  "trailingComma": "es5",
+  "useTabs": false,
+  "vueIndentScriptAndStyle": true,
+  "bracketSameLine": true
 }

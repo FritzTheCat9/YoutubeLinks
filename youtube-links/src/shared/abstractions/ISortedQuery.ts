@@ -1,6 +1,6 @@
 import { SortOrder } from './SortOrder';
 
 export interface SortedQuery {
-	sortColumn: string;
-	sortOrder: SortOrder;
+  sortColumn: string;
+  sortOrder: SortOrder;
 }

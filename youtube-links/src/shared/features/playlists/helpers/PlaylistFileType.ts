@@ -1,4 +1,4 @@
 export enum PlaylistFileType {
-	JSON,
-	TXT,
+  JSON,
+  TXT,
 }

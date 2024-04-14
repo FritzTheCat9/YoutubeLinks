@@ -1,12 +1,12 @@
 import { ExceptionType } from './ExceptionType';
 
 export interface ErrorResponse {
-	type: ExceptionType;
-	message: string;
+  type: ExceptionType;
+  message: string;
 }
 
 export interface ValidationErrorResponse extends ErrorResponse {
-	errors: Record<string, string[]>;
+  errors: Record<string, string[]>;
 }
 
 export interface ServerErrorResponse extends ErrorResponse {}
