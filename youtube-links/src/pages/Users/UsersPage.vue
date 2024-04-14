@@ -3,6 +3,7 @@
 	import { SortOrder, sortingDirectionToEnum } from '@/shared/abstractions/SortOrder';
 	import type { GetAllUsers } from '@/shared/features/users/queries/GetAllUsers';
 	import { ref } from 'vue';
+	import { RouteName } from '../../router/index';
 
 	const items = [
 		{
@@ -28,7 +29,7 @@
 			title: 'Role',
 			align: 'start',
 			sortable: false,
-			key: 'role',
+			key: 'isAdmin',
 		},
 		{
 			title: 'Playlists',
@@ -96,6 +97,16 @@
 		:headers="headers"
 		:items-per-page-options="itemsPerPageOptions"
 		@update:options="updateData">
+		<template v-slot:item.isAdmin="{ item }">
+			<v-chip variant="outlined" :color="item.isAdmin ? 'red' : 'green'">
+				{{ item.isAdmin ? 'Admin' : 'User' }}
+			</v-chip>
+		</template>
+		<template v-slot:item.playlists="{ item }">
+			<router-link :to="`/${RouteName.PLAYLISTS}/${item.id}`">
+				<v-icon icon="mdi-format-list-bulleted" color="primary"></v-icon>
+			</router-link>
+		</template>
 	</v-data-table-server>
 
 	<div v-if="validationErrors">

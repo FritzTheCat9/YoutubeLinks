@@ -1,26 +1,26 @@
 import { ref } from 'vue';
-import { userApiClient } from '../UserApiClient';
-import type { GetAllUsers } from '@/shared/features/users/queries/GetAllUsers';
 import type { PagedList } from '@/shared/abstractions/PagedList';
-import type { UserDto } from '@/shared/features/users/responses/UserDto';
 import { MyValidationException } from '@/shared/exceptions/CustomException';
 import useExceptionHandler from '../ExceptionHandler';
+import type { GetAllUserPlaylists } from '@/shared/features/playlists/queries/GetAllUserPlaylists';
+import type { PlaylistDto } from '@/shared/features/playlists/responses/PlaylistDto';
+import { playlistApiClient } from '../PlaylistApiClient';
 
-const useGetAllUsers = (query: GetAllUsers.Query) => {
-	const usersPagedList = ref<PagedList<UserDto>>();
+const useGetAllUserPlaylists = (query: GetAllUserPlaylists.Query) => {
+	const playlistsPagedList = ref<PagedList<PlaylistDto>>();
 	const totalCount = ref<number>(0);
 	const loading = ref(false);
 	const validationErrors = ref<Record<string, string[]>>();
 
 	const { handleExceptions } = useExceptionHandler();
 
-	const getAllUsers = async (): Promise<void> => {
+	const getAllUserPlaylists = async (): Promise<void> => {
 		validationErrors.value = undefined;
 
 		try {
 			loading.value = true;
-			usersPagedList.value = await userApiClient.GetAllUsers(query);
-			totalCount.value = usersPagedList.value.totalCount;
+			playlistsPagedList.value = await playlistApiClient.getAllUserPlaylists(query);
+			totalCount.value = playlistsPagedList.value.totalCount;
 		} catch (ex) {
 			if (ex instanceof MyValidationException) {
 				validationErrors.value = (ex as MyValidationException).errors;
@@ -32,7 +32,7 @@ const useGetAllUsers = (query: GetAllUsers.Query) => {
 		}
 	};
 
-	return { usersPagedList, totalCount, loading, validationErrors, getAllUsers };
+	return { playlistsPagedList, totalCount, loading, validationErrors, getAllUserPlaylists };
 };
 
-export default useGetAllUsers;
+export default useGetAllUserPlaylists;
