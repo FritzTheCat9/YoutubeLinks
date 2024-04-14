@@ -7,32 +7,32 @@ import { MyValidationException } from '@/shared/exceptions/CustomException';
 import useExceptionHandler from '../ExceptionHandler';
 
 const useGetAllUsers = (query: GetAllUsers.Query) => {
-	const usersPagedList = ref<PagedList<UserDto>>();
-	const totalCount = ref<number>(0);
-	const loading = ref(false);
-	const validationErrors = ref<Record<string, string[]>>();
+  const usersPagedList = ref<PagedList<UserDto>>();
+  const totalCount = ref<number>(0);
+  const loading = ref(false);
+  const validationErrors = ref<Record<string, string[]>>();
 
-	const { handleExceptions } = useExceptionHandler();
+  const { handleExceptions } = useExceptionHandler();
 
-	const getAllUsers = async (): Promise<void> => {
-		validationErrors.value = undefined;
+  const getAllUsers = async (): Promise<void> => {
+    validationErrors.value = undefined;
 
-		try {
-			loading.value = true;
-			usersPagedList.value = await userApiClient.GetAllUsers(query);
-			totalCount.value = usersPagedList.value.totalCount;
-		} catch (ex) {
-			if (ex instanceof MyValidationException) {
-				validationErrors.value = (ex as MyValidationException).errors;
-			} else {
-				handleExceptions(ex as Error);
-			}
-		} finally {
-			loading.value = false;
-		}
-	};
+    try {
+      loading.value = true;
+      usersPagedList.value = await userApiClient.GetAllUsers(query);
+      totalCount.value = usersPagedList.value.totalCount;
+    } catch (ex) {
+      if (ex instanceof MyValidationException) {
+        validationErrors.value = (ex as MyValidationException).errors;
+      } else {
+        handleExceptions(ex as Error);
+      }
+    } finally {
+      loading.value = false;
+    }
+  };
 
-	return { usersPagedList, totalCount, loading, validationErrors, getAllUsers };
+  return { usersPagedList, totalCount, loading, validationErrors, getAllUsers };
 };
 
 export default useGetAllUsers;

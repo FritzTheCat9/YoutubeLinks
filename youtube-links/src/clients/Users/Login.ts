@@ -6,31 +6,31 @@ import type { Login } from '@/shared/features/users/commands/Login';
 import type { JwtDto } from '@/shared/features/users/responses/JwtDto';
 
 const useLogin = (command: Login.Command) => {
-	const jwtDto = ref<JwtDto>();
-	const loading = ref(false);
-	const validationErrors = ref<Record<string, string[]>>();
+  const jwtDto = ref<JwtDto>();
+  const loading = ref(false);
+  const validationErrors = ref<Record<string, string[]>>();
 
-	const { handleExceptions } = useExceptionHandler();
+  const { handleExceptions } = useExceptionHandler();
 
-	const login = async (): Promise<void> => {
-		validationErrors.value = undefined;
-		jwtDto.value = undefined;
+  const login = async (): Promise<void> => {
+    validationErrors.value = undefined;
+    jwtDto.value = undefined;
 
-		try {
-			loading.value = true;
-			jwtDto.value = await userApiClient.Login(command);
-		} catch (ex) {
-			if (ex instanceof MyValidationException) {
-				validationErrors.value = (ex as MyValidationException).errors;
-			} else {
-				handleExceptions(ex as Error);
-			}
-		} finally {
-			loading.value = false;
-		}
-	};
+    try {
+      loading.value = true;
+      jwtDto.value = await userApiClient.Login(command);
+    } catch (ex) {
+      if (ex instanceof MyValidationException) {
+        validationErrors.value = (ex as MyValidationException).errors;
+      } else {
+        handleExceptions(ex as Error);
+      }
+    } finally {
+      loading.value = false;
+    }
+  };
 
-	return { jwtDto, loading, validationErrors, login };
+  return { jwtDto, loading, validationErrors, login };
 };
 
 export default useLogin;
