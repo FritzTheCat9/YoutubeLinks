@@ -1,9 +1,10 @@
 <script setup lang="ts">
   import useLogin from '@/clients/Users/Login';
-  import type { Login } from '@/shared/features/users/commands/Login';
-  import { ValidationConsts } from '@/shared/localization/ValidationConsts';
+  import { Login } from '@/shared/features/users/commands/Login';
   import { ref } from 'vue';
   import type { VForm } from 'vuetify/components';
+
+  const showDialog = ref<boolean>(false);
 
   const command = ref<Login.Command>({
     email: '',
@@ -13,24 +14,8 @@
 
   const form = ref<VForm>();
   const showPassword = ref<boolean>(false);
-  const validationRules = {
-    emailNotEmpty: (v: string) => !!v || 'Email should not be empty.',
-    emailMaximumLength: (v: string) =>
-      v.length <= ValidationConsts.MaximumStringLength ||
-      `The length of email must be ${ValidationConsts.MaximumStringLength} characters or fewer. You entered ${v.length} characters.`,
-    emailIsEmailAddress: (v: string) =>
-      ValidationConsts.isValidEmail(v) || 'Email address is not valid.',
 
-    passwordNotEmpty: (v: string) => !!v || 'Password should not be empty.',
-    passwordMaximumLength: (v: string) =>
-      v.length <= ValidationConsts.MaximumStringLength ||
-      `The length of password must be ${ValidationConsts.MaximumStringLength} characters or fewer. You entered ${v.length} characters.`,
-    passwordMinimumLength: (v: string) =>
-      v.length >= ValidationConsts.MinimumStringLength ||
-      `The length of password must be at least ${ValidationConsts.MinimumStringLength} characters. You entered ${v.length} characters.`,
-  };
-
-  const submit = () => {
+  const submitForm = () => {
     form.value?.validate().then(({ valid: isValid }) => {
       if (isValid) {
         login().then(() => {
@@ -57,8 +42,6 @@
       validationErrors.value[fieldName] = [];
     }
   };
-
-  const showDialog = ref<boolean>(false);
 </script>
 
 <template>
@@ -77,9 +60,9 @@
                 variant="outlined"
                 type="email"
                 :rules="[
-                  validationRules.emailNotEmpty,
-                  validationRules.emailMaximumLength,
-                  validationRules.emailIsEmailAddress,
+                  Login.Validation.email.notEmpty,
+                  Login.Validation.email.maximumLength,
+                  Login.Validation.email.isEmailAddress,
                 ]"
                 :error-messages="validationErrors?.email"
                 @input="clearValidationErrors('email')" />
@@ -93,9 +76,9 @@
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPassword = !showPassword"
                 :rules="[
-                  validationRules.passwordNotEmpty,
-                  validationRules.passwordMaximumLength,
-                  validationRules.passwordMinimumLength,
+                  Login.Validation.password.notEmpty,
+                  Login.Validation.password.maximumLength,
+                  Login.Validation.password.minimumLength,
                 ]"
                 :error-messages="validationErrors?.password"
                 @input="clearValidationErrors('password')" />
@@ -103,7 +86,7 @@
           </v-card-item>
           <v-card-actions>
             <v-spacer />
-            <v-btn text="Login" :loading="loading" @click="submit" />
+            <v-btn text="Login" :loading="loading" @click="submitForm" />
           </v-card-actions>
         </v-card>
       </v-form>
