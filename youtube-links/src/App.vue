@@ -2,6 +2,8 @@
 	import { RouterView } from 'vue-router';
 	import { ref } from 'vue';
 	import { RouteName } from '../src/router/index';
+	import Auth from '../src/pages/users/Auth.vue';
+
 	const drawer = ref<boolean>(true);
 	const rail = ref<boolean>(false);
 </script>
@@ -16,6 +18,7 @@
 				"
 				icon="mdi-menu"></v-app-bar-nav-icon>
 			<v-app-bar-title>Youtube Links</v-app-bar-title>
+			<Auth />
 		</v-app-bar>
 
 		<v-navigation-drawer v-model="drawer" :rail="rail" permanent>

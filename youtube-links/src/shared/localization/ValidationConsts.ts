@@ -4,4 +4,8 @@ export namespace ValidationConsts {
 	export const UserNameRegex: string = '^[a-zA-Z0-9_]+$';
 	export const YoutubeVideoUrlRegex: string =
 		'^(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/(?:[^\\/\\n\\s]+\\/\\S+\\/|(?:v|e(?:mbed)?)\\/|\\S*?[?&]v=)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})';
+
+	export function isValidEmail(email: string) {
+		return /\S+@\S+\.\S+/.test(email);
+	}
 }
