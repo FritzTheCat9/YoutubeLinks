@@ -1,7 +1,7 @@
 export interface LinkDto {
   id: number;
-  created: Date; // Date
-  modified: Date; // Date
+  created: Date;
+  modified: Date;
   url: string;
   videoId: string;
   title: string;

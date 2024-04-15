@@ -15,7 +15,6 @@ export namespace Login {
       isEmailAddress: (v: string) =>
         ValidationConsts.isValidEmail(v) || 'Email address is not valid.',
     },
-
     password: {
       notEmpty: (v: string) => !!v || 'Password should not be empty.',
       minimumLength: (v: string) =>

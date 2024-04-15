@@ -19,7 +19,6 @@ export namespace Register {
       isEmailAddress: (v: string) =>
         ValidationConsts.isValidEmail(v) || 'Email address is not valid.',
     },
-
     userName: {
       notEmpty: (v: string) => !!v || 'User name should not be empty.',
       minimumLength: (v: string) =>
@@ -32,7 +31,6 @@ export namespace Register {
         ValidationConsts.matchesUserNameRegex(v) ||
         'User name can contain only: a-z, A-Z, 0-9 and _ characters.',
     },
-
     password: {
       notEmpty: (v: string) => !!v || 'Password should not be empty.',
       minimumLength: (v: string) =>
@@ -42,7 +40,6 @@ export namespace Register {
         v.length <= ValidationConsts.MaximumStringLength ||
         `The length of password must be ${ValidationConsts.MaximumStringLength} characters or fewer. You entered ${v.length} characters.`,
     },
-
     repeatPassword: {
       notEmpty: (v: string) => !!v || 'Password should not be empty.',
       minimumLength: (v: string) =>
