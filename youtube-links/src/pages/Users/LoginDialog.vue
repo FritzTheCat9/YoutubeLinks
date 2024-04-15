@@ -77,8 +77,8 @@
                 @click:append="showPassword = !showPassword"
                 :rules="[
                   Login.Validation.password.notEmpty,
-                  Login.Validation.password.maximumLength,
                   Login.Validation.password.minimumLength,
+                  Login.Validation.password.maximumLength,
                 ]"
                 :error-messages="validationErrors?.password"
                 @input="clearValidationErrors('password')" />

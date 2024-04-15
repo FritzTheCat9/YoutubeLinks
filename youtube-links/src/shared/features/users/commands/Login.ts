@@ -18,12 +18,12 @@ export namespace Login {
 
     password: {
       notEmpty: (v: string) => !!v || 'Password should not be empty.',
-      maximumLength: (v: string) =>
-        v.length <= ValidationConsts.MaximumStringLength ||
-        `The length of password must be ${ValidationConsts.MaximumStringLength} characters or fewer. You entered ${v.length} characters.`,
       minimumLength: (v: string) =>
         v.length >= ValidationConsts.MinimumStringLength ||
         `The length of password must be at least ${ValidationConsts.MinimumStringLength} characters. You entered ${v.length} characters.`,
+      maximumLength: (v: string) =>
+        v.length <= ValidationConsts.MaximumStringLength ||
+        `The length of password must be ${ValidationConsts.MaximumStringLength} characters or fewer. You entered ${v.length} characters.`,
     },
   };
 }

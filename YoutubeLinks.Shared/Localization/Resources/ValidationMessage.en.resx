@@ -172,7 +172,7 @@
     <value>Youtube video url should not be empty.</value>
   </data>
   <data name="UserNameMatchesRegex" xml:space="preserve">
-    <value>UserName can contain only: a-z, A-Z, 0-9 and _ characters.</value>
+    <value>User name can contain only: a-z, A-Z, 0-9 and _ characters.</value>
   </data>
   <data name="UserNameMaximumLength" xml:space="preserve">
     <value>The length of user name must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
