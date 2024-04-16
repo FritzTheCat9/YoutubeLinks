@@ -1,5 +1,5 @@
 import { ValidationConsts } from '@/shared/localization/ValidationConsts';
-import type { ThemeColor } from '../helpers/ThemeColor';
+import { isValidThemeColorValue, type ThemeColor } from '../helpers/ThemeColor';
 
 export namespace Register {
   export interface Command {
@@ -50,6 +50,11 @@ export namespace Register {
         `The length of password must be ${ValidationConsts.MaximumStringLength} characters or fewer. You entered ${v.length} characters.`,
       equalPassword: (v: string, password: string) =>
         v == password || 'The passwords entered must match.',
+    },
+    themeColor: {
+      isInEnum: (v: string) =>
+        isValidThemeColorValue(v) ||
+        `ThemeColor has a range of values which does not include: ${v}.`,
     },
   };
 }

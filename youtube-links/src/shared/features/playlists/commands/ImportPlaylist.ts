@@ -10,6 +10,8 @@ export namespace ImportPlaylist {
     playlistFileType: PlaylistFileType;
   }
 
+  // TODO: Add validators and form model with a file
+
   // export interface FormModel extends Command {
   //     file: BrowserFile;
   // }

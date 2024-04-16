@@ -3,6 +3,7 @@
   import { SortOrder, sortingDirectionToEnum } from '@/shared/abstractions/SortOrder';
   import type { GetAllUserPlaylists } from '@/shared/features/playlists/queries/GetAllUserPlaylists';
   import { ref } from 'vue';
+  import CreatePlaylistDialog from '../playlists/CreatePlaylistDialog.vue';
   import { RouteName } from '../../router/index';
 
   const items = [
@@ -90,6 +91,8 @@
   </v-breadcrumbs>
 
   <h1>Playlists</h1>
+
+  <CreatePlaylistDialog />
 
   <v-text-field
     label="Search"
