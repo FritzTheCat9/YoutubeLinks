@@ -108,8 +108,4 @@
       </router-link>
     </template>
   </v-data-table-server>
-
-  <div v-if="validationErrors">
-    {{ validationErrors }}
-  </div>
 </template>

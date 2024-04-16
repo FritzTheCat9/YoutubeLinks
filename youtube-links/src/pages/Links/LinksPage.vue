@@ -114,7 +114,12 @@
     </template>
   </v-breadcrumbs>
 
+  <!-- TODO: create link form  -->
+
   <h1>Links</h1>
+  <!-- <span class="mdi mdi-flag-outline"></span> -->
+  <!-- <span class="mdi mdi-flag"></span> -->
+  <!-- <span class="mdi mdi-view-grid-outline"></span> -->
 
   <v-text-field
     label="Search"
@@ -141,7 +146,11 @@
       <v-icon :icon="item.downloaded ? 'mdi-check-bold' : 'mdi-download'" />
     </template>
     <template v-slot:item.actions="{ item }">
-      <!-- <v-icon icon="mdi-plus"></v-icon> -->
+      <!-- <span class="mdi mdi-content-copy"></span> -->
+      <!-- <span class="mdi mdi-download"></span> -->
+      <!-- <span class="mdi mdi-filmstrip-box-multiple"></span> -->
+      <!-- <span class="mdi mdi-pencil"></span> -->
+      <!-- <span class="mdi mdi-delete"></span> -->
     </template>
   </v-data-table-server>
 </template>

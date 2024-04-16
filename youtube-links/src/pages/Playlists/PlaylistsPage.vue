@@ -5,6 +5,8 @@
   import { ref } from 'vue';
   import CreatePlaylistDialog from '../playlists/CreatePlaylistDialog.vue';
   import { RouteName } from '../../router/index';
+  import UpdatePlaylistDialog from './UpdatePlaylistDialog.vue';
+  import DeletePlaylistDialog from './UpdatePlaylistDialog.vue';
 
   const items = [
     {
@@ -93,6 +95,7 @@
   <h1>Playlists</h1>
 
   <CreatePlaylistDialog />
+  <!-- <span class="mdi mdi-swap-vertical"></span> -->
 
   <v-text-field
     label="Search"
@@ -120,11 +123,16 @@
       </router-link>
     </template>
     <template v-slot:item.actions="{ item }">
-      <!-- <v-icon icon="mdi-plus"></v-icon> -->
+      <!-- <span class="mdi mdi-content-save"></span> -->
+      <!-- <span class="mdi mdi-download"></span> -->
+      <UpdatePlaylistDialog
+        :command="{
+          id: item.id,
+          name: item.name,
+          public: item.public,
+        }" />
+      <!-- <DeletePlaylistDialog /> -->
+      <!-- <span class="mdi mdi-delete"></span> -->
     </template>
   </v-data-table-server>
-
-  <div v-if="validationErrors">
-    {{ validationErrors }}
-  </div>
 </template>
