@@ -6,6 +6,7 @@ using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Emails;
 using YoutubeLinks.Api.Emails.Templates;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
@@ -24,7 +25,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
                 int userId = await mediator.Send(command, cancellationToken);
                 return Results.CreatedAtRoute("GetUser", new { id = userId });
             })
-                .WithTags("Users")
+                .WithTags(Tags.Users)
                 .AllowAnonymous();
 
             return app;

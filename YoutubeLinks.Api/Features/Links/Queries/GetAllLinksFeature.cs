@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Links.Extensions;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
 
@@ -19,7 +20,7 @@ namespace YoutubeLinks.Api.Features.Links.Queries
             {
                 return Results.Ok(await mediator.Send(query, cancellationToken));
             })
-                .WithTags("Playlists")
+                .WithTags(Tags.Links)
                 .AllowAnonymous();
 
             return app;

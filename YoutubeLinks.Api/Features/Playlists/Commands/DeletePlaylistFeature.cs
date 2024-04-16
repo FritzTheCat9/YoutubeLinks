@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
@@ -19,7 +20,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
                 var command = new DeletePlaylist.Command() { Id = id };
                 return Results.Ok(await mediator.Send(command, cancellationToken));
             })
-                .WithTags("Playlists")
+                .WithTags(Tags.Playlists)
                 .RequireAuthorization(Policy.User);
 
             return app;

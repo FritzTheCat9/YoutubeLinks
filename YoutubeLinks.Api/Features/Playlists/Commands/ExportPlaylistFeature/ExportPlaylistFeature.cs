@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Helpers;
@@ -20,7 +21,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
                 var playlistFile = await mediator.Send(command, cancellationToken);
                 return Results.File(playlistFile.FileBytes, playlistFile.ContentType, playlistFile.FileName);
             })
-                .WithTags("Playlists")
+                .WithTags(Tags.Playlists)
                 .AllowAnonymous();
 
             return app;

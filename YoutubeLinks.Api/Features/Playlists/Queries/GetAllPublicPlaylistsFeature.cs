@@ -2,6 +2,7 @@
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Playlists.Extensions;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
@@ -19,7 +20,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
             {
                 return Results.Ok(await mediator.Send(query, cancellationToken));
             })
-                .WithTags("Playlists")
+                .WithTags(Tags.Playlists)
                 .AllowAnonymous();
 
             return app;

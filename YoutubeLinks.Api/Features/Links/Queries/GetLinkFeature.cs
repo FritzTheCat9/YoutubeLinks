@@ -2,6 +2,7 @@
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Links.Extensions;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
@@ -21,7 +22,7 @@ namespace YoutubeLinks.Api.Features.Links.Queries
                 return Results.Ok(await mediator.Send(query, cancellationToken));
             })
                 .WithName("GetLink")
-                .WithTags("Links")
+                .WithTags(Tags.Links)
                 .AllowAnonymous();
 
             return app;

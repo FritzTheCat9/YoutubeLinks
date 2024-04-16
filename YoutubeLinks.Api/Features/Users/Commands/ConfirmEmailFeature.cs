@@ -6,6 +6,7 @@ using YoutubeLinks.Api.Emails;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
+using YoutubeLinks.Api.Helpers;
 
 namespace YoutubeLinks.Api.Features.Users.Commands
 {
@@ -19,7 +20,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             {
                 return Results.Ok(await mediator.Send(command, cancellationToken));
             })
-                .WithTags("Users")
+                .WithTags(Tags.Users)
                 .AllowAnonymous();
 
             return app;

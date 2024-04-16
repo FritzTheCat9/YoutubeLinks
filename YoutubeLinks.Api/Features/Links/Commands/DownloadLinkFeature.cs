@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Commands;
@@ -20,7 +21,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 var file = await mediator.Send(command, cancellationToken);
                 return Results.File(file.FileBytes, file.ContentType, file.FileName);
             })
-                .WithTags("Links")
+                .WithTags(Tags.Links)
                 .AllowAnonymous();
 
             return app;

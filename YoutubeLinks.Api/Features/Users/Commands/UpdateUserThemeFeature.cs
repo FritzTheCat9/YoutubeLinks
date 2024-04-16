@@ -2,6 +2,7 @@
 using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
@@ -21,7 +22,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
                 command.Id = id;
                 return Results.Ok(await mediator.Send(command, cancellationToken));
             })
-                .WithTags("Users")
+                .WithTags(Tags.Users)
                 .RequireAuthorization(Policy.User);
 
             return app;

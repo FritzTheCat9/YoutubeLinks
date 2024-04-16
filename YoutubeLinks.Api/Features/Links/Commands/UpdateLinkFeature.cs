@@ -3,6 +3,7 @@ using Microsoft.Extensions.Localization;
 using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
@@ -25,7 +26,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 command.Id = id;
                 return Results.Ok(await mediator.Send(command, cancellationToken));
             })
-                .WithTags("Links")
+                .WithTags(Tags.Links)
                 .RequireAuthorization(Policy.User);
 
             return app;

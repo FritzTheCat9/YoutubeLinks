@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Users.Extensions;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Queries;
 using YoutubeLinks.Shared.Features.Users.Responses;
@@ -20,7 +21,7 @@ namespace YoutubeLinks.Api.Features.Users.Queries
                 return Results.Ok(await mediator.Send(query, cancellationToken));
             })
                 .WithName("GetUser")
-                .WithTags("Users")
+                .WithTags(Tags.Users)
                 .AllowAnonymous();
 
             return app;

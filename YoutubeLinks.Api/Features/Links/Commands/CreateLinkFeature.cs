@@ -4,6 +4,7 @@ using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
@@ -25,7 +26,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 int playlistId = await mediator.Send(command, cancellationToken);
                 return Results.CreatedAtRoute("GetLink", new { id = playlistId });
             })
-                .WithTags("Links")
+                .WithTags(Tags.Links)
                 .RequireAuthorization(Policy.User);
 
             return app;
