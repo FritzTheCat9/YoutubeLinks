@@ -94,11 +94,24 @@ Nuget packages and libraries used in projects.
 - Anonymous - can view website data (public playlists / links)
 
 ## Launch
-// TODO: Add launch instruction (docker compose / database creation)
+Setup all containers:
+```
+docker compose up --build -d
+```
 
-Docker MSSQL database.
-Blazor WASM App frontend.
-C# Minimal Web Api backend.
+Create database (create db manually if not exist + update database):
+```
+cd C:\Users\bartl\source\repos\YoutubeLinks\YoutubeLinks.Api
+dotnet ef database update
+```
+
+More instructions how to run my application can be found inside issue:
+https://github.com/FritzTheCat9/YoutubeLinks/issues/52
+
+Docker MSSQL database.\
+Blazor WASM App frontend.\
+C# Minimal Web Api backend.\
+Seq logging.
 
 ## Project status
 Project created as part of the "[100 Commits](https://100commitow.pl)" competition. The challenge is to add changes to the repository every day for 100 days.
