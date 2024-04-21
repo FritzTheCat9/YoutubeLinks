@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using YoutubeDLSharp;
+﻿using YoutubeDLSharp;
 using YoutubeDLSharp.Options;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Helpers;
@@ -26,7 +25,7 @@ namespace YoutubeLinks.Api.Services
         {
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
-            _ytDlpPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), "yt-dlp.exe");
+            _ytDlpPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "yt-dlp" : "yt-dlp.exe");
             _tmpFolderPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), "Tmp");
         }
 
