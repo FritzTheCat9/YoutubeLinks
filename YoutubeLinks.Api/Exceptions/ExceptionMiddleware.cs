@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using YoutubeLinks.Shared.Exceptions;
 
 namespace YoutubeLinks.Api.Exceptions
@@ -62,9 +63,15 @@ namespace YoutubeLinks.Api.Exceptions
             context.Response.StatusCode = errorHelperModel.StatusCode;
             context.Response.ContentType = "application/json";
 
-            var settings = new JsonSerializerSettings
+            JsonSerializerSettings settings = new JsonSerializerSettings
             {
-                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy
+                    {
+                        ProcessDictionaryKeys = false,
+                    }
+                }
             };
 
             string jsonString = JsonConvert.SerializeObject(errorHelperModel.ErrorResponse, settings);
