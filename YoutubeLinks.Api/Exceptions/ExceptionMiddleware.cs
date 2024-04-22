@@ -63,7 +63,7 @@ namespace YoutubeLinks.Api.Exceptions
             context.Response.StatusCode = errorHelperModel.StatusCode;
             context.Response.ContentType = "application/json";
 
-            JsonSerializerSettings settings = new JsonSerializerSettings
+            var settings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
                 {
