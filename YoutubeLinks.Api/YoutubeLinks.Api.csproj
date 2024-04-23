@@ -48,6 +48,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Emails\Templates\EmailConfirmationSuccessfulTemplate.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Emails\Templates\EmailConfirmationTemplate.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="yt-dlp.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
