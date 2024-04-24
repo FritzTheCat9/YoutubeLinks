@@ -28,6 +28,8 @@ namespace YoutubeLinks.Api.Data.Database
             services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             services.AddScoped<ILinkRepository, LinkRepository>();
 
+            services.AddHostedService<DatabaseInitializer>();
+
             return services;
         }
     }
