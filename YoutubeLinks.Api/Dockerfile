@@ -21,6 +21,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["YoutubeLinks.Api/YoutubeLinks.Api.csproj", "YoutubeLinks.Api/"]
+# Copy email templates
+COPY ["YoutubeLinks.Api/Emails/Templates/", "/src/Emails/Templates/"]
 COPY ["YoutubeLinks.Shared/YoutubeLinks.Shared.csproj", "YoutubeLinks.Shared/"]
 RUN dotnet restore "./YoutubeLinks.Api/YoutubeLinks.Api.csproj"
 COPY . .
@@ -33,12 +35,11 @@ RUN dotnet publish "./YoutubeLinks.Api.csproj" -c $BUILD_CONFIGURATION -o /app/p
 
 FROM base AS final
 WORKDIR /app
+COPY --from=publish /app/publish .
+# Copy email templates
+COPY --from=build /src/Emails/Templates /app/Emails/Templates
 # Create Tmp folder (helper folder to download mp3 and mp4 files)
 RUN mkdir /app/Tmp/
-# Create Logging/Logs/ folder (to save Api logs in files)
-RUN mkdir /app/Logging/
-RUN mkdir /app/Logging/Logs/
-COPY --from=publish /app/publish .
 # Copy downloaded yt-dlp file to /app/yt-dlp
 COPY --from=yt-dlp-download /app/yt-dlp /app/yt-dlp
 ENTRYPOINT ["dotnet", "YoutubeLinks.Api.dll"]

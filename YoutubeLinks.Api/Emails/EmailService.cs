@@ -26,7 +26,7 @@ namespace YoutubeLinks.Api.Emails
             _webHostEnvironment = webHostEnvironment;
             _fluentEmail = fluentEmail;
             _logger = logger;
-            _templatesFolder = $"{_webHostEnvironment.ContentRootPath}\\Emails\\Templates";
+            _templatesFolder = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), "Emails", "Templates");
         }
 
         public async Task SendEmail<T>(string to, T model) where T : BaseTemplateModel
@@ -41,7 +41,7 @@ namespace YoutubeLinks.Api.Emails
             var email = _fluentEmail.SetFrom(_options.Email)
                                     .To(to)
                                     .Subject(model.Subject)
-                                    .UsingTemplateFromFile($"{_templatesFolder}//{model.TemplateFileName}", model);
+                                    .UsingTemplateFromFile(Path.Combine(_templatesFolder, model.TemplateFileName), model);
 
             await email.SendAsync();
 

@@ -1,4 +1,4 @@
-﻿namespace YoutubeLinks.Api.Emails.Templates
+﻿namespace YoutubeLinks.Api.Emails.Models
 {
     public class EmailConfirmationSuccessfulTemplateModel : BaseTemplateModel
     {

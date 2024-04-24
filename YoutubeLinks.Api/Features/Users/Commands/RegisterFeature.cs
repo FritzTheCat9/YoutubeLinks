@@ -5,7 +5,7 @@ using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Emails;
-using YoutubeLinks.Api.Emails.Templates;
+using YoutubeLinks.Api.Emails.Models;
 using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Shared.Exceptions;
