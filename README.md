@@ -1,5 +1,64 @@
 # YoutubeLinks
-The YoutubeLinks app will allow users to save YouTube links as playlists. Users will be able to download mp3 files from the playlists they create.
+The YoutubeLinks app will allow users to save YouTube links as playlists.\
+Users will be able to download mp3 files from the playlists they create.\
+Downloading playlist links as mp3 files tested on more than 1000 links.
+
+## Table of contents
+* [Launch](#launch)
+* [Presentation](#presentation)
+* [Technologies](#technologies)
+* [Architecture](#architecture)
+* [Project types and references](#project-types-and-references)
+* [Packages](#packages)
+* [Features](#features)
+* [Roles](#roles)
+* [Project status](#project-status)
+
+## Launch
+Run application with one command (setup all docker containers, create database, apply migrations):
+```
+docker compose up --build -d
+```
+
+Login credentials:
+```
+Admin:
+- Email: ytlinksapp@gmail.com
+- Password: Asd123!
+User:
+- Email: ytlinksapp1@gmail.com
+- Password: Asd123!
+```
+
+Created containers:
+- C# Web API http/https (swagger):
+```
+http://localhost:5000
+https://localhost:5001
+```
+- Blazor WASM frontend http/https:
+```
+http://localhost:7000
+https://localhost:7001
+```
+- MSSQL database:
+```
+Host: localhost 
+Port: 1433 
+Database/Schema: YoutubeLinks
+Username: sa
+Password: Password1!
+Server: youtubelinks.database
+```
+- Seq Api logs:
+```
+http://localhost:8081
+```
+
+If You have any problems check issue below or ask me in github issues:
+https://github.com/FritzTheCat9/YoutubeLinks/issues/52
+
+## Presentation
 
 Users view:
 ![Users image](./images/1_users.png)
@@ -13,21 +72,8 @@ Links view:
 Links grid view:
 ![Links grid image](./images/5_links_grid_view.png)
 
-Download playlist view (now you can open winamp and be happy with your newly downloaded playlist):
+Download playlist view:
 ![Download playlists image](./images/4_playlist_downloading.png)
-
-Update: Creating playlists works, downloading single link as .mp3 and .mp4 works, downloading playlist works. More improvements will be added.
-
-## Table of contents
-* [Technologies](#technologies)
-* [Architecture](#architecture)
-* [Project types and references](#project-types-and-references)
-* [Projects content](#projects-content)
-* [Packages](#packages)
-* [Features](#features)
-* [Roles](#roles)
-* [Launch](#launch)
-* [Project status](#project-status)
 
 ## Technologies
 - C# 12
@@ -42,9 +88,6 @@ Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQ
 - YoutubeLinks.Blazor - Blazor WebAssembly Standalone App (Frontend)
 - YoutubeLinks.Shared - Class Library (Backend and Frontend shared code)
 
-## Projects content
-// TODO: complete later
-
 ## Packages
 Nuget packages and libraries used in projects.
 
@@ -56,6 +99,7 @@ Nuget packages and libraries used in projects.
     - [Serilog](https://www.nuget.org/packages/Serilog/3.1.2-dev-02097) - Logging to console and file
     - [JwtBearer](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer) - Jwt Token Authentication
     - [Swagger](https://www.nuget.org/packages/Swashbuckle.AspNetCore) - Manual Api testing
+    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get youtube videos titles, download videos as .mp3 and .mp4 files
 - Blazor
     - [MudBlazor](https://www.nuget.org/packages/MudBlazor) - Blazor UI library
     - [Blazored.FluentValidation](https://www.nuget.org/packages/Blazored.FluentValidation) - Frontend validation + Backend validation
@@ -66,52 +110,34 @@ Nuget packages and libraries used in projects.
     - Register new user and send confirmation email
     - Confirm user registration and send registration success email
     - Login user if email is confirmed
+    - Update user color theme
     - Get all users (paginated, sorted and filtered)
     - Get selected user
 - Playlist
+    - Download playlist (only undownloaded links)
+    - Export playlist (.json, .txt)
+    - Import playlist (.json, .txt)
     - Create playlist
     - Delete playlist
-    - Update playlist
+    - Mark all playlist links as downloaded / undownloaded
+    - Update playlist (set playlist as public / private)
+    - Get all public playlists (paginated, sorted and filtered)
     - Get all user playlists (paginated, sorted and filtered)
     - Get selected playlist
-    - Download playlist
-    - Import playlist
-    - Export playlist
-    - Set all playlist links as downloaded / undownloaded
 - Link
+    - Download link (.mp3, .mp4)
+    - Download single link (no need to add link to the playlist)
     - Create link
     - Delete link
-    - Update link
+    - Update link (mark as downloaded, change title)
     - Get all playlist links (paginated, sorted and filtered)
     - Get selected link
-    - Download link
-    - Mark link as downloaded (manually if we dont want to download this link)
-    - Unmark downloaded flag
+    - Links grid / table view
 
 ## Roles
-- Admin - ony one user have Admin role, access to Admin Panel (if needed)
+- Admin - ony one user have Admin role
 - User - can view website data, can do CRUD operations on owned playlists and links
 - Anonymous - can view website data (public playlists / links)
-
-## Launch
-Setup all containers:
-```
-docker compose up --build -d
-```
-
-Create database (create db manually if not exist + update database):
-```
-cd C:\Users\bartl\source\repos\YoutubeLinks\YoutubeLinks.Api
-dotnet ef database update
-```
-
-More instructions how to run my application can be found inside issue:
-https://github.com/FritzTheCat9/YoutubeLinks/issues/52
-
-Docker MSSQL database.\
-Blazor WASM App frontend.\
-C# Minimal Web Api backend.\
-Seq logging.
 
 ## Project status
 Project created as part of the "[100 Commits](https://100commitow.pl)" competition. The challenge is to add changes to the repository every day for 100 days.
