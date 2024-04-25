@@ -15,6 +15,14 @@ Downloading playlist links as mp3 files tested on more than 1000 links.
 * [Project status](#project-status)
 
 ## Launch
+Generate https certificate for Api:
+```
+dotnet dev-certs https --clean
+dotnet dev-certs https -ep $HOME\.aspnet\https\aspnetapp.pfx -p password
+dotnet dev-certs https --trust
+-ep - path to existing certificate file (.pfx) that you want to use for HTTPS development (existing PFX file)
+```
+
 Run application with one command (setup all docker containers, create database, apply migrations):
 ```
 docker compose up --build -d

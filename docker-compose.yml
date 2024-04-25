@@ -5,16 +5,18 @@ services:
     build:
       context: .
       dockerfile: YoutubeLinks.Api/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=5000
-      - ASPNETCORE_HTTPS_PORTS=5001
     ports:
       - 5000:5000
       - 5001:5001
+    environment:
+      - ASPNETCORE_URLS=https://+:5001;http://+:5000
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ASPNETCORE_HTTPS_PORTS=5001
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${USERPROFILE}/.aspnet/https:/https/
       - ./YoutubeLinks.Api/Logging/Logs:/app/Logging/Logs
 
   youtubelinks.blazor:
@@ -23,13 +25,13 @@ services:
     build:
       context: .
       dockerfile: YoutubeLinks.Blazor/Dockerfile
+    ports:
+      - 7000:80
+      - 7001:443
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=7000
       - ASPNETCORE_HTTPS_PORTS=7001
-    ports:
-      - 7000:80
-      - 7001:443
 
   youtubelinks.database:
     image: mcr.microsoft.com/mssql/server:latest
@@ -47,11 +49,11 @@ services:
   youtubelinks.seq:
     image: datalust/seq:latest
     container_name: youtubelinks.seq
-    environment:
-      ACCEPT_EULA: 'Y'
     ports:
       - 5341:5341
       - 8081:80
+    environment:
+      ACCEPT_EULA: 'Y'
       
 volumes:
   mssql_volume:
