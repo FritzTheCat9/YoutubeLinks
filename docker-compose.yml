@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   youtubelinks.api:
     image: ${DOCKER_REGISTRY-}youtubelinksapi
@@ -17,6 +15,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ./YoutubeLinks.Api/Logging/Logs:/app/Logging/Logs
 
   youtubelinks.blazor:
     image: ${DOCKER_REGISTRY-}youtubelinksblazor
