@@ -32,6 +32,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=7000
       - ASPNETCORE_HTTPS_PORTS=7001
+    volumes:
+      - ${USERPROFILE}/.aspnet/https/certificate.crt:/etc/nginx/certificate.crt
+      - ${USERPROFILE}/.aspnet/https/private.key:/etc/nginx/private.key
+
 
   youtubelinks.database:
     image: mcr.microsoft.com/mssql/server:latest

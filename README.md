@@ -17,36 +17,36 @@ Downloading playlist links as mp3 files tested on more than 1000 links.
 ## Launch
 Generate https certificate for Api:
 ```
+cd %USERPROFILE%
 dotnet dev-certs https --clean
-dotnet dev-certs https -ep $HOME\.aspnet\https\aspnetapp.pfx -p password
+dotnet dev-certs https -ep .aspnet\https\aspnetapp.pfx -p password
 dotnet dev-certs https --trust
 -ep - path to existing certificate file (.pfx) that you want to use for HTTPS development (existing PFX file)
 ```
 
-Run application with one command (setup all docker containers, create database, apply migrations):
+Generate https certificate for Blazor WASM (when generating certificate press ENTER):
 ```
-docker compose up --build -d
+cd %USERPROFILE%\.aspnet\https
+Press ENTER on any prompts after this command:
+openssl req -newkey rsa:2048 -nodes -keyout private.key -out certificate.csr
+openssl x509 -req -days 365 -in certificate.csr -signkey private.key -out certificate.crt
 ```
 
-Login credentials:
+Run application with one command (setup all docker containers, create database, apply migrations):
 ```
-Admin:
-- Email: ytlinksapp@gmail.com
-- Password: Asd123!
-User:
-- Email: ytlinksapp1@gmail.com
-- Password: Asd123!
+cd C:\Users\bartl\source\repos\YoutubeLinks
+docker compose up --build -d
 ```
 
 Created containers:
 - C# Web API http/https (swagger):
 ```
-http://localhost:5000
+http://localhost:5000 (redirect to https 5001)
 https://localhost:5001
 ```
 - Blazor WASM frontend http/https:
 ```
-http://localhost:7000
+http://localhost:7000 (redirect to https 7001)
 https://localhost:7001
 ```
 - MSSQL database:
@@ -61,6 +61,21 @@ Server: youtubelinks.database
 - Seq Api logs:
 ```
 http://localhost:8081
+```
+
+Open the Blazor WASM frontend on https://localhost:7001, trust the website:
+
+![HTTPS Error](./images/error_1.png)
+![HTTPS Error2](./images/error_2.png)
+
+Login credentials:
+```
+Admin:
+- Email: ytlinksapp@gmail.com
+- Password: Asd123!
+User:
+- Email: ytlinksapp1@gmail.com
+- Password: Asd123!
 ```
 
 If You have any problems check issue below or ask me in github issues:
