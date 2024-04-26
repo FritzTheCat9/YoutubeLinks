@@ -8,8 +8,8 @@ using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Api.Features.Users.Commands;
 using YoutubeLinks.Api.Data.Entities;
-using YoutubeLinks.Api.Emails.Templates;
 using FluentAssertions;
+using YoutubeLinks.Api.Emails.Models;
 
 namespace YoutubeLinks.UnitTests.Features.Users.Commands
 {
