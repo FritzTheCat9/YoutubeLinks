@@ -15,6 +15,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
     public partial class Auth : ComponentBase
     {
         [Parameter] public EventCallback<ThemeColor> ChangeThemeColor { get; set; }
+        [Parameter] public EventCallback UserChanged { get; set; }
 
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }
         [Inject] public IUserApiClient UserApiClient { get; set; }
@@ -50,6 +51,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
                     authStateProvider.NotifyAuthStateChanged();
 
                     await LoadUserTheme();
+                    await UserChanged.InvokeAsync();
                 }
             }
         }

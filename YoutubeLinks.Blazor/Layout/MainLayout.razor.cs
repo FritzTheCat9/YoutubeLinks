@@ -39,6 +39,13 @@ namespace YoutubeLinks.Blazor.Layout
             },
         };
 
+        public int? UserId { get; set; }
+
+        public async Task UserChanged()
+        {
+            UserId = await AuthService.GetCurrentUserId();
+        }
+
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }
         [Inject] public IUserApiClient UserApiClient { get; set; }
 

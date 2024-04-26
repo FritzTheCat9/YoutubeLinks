@@ -34,11 +34,11 @@
                            OnClick=OnThemeChange
                            Style="margin-right: 5px;" />
         </MudTooltip>
-        <Auth ChangeThemeColor="ChangeThemeColor" />
+        <Auth ChangeThemeColor="ChangeThemeColor" UserChanged="UserChanged" />
     </MudAppBar>
     <MudDrawer @bind-Open=_drawerOpen
                Variant=DrawerVariant.Mini>
-        <NavMenu />
+        <NavMenu UserId="UserId" />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth=MaxWidth.Large
