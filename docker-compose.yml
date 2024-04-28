@@ -13,10 +13,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=5000
       - ASPNETCORE_HTTPS_PORTS=5001
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
-      - ${USERPROFILE}/.aspnet/https:/https/
       - ./YoutubeLinks.Api/Logging/Logs:/app/Logging/Logs
 
   youtubelinks.blazor:
@@ -33,11 +30,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=7000
       - ASPNETCORE_HTTPS_PORTS=7001
       - ASPNETCORE_ENVIRONMENT=Development
-    volumes:
-      - ${USERPROFILE}/.aspnet/https/certificate.crt:/etc/nginx/certificate.crt
-      - ${USERPROFILE}/.aspnet/https/private.key:/etc/nginx/private.key
-
-
+      
   youtubelinks.database:
     image: mcr.microsoft.com/mssql/server:latest
     container_name: youtubelinks.database

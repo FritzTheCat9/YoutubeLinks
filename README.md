@@ -15,23 +15,6 @@ Downloading playlist links as mp3 files tested on more than 1000 links.
 * [Project status](#project-status)
 
 ## Launch
-Generate https certificate for Api:
-```
-cd %USERPROFILE%
-dotnet dev-certs https --clean
-dotnet dev-certs https -ep .aspnet\https\aspnetapp.pfx -p password
-dotnet dev-certs https --trust
--ep - path to existing certificate file (.pfx) that you want to use for HTTPS development (existing PFX file)
-```
-
-Generate https certificate for Blazor WASM (when generating certificate press ENTER):
-```
-cd %USERPROFILE%\.aspnet\https
-Press ENTER on any prompts after this command:
-openssl req -newkey rsa:2048 -nodes -keyout private.key -out certificate.csr
-openssl x509 -req -days 365 -in certificate.csr -signkey private.key -out certificate.crt
-```
-
 Run application with one command (setup all docker containers, create database, apply migrations):
 ```
 cd C:\Users\bartl\source\repos\YoutubeLinks
@@ -39,15 +22,13 @@ docker compose up --build -d
 ```
 
 Created containers:
-- C# Web API http/https (swagger):
+- C# Web API http (swagger):
 ```
-http://localhost:5000 (redirect to https 5001)
-https://localhost:5001
+http://localhost:5000
 ```
-- Blazor WASM frontend http/https:
+- Blazor WASM frontend http:
 ```
-http://localhost:7000 (redirect to https 7001)
-https://localhost:7001
+http://localhost:7000
 ```
 - MSSQL database:
 ```
@@ -62,11 +43,6 @@ Server: youtubelinks.database
 ```
 http://localhost:8081
 ```
-
-Open the Blazor WASM frontend on https://localhost:7001, trust the website:
-
-![HTTPS Error](./images/error_1.png)
-![HTTPS Error2](./images/error_2.png)
 
 Login credentials:
 ```
