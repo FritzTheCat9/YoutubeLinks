@@ -11,7 +11,7 @@ using YoutubeLinks.Api.Features.Users.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
 using FluentAssertions;
-using YoutubeLinks.Api.Emails.Templates;
+using YoutubeLinks.Api.Emails.Models;
 
 namespace YoutubeLinks.UnitTests.Features.Users.Commands
 {
