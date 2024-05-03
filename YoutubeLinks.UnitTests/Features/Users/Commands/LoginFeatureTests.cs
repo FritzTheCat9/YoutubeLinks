@@ -131,7 +131,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
                 EmailConfirmed = true,
             });
             passwordService.Validate(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            authenticator.CreateToken(Arg.Any<User>()).Returns(new JwtDto
+            authenticator.CreateTokens(Arg.Any<User>()).Returns(new JwtDto
             {
                  AccessToken = "AccessToken"
             });
@@ -147,7 +147,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
 
             result.Should().NotBeNull();
             result.Should().BeOfType<JwtDto>();
-            authenticator.Received().CreateToken(Arg.Any<User>());
+            authenticator.Received().CreateTokens(Arg.Any<User>());
         }
     }
 }
