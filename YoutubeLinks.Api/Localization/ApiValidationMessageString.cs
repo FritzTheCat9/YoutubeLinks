@@ -11,5 +11,6 @@
         TokenIsNotAssignedToThisUser,
         UrlMustBeUnique,
         UrlIdNotValid,
+        RefreshTokenIsNotValid,
     }
 }

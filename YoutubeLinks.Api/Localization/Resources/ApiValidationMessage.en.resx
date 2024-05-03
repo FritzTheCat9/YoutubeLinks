@@ -132,6 +132,9 @@
   <data name="PasswordIsIncorrect" xml:space="preserve">
     <value>Incorrect password.</value>
   </data>
+  <data name="RefreshTokenIsNotValid" xml:space="preserve">
+    <value>Refresh token is not valid.</value>
+  </data>
   <data name="TokenIsNotAssignedToThisUser" xml:space="preserve">
     <value>Provided token is not assigned to this user.</value>
   </data>

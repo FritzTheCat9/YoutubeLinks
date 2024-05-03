@@ -28,6 +28,26 @@ namespace YoutubeLinks.Blazor.Pages.Users
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IDialogService DialogService { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var jwt = await JwtProvider.GetJwtDto();
+                if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
+                    await Logout();
+
+                var newJwt = await UserApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
+                await JwtProvider.SetJwtDto(newJwt);
+
+                var authStateProvider = AuthenticationStateProvider as AuthStateProvider;
+                authStateProvider.NotifyAuthStateChanged();
+            }
+            catch (Exception)
+            {
+                await Logout();
+            }
+        }
+
         private async Task Login()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };

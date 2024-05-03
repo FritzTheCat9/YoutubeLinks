@@ -12,7 +12,7 @@ namespace YoutubeLinks.Api.Auth
 {
     public interface IAuthenticator
     {
-        JwtDto CreateToken(User user);
+        JwtDto CreateTokens(User user);
     }
 
     public class Authenticator : IAuthenticator
@@ -21,7 +21,6 @@ namespace YoutubeLinks.Api.Auth
         private readonly AuthOptions _options;
         private readonly string _issuer;
         private readonly string _audience;
-        private readonly TimeSpan _expiry;
         private readonly SigningCredentials _signingCredencials;
         private readonly JwtSecurityTokenHandler _jwtHandler = new();
 
@@ -33,16 +32,24 @@ namespace YoutubeLinks.Api.Auth
             _options = options.Value;
             _issuer = _options.Issuer;
             _audience = _options.Audience;
-            _expiry = _options.Expiry;
             _signingCredencials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
                 SecurityAlgorithms.HmacSha256);
         }
 
-        public JwtDto CreateToken(User user)
+        public JwtDto CreateTokens(User user)
+        {
+            return new()
+            {
+                AccessToken = GenerateAccessToken(user),
+                RefreshToken = GenerateRefreshToken(user),
+            };
+        }
+
+        private string GenerateAccessToken(User user)
         {
             var now = _clock.Current();
-            var expires = now.Add(_expiry);
+            var expires = now.Add(AuthConsts.AccessTokenExpiry);
 
             var claims = new List<Claim>()
             {
@@ -57,8 +64,22 @@ namespace YoutubeLinks.Api.Auth
 
             var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredencials);
             var accessToken = _jwtHandler.WriteToken(jwt);
+            return accessToken;
+        }
 
-            return new() { AccessToken = accessToken };
+        private string GenerateRefreshToken(User user)
+        {
+            var now = _clock.Current();
+            var expires = now.Add(AuthConsts.RefreshTokenExpiry);
+
+            var claims = new List<Claim>()
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            };
+
+            var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredencials);
+            var refreshToken = _jwtHandler.WriteToken(jwt);
+            return refreshToken;
         }
     }
 }
