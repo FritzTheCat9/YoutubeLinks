@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Shared.Features.Users.Commands;
+using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Auth
 {
@@ -7,15 +11,28 @@ namespace YoutubeLinks.Blazor.Auth
     {
         Task<int?> GetCurrentUserId();
         Task<bool> IsLoggedInUser(int userId);
+        Task Login(JwtDto token);
+        Task Logout();
+        Task RefreshToken();
     }
 
     public class AuthService : IAuthService
     {
         private readonly AuthenticationStateProvider _authStateProvider;
+        private readonly IJwtProvider _jwtProvider;
+        private readonly IUserApiClient _userApiClient;
+        private readonly NavigationManager _navigationManager;
 
-        public AuthService(AuthenticationStateProvider authStateProvider)
+        public AuthService(
+            AuthenticationStateProvider authStateProvider, 
+            IJwtProvider jwtProvider,
+            IUserApiClient userApiClient,
+            NavigationManager navigationManager)
         {
             _authStateProvider = authStateProvider;
+            _jwtProvider = jwtProvider;
+            _userApiClient = userApiClient;
+            _navigationManager = navigationManager;
         }
 
         public async Task<int?> GetCurrentUserId()
@@ -61,6 +78,43 @@ namespace YoutubeLinks.Blazor.Auth
             }
 
             return false;
+        }
+
+        public async Task Login(JwtDto token)
+        {
+            await _jwtProvider.SetJwtDto(token);
+
+            var authStateProvider = (_authStateProvider as AuthStateProvider);
+            authStateProvider.NotifyAuthStateChanged();
+
+            _navigationManager.NavigateTo("/");
+        }
+
+        public async Task Logout()
+        {
+            await _jwtProvider.RemoveJwtDto();
+
+            var authStateProvider = (_authStateProvider as AuthStateProvider);
+            authStateProvider.NotifyAuthStateChanged();
+
+            _navigationManager.NavigateTo("/");
+        }
+
+        public async Task RefreshToken()
+        {
+            try
+            {
+                var jwt = await _jwtProvider.GetJwtDto();
+                if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
+                    await Logout();
+
+                var newJwt = await _userApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
+                await Login(newJwt);
+            }
+            catch (Exception)
+            {
+                await Logout();
+            }
         }
     }
 }

@@ -24,6 +24,8 @@ builder.Services.AddApiClients(builder.Configuration)
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization.*", LogLevel.None);
+
 var host = builder.Build();
 
 await host.UseMyLocalization();

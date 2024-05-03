@@ -21,31 +21,13 @@ namespace YoutubeLinks.Blazor.Pages.Users
         [Inject] public IUserApiClient UserApiClient { get; set; }
         [Inject] public IAuthService AuthService { get; set; }
 
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] public IJwtProvider JwtProvider { get; set; }
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IDialogService DialogService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            try
-            {
-                var jwt = await JwtProvider.GetJwtDto();
-                if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
-                    await Logout();
-
-                var newJwt = await UserApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
-                await JwtProvider.SetJwtDto(newJwt);
-
-                var authStateProvider = AuthenticationStateProvider as AuthStateProvider;
-                authStateProvider.NotifyAuthStateChanged();
-            }
-            catch (Exception)
-            {
-                await Logout();
-            }
+            await AuthService.RefreshToken();
         }
 
         private async Task Login()
@@ -65,10 +47,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
             {
                 if (result.Data is JwtDto token)
                 {
-                    await JwtProvider.SetJwtDto(token);
-
-                    var authStateProvider = (AuthenticationStateProvider as AuthStateProvider);
-                    authStateProvider.NotifyAuthStateChanged();
+                    await AuthService.Login(token);
 
                     await LoadUserTheme();
                     await UserChanged.InvokeAsync();
@@ -123,16 +102,6 @@ namespace YoutubeLinks.Blazor.Pages.Users
             };
 
             var dialog = await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
-        }
-
-        private async Task Logout()
-        {
-            await JwtProvider.RemoveJwtDto();
-
-            var authStateProvider = (AuthenticationStateProvider as AuthStateProvider);
-            authStateProvider.NotifyAuthStateChanged();
-
-            NavigationManager.NavigateTo("/");
         }
     }
 }

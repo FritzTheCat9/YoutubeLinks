@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-using YoutubeLinks.Blazor.Clients;
-using YoutubeLinks.Shared.Features.Users.Helpers;
+﻿using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Blazor.Auth
 {
@@ -11,6 +9,7 @@ namespace YoutubeLinks.Blazor.Auth
         public TokenRefreshService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+
             StartTokenRefreshTimer();
         }
 
@@ -25,26 +24,9 @@ namespace YoutubeLinks.Blazor.Auth
         private async Task RefreshToken()
         {
             using var scope = _serviceProvider.CreateScope();
-            var userApiClient = scope.ServiceProvider.GetRequiredService<IUserApiClient>();
-            var jwtProvider = scope.ServiceProvider.GetRequiredService<IJwtProvider>();
-            var authenticationStateProvider = scope.ServiceProvider.GetRequiredService<AuthenticationStateProvider>();
+            var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
 
-            try
-            {
-                var jwt = await jwtProvider.GetJwtDto();
-                if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
-                    return;
-
-                var newJwt = await userApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
-                await jwtProvider.SetJwtDto(newJwt);
-
-                var authStateProvider = authenticationStateProvider as AuthStateProvider;
-                authStateProvider.NotifyAuthStateChanged();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Error when refreshing jwt token");
-            }
+            await authService.RefreshToken();
         }
     }
 }
