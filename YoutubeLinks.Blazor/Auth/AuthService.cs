@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using YoutubeLinks.Blazor.Clients;
-using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Auth
@@ -11,8 +10,8 @@ namespace YoutubeLinks.Blazor.Auth
     {
         Task<int?> GetCurrentUserId();
         Task<bool> IsLoggedInUser(int userId);
-        Task Login(JwtDto token);
-        Task Logout();
+        Task Login(JwtDto token, string redirectUrl = null);
+        Task Logout(string redirectUrl = null);
         Task RefreshToken();
     }
 
@@ -24,7 +23,7 @@ namespace YoutubeLinks.Blazor.Auth
         private readonly NavigationManager _navigationManager;
 
         public AuthService(
-            AuthenticationStateProvider authStateProvider, 
+            AuthenticationStateProvider authStateProvider,
             IJwtProvider jwtProvider,
             IUserApiClient userApiClient,
             NavigationManager navigationManager)
@@ -80,24 +79,26 @@ namespace YoutubeLinks.Blazor.Auth
             return false;
         }
 
-        public async Task Login(JwtDto token)
+        public async Task Login(JwtDto token, string redirectUrl = null)
         {
             await _jwtProvider.SetJwtDto(token);
 
             var authStateProvider = (_authStateProvider as AuthStateProvider);
             authStateProvider.NotifyAuthStateChanged();
 
-            _navigationManager.NavigateTo("/");
+            if (!string.IsNullOrEmpty(redirectUrl))
+                _navigationManager.NavigateTo(redirectUrl);
         }
 
-        public async Task Logout()
+        public async Task Logout(string redirectUrl = null)
         {
             await _jwtProvider.RemoveJwtDto();
 
             var authStateProvider = (_authStateProvider as AuthStateProvider);
             authStateProvider.NotifyAuthStateChanged();
 
-            _navigationManager.NavigateTo("/");
+            if (!string.IsNullOrEmpty(redirectUrl))
+                _navigationManager.NavigateTo(redirectUrl);
         }
 
         public async Task RefreshToken()
@@ -106,14 +107,14 @@ namespace YoutubeLinks.Blazor.Auth
             {
                 var jwt = await _jwtProvider.GetJwtDto();
                 if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
-                    await Logout();
+                    await Logout("/");
 
                 var newJwt = await _userApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
                 await Login(newJwt);
             }
             catch (Exception)
             {
-                await Logout();
+                await Logout("/");
             }
         }
     }

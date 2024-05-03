@@ -47,8 +47,6 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             ];
 
             _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
-
-            await _table.ReloadServerData();
         }
 
         private async Task<TableData<PlaylistDto>> ServerReload(TableState state)
