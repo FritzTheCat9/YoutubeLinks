@@ -22,11 +22,11 @@ docker compose up --build -d
 ```
 
 Created containers:
-- C# Web API http (swagger):
+- C# Web API backend:
 ```
 http://localhost:5000
 ```
-- Blazor WASM frontend http:
+- Blazor WASM frontend:
 ```
 http://localhost:7000
 ```
@@ -78,6 +78,7 @@ Download playlist view:
 - C# 12
 - .NET 8.0
 - Blazor WebAssembly
+- Vue 3.4.21
 
 ## Architecture
 Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQL database. Monolithic architecture with Vertical Slices. Code separated by feature.
@@ -86,6 +87,8 @@ Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQ
 - YoutubeLinks.Api - ASP .NET Core Web API (Backend)
 - YoutubeLinks.Blazor - Blazor WebAssembly Standalone App (Frontend)
 - YoutubeLinks.Shared - Class Library (Backend and Frontend shared code)
+- YoutubeLinks.UnitTests - xUnit Test Project (Unit Tests)
+- youtube-links - Vue Project (Frontend 2)
 
 ## Packages
 Nuget packages and libraries used in projects.
