@@ -75,7 +75,9 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
         private async Task RefreshView()
         {
-            if (!_tableView)
+            if (_tableView)
+                await _table.ReloadServerData();
+            else
                 await ReloadLinks();
         }
 
