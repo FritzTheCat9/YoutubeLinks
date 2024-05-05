@@ -191,10 +191,11 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 };
 
                 var response = await LinkApiClient.DownloadLink(command);
-                var content = await response.Content.ReadAsByteArrayAsync();
+                var content = await response.Content.ReadAsStreamAsync();
+                var streamRef = new DotNetStreamReference(content);
                 var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
                 //var command2 = new UpdateLink.Command         // update downloaded flag feature
                 //{
@@ -219,7 +220,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
         private async Task ResetPlaylistLinksDownloadedFlag(bool flag)
         {
-            var dialogText = flag ? Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)] : 
+            var dialogText = flag ? Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)] :
                 Localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)];
 
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };

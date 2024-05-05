@@ -17,6 +17,7 @@ namespace YoutubeLinks.Api.Services
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<YoutubeService> _logger;
         private readonly string _ytDlpPath;
+        private readonly string _FFmpegPath;
         private readonly string _tmpFolderPath;
 
         public YoutubeService(
@@ -26,6 +27,7 @@ namespace YoutubeLinks.Api.Services
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
             _ytDlpPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "yt-dlp" : "yt-dlp.exe");
+            _FFmpegPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "ffmpeg" : "ffmpeg.exe");
             _tmpFolderPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), "Tmp");
         }
 
@@ -33,6 +35,7 @@ namespace YoutubeLinks.Api.Services
         {
             var youtubeDL = new YoutubeDL();
             youtubeDL.YoutubeDLPath = _ytDlpPath;
+            youtubeDL.FFmpegPath = _FFmpegPath;
 
             var videoDataRequest = await youtubeDL.RunVideoDataFetch($"{YoutubeHelpers.VideoPathBase}{videoId}");
             if (!videoDataRequest.Success)
@@ -51,6 +54,7 @@ namespace YoutubeLinks.Api.Services
 
             var youtubeDL = new YoutubeDL();
             youtubeDL.YoutubeDLPath = _ytDlpPath;
+            youtubeDL.FFmpegPath = _FFmpegPath;
             youtubeDL.OutputFolder = _tmpFolderPath;
 
             var options = new OptionSet();
@@ -94,6 +98,7 @@ namespace YoutubeLinks.Api.Services
 
             var youtubeDL = new YoutubeDL();
             youtubeDL.YoutubeDLPath = _ytDlpPath;
+            youtubeDL.FFmpegPath = _FFmpegPath;
             youtubeDL.OutputFolder = _tmpFolderPath;
 
             var options = new OptionSet();

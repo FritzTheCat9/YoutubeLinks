@@ -13,7 +13,11 @@ namespace YoutubeLinks.Blazor.Clients
             services.Configure<ApiOptions>(configuration.GetRequiredSection(_sectionName));
             var apiOptions = configuration.GetOptions<ApiOptions>(_sectionName);
 
-            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiOptions.Url) });
+            services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri(apiOptions.Url),
+                Timeout = TimeSpan.FromMinutes(60)
+            });
 
             services.AddScoped<IApiClient, ApiClient>();
             services.AddScoped<IUserApiClient, UserApiClient>();

@@ -3,6 +3,15 @@ The YoutubeLinks application allow users to save YouTube links as playlists.\
 Users are able to download mp3 files from the playlists they create.\
 Downloading playlist links as mp3 files tested on more than 1000 links.
 
+Max downloaded mp3 file:
+- length - 03:31:45
+- size - 391 MB
+
+Max downloaded mp4 file:
+- length - 23:00
+- size - 882 MB
+
+Larger files not tested or can not work correctly.
 ## Table of contents
 * [Launch](#launch)
 * [Presentation](#presentation)

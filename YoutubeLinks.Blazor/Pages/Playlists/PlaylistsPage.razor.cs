@@ -153,10 +153,12 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                 string fileExtension = PlaylistHelpers.PlaylistFileTypeToString(playlistFileType);
 
                 var response = await PlaylistApiClient.ExportPlaylist(command);
-                var content = await response.Content.ReadAsByteArrayAsync();
+
+                var content = await response.Content.ReadAsStreamAsync();
+                var streamRef = new DotNetStreamReference(content);
                 var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{fileExtension}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
             }
             catch (Exception ex)
             {

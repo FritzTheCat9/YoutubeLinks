@@ -144,10 +144,11 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                 };
 
                 var response = await LinkApiClient.DownloadLink(command);
-                var content = await response.Content.ReadAsByteArrayAsync();
+                var content = await response.Content.ReadAsStreamAsync();
+                var streamRef = new DotNetStreamReference(content);
                 var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, content);
+                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
                 _downloadLinkResults.Add(new()
                 {
