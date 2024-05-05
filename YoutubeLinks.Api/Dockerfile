@@ -23,6 +23,8 @@ WORKDIR /src
 COPY ["YoutubeLinks.Api/YoutubeLinks.Api.csproj", "YoutubeLinks.Api/"]
 # Copy email templates
 COPY ["YoutubeLinks.Api/Emails/Templates/", "/src/Emails/Templates/"]
+# Copy ffmpeg.zip
+COPY ["YoutubeLinks.Api/ffmpeg.zip", "/src/ffmpeg.zip"]
 COPY ["YoutubeLinks.Shared/YoutubeLinks.Shared.csproj", "YoutubeLinks.Shared/"]
 RUN dotnet restore "./YoutubeLinks.Api/YoutubeLinks.Api.csproj"
 COPY . .
@@ -38,6 +40,8 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 # Copy email templates
 COPY --from=build /src/Emails/Templates /app/Emails/Templates
+# Copy ffmpeg.zip
+COPY --from=build /src/ffmpeg.zip /app/ffmpeg.zip
 # Create Tmp folder (helper folder to download mp3 and mp4 files)
 RUN mkdir /app/Tmp/
 # Copy downloaded yt-dlp file to /app/yt-dlp

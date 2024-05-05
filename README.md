@@ -8,8 +8,8 @@ Max downloaded mp3 file:
 - size - 391 MB
 
 Max downloaded mp4 file:
-- length - 23:00
-- size - 882 MB
+- length - 25:44
+- size - 973 MB
 
 Larger files not tested or can not work correctly.
 ## Table of contents

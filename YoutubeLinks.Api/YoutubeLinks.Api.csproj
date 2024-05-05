@@ -57,6 +57,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="ffmpeg.zip">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="yt-dlp.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
