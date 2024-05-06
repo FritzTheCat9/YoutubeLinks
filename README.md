@@ -125,22 +125,22 @@ Nuget packages and libraries used in projects.
     - Get all users (paginated, sorted and filtered)
     - Get selected user
 - Playlist
-    - Download playlist (only undownloaded links)
-    - Export playlist (.json, .txt)
-    - Import playlist (.json, .txt)
     - Create playlist
     - Delete playlist
-    - Mark all playlist links as downloaded / undownloaded
     - Update playlist (set playlist as public / private)
+    - Export playlist (.json, .txt)
+    - Import playlist (.json, .txt)
+    - Download playlist (only undownloaded links)
+    - Mark all playlist links as downloaded / undownloaded
     - Get all public playlists (paginated, sorted and filtered)
     - Get all user playlists (paginated, sorted and filtered)
     - Get selected playlist
 - Link
-    - Download link (.mp3, .mp4)
-    - Download single link (no need to add link to the playlist)
     - Create link
     - Delete link
     - Update link (mark as downloaded, change title)
+    - Download link (.mp3, .mp4)
+    - Download single link (no need to add link to the playlist)
     - Get all playlist links (paginated, sorted and filtered)
     - Get selected link
     - Links grid / table view
