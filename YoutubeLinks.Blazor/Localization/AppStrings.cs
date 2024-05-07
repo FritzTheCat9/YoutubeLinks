@@ -94,5 +94,6 @@
         SetAllPlaylistLinksAsDownloaded,
         MyPlaylists,
         FileType,
+        CheckProjectOnGithubText,
     }
 }
