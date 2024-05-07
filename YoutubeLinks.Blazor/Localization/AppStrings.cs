@@ -95,5 +95,6 @@
         MyPlaylists,
         FileType,
         CheckProjectOnGithubText,
+        CreatedByText,
     }
 }

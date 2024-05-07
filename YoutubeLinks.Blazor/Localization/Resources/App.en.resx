@@ -150,6 +150,9 @@
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="CreatedByText" xml:space="preserve">
+    <value>Created by Bartłomiej Umiński (FritzTheCat9)</value>
+  </data>
   <data name="CreateLink" xml:space="preserve">
     <value>Create Link</value>
   </data>

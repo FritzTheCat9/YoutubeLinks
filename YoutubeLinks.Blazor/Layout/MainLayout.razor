@@ -49,8 +49,21 @@
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth=MaxWidth.Large
-                      Style="margin-top: 20px;">
+                      Style="margin-top: 20px; margin-bottom: 80px">
             @Body
         </MudContainer>
     </MudMainContent>
+
+    <MudAppBar Bottom=true
+               Dense=true
+               Color="Color.Transparent"
+               Elevation="0">
+        <MudPaper Class="pa-4 mb-4"
+                  Outlined="true"
+                  Elevation="5">
+            <MudText Typo="Typo.body1">
+                @Localizer[nameof(AppStrings.CreatedByText)]
+            </MudText>
+        </MudPaper>
+    </MudAppBar>
 </MudLayout>
