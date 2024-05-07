@@ -121,6 +121,7 @@ Nuget packages and libraries used in projects.
     - Register new user and send confirmation email
     - Confirm user registration and send registration success email
     - Login user if email is confirmed
+    - Refresh Jwt Token
     - Update user color theme
     - Get all users (paginated, sorted and filtered)
     - Get selected user
