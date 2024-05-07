@@ -133,7 +133,7 @@
     <value>Cancel</value>
   </data>
   <data name="CheckProjectOnGithubText" xml:space="preserve">
-    <value>Check project on Github</value>
+    <value>Check project on GitHub</value>
   </data>
   <data name="ConfirmEmail" xml:space="preserve">
     <value>Confirm email</value>
