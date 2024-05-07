@@ -107,14 +107,14 @@ namespace YoutubeLinks.Blazor.Auth
             {
                 var jwt = await _jwtProvider.GetJwtDto();
                 if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
-                    await Logout("/");
+                    await Logout();
 
                 var newJwt = await _userApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
                 await Login(newJwt);
             }
             catch (Exception)
             {
-                await Logout("/");
+                await Logout();
             }
         }
     }
