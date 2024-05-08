@@ -34,6 +34,9 @@ namespace YoutubeLinks.Blazor.Auth
 
                 if (jsonToken != null)
                 {
+                    if (jsonToken.ValidTo < DateTime.UtcNow)
+                        return authenticationState;
+
                     return new AuthenticationState(new ClaimsPrincipal(
                         new ClaimsIdentity(jsonToken.Claims,
                                            Jwt.AuthnticationType,

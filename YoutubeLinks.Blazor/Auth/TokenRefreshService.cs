@@ -21,7 +21,7 @@ namespace YoutubeLinks.Blazor.Auth
             timer.Start();
         }
 
-        private async Task RefreshToken()
+        public async Task RefreshToken()
         {
             using var scope = _serviceProvider.CreateScope();
             var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();

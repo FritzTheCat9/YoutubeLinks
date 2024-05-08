@@ -52,10 +52,16 @@ namespace YoutubeLinks.Blazor.Layout
         [Inject] public IAuthService AuthService { get; set; }
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
         [Inject] public IThemeColorProvider ThemeColorProvider { get; set; }
+        [Inject] public TokenRefreshService TokenRefreshService { get; set; }
 
         protected override void OnParametersSet()
         {
             _text = Localizer[nameof(AppStrings.SwitchToLightTheme)];
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await TokenRefreshService.RefreshToken();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

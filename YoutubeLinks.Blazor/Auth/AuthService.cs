@@ -36,7 +36,8 @@ namespace YoutubeLinks.Blazor.Auth
 
         public async Task<int?> GetCurrentUserId()
         {
-            var authState = await _authStateProvider.GetAuthenticationStateAsync();
+            var authStateProvider = (_authStateProvider as AuthStateProvider);
+            var authState = await authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
             if (user.Identity?.IsAuthenticated ?? false)
@@ -57,7 +58,8 @@ namespace YoutubeLinks.Blazor.Auth
 
         public async Task<bool> IsLoggedInUser(int userId)
         {
-            var authState = await _authStateProvider.GetAuthenticationStateAsync();
+            var authStateProvider = (_authStateProvider as AuthStateProvider);
+            var authState = await authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
             if (user.Identity?.IsAuthenticated ?? false)
