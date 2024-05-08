@@ -124,7 +124,7 @@
     <value>Add .json or .txt file</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>Youtube Links</value>
+    <value>YoutubeLinks</value>
   </data>
   <data name="AuthenticationInProgress" xml:space="preserve">
     <value>Authentication in progress</value>
