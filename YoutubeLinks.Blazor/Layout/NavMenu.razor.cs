@@ -10,5 +10,10 @@ namespace YoutubeLinks.Blazor.Layout
 
         [Inject] public IAuthService AuthService { get; set; }
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            UserId = await AuthService.GetCurrentUserId();
+        }
     }
 }

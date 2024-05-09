@@ -31,11 +31,13 @@
         <MudSpacer />
         <MudTooltip Text=@_text>
             <MudIconButton Icon=@_icon
+                           Color=Color.Inherit
                            OnClick=OnThemeChange
                            Style="margin-right: 5px;" />
         </MudTooltip>
         <MudTooltip Text=@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]>
             <MudIconButton Icon=@Icons.Custom.Brands.GitHub
+                           Color=Color.Inherit
                            Href=https://github.com/FritzTheCat9/YoutubeLinks
                            Target=_blank
                            Style="margin-right: 5px;" />
