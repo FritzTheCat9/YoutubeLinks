@@ -23,12 +23,30 @@ namespace YoutubeLinks.Blazor.Layout
 
         private readonly MudTheme _customTheme = new()
         {
+            LayoutProperties = new LayoutProperties()
+            {
+                DefaultBorderRadius = "10px",
+            },
             Palette = new PaletteLight()
             {
                 Error = Colors.Red.Default,
                 ErrorContrastText = Colors.Red.Default,
                 ErrorDarken = Colors.Red.Default,
                 ErrorLighten = Colors.Red.Default,
+
+                AppbarBackground = "80BCBD",
+                DrawerBackground = "AAD9BB",
+                Background = "D5F0C1",
+                TableLines = "D5F0C1",
+                Surface = "F9F7C9",
+                Primary = "9A3E88",
+                Warning = Colors.Yellow.Darken4,
+                
+                AppbarText = Colors.Grey.Darken4,
+                DrawerIcon = Colors.Grey.Darken3,
+
+                TextPrimary = Colors.Grey.Darken3,
+                TextSecondary = Colors.Grey.Darken2,
             },
             PaletteDark = new PaletteDark()
             {

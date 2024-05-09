@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@inject TokenRefreshService tokenRefreshService
 
 <MudThemeProvider @ref=@_mudThemeProvider
                   @bind-IsDarkMode=@_isDarkMode
@@ -55,11 +54,10 @@
     </MudMainContent>
     <MudAppBar Bottom=true
                Dense=true
-               Color="Color.Transparent"
-               Elevation="0">
+               Color=Color.Transparent
+               Elevation=0>
         <MudPaper Class="pa-4 mb-4"
-                  Outlined="true"
-                  Elevation="5">
+                  Elevation=3>
             <MudText Typo="Typo.body1">
                 @Localizer[nameof(AppStrings.CreatedByText)]
             </MudText>

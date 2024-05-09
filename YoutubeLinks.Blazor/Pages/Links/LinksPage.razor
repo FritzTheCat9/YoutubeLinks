@@ -10,7 +10,8 @@
 <MudStack>
     @if (_isUserPlaylist)
     {
-        <MudPaper Class="pa-4">
+        <MudPaper Class="pa-4"
+                  Elevation=3>
             <MudText Class="mb-3">
                 @Localizer[nameof(AppStrings.CreateLink)]
             </MudText>
@@ -23,7 +24,8 @@
         <MudTable ServerData=ServerReload
                   @ref=_table
                   Dense=true
-                  Hover=true>
+                  Hover=true
+                  Elevation=3>
             <ToolBarContent>
                 <MudText Typo=Typo.h6>
                     @Localizer[nameof(AppStrings.Links)]
@@ -184,7 +186,8 @@
     {
         if (_linkPagedList is not null)
         {
-            <MudPaper Class="pa-4">
+            <MudPaper Class="pa-4"
+                      Elevation=3>
                 <MudStack Row=true>
                     <MudText>
                         @Localizer[nameof(AppStrings.Links)]
@@ -223,11 +226,11 @@
                 @foreach (var link in _linkPagedList.Items)
                 {
                     <MudItem xs=12 sm=6>
-                        <MudCard>
+                        <MudCard Elevation=3>
                             @if (!string.IsNullOrWhiteSpace(link.Url))
                             {
                                 <iframe src=@ConvertToEmbedUrl(link.Url)
-                                        style="height: 300px"
+                                        style="height: 300px; margin-top: 20px"
                                         frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen>
@@ -307,7 +310,8 @@
                 }
             </MudGrid>
 
-            <MudPaper Class="pa-4 mb-4">
+            <MudPaper Class="pa-4 mb-4"
+                      Elevation="3">
                 <MudStack AlignItems=AlignItems.Center>
                     <MudPagination Color=Color.Primary
                                    Count=_linkPagedList.PagesCount

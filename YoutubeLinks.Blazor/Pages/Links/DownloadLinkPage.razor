@@ -7,7 +7,8 @@
 
 <FritzBreadcrumbs Items=_items />
 
-<MudPaper Class="pa-4">
+<MudPaper Class="pa-4"
+          Elevation=3>
     <MudText Class="mb-3">
         @Localizer[nameof(AppStrings.DownloadLink)]
     </MudText>
@@ -54,7 +55,8 @@
 @if (_downloadLinkResults is not null && _downloadLinkResults.Count > 0)
 {
     <MudItem xs=12>
-        <MudPaper Class="pa-4 mt-4">
+        <MudPaper Class="pa-4 mt-4"
+                  Elevation=3>
             <MudText Typo=Typo.subtitle2>
                 @Localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
             </MudText>

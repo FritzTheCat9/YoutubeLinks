@@ -9,57 +9,66 @@
 {
     <FritzBreadcrumbs Items=_items />
 
-    <MudText Typo=Typo.subtitle1>
-        @Localizer[nameof(AppStrings.LoadedLinks), _linkInfoList.Count]
-    </MudText>
-    <MudText Typo=Typo.subtitle2
-             Color="Color.Warning">
-        @Localizer[nameof(AppStrings.PublicPlaylistDownloadInfo)]
-    </MudText>
-    <MudText Typo=Typo.subtitle2
-             Color="Color.Warning">
-        @Localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
-    </MudText>
-
-    <MudSelect T=YoutubeFileType
-               Label=@Localizer[nameof(AppStrings.FileType)]
-               @bind-Value=_youtubeFileType
-               Disabled=_downloading
-               Variant=Variant.Outlined>
-        @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
-        {
-            <MudSelectItem T="YoutubeFileType"
-                           Value=(YoutubeFileType)youtubeFileType>
-                @youtubeFileType.ToString()
-            </MudSelectItem>
-        }
-    </MudSelect>
-
-    <FritzProcessingButton @ref=_processingButton
-                           Color=Color.Primary
-                           ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
-                           ButtonText=@Localizer[nameof(AppStrings.Download)]
-                           OnClick=DownloadPlaylistLinks />
-
-    @if (_downloading)
-    {
-        <MudProgressLinear Color=Color.Primary
-                           Striped=true
-                           Size=Size.Large
-                           Value=_downloadPercent
-                           Class="my-7"
-                           Style="height: 30px;">
-            <MudText Typo=Typo.h6
-                     Style="@($"color:{Colors.Grey.Darken4};")">
-                @((int)_downloadPercent)% - @_downloadingSongTitle
+    <MudItem xs=12>
+        <MudPaper Class="pa-4 mt-4"
+                  Elevation=3>
+            <MudText Typo=Typo.subtitle1
+                     Class="mb-2">
+                @Localizer[nameof(AppStrings.LoadedLinks), _linkInfoList.Count]
             </MudText>
-        </MudProgressLinear>
-    }
+            <MudText Typo=Typo.subtitle2
+                     Color="Color.Warning">
+                @Localizer[nameof(AppStrings.PublicPlaylistDownloadInfo)]
+            </MudText>
+            <MudText Typo=Typo.subtitle2
+                     Color="Color.Warning"
+                     Class="mb-2">
+                @Localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
+            </MudText>
+
+            <MudSelect T=YoutubeFileType
+                       Label=@Localizer[nameof(AppStrings.FileType)]
+                       @bind-Value=_youtubeFileType
+                       Disabled=_downloading
+                       Variant=Variant.Outlined
+                       Class="mb-2">
+                @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
+                {
+                    <MudSelectItem T="YoutubeFileType"
+                                   Value=(YoutubeFileType)youtubeFileType>
+                        @youtubeFileType.ToString()
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <FritzProcessingButton @ref=_processingButton
+                                   Color=Color.Primary
+                                   ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
+                                   ButtonText=@Localizer[nameof(AppStrings.Download)]
+                                   OnClick=DownloadPlaylistLinks />
+
+            @if (_downloading)
+            {
+                <MudProgressLinear Color=Color.Primary
+                                   Striped=true
+                                   Size=Size.Large
+                                   Value=_downloadPercent
+                                   Class="my-7"
+                                   Style="height: 30px;">
+                    <MudText Typo=Typo.h6
+                             Style="@($"color:{Colors.Grey.Darken4};")">
+                        @((int)_downloadPercent)% - @_downloadingSongTitle
+                    </MudText>
+                </MudProgressLinear>
+            }
+        </MudPaper>
+    </MudItem>
 
     @if (_downloadLinkResults is not null)
     {
         <MudItem xs=12>
-            <MudPaper Class="pa-4 mt-4">
+            <MudPaper Class="pa-4 mt-4"
+                      Elevation=3>
                 <MudText Typo=Typo.subtitle2>
                     @Localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
                 </MudText>
