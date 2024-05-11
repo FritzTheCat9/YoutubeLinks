@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import useCreatePlaylist from '@/clients/Playlists/CreatePlaylist';
+  import useCreatePlaylist from '@/clients/playlists/CreatePlaylist';
   import { CreatePlaylist } from '@/shared/features/playlists/commands/CreatePlaylist';
   import { ref } from 'vue';
   import type { VForm } from 'vuetify/components';

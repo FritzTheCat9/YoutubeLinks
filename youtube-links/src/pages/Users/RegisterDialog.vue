@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import useRegister from '@/clients/Users/Register';
+  import useRegister from '@/clients/users/Register';
   import { Register } from '@/shared/features/users/commands/Register';
   import { ThemeColor } from '@/shared/features/users/helpers/ThemeColor';
   import { ref } from 'vue';

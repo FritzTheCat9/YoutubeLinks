@@ -1,3 +1,4 @@
+import { jwtProvider } from '@/auth/JwtProvider';
 import {
   MyForbiddenException,
   MyNotFoundException,
@@ -56,80 +57,94 @@ export class ApiClient implements IApiClient {
 
   async getReturnAxiosResponse(url: string): Promise<AxiosResponse> {
     try {
+      this.addHeaderValues();
       const response = this.client.get(`${this.baseUrl}${url}`);
       return response;
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async get<TResponse>(url: string): Promise<TResponse> {
     try {
+      this.addHeaderValues();
       const response = await this.client.get<TResponse>(`${this.baseUrl}${url}`);
       return response.data;
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async postWithoutResponse<TRequest>(url: string, tRequest: TRequest): Promise<void> {
     try {
+      this.addHeaderValues();
       await this.client.post(`${this.baseUrl}${url}`, tRequest);
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async post<TRequest, TResponse>(url: string, tRequest: TRequest): Promise<TResponse> {
     try {
+      this.addHeaderValues();
       const response = await this.client.post(`${this.baseUrl}${url}`, tRequest);
       return response.data;
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async postReturnAxiosResponse<TRequest>(url: string, tRequest: TRequest): Promise<AxiosResponse> {
     try {
+      this.addHeaderValues();
       return await this.client.post(`${this.baseUrl}${url}`, tRequest);
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async put<TRequest>(url: string, tRequest: TRequest): Promise<void> {
     try {
+      this.addHeaderValues();
       await this.client.put<TRequest>(`${this.baseUrl}${url}`, tRequest);
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async putWithoutResponse(url: string): Promise<void> {
     try {
+      this.addHeaderValues();
       await this.client.put(`${this.baseUrl}${url}`);
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
   async delete(url: string): Promise<void> {
     try {
+      this.addHeaderValues();
       await this.client.delete(`${this.baseUrl}${url}`);
     } catch (error) {
-      this.HandleErrors(error as AxiosError);
+      this.handleErrors(error as AxiosError);
       return Promise.reject();
     }
   }
 
-  HandleErrors(error: AxiosError) {
+  addHeaderValues(): void {
+    const token = jwtProvider.getJwtDto();
+    if (token) 
+      this.client.defaults.headers.common.Authorization = `${this.authScheme} ${token.accessToken}`;
+  }
+
+  handleErrors(error: AxiosError) {
     let apiError = error.response?.data as ErrorResponse;
 
     switch (apiError.type) {

@@ -3,7 +3,7 @@
   import { ref } from 'vue';
   import { RouteName } from '../../router/index';
   import type { GetAllPaginatedLinks } from '@/shared/features/links/queries/GetAllPaginatedLinks';
-  import useGetAllPaginatedLinks from '@/clients/Links/GetAllPaginatedLinks';
+  import useGetAllPaginatedLinks from '@/clients/links/GetAllPaginatedLinks';
   import type { VDataTableServer } from 'vuetify/components';
 
   const props = defineProps<{

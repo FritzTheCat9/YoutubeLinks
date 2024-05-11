@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import useLogin from '@/clients/Users/Login';
+  import { jwtProvider } from '@/auth/JwtProvider';
+  import useLogin from '@/clients/users/Login';
   import { Login } from '@/shared/features/users/commands/Login';
   import { ref } from 'vue';
   import type { VForm } from 'vuetify/components';
@@ -24,7 +25,8 @@
           } else {
             showDialog.value = false;
             resetForm();
-            //store jwtDto in local storage
+            jwtProvider.setJwtDto(jwtDto.value);
+            //call auth service
           }
         });
       }

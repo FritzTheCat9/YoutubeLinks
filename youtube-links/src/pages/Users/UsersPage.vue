@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import useGetAllUsers from '@/clients/Users/GetAllUsers';
+  import useGetAllUsers from '@/clients/users/GetAllUsers';
   import { SortOrder, sortingDirectionToEnum } from '@/shared/abstractions/SortOrder';
   import type { GetAllUsers } from '@/shared/features/users/queries/GetAllUsers';
   import { ref } from 'vue';
