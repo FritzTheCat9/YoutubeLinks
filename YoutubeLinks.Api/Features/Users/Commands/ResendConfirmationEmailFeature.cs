@@ -1,21 +1,22 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Localization;
 using YoutubeLinks.Api.Data.Repositories;
+using YoutubeLinks.Api.Emails.Models;
 using YoutubeLinks.Api.Emails;
+using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
-using YoutubeLinks.Api.Helpers;
-using YoutubeLinks.Api.Emails.Models;
+using YoutubeLinks.Api.Auth;
 
 namespace YoutubeLinks.Api.Features.Users.Commands
 {
-    public static class ConfirmEmailFeature
+    public static class ResendConfirmationEmailFeature
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/users/confirmEmail", async (
-                ConfirmEmail.Command command,
+            app.MapPost("/api/users/resendConfirmationEmail", async (
+                ResendConfirmationEmail.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -27,24 +28,27 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<ConfirmEmail.Command, bool>
+        public class Handler : IRequestHandler<ResendConfirmationEmail.Command, Unit>
         {
             private readonly IUserRepository _userRepository;
             private readonly IEmailService _emailService;
+            private readonly IEmailConfirmationService _emailConfirmationService;
             private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer;
 
             public Handler(
                 IUserRepository userRepository,
                 IEmailService emailService,
+                IEmailConfirmationService emailConfirmationService,
                 IStringLocalizer<ApiValidationMessage> validationLocalizer)
             {
                 _userRepository = userRepository;
                 _emailService = emailService;
+                _emailConfirmationService = emailConfirmationService;
                 _validationLocalizer = validationLocalizer;
             }
 
-            public async Task<bool> Handle(
-                ConfirmEmail.Command command,
+            public async Task<Unit> Handle(
+                ResendConfirmationEmail.Command command,
                 CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetByEmail(command.Email) ??
@@ -55,22 +59,16 @@ namespace YoutubeLinks.Api.Features.Users.Commands
                     throw new MyValidationException(nameof(ConfirmEmail.Command.Email),
                         _validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
 
-                var isTokenAssignedToUser = await _userRepository.IsTokenAssignedToUser(user.Email, command.Token);
-                if (!isTokenAssignedToUser)
-                    throw new MyValidationException(nameof(ConfirmEmail.Command.Token),
-                        _validationLocalizer[nameof(ApiValidationMessageString.TokenIsNotAssignedToThisUser)]);
-
-                user.EmailConfirmed = true;
-                user.EmailConfirmationToken = null;
-
+                user.EmailConfirmationToken = _emailConfirmationService.GenerateEmailConfirmationToken(command.Email);
                 await _userRepository.Update(user);
 
-                await _emailService.SendEmail(user.Email, new EmailConfirmationSuccessfulTemplateModel
+                await _emailService.SendEmail(user.Email, new EmailConfirmationTemplateModel
                 {
                     UserName = user.UserName,
+                    Link = _emailConfirmationService.GenerateConfirmationLink(user.Email, user.EmailConfirmationToken),
                 });
 
-                return isTokenAssignedToUser;
+                return Unit.Value;
             }
         }
     }

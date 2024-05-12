@@ -16,6 +16,7 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
             LoginFeature.Endpoint(app);
             RefreshTokenFeature.Endpoint(app);
             RegisterFeature.Endpoint(app);
+            ResendConfirmationEmailFeature.Endpoint(app);
             UpdateUserThemeFeature.Endpoint(app);
             GetAllUsersFeature.Endpoint(app);
             GetUserFeature.Endpoint(app);

@@ -96,5 +96,7 @@
         FileType,
         CheckProjectOnGithubText,
         CreatedByText,
+        ResendConfirmationEmail,
+        ResendConfirmationEmailSent,
     }
 }

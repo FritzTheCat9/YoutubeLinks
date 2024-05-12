@@ -1,44 +1,47 @@
 ﻿@page "/confirmEmail"
 @attribute [AllowAnonymous]
 
-@if (!_success)
-{
-    <MudText>
-        @Localizer[nameof(AppStrings.ConfirmEmailInfo)]
-    </MudText>
+<MudPaper Class="pa-4"
+          Elevation=3>
+    @if (!_success)
+    {
+        <MudText>
+            @Localizer[nameof(AppStrings.ConfirmEmailInfo)]
+        </MudText>
 
-    <EditForm Model=_command
-              OnValidSubmit=OnValidSubmit>
-        <CustomValidator @ref=_customValidator />
-        <FluentValidationValidator />
+        <EditForm Model=_command
+                  OnValidSubmit=OnValidSubmit>
+            <CustomValidator @ref=_customValidator />
+            <FluentValidationValidator />
 
-        <FritzTextField @bind-Value=_command.Email
-                        For="() => _command.Email"
-                        HideField=true />
-        <FritzValidationMessage For="() => _command.Email" />
+            <FritzTextField @bind-Value=_command.Email
+                            For="() => _command.Email"
+                            HideField=true />
+            <FritzValidationMessage For="() => _command.Email" />
 
-        <FritzTextField @bind-Value=_command.Token
-                        For="() => _command.Token"
-                        HideField=true />
-        <FritzValidationMessage For="() => _command.Token" />
+            <FritzTextField @bind-Value=_command.Token
+                            For="() => _command.Token"
+                            HideField=true />
+            <FritzValidationMessage For="() => _command.Token" />
 
-        <FritzProcessingButton @ref=_processingButton
-                               ButtonType=ButtonType.Submit
-                               Color=Color.Primary
-                               Variant=Variant.Filled
-                               ButtonText=@Localizer[nameof(AppStrings.ConfirmEmail)] />
-    </EditForm>
-}
-else
-{
-    <MudText Color=Color.Success>
-        @Localizer[nameof(AppStrings.SuccessfulEmailConfirmation)]
-    </MudText>
-}
+            <FritzProcessingButton @ref=_processingButton
+                                   ButtonType=ButtonType.Submit
+                                   Color=Color.Primary
+                                   Variant=Variant.Filled
+                                   ButtonText=@Localizer[nameof(AppStrings.ConfirmEmail)] />
+        </EditForm>
+    }
+    else
+    {
+        <MudText Color=Color.Success>
+            @Localizer[nameof(AppStrings.SuccessfulEmailConfirmation)]
+        </MudText>
+    }
 
-@if (_parsingError)
-{
-    <MudText Color=Color.Error>
-        @Localizer[nameof(AppStrings.InvalidEmailOrToken)]
-    </MudText>
-}
+    @if (_parsingError)
+    {
+        <MudText Color=Color.Error>
+            @Localizer[nameof(AppStrings.InvalidEmailOrToken)]
+        </MudText>
+    }
+</MudPaper>

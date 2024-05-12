@@ -318,6 +318,12 @@
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat Password</value>
   </data>
+  <data name="ResendConfirmationEmail" xml:space="preserve">
+    <value>Resend confirmation email</value>
+  </data>
+  <data name="ResendConfirmationEmailSent" xml:space="preserve">
+    <value>Confirmation email has been sent.</value>
+  </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>
   </data>

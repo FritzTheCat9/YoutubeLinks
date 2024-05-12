@@ -9,24 +9,15 @@
                             @bind-Value=Command.Email
                             For="() => Command.Email" />
             <FritzValidationMessage For="() => Command.Email" />
-
-            <FritzPasswordField Label=@Localizer[nameof(AppStrings.Password)]
-                                @bind-Value=Command.Password
-                                For="() => Command.Password" />
-            <FritzValidationMessage For="() => Command.Password" />
         </DialogContent>
         <DialogActions>
-            <MudButton Color=Color.Primary
-                       OnClick=ResendConfirmationEmail>
-                <MudText Typo=Typo.subtitle2>
-                    @Localizer[nameof(AppStrings.ResendConfirmationEmail)]
-                </MudText>
-            </MudButton>
-            <MudSpacer />
             <FritzProcessingButton @ref=_processingButton
                                    ButtonType=ButtonType.Submit
                                    Color=Color.Primary
-                                   ButtonText=@Localizer[nameof(AppStrings.Login)] />
+                                   ButtonText=@Localizer[nameof(AppStrings.ResendConfirmationEmail)] />
         </DialogActions>
     </MudDialog>
 </EditForm>
+
+
+
