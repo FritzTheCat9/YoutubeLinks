@@ -98,5 +98,8 @@
         CreatedByText,
         ResendConfirmationEmail,
         ResendConfirmationEmailSent,
+        ForgotPassword,
+        SendForgotPasswordEmail,
+        ForgotPasswordEmailSent,
     }
 }

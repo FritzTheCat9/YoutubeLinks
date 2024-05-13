@@ -54,6 +54,9 @@
 		<Content Update="Emails\Templates\EmailConfirmationTemplate.cshtml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<Content Update="Emails\Templates\ForgotPasswordEmailTemplate.cshtml">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>

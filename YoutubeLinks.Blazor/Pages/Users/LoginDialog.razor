@@ -17,9 +17,16 @@
         </DialogContent>
         <DialogActions>
             <MudButton Color=Color.Primary
-                       OnClick=ResendConfirmationEmail>
+                       OnClick=OpenResendConfirmationEmailDialog>
                 <MudText Typo=Typo.subtitle2>
                     @Localizer[nameof(AppStrings.ResendConfirmationEmail)]
+                </MudText>
+            </MudButton>
+            <MudSpacer />
+            <MudButton Color=Color.Primary
+                       OnClick=OpenForgotPasswordDialog>
+                <MudText Typo=Typo.subtitle2>
+                    @Localizer[nameof(AppStrings.ForgotPassword)]
                 </MudText>
             </MudButton>
             <MudSpacer />

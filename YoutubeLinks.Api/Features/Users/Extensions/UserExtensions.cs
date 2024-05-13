@@ -13,6 +13,7 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
         public static IEndpointRouteBuilder AddUserEndpoints(this IEndpointRouteBuilder app)
         {
             ConfirmEmailFeature.Endpoint(app);
+            ForgotPasswordFeature.Endpoint(app);
             LoginFeature.Endpoint(app);
             RefreshTokenFeature.Endpoint(app);
             RegisterFeature.Endpoint(app);

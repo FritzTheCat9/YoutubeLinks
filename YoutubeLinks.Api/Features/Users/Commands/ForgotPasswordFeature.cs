@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Localization;
+using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Emails.Models;
 using YoutubeLinks.Api.Emails;
@@ -7,16 +8,15 @@ using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
-using YoutubeLinks.Api.Auth;
 
 namespace YoutubeLinks.Api.Features.Users.Commands
 {
-    public static class ResendConfirmationEmailFeature
+    public static class ForgotPasswordFeature
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/users/resendConfirmationEmail", async (
-                ResendConfirmationEmail.Command command,
+            app.MapPost("/api/users/forgotPassword", async (
+                ForgotPassword.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -28,44 +28,44 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<ResendConfirmationEmail.Command, Unit>
+        public class Handler : IRequestHandler<ForgotPassword.Command, Unit>
         {
             private readonly IUserRepository _userRepository;
             private readonly IEmailService _emailService;
-            private readonly IEmailConfirmationService _emailConfirmationService;
+            private readonly IForgotPasswordService _forgotPasswordService;
             private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer;
 
             public Handler(
                 IUserRepository userRepository,
                 IEmailService emailService,
-                IEmailConfirmationService emailConfirmationService,
+                IForgotPasswordService forgotPasswordService,
                 IStringLocalizer<ApiValidationMessage> validationLocalizer)
             {
                 _userRepository = userRepository;
                 _emailService = emailService;
-                _emailConfirmationService = emailConfirmationService;
+                _forgotPasswordService = forgotPasswordService;
                 _validationLocalizer = validationLocalizer;
             }
 
             public async Task<Unit> Handle(
-                ResendConfirmationEmail.Command command,
+                ForgotPassword.Command command,
                 CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetByEmail(command.Email) ??
-                    throw new MyValidationException(nameof(ResendConfirmationEmail.Command.Email),
+                    throw new MyValidationException(nameof(ForgotPassword.Command.Email),
                         _validationLocalizer[nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
-                if (user.EmailConfirmed)
-                    throw new MyValidationException(nameof(ResendConfirmationEmail.Command.Email),
-                        _validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
+                if (!user.EmailConfirmed)
+                    throw new MyValidationException(nameof(ForgotPassword.Command.Email),
+                        _validationLocalizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
 
-                user.EmailConfirmationToken = _emailConfirmationService.GenerateEmailConfirmationToken(command.Email);
+                user.ForgotPasswordToken = _forgotPasswordService.GenerateForgotPasswordToken(command.Email);
                 await _userRepository.Update(user);
 
-                await _emailService.SendEmail(user.Email, new EmailConfirmationTemplateModel
+                await _emailService.SendEmail(user.Email, new ForgotPasswordTemplateModel
                 {
                     UserName = user.UserName,
-                    Link = _emailConfirmationService.GenerateConfirmationLink(user.Email, user.EmailConfirmationToken),
+                    Link = _forgotPasswordService.GenerateForgotPasswordLink(user.Email, user.ForgotPasswordToken),
                 });
 
                 return Unit.Value;

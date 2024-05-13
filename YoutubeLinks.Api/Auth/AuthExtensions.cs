@@ -49,6 +49,7 @@ namespace YoutubeLinks.Api.Auth
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
+            services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
 
             return services;
         }

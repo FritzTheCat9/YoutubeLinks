@@ -51,7 +51,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
             }
         }
 
-        private async Task ResendConfirmationEmail()
+        private async Task OpenResendConfirmationEmailDialog()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
             var parameters = new DialogParameters<ResendConfirmationEmailDialog>
@@ -76,6 +76,37 @@ namespace YoutubeLinks.Blazor.Pages.Users
                 {
                     x => x.ContentText,
                     Localizer[nameof(AppStrings.ResendConfirmationEmailSent)]
+                }
+            };
+
+            var dialog = await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
+        }
+
+        private async Task OpenForgotPasswordDialog()
+        {
+            var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+            var parameters = new DialogParameters<ForgotPasswordDialog>
+            {
+                {
+                    x => x.Command,
+                    new()
+                }
+            };
+
+            var dialog = await DialogService.ShowAsync<ForgotPasswordDialog>(Localizer[nameof(AppStrings.ForgotPassword)], parameters, options);
+            var result = await dialog.Result;
+            if (!result.Canceled)
+                await OpenForgotPasswordEmailSentSuccessfullyDialog();
+        }
+
+        private async Task OpenForgotPasswordEmailSentSuccessfullyDialog()
+        {
+            var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+            var parameters = new DialogParameters<SuccessDialog>
+            {
+                {
+                    x => x.ContentText,
+                    Localizer[nameof(AppStrings.ForgotPasswordEmailSent)]
                 }
             };
 

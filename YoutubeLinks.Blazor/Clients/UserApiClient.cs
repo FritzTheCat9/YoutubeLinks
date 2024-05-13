@@ -8,6 +8,7 @@ namespace YoutubeLinks.Blazor.Clients
     public interface IUserApiClient
     {
         Task<bool> ConfirmEmail(ConfirmEmail.Command command);
+        Task ForgotPassword(ForgotPassword.Command command);
         Task<JwtDto> Login(Login.Command command);
         Task<JwtDto> RefreshToken(RefreshToken.Command command);
         Task Register(Register.Command command);
@@ -29,6 +30,9 @@ namespace YoutubeLinks.Blazor.Clients
 
         public async Task<bool> ConfirmEmail(ConfirmEmail.Command command)
             => await _apiClient.Post<ConfirmEmail.Command, bool>($"{_url}/confirmEmail", command);
+
+        public async Task ForgotPassword(ForgotPassword.Command command)
+            => await _apiClient.Post($"{_url}/forgotPassword", command);
 
         public async Task<JwtDto> Login(Login.Command command)
             => await _apiClient.Post<Login.Command, JwtDto>($"{_url}/login", command);

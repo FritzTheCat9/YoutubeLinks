@@ -219,6 +219,12 @@
   <data name="ForbiddenError" xml:space="preserve">
     <value>Forbidden error</value>
   </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot Password</value>
+  </data>
+  <data name="ForgotPasswordEmailSent" xml:space="preserve">
+    <value>Forgot password email has been sent.</value>
+  </data>
   <data name="Greetings" xml:space="preserve">
     <value>Welcome to Youtube Links App</value>
   </data>
@@ -332,6 +338,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="SendForgotPasswordEmail" xml:space="preserve">
+    <value>Send forgot password email</value>
   </data>
   <data name="ServerError" xml:space="preserve">
     <value>Server error</value>
