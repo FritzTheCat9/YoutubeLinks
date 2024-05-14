@@ -101,5 +101,7 @@
         ForgotPassword,
         SendForgotPasswordEmail,
         ForgotPasswordEmailSent,
+        ResetPassword,
+        ResetPasswordSuccess,
     }
 }

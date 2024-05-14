@@ -330,6 +330,12 @@
   <data name="ResendConfirmationEmailSent" xml:space="preserve">
     <value>Confirmation email has been sent.</value>
   </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="ResetPasswordSuccess" xml:space="preserve">
+    <value>Password has been successfully reset. Now log in using your new password.</value>
+  </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>
   </data>

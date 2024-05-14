@@ -13,7 +13,8 @@ namespace YoutubeLinks.Api.Data.Repositories
         Task<User> GetByUserName(string userName);
         Task<bool> EmailExists(string email);
         Task<bool> UserNameExists(string userName);
-        Task<bool> IsTokenAssignedToUser(string email, string token);
+        Task<bool> IsEmailConfirmationTokenAssignedToUser(string email, string token);
+        Task<bool> IsForgotPasswordTokenAssignedToUser(string email, string token);
         Task<int> Create(User user);
         Task Update(User user);
         Task Delete(User user);
@@ -49,9 +50,13 @@ namespace YoutubeLinks.Api.Data.Repositories
         public async Task<bool> UserNameExists(string userName)
             => await _dbContext.Users.AnyAsync(x => x.UserName == userName);
 
-        public async Task<bool> IsTokenAssignedToUser(string email, string token)
+        public async Task<bool> IsEmailConfirmationTokenAssignedToUser(string email, string token)
             => await _dbContext.Users.AnyAsync(x => x.Email == email
                                                     && x.EmailConfirmationToken == token);
+
+        public async Task<bool> IsForgotPasswordTokenAssignedToUser(string email, string token)
+            => await _dbContext.Users.AnyAsync(x => x.Email == email
+                                                    && x.ForgotPasswordToken == token);
 
         public async Task<int> Create(User user)
         {

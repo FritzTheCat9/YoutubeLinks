@@ -95,7 +95,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
             {
                 EmailConfirmed = false,
             });
-            userRepository.IsTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            userRepository.IsEmailConfirmationTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             mediator.Send(Arg.Any<ConfirmEmail.Command>(), CancellationToken.None)
                 .Returns(callInfo =>
@@ -125,7 +125,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
             {
                 EmailConfirmed = false,
             });
-            userRepository.IsTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            userRepository.IsEmailConfirmationTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             mediator.Send(Arg.Any<ConfirmEmail.Command>(), CancellationToken.None)
                 .Returns(callInfo =>

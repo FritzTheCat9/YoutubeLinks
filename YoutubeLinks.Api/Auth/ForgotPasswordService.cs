@@ -37,6 +37,6 @@ namespace YoutubeLinks.Api.Auth
         }
 
         public string GenerateForgotPasswordLink(string email, string token)
-            => $"{_baseUrl}/forgotPassword?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
+            => $"{_baseUrl}/resetPassword?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
     }
 }

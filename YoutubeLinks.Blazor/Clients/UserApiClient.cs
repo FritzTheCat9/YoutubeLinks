@@ -13,6 +13,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task<JwtDto> RefreshToken(RefreshToken.Command command);
         Task Register(Register.Command command);
         Task ResendConfirmationEmail(ResendConfirmationEmail.Command command);
+        Task<bool> ResetPassword(ResetPassword.Command command);
         Task UpdateUserTheme(UpdateUserTheme.Command command);
         Task<PagedList<UserDto>> GetAllUsers(GetAllUsers.Query query);
         Task<UserDto> GetUser(int id);
@@ -45,6 +46,9 @@ namespace YoutubeLinks.Blazor.Clients
 
         public async Task ResendConfirmationEmail(ResendConfirmationEmail.Command command)
             => await _apiClient.Post($"{_url}/resendConfirmationEmail", command);
+
+        public async Task<bool> ResetPassword(ResetPassword.Command command)
+            => await _apiClient.Post<ResetPassword.Command, bool>($"{_url}/resetPassword", command);
 
         public async Task UpdateUserTheme(UpdateUserTheme.Command command)
             => await _apiClient.Put($"{_url}/{command.Id}/theme", command);
