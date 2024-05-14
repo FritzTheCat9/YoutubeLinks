@@ -52,15 +52,19 @@ namespace YoutubeLinks.Api.Features.Users.Commands
                 CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetByEmail(command.Email) ??
-                    throw new MyValidationException(nameof(ConfirmEmail.Command.Email),
+                    throw new MyValidationException(nameof(ResetPassword.Command.Email),
                         _validationLocalizer[nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
                 var isTokenAssignedToUser = await _userRepository.IsForgotPasswordTokenAssignedToUser(user.Email, command.Token);
                 if (!isTokenAssignedToUser)
-                    throw new MyValidationException(nameof(ConfirmEmail.Command.Token),
+                    throw new MyValidationException(nameof(ResetPassword.Command.Token),
                         _validationLocalizer[nameof(ApiValidationMessageString.TokenIsNotAssignedToThisUser)]);
 
-                user.Password = _passwordService.Hash(command.Password);
+                if (_passwordService.Validate(command.NewPassword, user.Password))
+                    throw new MyValidationException(nameof(ResetPassword.Command.NewPassword),
+                        _validationLocalizer[nameof(ApiValidationMessageString.NewPasswordShouldNotBeEqualToOldPassword)]);
+
+                user.Password = _passwordService.Hash(command.NewPassword);
                 user.ForgotPasswordToken = null;
 
                 await _userRepository.Update(user);

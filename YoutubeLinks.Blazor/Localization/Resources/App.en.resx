@@ -279,6 +279,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
   <data name="NoMatchingRecordsFound" xml:space="preserve">
     <value>No matching records found</value>
   </data>

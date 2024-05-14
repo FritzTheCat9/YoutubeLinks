@@ -129,6 +129,9 @@
   <data name="EmailUserWithGivenEmailDoesNotExist" xml:space="preserve">
     <value>User with given email does not exist.</value>
   </data>
+  <data name="NewPasswordShouldNotBeEqualToOldPassword" xml:space="preserve">
+    <value>New password should not be equal to old password.</value>
+  </data>
   <data name="PasswordIsIncorrect" xml:space="preserve">
     <value>Incorrect password.</value>
   </data>

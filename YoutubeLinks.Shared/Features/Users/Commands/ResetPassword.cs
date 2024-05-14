@@ -11,7 +11,7 @@ namespace YoutubeLinks.Shared.Features.Users.Commands
         {
             public string Email { get; set; }
             public string Token { get; set; }
-            public string Password { get; set; }
+            public string NewPassword { get; set; }
             public string RepeatPassword { get; set; }
         }
 
@@ -31,7 +31,7 @@ namespace YoutubeLinks.Shared.Features.Users.Commands
                     .NotEmpty()
                     .WithMessage(x => localizer[nameof(ValidationMessageString.TokenNotEmpty)]);
 
-                RuleFor(x => x.Password)
+                RuleFor(x => x.NewPassword)
                     .NotEmpty()
                     .WithMessage(x => localizer[nameof(ValidationMessageString.PasswordNotEmpty)])
                     .MinimumLength(ValidationConsts.MinimumStringLength)
@@ -46,7 +46,7 @@ namespace YoutubeLinks.Shared.Features.Users.Commands
                     .WithMessage(x => localizer[nameof(ValidationMessageString.PasswordMinimumLength)])
                     .MaximumLength(ValidationConsts.MaximumStringLength)
                     .WithMessage(x => localizer[nameof(ValidationMessageString.PasswordMaximumLength)])
-                    .Equal(x => x.Password)
+                    .Equal(x => x.NewPassword)
                     .WithMessage(x => localizer[nameof(ValidationMessageString.RepeatPasswordEqualPassword)]);
             }
         }

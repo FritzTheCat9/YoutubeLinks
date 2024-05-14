@@ -12,5 +12,6 @@
         UrlMustBeUnique,
         UrlIdNotValid,
         RefreshTokenIsNotValid,
+        NewPasswordShouldNotBeEqualToOldPassword,
     }
 }

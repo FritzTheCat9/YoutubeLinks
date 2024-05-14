@@ -103,5 +103,6 @@
         ForgotPasswordEmailSent,
         ResetPassword,
         ResetPasswordSuccess,
+        NewPassword,
     }
 }
