@@ -19,7 +19,8 @@ If there is a problem with docker and access to the database change "Server=loca
 ## Playwright installation / codegen
 ``` 
 dotnet tool install --global PowerShell
+dotnet run
 pwsh .\bin\Debug\net8.0\playwright.ps1 install
-
 pwsh .\bin\Debug\net8.0\playwright.ps1 codegen http://localhost:7000/
+dotnet test
 ``` 

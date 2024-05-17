@@ -17,11 +17,11 @@ namespace YoutubeLinks.Blazor.Pages.Users
         private CustomValidator _customValidator;
         private FritzProcessingButton _processingButton;
 
-        private class LoginDialogConst
+        public class LoginDialogConst
         {
             public const string EmailInput = "login-email-input";
             public const string PasswordInput = "login-password-input";
-            public const string LoginButton = "login-button";
+            public const string LoginButton = "login-login-button";
         }
 
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
