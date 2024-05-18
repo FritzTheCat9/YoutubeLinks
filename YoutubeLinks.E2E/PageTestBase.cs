@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright.NUnit;
+﻿using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using static YoutubeLinks.Blazor.Pages.Users.Auth;
 using static YoutubeLinks.Blazor.Pages.Users.LoginDialog;
 
@@ -7,19 +8,32 @@ namespace YoutubeLinks.E2E
     public class PageTestBase : PageTest
     {
         protected const string BaseUrl = "http://localhost:7000";
+        protected const string ApiBaseUrl = "http://localhost:5000/api";
 
         protected class AdminData
         {
             public const string UserName = "Admin";
             public const string Email = "ytlinksapp@gmail.com";
-            public const string Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==";
+            public const string Password = "Asd123!";
         }
 
         protected class UserData
         {
             public const string UserName = "User";
             public const string Email = "ytlinksapp1@gmail.com";
-            public const string Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==";
+            public const string Password = "Asd123!";
+        }
+
+        public override BrowserNewContextOptions ContextOptions()
+        {
+            return new BrowserNewContextOptions
+            {
+                ViewportSize = new()
+                {
+                    Width = 1920,
+                    Height = 1080
+                },
+            };
         }
 
         protected async Task FillInput(string testId, string text)
@@ -28,8 +42,8 @@ namespace YoutubeLinks.E2E
         protected async Task ClickButton(string testId)
             => await Page.GetByTestId(testId).ClickAsync();
 
-        protected async Task NavigateToPage(string url)
-            => await Page.GotoAsync($"{BaseUrl}{url}");
+        protected async Task NavigateToPage(string url = "")
+            => await Page.GotoAsync($"{BaseUrl}/{url}");
 
         protected async Task CheckText(string testId, string text)
         {
@@ -37,28 +51,39 @@ namespace YoutubeLinks.E2E
             await Expect(element).ToHaveTextAsync(text);
         }
 
+        protected Task<IResponse> WaitForApiResponse(string url)
+            => Page.WaitForResponseAsync(response => response.Url == $"{ApiBaseUrl}/{url}");
+
         protected async Task LoginAsUser()
         {
-            await NavigateToPage("/");
+            await NavigateToPage();
             await ClickButton(AuthComponentConst.LoginButton);
 
             await FillInput(LoginDialogConst.EmailInput, UserData.Email);
             await FillInput(LoginDialogConst.PasswordInput, UserData.Password);
-            await ClickButton(LoginDialogConst.LoginButton);
 
-            //await CheckText(AuthComponentConst.UserNameText, UserData.UserName);
+            var responseTask = WaitForApiResponse("users/login");
+            await ClickButton(LoginDialogConst.LoginButton);
+            var response = await responseTask;
+            Assert.That(response.Ok);
+
+            await CheckText(AuthComponentConst.UserNameText, UserData.UserName);
         }
 
         protected async Task LoginAsAdmin()
         {
-            await NavigateToPage("/");
+            await NavigateToPage();
             await ClickButton(AuthComponentConst.LoginButton);
 
             await FillInput(LoginDialogConst.EmailInput, AdminData.Email);
             await FillInput(LoginDialogConst.PasswordInput, AdminData.Password);
-            await ClickButton(LoginDialogConst.LoginButton);
 
-            //await CheckText(AuthComponentConst.UserNameText, AdminData.UserName);
+            var responseTask = WaitForApiResponse("users/login");
+            await ClickButton(LoginDialogConst.LoginButton);
+            var response = await responseTask;
+            Assert.That(response.Ok);
+
+            await CheckText(AuthComponentConst.UserNameText, AdminData.UserName);
         }
     }
 }
