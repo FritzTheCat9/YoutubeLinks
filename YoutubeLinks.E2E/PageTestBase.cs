@@ -54,6 +54,14 @@ namespace YoutubeLinks.E2E
         protected Task<IResponse> WaitForApiResponse(string url)
             => Page.WaitForResponseAsync(response => response.Url == $"{ApiBaseUrl}/{url}");
 
+        private async Task ApiResponseOkAfterButtonClick(string testId, string url)
+        {
+            var responseTask = WaitForApiResponse(url);
+            await ClickButton(testId);
+            var response = await responseTask;
+            Assert.That(response.Ok);
+        }
+
         protected async Task LoginAsUser()
         {
             await NavigateToPage();
@@ -62,10 +70,7 @@ namespace YoutubeLinks.E2E
             await FillInput(LoginDialogConst.EmailInput, UserData.Email);
             await FillInput(LoginDialogConst.PasswordInput, UserData.Password);
 
-            var responseTask = WaitForApiResponse("users/login");
-            await ClickButton(LoginDialogConst.LoginButton);
-            var response = await responseTask;
-            Assert.That(response.Ok);
+            await ApiResponseOkAfterButtonClick(LoginDialogConst.LoginButton, "users/login");
 
             await CheckText(AuthComponentConst.UserNameText, UserData.UserName);
         }
@@ -78,10 +83,7 @@ namespace YoutubeLinks.E2E
             await FillInput(LoginDialogConst.EmailInput, AdminData.Email);
             await FillInput(LoginDialogConst.PasswordInput, AdminData.Password);
 
-            var responseTask = WaitForApiResponse("users/login");
-            await ClickButton(LoginDialogConst.LoginButton);
-            var response = await responseTask;
-            Assert.That(response.Ok);
+            await ApiResponseOkAfterButtonClick(LoginDialogConst.LoginButton, "users/login");
 
             await CheckText(AuthComponentConst.UserNameText, AdminData.UserName);
         }
