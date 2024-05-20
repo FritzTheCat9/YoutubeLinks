@@ -40,7 +40,10 @@ namespace YoutubeLinks.E2E
             => await Page.GetByTestId(testId).FillAsync(text);
 
         protected async Task ClickButton(string testId)
-            => await Page.GetByTestId(testId).ClickAsync();
+            => await Page.GetByTestId(testId).First.ClickAsync();
+
+        protected async Task ClickEnter(string testId)
+            => await Page.GetByTestId(testId).PressAsync("Enter");
 
         protected async Task NavigateToPage(string url = "")
             => await Page.GotoAsync($"{BaseUrl}/{url}");
@@ -54,10 +57,18 @@ namespace YoutubeLinks.E2E
         protected Task<IResponse> WaitForApiResponse(string url)
             => Page.WaitForResponseAsync(response => response.Url == $"{ApiBaseUrl}/{url}");
 
-        private async Task ApiResponseOkAfterButtonClick(string testId, string url)
+        protected async Task ApiResponseOkAfterButtonClick(string testId, string url)
         {
             var responseTask = WaitForApiResponse(url);
             await ClickButton(testId);
+            var response = await responseTask;
+            Assert.That(response.Ok);
+        }
+
+        protected async Task ApiResponseOkAfterEnterClick(string testId, string url)
+        {
+            var responseTask = WaitForApiResponse(url);
+            await ClickEnter(testId);
             var response = await responseTask;
             Assert.That(response.Ok);
         }
@@ -87,5 +98,8 @@ namespace YoutubeLinks.E2E
 
             await CheckText(AuthComponentConst.UserNameText, AdminData.UserName);
         }
+
+        protected ILocator GetLocatorByTestId(string testId) 
+            => Page.GetByTestId(testId);
     }
 }

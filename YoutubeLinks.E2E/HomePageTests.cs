@@ -1,6 +1,5 @@
 ﻿namespace YoutubeLinks.E2E
 {
-    [Parallelizable(ParallelScope.Self)]
     [TestFixture]
     public class HomePageTests : PageTestBase
     {

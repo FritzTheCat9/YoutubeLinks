@@ -19,6 +19,15 @@ namespace YoutubeLinks.Blazor.Pages.Users
         private string _searchString = "";
         private PagedList<UserDto> _myUsers;
 
+        public class UsersPageConst
+        {
+            public const string SearchInput = "user-page-search-input";
+            public const string UserNameTableSortLabel = "username-table-sort-label";
+            public const string EmailTableSortLabel = "email-table-sort-label";
+            public const string UserNameTableRowData = "username-table-row-data";
+            public const string NavigateToUserPlaylistsButton = "navigate-to-user-playlists-button";
+        }
+
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }
         [Inject] public IUserApiClient UserApiClient { get; set; }
 

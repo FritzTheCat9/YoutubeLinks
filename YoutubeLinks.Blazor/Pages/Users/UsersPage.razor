@@ -19,18 +19,21 @@
         </MudText>
         <MudSpacer />
         <FritzSearchTextField @bind-Value=_searchString
-                              OnSearch="() => _table.ReloadServerData()" />
+                              OnSearch="() => _table.ReloadServerData()"
+                              UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.SearchInput } }) />
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
             <MudTableSortLabel SortLabel="username"
-                               T=UserDto>
+                               T=UserDto
+                               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.UserNameTableSortLabel } })>
                 @Localizer[nameof(AppStrings.UserName)]
             </MudTableSortLabel>
         </MudTh>
         <MudTh>
             <MudTableSortLabel SortLabel="email"
-                               T=UserDto>
+                               T=UserDto
+                               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.EmailTableSortLabel } })>
                 @Localizer[nameof(AppStrings.Email)]
             </MudTableSortLabel>
         </MudTh>
@@ -42,7 +45,8 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel=@Localizer[nameof(AppStrings.UserName)]>
+        <MudTd DataLabel=@Localizer[nameof(AppStrings.UserName)]
+               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.UserNameTableRowData } })>
             @user.UserName
         </MudTd>
         <MudTd DataLabel=@Localizer[nameof(AppStrings.Email)]>
@@ -59,7 +63,8 @@
                 <MudIconButton Icon=@Icons.Material.Filled.List
                                Color=Color.Primary
                                Size=Size.Small
-                               OnClick="() => RedirectToUserPlaylistsPage(user.Id)" />
+                               OnClick="() => RedirectToUserPlaylistsPage(user.Id)"
+                               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.NavigateToUserPlaylistsButton } }) />
             </MudTooltip>
         </MudTd>
     </RowTemplate>
