@@ -19,9 +19,9 @@ namespace YoutubeLinks.Blazor.Pages.Users
 
         public class LoginDialogConst
         {
-            public const string EmailInput = "login-email-input";
-            public const string PasswordInput = "login-password-input";
-            public const string LoginButton = "login-login-button";
+            public const string EmailInput = "login-dialog-email-input";
+            public const string PasswordInput = "login-dialog-password-input";
+            public const string LoginButton = "login-dialog-login-button";
         }
 
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }

@@ -7,17 +7,20 @@
         <DialogContent>
             <FritzTextField Label=@Localizer[nameof(AppStrings.Name)]
                             @bind-Value=Command.Name
-                            For="() => Command.Name" />
+                            For="() => Command.Name"
+                            UserAttributes=@(new() { { TestConst.TestId, CreatePlaylistDialogConst.NameInput} }) />
             <FritzValidationMessage For="() => Command.Name" />
 
             <FritzCheckbox Label=@Localizer[nameof(AppStrings.Public)]
                            @bind-Value=Command.Public
-                           For="() => Command.Public" />
+                           For="() => Command.Public"
+                           UserAttributes=@(new() { { TestConst.TestId, CreatePlaylistDialogConst.PublicCheckbox } }) />
             <FritzValidationMessage For="() => Command.Public" />
         </DialogContent>
         <DialogActions>
             <MudButton ButtonType=ButtonType.Submit
-                       Color=Color.Primary>
+                       Color=Color.Primary
+                       UserAttributes=@(new() { { TestConst.TestId, CreatePlaylistDialogConst.CreatePlaylistButton } })>
                 @Localizer[nameof(AppStrings.Create)]
             </MudButton>
         </DialogActions>

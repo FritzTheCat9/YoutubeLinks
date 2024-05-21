@@ -10,7 +10,7 @@
 <MudTable ServerData=ServerReload
           @ref=_table
           Dense=true
-          Hover=true 
+          Hover=true
           Elevation=3>
     <ToolBarContent>
         <MudText Typo=Typo.h6>
@@ -24,7 +24,8 @@
                         <MudIconButton Icon=@Icons.Material.Filled.Add
                                        Color=Color.Warning
                                        Size=Size.Small
-                                       OnClick=CreateUserPlaylist />
+                                       OnClick=CreateUserPlaylist
+                                       UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.CreatePlaylistButton } }) />
                     </MudTooltip>
                     <MudTooltip Text=@Localizer[nameof(AppStrings.ImportPlaylistFromJson)]>
                         <MudIconButton Icon=@Icons.Material.Filled.ImportExport
@@ -37,12 +38,14 @@
         </AuthorizeView>
         <MudSpacer />
         <FritzSearchTextField @bind-Value=_searchString
-                              OnSearch="() => _table.ReloadServerData()" />
+                              OnSearch="() => _table.ReloadServerData()"
+                              UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.SearchInput } }) />
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
             <MudTableSortLabel SortLabel="name"
-                               T=PlaylistDto>
+                               T=PlaylistDto
+                               UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.NameTableSortLabel } })>
                 @Localizer[nameof(AppStrings.Name)]
             </MudTableSortLabel>
         </MudTh>
@@ -57,7 +60,8 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel=@Localizer[nameof(AppStrings.Name)]>
+        <MudTd DataLabel=@Localizer[nameof(AppStrings.Name)]
+               UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.NameTableRowData } })>
             @context.Name
         </MudTd>
         <MudTd DataLabel=@Localizer[nameof(AppStrings.Public)]>
@@ -112,13 +116,15 @@
                                 <MudIconButton Icon=@Icons.Material.Filled.Edit
                                                Color=Color.Warning
                                                Size=Size.Small
-                                               OnClick="() => UpdateUserPlaylist(context)" />
+                                               OnClick="() => UpdateUserPlaylist(context)"
+                                               UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.UpdatePlaylistButton } }) />
                             </MudTooltip>
                             <MudTooltip Text=@Localizer[nameof(AppStrings.DeletePlaylist)]>
                                 <MudIconButton Icon=@Icons.Material.Filled.Delete
                                                Color=Color.Warning
                                                Size=Size.Small
-                                               OnClick="() => DeleteUserPlaylist(context.Id)" />
+                                               OnClick="() => DeleteUserPlaylist(context.Id)"
+                                               UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.DeletePlaylistButton } }) />
                             </MudTooltip>
                         }
                     </Authorized>

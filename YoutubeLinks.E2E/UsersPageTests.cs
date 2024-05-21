@@ -12,7 +12,7 @@ namespace YoutubeLinks.E2E
 
             await FillInput(UsersPageConst.SearchInput, AdminData.UserName);
             await ClickEnter(UsersPageConst.SearchInput);
-            await Expect(Page.GetByTestId(UsersPageConst.UserNameTableRowData)).ToHaveTextAsync(AdminData.UserName);
+            await Expect(GetLocatorByTestId(UsersPageConst.UserNameTableRowData)).ToHaveTextAsync(AdminData.UserName);
 
             await FillInput(UsersPageConst.SearchInput, UserData.UserName);
             await ClickEnter(UsersPageConst.SearchInput);
@@ -23,25 +23,25 @@ namespace YoutubeLinks.E2E
         public async Task SortByUserName()
         {
             await NavigateToPage("users");
-            await ClickButton(UsersPageConst.UserNameTableSortLabel);
-            await ClickButton(UsersPageConst.UserNameTableSortLabel);
-            await ClickButton(UsersPageConst.UserNameTableSortLabel);
+            await ClickElement(UsersPageConst.UserNameTableSortLabel);
+            await ClickElement(UsersPageConst.UserNameTableSortLabel);
+            await ClickElement(UsersPageConst.UserNameTableSortLabel);
         }
 
         [Test]
         public async Task SortByEmail()
         {
             await NavigateToPage("users");
-            await ClickButton(UsersPageConst.EmailTableSortLabel);
-            await ClickButton(UsersPageConst.EmailTableSortLabel);
-            await ClickButton(UsersPageConst.EmailTableSortLabel);
+            await ClickElement(UsersPageConst.EmailTableSortLabel);
+            await ClickElement(UsersPageConst.EmailTableSortLabel);
+            await ClickElement(UsersPageConst.EmailTableSortLabel);
         }
 
         [Test]
         public async Task NavigateToPlaylistsView()
         {
             await NavigateToPage("users");
-            await ClickButton(UsersPageConst.NavigateToUserPlaylistsButton);
+            await ClickElement(UsersPageConst.NavigateToUserPlaylistsButton);
         }
     }
 }

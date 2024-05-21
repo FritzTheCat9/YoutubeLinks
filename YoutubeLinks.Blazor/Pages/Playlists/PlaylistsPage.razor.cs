@@ -25,6 +25,16 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private string _searchString = "";
         private PagedList<PlaylistDto> _playlistPagedList;
 
+        public class PlaylistsPageConst
+        {
+            public const string CreatePlaylistButton = "playlists-page-create-playlist-button";
+            public const string UpdatePlaylistButton = "playlists-page-update-playlist-button";
+            public const string DeletePlaylistButton = "playlists-page-delete-playlist-button";
+            public const string SearchInput = "playlists-page-search-input";
+            public const string NameTableSortLabel = "playlists-page-name-table-sort-label";
+            public const string NameTableRowData = "playlists-page-name-table-row-data";
+        }
+
         [Parameter] public int UserId { get; set; }
 
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }

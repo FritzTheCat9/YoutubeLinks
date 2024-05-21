@@ -13,6 +13,13 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
     {
         private CustomValidator _customValidator;
 
+        public class CreatePlaylistDialogConst
+        {
+            public const string NameInput = "create-playlist-dialog-name-input";
+            public const string PublicCheckbox = "create-playlist-dialog-public-checkbox";
+            public const string CreatePlaylistButton = "create-playlist-dialog-create-playlist-button";
+        }
+
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public CreatePlaylist.Command Command { get; set; } = new();

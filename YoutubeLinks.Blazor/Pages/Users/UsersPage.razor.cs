@@ -21,11 +21,11 @@ namespace YoutubeLinks.Blazor.Pages.Users
 
         public class UsersPageConst
         {
-            public const string SearchInput = "user-page-search-input";
-            public const string UserNameTableSortLabel = "username-table-sort-label";
-            public const string EmailTableSortLabel = "email-table-sort-label";
-            public const string UserNameTableRowData = "username-table-row-data";
-            public const string NavigateToUserPlaylistsButton = "navigate-to-user-playlists-button";
+            public const string SearchInput = "users-page-search-input";
+            public const string UserNameTableSortLabel = "users-page-username-table-sort-label";
+            public const string EmailTableSortLabel = "users-page-email-table-sort-label";
+            public const string UserNameTableRowData = "users-page-username-table-row-data";
+            public const string NavigateToUserPlaylistsButton = "users-page-navigate-to-user-playlists-button";
         }
 
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }
