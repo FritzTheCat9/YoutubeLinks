@@ -7,6 +7,11 @@ namespace YoutubeLinks.Blazor.Shared
 {
     public partial class DeleteDialog : ComponentBase
     {
+        public class DeleteDialogConst
+        {
+            public const string DeleteButton = "delete-dialog-delete-button";
+        }
+
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public string ContentText { get; set; }

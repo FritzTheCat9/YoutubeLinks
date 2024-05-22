@@ -2,6 +2,7 @@
 using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
 using static YoutubeLinks.Blazor.Pages.Playlists.UpdatePlaylistDialog;
 using static YoutubeLinks.Blazor.Pages.Users.UsersPage;
+using static YoutubeLinks.Blazor.Shared.DeleteDialog;
 
 namespace YoutubeLinks.E2E
 {
@@ -22,15 +23,40 @@ namespace YoutubeLinks.E2E
         }
 
         [Test]
-        public async Task Filter()
+        public async Task SortByName()
         {
+            await NavigateToPage("users");
+            await ClickElement(UsersPageConst.NavigateToUserPlaylistsButton);
 
+            await ClickElement(PlaylistsPageConst.NameTableSortLabel);
+            await ClickElement(PlaylistsPageConst.NameTableSortLabel);
+            await ClickElement(PlaylistsPageConst.NameTableSortLabel);
         }
 
         [Test]
-        public async Task SortByName()
+        public async Task CreateUpdateDeletePlaylist()
         {
+            var playlistName = "Test Playlist";
+            var playlistIsPublic = false;
 
+            await ClickElement(PlaylistsPageConst.CreatePlaylistButton);
+            await FillInput(CreatePlaylistDialogConst.NameInput, playlistName);
+            await ClickElement(CreatePlaylistDialogConst.PublicCheckbox);
+            await ClickElement(CreatePlaylistDialogConst.CreatePlaylistButton);
+            await CheckTableRowIsValid(playlistName, playlistIsPublic);
+
+            var playlistNameUpdated = "Test Playlist - Updated";
+            var playlistIsPublicUpdated = true;
+
+            await ClickElement(PlaylistsPageConst.UpdatePlaylistButton);
+            await FillInput(UpdatePlaylistDialogConst.NameInput, playlistNameUpdated);
+            await ClickElement(UpdatePlaylistDialogConst.PublicCheckbox);
+            await ClickElement(UpdatePlaylistDialogConst.UpdatePlaylistButton);
+            await CheckTableRowIsValid(playlistNameUpdated, playlistIsPublicUpdated);
+
+            await ClickElement(PlaylistsPageConst.DeletePlaylistButton);
+            await ClickElement(DeleteDialogConst.DeleteButton);
+            await CheckTableRowIsHidden(playlistNameUpdated);
         }
 
         private async Task CheckTableRowIsValid(string name, bool isPublic)
@@ -41,44 +67,11 @@ namespace YoutubeLinks.E2E
             // assert public/private icon == isPublic
         }
 
-        [Test]
-        public async Task CreatePlaylist()
+        private async Task CheckTableRowIsHidden(string name)
         {
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
-
-            await ClickElement(PlaylistsPageConst.CreatePlaylistButton);
-            await FillInput(CreatePlaylistDialogConst.NameInput, playlistName);
-            await ClickElement(CreatePlaylistDialogConst.PublicCheckbox);
-            await ClickElement(CreatePlaylistDialogConst.CreatePlaylistButton);
-
-            await CheckTableRowIsValid(playlistName, playlistIsPublic);
-        }
-
-        [Test]
-        public async Task UpdatePlaylist()
-        {
-            var playlistName = "Test Playlist";
-
-            await FillInput(PlaylistsPageConst.SearchInput, playlistName);
+            await FillInput(PlaylistsPageConst.SearchInput, name);
             await ClickEnter(PlaylistsPageConst.SearchInput);
-            await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToHaveTextAsync(playlistName);
-
-            var playlistNameUpdated = "Test Playlist - Updated";
-            var playlistIsPublic = true;
-
-            await ClickElement(PlaylistsPageConst.UpdatePlaylistButton);
-            await FillInput(UpdatePlaylistDialogConst.NameInput, playlistNameUpdated);
-            await ClickElement(UpdatePlaylistDialogConst.PublicCheckbox);
-            await ClickElement(UpdatePlaylistDialogConst.UpdatePlaylistButton);
-
-            await CheckTableRowIsValid(playlistNameUpdated, playlistIsPublic);
-        }
-
-        [Test]
-        public async Task DeletePlaylist()
-        {
-
+            await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToBeHiddenAsync();
         }
 
         [Test]

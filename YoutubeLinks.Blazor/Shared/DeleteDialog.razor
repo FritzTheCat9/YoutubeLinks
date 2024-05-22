@@ -10,7 +10,8 @@
         </MudButton>
         <MudButton Color=Color
                    Variant=Variant.Outlined
-                   OnClick=Submit>
+                   OnClick=Submit
+                   UserAttributes=@(new() { { TestConst.TestId, DeleteDialogConst.DeleteButton } })>
             @ButtonText
         </MudButton>
     </DialogActions>

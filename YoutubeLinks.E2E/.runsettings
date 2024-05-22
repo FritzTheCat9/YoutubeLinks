@@ -7,9 +7,9 @@
 	<!-- General run configuration -->
 	<RunConfiguration>
 		<EnvironmentVariables>
-			<!-- For debugging selectors, it's recommend to set the following environment variable -->
+			<!-- For debugging selectors, it's recommended to set the following environment variable -->
 			<DEBUG>pw:api</DEBUG>
-			<!--<PWDEBUG>1</PWDEBUG>-->
+			<!-- <PWDEBUG>1</PWDEBUG> -->
 		</EnvironmentVariables>
 	</RunConfiguration>
 	<!-- Playwright -->

@@ -30,6 +30,12 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             public const string CreatePlaylistButton = "playlists-page-create-playlist-button";
             public const string UpdatePlaylistButton = "playlists-page-update-playlist-button";
             public const string DeletePlaylistButton = "playlists-page-delete-playlist-button";
+            public const string ImportPlaylistButton = "playlists-page-import-playlist-button";
+            public const string ExportPlaylistButton = "playlists-page-export-playlist-button";
+            public const string ExportPlaylistToJsonButton = "playlists-page-export-playlist-to-json-button";
+            public const string ExportPlaylistToTxtButton = "playlists-page-export-playlist-to-txt-button";
+            public const string DownloadPlaylistButton = "playlists-page-download-playlist-button";
+            public const string NavigateToPlaylistLinksButton = "playlists-page-navigate-to-playlist-links-button";
             public const string SearchInput = "playlists-page-search-input";
             public const string NameTableSortLabel = "playlists-page-name-table-sort-label";
             public const string NameTableRowData = "playlists-page-name-table-row-data";

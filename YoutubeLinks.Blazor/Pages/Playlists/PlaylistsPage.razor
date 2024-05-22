@@ -31,7 +31,8 @@
                         <MudIconButton Icon=@Icons.Material.Filled.ImportExport
                                        Color=Color.Info
                                        Size=Size.Small
-                                       OnClick=ImportPlaylistFromJSON />
+                                       OnClick=ImportPlaylistFromJSON
+                                       UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.ImportPlaylistButton } }) />
                     </MudTooltip>
                 }
             </Authorized>
@@ -83,7 +84,8 @@
                 <MudIconButton Icon=@Icons.Material.Filled.List
                                Color=Color.Primary
                                Size=Size.Small
-                               OnClick="() => RedirectToLinksPage(context.Id)" />
+                               OnClick="() => RedirectToLinksPage(context.Id)"
+                               UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.NavigateToPlaylistLinksButton } }) />
             </MudTooltip>
         </MudTd>
         <MudTd DataLabel=@Localizer[nameof(AppStrings.Actions)]>
@@ -92,11 +94,14 @@
                 <MudTooltip Text=@Localizer[nameof(AppStrings.ExportPlaylist)]>
                     <MudMenu Icon=@Icons.Material.Filled.Save
                              Color=Color.Info
-                             Size=Size.Small>
-                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, PlaylistFileType.JSON)">
+                             Size=Size.Small
+                             UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.ExportPlaylistButton } })>
+                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, PlaylistFileType.JSON)"
+                                     UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.ExportPlaylistToJsonButton } })>
                             @Localizer[nameof(AppStrings.ExportPlaylistToJson)]
                         </MudMenuItem>
-                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, PlaylistFileType.TXT)">
+                        <MudMenuItem OnClick="() => ExportPlaylistToFile(context.Id, PlaylistFileType.TXT)"
+                                     UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.ExportPlaylistToTxtButton } })>
                             @Localizer[nameof(AppStrings.ExportPlaylistToTxt)]
                         </MudMenuItem>
                     </MudMenu>
@@ -105,7 +110,8 @@
                     <MudIconButton Icon=@Icons.Material.Filled.Download
                                    Color=Color.Info
                                    Size=Size.Small
-                                   OnClick="() => RedirectToDownloadPlaylistPage(context.Id)" />
+                                   OnClick="() => RedirectToDownloadPlaylistPage(context.Id)"
+                                   UserAttributes=@(new() { { TestConst.TestId, PlaylistsPageConst.DownloadPlaylistButton } }) />
                 </MudTooltip>
                 <AuthorizeView Policy=@Policy.User
                                Context="auth">
