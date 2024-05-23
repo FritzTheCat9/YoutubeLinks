@@ -2,7 +2,8 @@
 
 <MudBreadcrumbs Items=Items>
     <ItemTemplate Context="item">
-        <MudLink Href=@item.Href>
+        <MudLink Href=@item.Href
+                 UserAttributes=@(new() { { TestConst.TestId, item.Text } })>
             @item.Text
         </MudLink>
     </ItemTemplate>

@@ -25,9 +25,6 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task SortByName()
         {
-            await NavigateToPage("users");
-            await ClickElement(UsersPageConst.NavigateToUserPlaylistsButton);
-
             await ClickElement(PlaylistsPageConst.NameTableSortLabel);
             await ClickElement(PlaylistsPageConst.NameTableSortLabel);
             await ClickElement(PlaylistsPageConst.NameTableSortLabel);
@@ -39,39 +36,20 @@ namespace YoutubeLinks.E2E
             var playlistName = "Test Playlist";
             var playlistIsPublic = false;
 
-            await ClickElement(PlaylistsPageConst.CreatePlaylistButton);
-            await FillInput(CreatePlaylistDialogConst.NameInput, playlistName);
-            await ClickElement(CreatePlaylistDialogConst.PublicCheckbox);
-            await ClickElement(CreatePlaylistDialogConst.CreatePlaylistButton);
-            await CheckTableRowIsValid(playlistName, playlistIsPublic);
+            await CreateTestPlaylist(playlistName, playlistIsPublic);
 
             var playlistNameUpdated = "Test Playlist - Updated";
             var playlistIsPublicUpdated = true;
 
-            await ClickElement(PlaylistsPageConst.UpdatePlaylistButton);
-            await FillInput(UpdatePlaylistDialogConst.NameInput, playlistNameUpdated);
-            await ClickElement(UpdatePlaylistDialogConst.PublicCheckbox);
-            await ClickElement(UpdatePlaylistDialogConst.UpdatePlaylistButton);
-            await CheckTableRowIsValid(playlistNameUpdated, playlistIsPublicUpdated);
+            await UpdateTestPlaylist(playlistName, playlistNameUpdated, playlistIsPublicUpdated);
 
-            await ClickElement(PlaylistsPageConst.DeletePlaylistButton);
-            await ClickElement(DeleteDialogConst.DeleteButton);
-            await CheckTableRowIsHidden(playlistNameUpdated);
+            await DeleteTestPlaylist(playlistNameUpdated);
         }
 
-        private async Task CheckTableRowIsValid(string name, bool isPublic)
+        private async Task SearchPlaylist(string name)
         {
             await FillInput(PlaylistsPageConst.SearchInput, name);
             await ClickEnter(PlaylistsPageConst.SearchInput);
-            await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToHaveTextAsync(name);
-            // assert public/private icon == isPublic
-        }
-
-        private async Task CheckTableRowIsHidden(string name)
-        {
-            await FillInput(PlaylistsPageConst.SearchInput, name);
-            await ClickEnter(PlaylistsPageConst.SearchInput);
-            await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToBeHiddenAsync();
         }
 
         [Test]
@@ -101,7 +79,61 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task NavigateToPlaylistLinksView()
         {
+            var playlistName = "Test Playlist";
+            var playlistIsPublic = false;
 
+            await CreateTestPlaylist(playlistName, playlistIsPublic);
+
+            await SearchPlaylist(playlistName);
+            await ClickElement(PlaylistsPageConst.NavigateToPlaylistLinksButton);
+            await GoBackToPlaylistsPageFromLinksPage();
+
+            await DeleteTestPlaylist(playlistName);
+        }
+
+        private async Task GoBackToPlaylistsPageFromLinksPage()
+        {
+            await ClickElement("Playlists");
+        }
+
+        private async Task CreateTestPlaylist(string playlistName, bool playlistIsPublic)
+        {
+            await ClickElement(PlaylistsPageConst.CreatePlaylistButton);
+            await FillInput(CreatePlaylistDialogConst.NameInput, playlistName);
+            await ClickElement(CreatePlaylistDialogConst.PublicCheckbox);
+            await ClickElement(CreatePlaylistDialogConst.CreatePlaylistButton);
+            await CheckTableRowIsValid(playlistName, playlistIsPublic);
+        }
+
+        private async Task UpdateTestPlaylist(string playlistName, string playlistNameUpdated, bool playlistIsPublicUpdated)
+        {
+            await SearchPlaylist(playlistName);
+            await ClickElement(PlaylistsPageConst.UpdatePlaylistButton);
+            await FillInput(UpdatePlaylistDialogConst.NameInput, playlistNameUpdated);
+            await ClickElement(UpdatePlaylistDialogConst.PublicCheckbox);
+            await ClickElement(UpdatePlaylistDialogConst.UpdatePlaylistButton);
+            await CheckTableRowIsValid(playlistNameUpdated, playlistIsPublicUpdated);
+        }
+
+        private async Task CheckTableRowIsValid(string name, bool isPublic)
+        {
+            await SearchPlaylist(name);
+            await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToHaveTextAsync(name);
+            // assert public/private icon == isPublic
+        }
+
+        private async Task DeleteTestPlaylist(string playlistName)
+        {
+            await SearchPlaylist(playlistName);
+            await ClickElement(PlaylistsPageConst.DeletePlaylistButton);
+            await ClickElement(DeleteDialogConst.DeleteButton);
+            await CheckTableRowIsHidden(playlistName);
+        }
+
+        private async Task CheckTableRowIsHidden(string name)
+        {
+            await SearchPlaylist(name);
+            await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToBeHiddenAsync();
         }
     }
 }

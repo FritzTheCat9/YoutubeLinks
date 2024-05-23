@@ -2,14 +2,14 @@
 <RunSettings>
 	<!-- NUnit adapter -->
 	<NUnit>
-		<NumberOfTestWorkers>24</NumberOfTestWorkers>
+		<NumberOfTestWorkers>1</NumberOfTestWorkers>
 	</NUnit>
 	<!-- General run configuration -->
 	<RunConfiguration>
 		<EnvironmentVariables>
 			<!-- For debugging selectors, it's recommended to set the following environment variable -->
-			<DEBUG>pw:api</DEBUG>
-			<!-- <PWDEBUG>1</PWDEBUG> -->
+			<!-- <DEBUG>pw:api</DEBUG> -->
+			<PWDEBUG>1</PWDEBUG>
 		</EnvironmentVariables>
 	</RunConfiguration>
 	<!-- Playwright -->
