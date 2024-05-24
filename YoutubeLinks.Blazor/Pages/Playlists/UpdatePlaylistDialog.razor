@@ -11,10 +11,12 @@
                             UserAttributes=@(new() { { TestConst.TestId, UpdatePlaylistDialogConst.NameInput} }) />
             <FritzValidationMessage For="() => Command.Name" />
 
-            <FritzCheckbox Label=@Localizer[nameof(AppStrings.Public)]
-                           @bind-Value=Command.Public
-                           For="() => Command.Public"
-                           UserAttributes=@(new() { { TestConst.TestId, UpdatePlaylistDialogConst.PublicCheckbox} }) />
+            <MudCheckBox T=bool
+                         Label=@Localizer[nameof(AppStrings.Public)]
+                         @bind-Value=Command.Public
+                         For="() => Command.Public"
+                         Color=Color.Primary
+                         UserAttributes=@(new() { { TestConst.TestId, UpdatePlaylistDialogConst.PublicCheckbox } }) />
             <FritzValidationMessage For="() => Command.Public" />
         </DialogContent>
         <DialogActions>

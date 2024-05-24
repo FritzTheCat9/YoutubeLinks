@@ -10,10 +10,12 @@
                             @bind-Value=FormModel.Name
                             For="() => FormModel.Name" />
             <FritzValidationMessage For="() => FormModel.Name" />
-
-            <FritzCheckbox Label=@Localizer[nameof(AppStrings.Public)]
-                           @bind-Value=FormModel.Public
-                           For="() => FormModel.Public" />
+                
+            <MudCheckBox T=bool
+                         Label=@Localizer[nameof(AppStrings.Public)]
+                         @bind-Value=FormModel.Public
+                         For="() => FormModel.Public"
+                         Color=Color.Primary />
             <FritzValidationMessage For="() => FormModel.Public" />
 
             <MudFileUpload T=IBrowserFile

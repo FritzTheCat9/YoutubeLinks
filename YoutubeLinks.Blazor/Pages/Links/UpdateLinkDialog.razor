@@ -15,9 +15,11 @@
                             For="() => Command.Title" />
             <FritzValidationMessage For="() => Command.Title" />
 
-            <FritzCheckbox Label=@Localizer[nameof(AppStrings.Downloaded)]
-                           @bind-Value=Command.Downloaded
-                           For="() => Command.Downloaded" />
+            <MudCheckBox T=bool
+                         Label=@Localizer[nameof(AppStrings.Downloaded)]
+                         @bind-Value=Command.Downloaded
+                         For="() => Command.Downloaded"
+                         Color=Color.Primary />
             <FritzValidationMessage For="() => Command.Downloaded" />
         </DialogContent>
         <DialogActions>
