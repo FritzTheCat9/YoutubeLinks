@@ -41,6 +41,23 @@ namespace YoutubeLinks.Blazor.Pages.Links
             Url = "",
         };
 
+        public class LinksPageConst
+        {
+            public const string SetAllPlaylistLinksAsUndownloadedButton = "links-page-set-all-playlist-links-as-undownloaded-button";
+            public const string SetAllPlaylistLinksAsDownloadedButton = "links-page-set-all-playlist-links-as-downloaded-button";
+            public const string SwitchToGridViewButton = "links-page-switch-to-grid-view-button";
+            public const string SearchInput = "links-page-search-input";
+            public const string TitleTableSortLabel = "links-page-title-table-sort-label";
+            public const string TitleTableRowData = "links-page-title-table-row-data";
+            public const string ModifiedTableSortLabel = "links-page-modified-table-sort-label";
+            public const string ModifiedTableRowData = "links-page-modified-table-row-data";
+            public const string CopyToClipboardButton = "links-page-copy-to-clipboard-button";
+            public const string DownloadMP3FileButton = "links-page-download-mp3-file-button";
+            public const string DownloadMP4FileButton = "links-page-download-mp4-file-button";
+            public const string UpdateLinkButton = "links-page-update-link-button";
+            public const string DeleteLinkButton = "links-page-delete-link-button";
+        }
+
         [Parameter] public int UserId { get; set; }
         [Parameter] public int PlaylistId { get; set; }
 
