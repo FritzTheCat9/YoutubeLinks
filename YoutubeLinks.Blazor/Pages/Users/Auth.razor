@@ -8,7 +8,8 @@
             </MudText>
             <MudButton Variant=Variant.Filled
                        Color=Color.Secondary
-                       OnClick="Logout">
+                       OnClick="Logout"
+                       UserAttributes=@(new() { { TestConst.TestId, AuthComponentConst.LogoutButton} })>
                 @Localizer[nameof(AppStrings.Logout)]
             </MudButton>
         </MudStack>
@@ -24,7 +25,8 @@
             </MudButton>
             <MudButton Variant=Variant.Filled
                        Color=Color.Tertiary
-                       OnClick=Register>
+                       OnClick=Register
+                       UserAttributes=@(new() { { TestConst.TestId, AuthComponentConst.RegisterButton} })>
                 @Localizer[nameof(AppStrings.Register)]
             </MudButton>
         </MudStack>

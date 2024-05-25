@@ -16,9 +16,10 @@
         }
 
         [Test]
-        public async Task Logout()
+        public async Task TestLogout()
         {
-
+            await LoginAsAdmin();
+            await Logout();
         }
 
         [Test]

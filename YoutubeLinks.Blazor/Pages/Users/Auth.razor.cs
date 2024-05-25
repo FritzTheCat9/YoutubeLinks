@@ -15,8 +15,10 @@ namespace YoutubeLinks.Blazor.Pages.Users
     {
         public class AuthComponentConst
         {
-            public const string LoginButton = "auth-login-button";
             public const string UserNameText = "auth-username-text";
+            public const string LogoutButton = "auth-logout-button";
+            public const string LoginButton = "auth-login-button";
+            public const string RegisterButton = "auth-register-button";
         }
 
         [Parameter] public EventCallback<ThemeColor> ChangeThemeColor { get; set; }
