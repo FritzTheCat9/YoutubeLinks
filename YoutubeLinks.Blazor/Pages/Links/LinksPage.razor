@@ -38,13 +38,15 @@
                                 <MudIconButton Icon=@Icons.Material.Filled.OutlinedFlag
                                                Color=Color.Info
                                                Size=Size.Small
-                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false)) />
+                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false))
+                                               UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.SetAllPlaylistLinksAsUndownloadedButton } }) />
                             </MudTooltip>
                             <MudTooltip Text=@Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]>
                                 <MudIconButton Icon=@Icons.Material.Filled.Flag
                                                Color=Color.Info
                                                Size=Size.Small
-                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true)) />
+                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true))
+                                               UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.SetAllPlaylistLinksAsDownloadedButton } }) />
                             </MudTooltip>
                         }
                     </Authorized>
@@ -53,23 +55,27 @@
                     <MudIconButton Icon=@Icons.Material.Filled.GridView
                                    Color=Color.Info
                                    Size=Size.Small
-                                   OnClick=SwitchView />
+                                   OnClick=SwitchView
+                                   UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.SwitchToGridViewButton } }) />
                 </MudTooltip>
                 <MudSpacer />
                 <FritzSearchTextField @bind-Value=_searchString
-                                      OnSearch=RefreshView />
+                                      OnSearch=RefreshView
+                                      UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.SearchInput } }) />
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>
                     <MudTableSortLabel SortLabel="title"
-                                       T=LinkDto>
+                                       T=LinkDto
+                                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.TitleTableSortLabel } })>
                         @Localizer[nameof(AppStrings.Title)]
                     </MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel SortLabel="modified"
                                        InitialDirection=SortDirection.Descending
-                                       T=LinkDto>
+                                       T=LinkDto
+                                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.ModifiedTableSortLabel } })>
                         @Localizer[nameof(AppStrings.Modified)]
                     </MudTableSortLabel>
                 </MudTh>
@@ -88,7 +94,8 @@
                 </MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel=@Localizer[nameof(AppStrings.Title)]>
+                <MudTd DataLabel=@Localizer[nameof(AppStrings.Title)]
+                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.TitleTableRowData } })>
                     <MudLink Href=@context.Url
                              Target="_blank"
                              Color=Color.Default
@@ -98,7 +105,8 @@
                         </MudText>
                     </MudLink>
                 </MudTd>
-                <MudTd DataLabel=@Localizer[nameof(AppStrings.Modified)]>
+                <MudTd DataLabel=@Localizer[nameof(AppStrings.Modified)]
+                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.ModifiedTableRowData } })>
                     @context.Modified.ToString("dd/MM/yyyy HH:mm:ss")
                 </MudTd>
                 <AuthorizeView Policy=@Policy.User
@@ -129,20 +137,23 @@
                     <FritzCopyToClipboardButton TooltipText=@Localizer[nameof(AppStrings.CopyUrlToClipboard)]
                                                 Color=Color.Info
                                                 Size=Size.Small
-                                                CopiedText=@context.Url />
+                                                CopiedText=@context.Url
+                                                UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.CopyToClipboardButton } }) />
                     <MudTooltip Text=@Localizer[nameof(AppStrings.DownloadToMp3)]>
                         <MudIconButton Icon=@Icons.Material.Filled.Download
                                        Color=Color.Info
                                        Size=Size.Small
                                        Disabled=_disableDownloadPlaylistLinkButtons
-                                       OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.MP3)" />
+                                       OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.MP3)"
+                                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.DownloadMP3FileButton } }) />
                     </MudTooltip>
                     <MudTooltip Text=@Localizer[nameof(AppStrings.DownloadToMp4)]>
                         <MudIconButton Icon=@Icons.Material.Filled.VideoLibrary
                                        Color=Color.Info
                                        Size=Size.Small
                                        Disabled=_disableDownloadPlaylistLinkButtons
-                                       OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.MP4)" />
+                                       OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.MP4)"
+                                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.DownloadMP4FileButton } }) />
                     </MudTooltip>
                     <AuthorizeView Policy=@Policy.User
                                    Context="auth">
@@ -153,13 +164,15 @@
                                     <MudIconButton Icon=@Icons.Material.Filled.Edit
                                                    Color=Color.Warning
                                                    Size=Size.Small
-                                                   OnClick="() => UpdatePlaylistLink(context)" />
+                                                   OnClick="() => UpdatePlaylistLink(context)"
+                                                   UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.UpdateLinkButton} }) />
                                 </MudTooltip>
                                 <MudTooltip Text=@Localizer[nameof(AppStrings.DeleteLink)]>
                                     <MudIconButton Icon=@Icons.Material.Filled.Delete
                                                    Color=Color.Warning
                                                    Size=Size.Small
-                                                   OnClick="() => DeletePlaylistLink(context.Id)" />
+                                                   OnClick="() => DeletePlaylistLink(context.Id)"
+                                                   UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.DeleteLinkButton } }) />
                                 </MudTooltip>
                             }
                         </Authorized>

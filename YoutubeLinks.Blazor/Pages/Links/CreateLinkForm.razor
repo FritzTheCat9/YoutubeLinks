@@ -10,13 +10,15 @@
                         @bind-Value=Command.Url
                         For="() => Command.Url"
                         Variant=Variant.Outlined
-                        ShrinkLabel />
+                        ShrinkLabel
+                        UserAttributes=@(new() { { TestConst.TestId, CreateLinkFormConst.UrlInput} }) />
 
         <FritzProcessingButton @ref=_processingButton
                                ButtonType=ButtonType.Submit
                                Color=Color.Primary
                                ProcessingButtonText=@Localizer[nameof(AppStrings.Creating)]
-                               ButtonText=@Localizer[nameof(AppStrings.Create)] />
+                               ButtonText=@Localizer[nameof(AppStrings.Create)]
+                               UserAttributes=@(new() { { TestConst.TestId, CreateLinkFormConst.CreateButton} }) />
     </MudStack>
     <FritzValidationMessage For="() => Command.Url" />
 </EditForm>

@@ -14,6 +14,12 @@ namespace YoutubeLinks.Blazor.Pages.Links
         private CustomValidator _customValidator;
         private FritzProcessingButton _processingButton;
 
+        public class CreateLinkFormConst
+        {
+            public const string UrlInput = "create-link-form-url-input";
+            public const string CreateButton = "create-link-form-create-button";
+        }
+
         [Parameter] public CreateLink.Command Command { get; set; } = new();
         [Parameter] public EventCallback ParentReloadFunction { get; set; }
 
