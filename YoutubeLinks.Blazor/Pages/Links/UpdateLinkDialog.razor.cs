@@ -15,6 +15,14 @@ namespace YoutubeLinks.Blazor.Pages.Links
         private CustomValidator _customValidator;
         private FritzProcessingButton _processingButton;
 
+        public class UpdateLinkDialogConst
+        {
+            public const string UrlInput = "update-link-dialog-url-input";
+            public const string TitleInput = "update-link-dialog-title-input";
+            public const string DownloadedCheckbox = "update-link-dialog-downloaded-checkbox";
+            public const string UpdateButton = "update-link-dialog-update-button";
+        }
+
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public UpdateLink.Command Command { get; set; } = new();

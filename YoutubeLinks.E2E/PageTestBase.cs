@@ -52,7 +52,7 @@ namespace YoutubeLinks.E2E
         protected const string ApiBaseUrl = "http://localhost:5000/api";
 
         protected Task<IResponse> WaitForApiResponse(string url)
-            => Page.WaitForResponseAsync(response => response.Url == $"{ApiBaseUrl}/{url}");
+            => Page.WaitForResponseAsync(response => response.Url.Contains($"{ApiBaseUrl}/{url}"));
 
         protected async Task ApiResponseOkAfterButtonClick(string testId, string url)
         {

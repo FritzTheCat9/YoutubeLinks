@@ -1,6 +1,8 @@
 ﻿using static YoutubeLinks.Blazor.Pages.Links.CreateLinkForm;
 using static YoutubeLinks.Blazor.Pages.Links.LinksPage;
+using static YoutubeLinks.Blazor.Pages.Links.UpdateLinkDialog;
 using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
+using static YoutubeLinks.Blazor.Shared.DeleteDialog;
 
 namespace YoutubeLinks.E2E
 {
@@ -56,13 +58,19 @@ namespace YoutubeLinks.E2E
         public async Task CreateUpdateDeleteLink()
         {
             var testLinkUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-
             await FillInput(CreateLinkFormConst.UrlInput, testLinkUrl);
             await ApiResponseOkAfterButtonClick(CreateLinkFormConst.CreateButton, "links");
 
-            // update
+            var updatedLinkTitle = "Rick Astley - Never Gonna Give You Up";
+            await ClickElement(LinksPageConst.UpdateLinkButton);
+            await FillInput(UpdateLinkDialogConst.UrlInput, testLinkUrl);
+            await FillInput(UpdateLinkDialogConst.TitleInput, updatedLinkTitle);
+            await ClickElement(UpdateLinkDialogConst.DownloadedCheckbox);
+            await ApiResponseOkAfterButtonClick(UpdateLinkDialogConst.UpdateButton, "links");
 
-            //delete
+            await SearchLinks("Rick Astley - Never Gonna Give You Up");
+            await ClickElement(LinksPageConst.DeleteLinkButton);
+            await ApiResponseOkAfterButtonClick(DeleteDialogConst.DeleteButton, "links");
         }
 
         [Test]
@@ -99,6 +107,12 @@ namespace YoutubeLinks.E2E
         public async Task SwitchToGridView()
         {
 
+        }
+
+        protected async Task SearchLinks(string name)
+        {
+            await FillInput(LinksPageConst.SearchInput, name);
+            await ClickEnter(LinksPageConst.SearchInput);
         }
     }
 }

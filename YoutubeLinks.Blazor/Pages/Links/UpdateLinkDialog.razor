@@ -7,19 +7,22 @@
         <DialogContent>
             <FritzTextField Label=@Localizer[nameof(AppStrings.Url)]
                             @bind-Value=Command.Url
-                            For="() => Command.Url" />
+                            For="() => Command.Url"
+                            UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.UrlInput} }) />
             <FritzValidationMessage For="() => Command.Url" />
 
             <FritzTextField Label=@Localizer[nameof(AppStrings.Title)]
                             @bind-Value=Command.Title
-                            For="() => Command.Title" />
+                            For="() => Command.Title"
+                            UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.TitleInput} }) />
             <FritzValidationMessage For="() => Command.Title" />
 
             <MudCheckBox T=bool
                          Label=@Localizer[nameof(AppStrings.Downloaded)]
                          @bind-Value=Command.Downloaded
                          For="() => Command.Downloaded"
-                         Color=Color.Primary />
+                         Color=Color.Primary
+                         UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.DownloadedCheckbox} }) />
             <FritzValidationMessage For="() => Command.Downloaded" />
         </DialogContent>
         <DialogActions>
@@ -27,7 +30,8 @@
                                    ButtonType=ButtonType.Submit
                                    Color=Color.Primary
                                    ProcessingButtonText=@Localizer[nameof(AppStrings.Updating)]
-                                   ButtonText=@Localizer[nameof(AppStrings.Update)] />
+                                   ButtonText=@Localizer[nameof(AppStrings.Update)]
+                                   UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.UpdateButton} }) />
         </DialogActions>
     </MudDialog>
 </EditForm>
