@@ -1,5 +1,8 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using static YoutubeLinks.Blazor.Pages.Links.CreateLinkForm;
+using static YoutubeLinks.Blazor.Pages.Links.LinksPage;
+using static YoutubeLinks.Blazor.Pages.Links.UpdateLinkDialog;
 using static YoutubeLinks.Blazor.Pages.Playlists.CreatePlaylistDialog;
 using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
 using static YoutubeLinks.Blazor.Pages.Playlists.UpdatePlaylistDialog;
@@ -175,7 +178,6 @@ namespace YoutubeLinks.E2E
         {
             await SearchPlaylist(name);
             await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToHaveTextAsync(name);
-            // assert public/private icon == isPublic
         }
 
         protected async Task DeleteTestPlaylist(string playlistName)
@@ -183,13 +185,62 @@ namespace YoutubeLinks.E2E
             await SearchPlaylist(playlistName);
             await ClickElement(PlaylistsPageConst.DeletePlaylistButton);
             await ClickElement(DeleteDialogConst.DeleteButton);
-            await CheckTableRowIsHidden(playlistName);
+            await CheckPlaylistsTableRowIsHidden(playlistName);
         }
 
-        protected async Task CheckTableRowIsHidden(string name)
+        protected async Task CheckPlaylistsTableRowIsHidden(string name)
         {
             await SearchPlaylist(name);
             await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToBeHiddenAsync();
+        }
+
+        #endregion
+
+        #region Links
+
+        protected async Task SearchLink(string name)
+        {
+            await FillInput(LinksPageConst.SearchInput, name);
+            await ClickEnter(LinksPageConst.SearchInput);
+        }
+
+        protected async Task CreateLink(string title, string url)
+        {
+            await FillInput(CreateLinkFormConst.UrlInput, url);
+            await ApiResponseOkAfterButtonClick(CreateLinkFormConst.CreateButton, "links");
+            await CheckLinksTableRowIsValid(title);
+        }
+
+        protected async Task UpdateLink(string title, string updatedUrl, string updatedTitle, bool clickDownloadedCheckbox)
+        {
+            await SearchLink(title);
+            await ClickElement(LinksPageConst.UpdateLinkButton);
+            await FillInput(UpdateLinkDialogConst.UrlInput, updatedUrl);
+            await FillInput(UpdateLinkDialogConst.TitleInput, updatedTitle);
+            if (clickDownloadedCheckbox)
+                await ClickElement(UpdateLinkDialogConst.DownloadedCheckbox);
+            await ApiResponseOkAfterButtonClick(UpdateLinkDialogConst.UpdateButton, "links");
+            await CheckLinksTableRowIsValid(updatedTitle);
+        }
+
+        protected async Task DeleteLink(string title)
+        {
+            await SearchLink(title);
+            await ClickElement(LinksPageConst.DeleteLinkButton);
+            await ApiResponseOkAfterButtonClick(DeleteDialogConst.DeleteButton, "links");
+            await CheckLinksTableRowIsHidden(title);
+        }
+
+        protected async Task CheckLinksTableRowIsValid(string title)
+        {
+            await SearchLink(title);
+            await Expect(GetLocatorByTestId(LinksPageConst.TitleTableRowData)).ToHaveTextAsync(title);
+        }
+
+        protected async Task CheckLinksTableRowIsHidden(string title)
+        {
+            await SearchLink(title);
+            await Expect(GetLocatorByTestId(LinksPageConst.TitleTableRowData)).ToBeHiddenAsync();
         }
 
         #endregion

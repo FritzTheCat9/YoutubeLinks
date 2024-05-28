@@ -1,8 +1,6 @@
-﻿using static YoutubeLinks.Blazor.Pages.Links.CreateLinkForm;
+﻿using Microsoft.Playwright;
 using static YoutubeLinks.Blazor.Pages.Links.LinksPage;
-using static YoutubeLinks.Blazor.Pages.Links.UpdateLinkDialog;
 using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
-using static YoutubeLinks.Blazor.Shared.DeleteDialog;
 
 namespace YoutubeLinks.E2E
 {
@@ -33,12 +31,6 @@ namespace YoutubeLinks.E2E
         }
 
         [Test]
-        public async Task Filter()
-        {
-
-        }
-
-        [Test]
         public async Task SortByTitle()
         {
             await ClickElement(LinksPageConst.TitleTableSortLabel);
@@ -57,20 +49,14 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task CreateUpdateDeleteLink()
         {
-            var testLinkUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-            await FillInput(CreateLinkFormConst.UrlInput, testLinkUrl);
-            await ApiResponseOkAfterButtonClick(CreateLinkFormConst.CreateButton, "links");
+            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            await CreateLink(title, url);
 
-            var updatedLinkTitle = "Rick Astley - Never Gonna Give You Up";
-            await ClickElement(LinksPageConst.UpdateLinkButton);
-            await FillInput(UpdateLinkDialogConst.UrlInput, testLinkUrl);
-            await FillInput(UpdateLinkDialogConst.TitleInput, updatedLinkTitle);
-            await ClickElement(UpdateLinkDialogConst.DownloadedCheckbox);
-            await ApiResponseOkAfterButtonClick(UpdateLinkDialogConst.UpdateButton, "links");
+            var updatedTitle = "Rick Astley - Never Gonna Give You Up";
+            await UpdateLink(title, url, updatedTitle, false);
 
-            await SearchLinks("Rick Astley - Never Gonna Give You Up");
-            await ClickElement(LinksPageConst.DeleteLinkButton);
-            await ApiResponseOkAfterButtonClick(DeleteDialogConst.DeleteButton, "links");
+            await DeleteLink(updatedTitle);
         }
 
         [Test]
@@ -82,7 +68,24 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task DownloadLinkAsMP3()
         {
+            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            await CreateLink(title, url);
 
+            var downloadTask = Page.WaitForDownloadAsync(new PageWaitForDownloadOptions { Timeout = 60000 });
+            await ApiResponseOkAfterButtonClick(LinksPageConst.DownloadMP3FileButton, "links");
+            var download = await downloadTask;
+
+            var testProjectDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..");
+            var tempFolderPath = Path.Combine(testProjectDirectoryPath, "Temp");
+            var savePath = Path.Combine(tempFolderPath, download.SuggestedFilename);
+
+            if (!Directory.Exists(tempFolderPath))
+                Directory.CreateDirectory(tempFolderPath);
+
+            await download.SaveAsAsync(savePath);
+
+            await DeleteLink(title);
         }
 
         [Test]
@@ -107,12 +110,6 @@ namespace YoutubeLinks.E2E
         public async Task SwitchToGridView()
         {
 
-        }
-
-        protected async Task SearchLinks(string name)
-        {
-            await FillInput(LinksPageConst.SearchInput, name);
-            await ClickEnter(LinksPageConst.SearchInput);
         }
     }
 }
