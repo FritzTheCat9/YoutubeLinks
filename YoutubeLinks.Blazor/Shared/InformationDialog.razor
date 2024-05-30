@@ -10,7 +10,8 @@
         </MudButton>
         <MudButton Color=Color
                    Variant=Variant.Filled
-                   OnClick=Submit>
+                   OnClick=Submit
+                   UserAttributes=@(new() { { TestConst.TestId, InformationDialogConst.ConfirmButton } })>
             @ButtonText
         </MudButton>
     </DialogActions>

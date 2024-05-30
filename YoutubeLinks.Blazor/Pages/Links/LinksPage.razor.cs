@@ -56,6 +56,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
             public const string DownloadMP4FileButton = "links-page-download-mp4-file-button";
             public const string UpdateLinkButton = "links-page-update-link-button";
             public const string DeleteLinkButton = "links-page-delete-link-button";
+            public const string SwitchToTableViewButton = "links-page-switch-to-table-view-button";
         }
 
         [Parameter] public int UserId { get; set; }

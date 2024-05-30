@@ -21,11 +21,12 @@ namespace YoutubeLinks.E2E
         {
             return new BrowserNewContextOptions
             {
-                ViewportSize = new()
-                {
-                    Width = 1920,
-                    Height = 1080
-                },
+                //ViewportSize = new()
+                //{
+                //    Width = 1920,
+                //    Height = 1080
+                //},
+                Permissions = ["clipboard-read", "clipboard-write"]
             };
         }
 

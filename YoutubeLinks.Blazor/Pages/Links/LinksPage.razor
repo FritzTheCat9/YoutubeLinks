@@ -228,7 +228,8 @@
                         <MudIconButton Icon=@Icons.Material.Filled.ViewList
                                        Color=Color.Info
                                        Size=Size.Small
-                                       OnClick=SwitchView />
+                                       OnClick=SwitchView
+                                       UserAttributes=@(new() { { TestConst.TestId, LinksPageConst.SwitchToTableViewButton } }) />
                     </MudTooltip>
                     <MudSpacer />
                 </MudStack>

@@ -7,6 +7,11 @@ namespace YoutubeLinks.Blazor.Shared
 {
     public partial class InformationDialog : ComponentBase
     {
+        public class InformationDialogConst
+        {
+            public const string ConfirmButton = "information-dialog-confirm-button";
+        }
+
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public string ContentText { get; set; }
