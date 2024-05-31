@@ -5,7 +5,7 @@ Downloading playlist links as mp3 files tested on more than 1000 links.
 
 Youtube video presentation:
 
-[![Youtube Video](https://img.youtube.com/vi/9OYA-nP2eXo/0.jpg)](https://www.youtube.com/watch?v=9OYA-nP2eXo)
+[![Youtube Video](https://img.youtube.com/vi/G1gY-jynpu0/0.jpg)](https://www.youtube.com/watch?v=G1gY-jynpu0)
 
 Max downloaded mp3 file:
 - length - 03:31:45
