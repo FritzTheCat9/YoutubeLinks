@@ -24,17 +24,20 @@
                             @bind-Value=Command.Url
                             For="() => Command.Url"
                             Variant=Variant.Outlined
-                            ShrinkLabel />
+                            ShrinkLabel
+                            UserAttributes=@(new() { { TestConst.TestId, DownloadLinkPageConst.UrlInput } }) />
 
             <MudSelect T=YoutubeFileType
                        Label=@Localizer[nameof(AppStrings.FileType)]
                        @bind-Value=Command.YoutubeFileType
                        For="() => Command.YoutubeFileType"
-                       Variant=Variant.Outlined>
+                       Variant=Variant.Outlined
+                       UserAttributes=@(new() { { TestConst.TestId, DownloadLinkPageConst.YoutubeFileTypeSelect } })>
                 @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
                 {
                     <MudSelectItem T="YoutubeFileType"
-                                   Value=(YoutubeFileType)youtubeFileType>
+                                   Value=(YoutubeFileType)youtubeFileType
+                                   UserAttributes=@(new() { { TestConst.TestId, $"download-link-page-{(YoutubeFileType)youtubeFileType}" } })>
                         @youtubeFileType.ToString()
                     </MudSelectItem>
                 }
@@ -44,7 +47,8 @@
                                    ButtonType=ButtonType.Submit
                                    Color=Color.Primary
                                    ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
-                                   ButtonText=@Localizer[nameof(AppStrings.Download)] />
+                                   ButtonText=@Localizer[nameof(AppStrings.Download)]
+                                   UserAttributes=@(new() { { TestConst.TestId, DownloadLinkPageConst.DownloadButton} }) />
         </MudStack>
         <FritzValidationMessage For="() => Command.Url" />
         <FritzValidationMessage For="() => Command.YoutubeFileType" />

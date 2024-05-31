@@ -27,6 +27,13 @@ namespace YoutubeLinks.Blazor.Pages.Links
             public bool Success { get; set; }
         }
 
+        public class DownloadLinkPageConst
+        {
+            public const string UrlInput = "download-link-page-url-input";
+            public const string YoutubeFileTypeSelect = "download-link-page-youtube-file-type-select";
+            public const string DownloadButton = "download-link-page-download-button";
+        }
+
         [Parameter]
         public DownloadSingleLink.Command Command { get; set; } = new()
         {
