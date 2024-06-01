@@ -1,4 +1,5 @@
-﻿using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
+﻿using Microsoft.Playwright;
+using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
 
 namespace YoutubeLinks.E2E
 {
@@ -36,9 +37,50 @@ namespace YoutubeLinks.E2E
         }
 
         [Test]
-        public async Task ExportPlaylist()
+        public async Task ExportJSONPlaylist()
+        {
+            var playlistName = "Test Playlist";
+            var playlistIsPublic = false;
+
+            await CreateTestPlaylist(playlistName, playlistIsPublic);
+
+            await SearchPlaylist(playlistName);
+            await ClickElement(PlaylistsPageConst.NavigateToPlaylistLinksButton);
+
+            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            await CreateLink(title, url);
+
+            await GoBackToPlaylistsPageFromLinksPage();
+            await SearchPlaylist(playlistName);
+
+            await ExportPlaylist(PlaylistsPageConst.ExportPlaylistToJsonButton);
+
+            await DeleteTestPlaylist(playlistName);
+        }
+
+        [Test]
+        public async Task ExportTXTPlaylist()
         {
 
+        }
+
+        private async Task ExportPlaylist(string downloadFileButton)
+        {
+            await Page.GetByTestId(PlaylistsPageConst.ExportPlaylistButton).ClickAsync();
+
+            var downloadTask = Page.WaitForDownloadAsync(new PageWaitForDownloadOptions { Timeout = 60000 });
+            await ApiResponseOkAfterButtonClick(downloadFileButton, "playlists/export");
+            var download = await downloadTask;
+
+            var testProjectDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..");
+            var tempFolderPath = Path.Combine(testProjectDirectoryPath, "Temp");
+            var savePath = Path.Combine(tempFolderPath, download.SuggestedFilename);
+
+            if (!Directory.Exists(tempFolderPath))
+                Directory.CreateDirectory(tempFolderPath);
+
+            await download.SaveAsAsync(savePath);
         }
 
         [Test]
