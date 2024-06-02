@@ -39,6 +39,11 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private double _downloadPercent;
         private string _downloadingSongTitle = "";
 
+        public class DownloadPlaylistPageConst
+        {
+            public const string DownloadButton = "download-playlist-page-download-button";
+        }
+
         [Parameter] public int PlaylistId { get; set; }
 
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }

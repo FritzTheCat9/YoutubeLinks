@@ -45,7 +45,8 @@
                                    Color=Color.Primary
                                    ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
                                    ButtonText=@Localizer[nameof(AppStrings.Download)]
-                                   OnClick=DownloadPlaylistLinks />
+                                   OnClick=DownloadPlaylistLinks
+                                   UserAttributes=@(new() { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } }) />
 
             @if (_downloading)
             {
