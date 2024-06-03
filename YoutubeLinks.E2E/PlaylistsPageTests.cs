@@ -88,6 +88,17 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task DownloadPlaylistMP3()
         {
+            await DownloadPlatlist();
+        }
+
+        [Test]
+        public async Task DownloadPlaylistMP4()
+        {
+            await DownloadPlatlist(true);
+        }
+
+        private async Task DownloadPlatlist(bool mp4 = false)
+        {
             var playlistName = "Test Playlist";
             var playlistIsPublic = false;
 
@@ -106,6 +117,15 @@ namespace YoutubeLinks.E2E
             await ClickElement(PlaylistsPageConst.DownloadPlaylistButton);
 
             var downloadTask = Page.WaitForDownloadAsync(new PageWaitForDownloadOptions { Timeout = 60000 });
+
+            if (mp4)
+            {
+                await Page.ClickAsync("div.mud-select-input");
+                var mudSelects = await Page.QuerySelectorAllAsync("div.mud-popover div.mud-list-item");
+                if (mudSelects.Count >= 2)
+                    await mudSelects[1].ClickAsync();
+            }
+
             await ApiResponseOkAfterButtonClick(DownloadPlaylistPageConst.DownloadButton, "links/download");
             var download = await downloadTask;
 
@@ -121,12 +141,6 @@ namespace YoutubeLinks.E2E
             await ClickElement("Playlists");
 
             await DeleteTestPlaylist(playlistName);
-        }
-
-        [Test]
-        public async Task DownloadPlaylistMP4()
-        {
-
         }
 
         [Test]

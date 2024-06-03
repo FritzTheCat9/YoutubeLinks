@@ -31,11 +31,13 @@
                        @bind-Value=_youtubeFileType
                        Disabled=_downloading
                        Variant=Variant.Outlined
-                       Class="mb-2">
+                       Class="mb-2"
+                       UserAttributes=@(new() { { TestConst.TestId, DownloadPlaylistPageConst.YoutubeFileTypeSelect } })>
                 @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
                 {
                     <MudSelectItem T="YoutubeFileType"
-                                   Value=(YoutubeFileType)youtubeFileType>
+                                   Value=(YoutubeFileType)youtubeFileType
+                                   UserAttributes=@(new() { { TestConst.TestId, $"download-playlist-page-{(YoutubeFileType)youtubeFileType}" } })>
                         @youtubeFileType.ToString()
                     </MudSelectItem>
                 }
