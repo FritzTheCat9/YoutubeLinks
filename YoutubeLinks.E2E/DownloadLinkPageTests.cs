@@ -47,14 +47,7 @@ namespace YoutubeLinks.E2E
             await ApiResponseOkAfterButtonClick(downloadFileButton, "links/downloadSingle");
             var download = await downloadTask;
 
-            var testProjectDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..");
-            var tempFolderPath = Path.Combine(testProjectDirectoryPath, "Temp");
-            var savePath = Path.Combine(tempFolderPath, download.SuggestedFilename);
-
-            if (!Directory.Exists(tempFolderPath))
-                Directory.CreateDirectory(tempFolderPath);
-
-            await download.SaveAsAsync(savePath);
+            await SaveDownloadedFile(download);
         }
     }
 }

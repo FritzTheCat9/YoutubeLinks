@@ -51,6 +51,18 @@ namespace YoutubeLinks.E2E
             await Expect(element).ToHaveTextAsync(text);
         }
 
+        protected static async Task SaveDownloadedFile(IDownload download)
+        {
+            var testProjectDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..");
+            var tempFolderPath = Path.Combine(testProjectDirectoryPath, "Temp");
+            var savePath = Path.Combine(tempFolderPath, download.SuggestedFilename);
+
+            if (!Directory.Exists(tempFolderPath))
+                Directory.CreateDirectory(tempFolderPath);
+
+            await download.SaveAsAsync(savePath);
+        }
+
         #region Api
 
         protected const string ApiBaseUrl = "http://localhost:5000/api";
