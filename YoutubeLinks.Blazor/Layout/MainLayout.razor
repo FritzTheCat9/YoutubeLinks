@@ -40,7 +40,8 @@
                            Color=Color.Inherit
                            Href=https://github.com/FritzTheCat9/YoutubeLinks
                            Target=_blank
-                           Style="margin-right: 5px;" />
+                           Style="margin-right: 5px;"
+                           UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.RedirectToProjectGithubPageButton } }) />
         </MudTooltip>
         <Auth ChangeThemeColor="ChangeThemeColor" UserChanged="UserChanged" />
     </MudAppBar>

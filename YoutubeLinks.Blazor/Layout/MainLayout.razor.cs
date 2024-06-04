@@ -59,6 +59,11 @@ namespace YoutubeLinks.Blazor.Layout
 
         public int? UserId { get; set; }
 
+        public class MainLayoutConst
+        {
+            public const string RedirectToProjectGithubPageButton = "main-layout-redirect-to-project-github-page-button";
+        }
+
         public async Task UserChanged()
         {
             UserId = await AuthService.GetCurrentUserId();
