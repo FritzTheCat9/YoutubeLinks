@@ -7,15 +7,10 @@ Downloading playlist links as mp3 files tested on more than 1000 links.
 
 [![Youtube Video](https://img.youtube.com/vi/G1gY-jynpu0/0.jpg)](https://www.youtube.com/watch?v=G1gY-jynpu0)
 
-Max downloaded mp3 file:
-- length - 03:31:45
-- size - 391 MB
-
-Max downloaded mp4 file:
-- length - 25:44
-- size - 973 MB
-
+Max downloaded mp3 file: length - 03:31:45, size - 391 MB\
+Max downloaded mp4 file: length - 25:44, size - 973 MB\
 Larger files not tested or can not work correctly.
+
 ## Table of contents
 * [Youtube video](#youtube-video-presentation)
 * [Launch](#launch)
@@ -102,6 +97,7 @@ Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQ
 - YoutubeLinks.Blazor - Blazor WebAssembly Standalone App (Frontend)
 - YoutubeLinks.Shared - Class Library (Backend and Frontend shared code)
 - YoutubeLinks.UnitTests - xUnit Test Project (Unit Tests)
+- YoutubeLinks.E2E - NUnit Test Project (E2E Tests)
 - youtube-links - Vue Project (Frontend 2)
 
 ## Packages
