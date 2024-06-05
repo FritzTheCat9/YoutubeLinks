@@ -104,6 +104,13 @@ namespace YoutubeLinks.E2E
             public const string Password = "Asd123!";
         }
 
+        protected class RegisterUserData
+        {
+            public const string UserName = "TestUser";
+            public const string Email = "freakfightsfan@gmail.com";
+            public const string Password = "Asd123!";
+        }
+
         protected async Task LoginAsUser()
         {
             await NavigateToPage();

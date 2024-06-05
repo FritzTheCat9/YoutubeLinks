@@ -16,6 +16,15 @@ namespace YoutubeLinks.Blazor.Pages.Users
         private CustomValidator _customValidator;
         private FritzProcessingButton _processingButton;
 
+        public class RegisterDialogConst
+        {
+            public const string EmailInput = "register-dialog-email-input";
+            public const string UserNameInput = "register-dialog-username-input";
+            public const string PasswordInput = "register-dialog-password-input";
+            public const string RepeatPasswordInput = "register-dialog-repeat-password-input";
+            public const string RegisterButton = "register-dialog-register-button";
+        }
+
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public Register.Command Command { get; set; } = new();
