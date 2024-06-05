@@ -3,7 +3,7 @@ The YoutubeLinks application allow users to save YouTube links as playlists.\
 Users are able to download mp3 files from the playlists they create.\
 Downloading playlist links as mp3 files tested on more than 1000 links.
 
-Youtube video presentation:
+## Youtube video presentation:
 
 [![Youtube Video](https://img.youtube.com/vi/G1gY-jynpu0/0.jpg)](https://www.youtube.com/watch?v=G1gY-jynpu0)
 
@@ -17,6 +17,7 @@ Max downloaded mp4 file:
 
 Larger files not tested or can not work correctly.
 ## Table of contents
+* [Youtube video](#youtube-video-presentation)
 * [Launch](#launch)
 * [Presentation](#presentation)
 * [Technologies](#technologies)
