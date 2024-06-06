@@ -26,14 +26,16 @@
         <MudIconButton Icon=@Icons.Material.Filled.Menu
                        Color=Color.Inherit
                        Edge=Edge.Start
-                       OnClick=DrawerToggle />
+                       OnClick=DrawerToggle
+                       UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.ToggleNavMenuButton } }) />
         @Localizer[nameof(AppStrings.AppName)]
         <MudSpacer />
         <MudTooltip Text=@_text>
             <MudIconButton Icon=@_icon
                            Color=Color.Inherit
                            OnClick=OnThemeChange
-                           Style="margin-right: 5px;" />
+                           Style="margin-right: 5px;"
+                           UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.ChangeThemeButton } }) />
         </MudTooltip>
         <MudTooltip Text=@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]>
             <MudIconButton Icon=@Icons.Custom.Brands.GitHub

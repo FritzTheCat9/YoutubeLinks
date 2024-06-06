@@ -61,6 +61,8 @@ namespace YoutubeLinks.Blazor.Layout
 
         public class MainLayoutConst
         {
+            public const string ToggleNavMenuButton = "main-layout-toogle-nav-menu-button";
+            public const string ChangeThemeButton = "main-layout-change-theme-button";
             public const string RedirectToProjectGithubPageButton = "main-layout-redirect-to-project-github-page-button";
         }
 

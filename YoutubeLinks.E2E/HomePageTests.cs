@@ -8,13 +8,18 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task HamburgerMenu()
         {
-
+            await NavigateToPage();
+            await ClickElement(MainLayoutConst.ToggleNavMenuButton);
+            await ClickElement(MainLayoutConst.ToggleNavMenuButton);
         }
 
         [Test]
         public async Task SwitchTheme()
         {
-
+            await NavigateToPage();
+            await ClickElement(MainLayoutConst.ChangeThemeButton);
+            await ClickElement(MainLayoutConst.ChangeThemeButton);
+            await ClickElement(MainLayoutConst.ChangeThemeButton);
         }
 
         [Test]
