@@ -1,5 +1,7 @@
 ﻿using Microsoft.Playwright;
+using YoutubeLinks.Shared.Features.Playlists.Helpers;
 using static YoutubeLinks.Blazor.Pages.Playlists.DownloadPlaylistPage;
+using static YoutubeLinks.Blazor.Pages.Playlists.ImportPlaylistDialog;
 using static YoutubeLinks.Blazor.Pages.Playlists.PlaylistsPage;
 
 namespace YoutubeLinks.E2E
@@ -63,7 +65,7 @@ namespace YoutubeLinks.E2E
 
         private async Task ExportPlaylist(string downloadFileButton)
         {
-            await Page.GetByTestId(PlaylistsPageConst.ExportPlaylistButton).ClickAsync();
+            await ClickElement(PlaylistsPageConst.ExportPlaylistButton);
 
             var downloadTask = Page.WaitForDownloadAsync(new PageWaitForDownloadOptions { Timeout = 60000 });
             await ApiResponseOkAfterButtonClick(downloadFileButton, "playlists/export");
@@ -75,7 +77,54 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task ImportPlaylist()
         {
+            // Export Playlist
+            var playlistName = "Test Playlist";
+            var playlistIsPublic = false;
 
+            await CreateTestPlaylist(playlistName, playlistIsPublic);
+
+            await SearchPlaylist(playlistName);
+            await ClickElement(PlaylistsPageConst.NavigateToPlaylistLinksButton);
+
+            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            await CreateLink(title, url);
+
+            await GoBackToPlaylistsPageFromLinksPage();
+            await SearchPlaylist(playlistName);
+
+            await ExportPlaylist(PlaylistsPageConst.ExportPlaylistToJsonButton);
+            await ExportPlaylist(PlaylistsPageConst.ExportPlaylistToTxtButton);
+
+            await DeleteTestPlaylist(playlistName);
+
+            // Import Playlist
+            var importedPlaylistName = $"{playlistName} Imported";
+
+            await ImportPlaylist(playlistName, PlaylistFileType.JSON, importedPlaylistName);
+            await SearchPlaylist(importedPlaylistName);
+            await DeleteTestPlaylist(importedPlaylistName);
+
+            await ImportPlaylist(playlistName, PlaylistFileType.TXT, importedPlaylistName);
+            await SearchPlaylist(importedPlaylistName);
+            await DeleteTestPlaylist(importedPlaylistName);
+        }
+
+        private async Task ImportPlaylist(string playlistName, PlaylistFileType playlistFileType, string importedPlaylistName)
+        {
+            var playlistTypeString = PlaylistHelpers.PlaylistFileTypeToString(playlistFileType);
+
+            await ClickElement(PlaylistsPageConst.ImportPlaylistButton);
+
+            var fileChooser = await Page.RunAndWaitForFileChooserAsync(async () =>
+            {
+                await Page.GetByText("ADD .JSON OR .TXT FILE").ClickAsync();
+            });
+            var filePath = GetDownloadedFilePath($"{playlistName}.{playlistTypeString}");
+            await fileChooser.SetFilesAsync(filePath);
+
+            await FillInput(ImportPlaylistDialogConst.NameInput, importedPlaylistName);
+            await ClickElement(ImportPlaylistDialogConst.ImportPlaylistButton);
         }
 
         [Test]

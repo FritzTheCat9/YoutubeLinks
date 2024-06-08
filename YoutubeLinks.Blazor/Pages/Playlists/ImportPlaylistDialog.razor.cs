@@ -20,6 +20,14 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private CustomValidator _customValidator;
         private FritzProcessingButton _processingButton;
 
+
+        public class ImportPlaylistDialogConst
+        {
+            public const string NameInput = "import-playlist-dialog-name-input";
+            public const string PublicCheckbox = "import-playlist-dialog-public-checkbox";
+            public const string ImportPlaylistButton = "import-playlist-dialog-import-playlist-button";
+        }
+
         [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public ImportPlaylist.FormModel FormModel { get; set; } = new();

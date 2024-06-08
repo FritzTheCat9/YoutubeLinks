@@ -8,14 +8,16 @@
         <DialogContent>
             <FritzTextField Label=@Localizer[nameof(AppStrings.Name)]
                             @bind-Value=FormModel.Name
-                            For="() => FormModel.Name" />
+                            For="() => FormModel.Name"
+                            UserAttributes=@(new() { { TestConst.TestId, ImportPlaylistDialogConst.NameInput } }) />
             <FritzValidationMessage For="() => FormModel.Name" />
-                
+
             <MudCheckBox T=bool
                          Label=@Localizer[nameof(AppStrings.Public)]
                          @bind-Value=FormModel.Public
                          For="() => FormModel.Public"
-                         Color=Color.Primary />
+                         Color=Color.Primary
+                         UserAttributes=@(new() { { TestConst.TestId, ImportPlaylistDialogConst.PublicCheckbox } }) />
             <FritzValidationMessage For="() => FormModel.Public" />
 
             <MudFileUpload T=IBrowserFile
@@ -44,6 +46,7 @@
             }
             <FritzValidationMessage For="() => FormModel.ExportedLinks" />
             <FritzValidationMessage For="() => FormModel.ExportedLinkUrls" />
+
             <MudText Typo=Typo.subtitle2
                      Color="Color.Warning">
                 @Localizer[nameof(AppStrings.ImportPlaylistInfo)]
@@ -54,7 +57,8 @@
                                    ButtonType=ButtonType.Submit
                                    Color=Color.Primary
                                    ProcessingButtonText=@Localizer[nameof(AppStrings.Importing)]
-                                   ButtonText=@Localizer[nameof(AppStrings.Import)] />
+                                   ButtonText=@Localizer[nameof(AppStrings.Import)]
+                                   UserAttributes=@(new() { { TestConst.TestId, ImportPlaylistDialogConst.ImportPlaylistButton } }) />
         </DialogActions>
     </MudDialog>
 </EditForm>
