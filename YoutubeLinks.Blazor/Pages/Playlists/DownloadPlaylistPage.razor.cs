@@ -182,13 +182,13 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
         private async Task SetLinkAsDownloaded(int id)
         {
-            var command = new SetDownloaded.Command
+            var command = new SetLinkDownloadedFlag.Command
             {
                 Id = id,
                 Downloaded = true,
             };
 
-            await LinkApiClient.SetDownloaded(command);
+            await LinkApiClient.SetLinkDownloadedFlag(command);
         }
     }
 }

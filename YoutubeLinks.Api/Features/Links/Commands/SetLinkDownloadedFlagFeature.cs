@@ -9,13 +9,13 @@ using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Api.Features.Links.Commands
 {
-    public static class SetDownloadedFeature
+    public static class SetLinkDownloadedFlagFeature
     {
         public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("/api/links/{id}/downloaded", async (
                 int id,
-                SetDownloaded.Command command,
+                SetLinkDownloadedFlag.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -28,7 +28,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             return app;
         }
 
-        public class Handler : IRequestHandler<SetDownloaded.Command, Unit>
+        public class Handler : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>
         {
             private readonly ILinkRepository _linkRepository;
             private readonly IAuthService _authService;
@@ -45,7 +45,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             }
 
             public async Task<Unit> Handle(
-                SetDownloaded.Command command,
+                SetLinkDownloadedFlag.Command command,
                 CancellationToken cancellationToken)
             {
                 var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();

@@ -17,7 +17,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             DeleteLinkFeature.Endpoint(app);
             DownloadLinkFeature.Endpoint(app);
             DownloadSingleLinkFeature.Endpoint(app);
-            SetDownloadedFeature.Endpoint(app);
+            SetLinkDownloadedFlagFeature.Endpoint(app);
             UpdateLinkFeature.Endpoint(app);
             GetAllLinksFeature.Endpoint(app);
             GetAllPaginatedLinksFeature.Endpoint(app);
