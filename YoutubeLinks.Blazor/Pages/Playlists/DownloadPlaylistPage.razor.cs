@@ -156,6 +156,8 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
+                await SetLinkAsDownloaded(link.Id);
+
                 _downloadLinkResults.Add(new()
                 {
                     Link = link,
@@ -176,6 +178,17 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             _downloadPercent = (double)_downloadedSongsNumber / _allSongsNumber * 100;
 
             StateHasChanged();
+        }
+
+        private async Task SetLinkAsDownloaded(int id)
+        {
+            var command = new SetDownloaded.Command
+            {
+                Id = id,
+                Downloaded = true,
+            };
+
+            await LinkApiClient.SetDownloaded(command);
         }
     }
 }

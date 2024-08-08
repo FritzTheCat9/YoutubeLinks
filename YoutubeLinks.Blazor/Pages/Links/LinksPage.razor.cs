@@ -215,14 +215,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
                 await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
-                //var command2 = new UpdateLink.Command         // update downloaded flag feature
-                //{
-                //    Id = id,
-                //    Url = filename,
-                //    Downloaded = true,
-                //};
-
-                //await LinkApiClient.UpdateLink(command2);
+                await SetLinkAsDownloaded(id);
 
                 await RefreshView();
             }
@@ -234,6 +227,17 @@ namespace YoutubeLinks.Blazor.Pages.Links
             {
                 _disableDownloadPlaylistLinkButtons = false;
             }
+        }
+
+        private async Task SetLinkAsDownloaded(int id)
+        {
+            var command = new SetDownloaded.Command
+            {
+                Id = id,
+                Downloaded = true,
+            };
+
+            await LinkApiClient.SetDownloaded(command);
         }
 
         private async Task ResetPlaylistLinksDownloadedFlag(bool flag)

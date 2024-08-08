@@ -13,6 +13,7 @@ namespace YoutubeLinks.Blazor.Clients
         Task<LinkDto> GetLink(int id);
         Task CreateLink(CreateLink.Command command);
         Task UpdateLink(UpdateLink.Command command);
+        Task SetDownloaded(SetDownloaded.Command command);
         Task DeleteLink(int id);
         Task<HttpResponseMessage> DownloadLink(DownloadLink.Command command);
         Task<HttpResponseMessage> DownloadSingleLink(DownloadSingleLink.Command command);
@@ -42,6 +43,9 @@ namespace YoutubeLinks.Blazor.Clients
 
         public async Task UpdateLink(UpdateLink.Command command)
             => await _apiClient.Put($"{_url}/{command.Id}", command);
+
+        public async Task SetDownloaded(SetDownloaded.Command command)
+            => await _apiClient.Put($"{_url}/{command.Id}/downloaded", command);
 
         public async Task DeleteLink(int id)
             => await _apiClient.Delete($"{_url}/{id}");
