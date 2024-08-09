@@ -19,6 +19,7 @@ namespace YoutubeLinks.Blazor.Components
         {
             Value = newValue;
             await ValueChanged.InvokeAsync(newValue);
+            await OnSearch.InvokeAsync(newValue);
         }
     }
 }
