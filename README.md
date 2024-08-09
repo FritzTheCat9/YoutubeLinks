@@ -143,6 +143,7 @@ Nuget packages and libraries used in projects.
     - Create link
     - Delete link
     - Update link (mark as downloaded, change title)
+    - Set link downloaded flag
     - Download link (.mp3, .mp4)
     - Download single link (no need to add link to the playlist)
     - Get all playlist links (paginated, sorted and filtered)
@@ -156,3 +157,11 @@ Nuget packages and libraries used in projects.
 
 ## Project status
 Project created as part of the "[100 Commits](https://100commitow.pl)" competition. The challenge is to add changes to the repository every day for 100 days.
+
+![100 Commits results image](./images/100commitow_results.jpeg)
+
+I achieved 8th place in the "[100 Commits](https://100commitow.pl)" competition organized by "[DevMentors.io](https://devmentors.io)". Over 100 days, I developed the "YoutubeLinks" application, which allows users to create playlists from YouTube links and download those playlists as MP3 and MP4 files.
+
+![100 Commits results photo image](./images/100commitow_results_photo.jpeg)
+
+This project was a significant adventure that taught me perseverance and systematic work to achieve my project goals within the given timeframe. The "[100 Commits](https://100commitow.pl)" gala was a fantastic event, well-organized with engaging talks. I look forward to a potential second edition of the competition in the future.
