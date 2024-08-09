@@ -53,19 +53,20 @@
             @user.Email
         </MudTd>
         <MudTd DataLabel=@Localizer[nameof(AppStrings.Role)]>
-            <MudChip Variant=Variant.Outlined
+            <MudChip T="Color"
+                     Variant=Variant.Outlined
                      Color=GetColorBasedOnPolicy(GetUserHighestPolicy(user))>
                 @GetUserHighestPolicy(user)
             </MudChip>
         </MudTd>
         <MudTd DataLabel=@Localizer[nameof(AppStrings.Playlists)]>
-            <MudTooltip Text=@Localizer[nameof(AppStrings.Playlists)]>
+            <FritzTooltip Text=@Localizer[nameof(AppStrings.Playlists)]>
                 <MudIconButton Icon=@Icons.Material.Filled.List
                                Color=Color.Primary
                                Size=Size.Small
                                OnClick="() => RedirectToUserPlaylistsPage(user.Id)"
                                UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.NavigateToUserPlaylistsButton } }) />
-            </MudTooltip>
+            </FritzTooltip>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>

@@ -1,9 +1,7 @@
-﻿@inherits MudButton
-
-<MudTooltip Text=@TooltipText>
+﻿<FritzTooltip Text=@TooltipText>
     <MudIconButton Icon=@Icons.Material.Filled.ContentCopy
                    Color=Color
                    OnClick=CopyTextToClipboard
                    Size=Size
-                   UserAttributes="UserAttributes" />
-</MudTooltip>
+                   UserAttributes=UserAttributes />
+</FritzTooltip>

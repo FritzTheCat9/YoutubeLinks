@@ -1,19 +1,24 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using MudBlazor;
+using System.Linq.Expressions;
 
 namespace YoutubeLinks.Blazor.Components
 {
-    public partial class FritzSearchTextField : MudTextField<string>
+    public partial class FritzSearchTextField : ComponentBase
     {
+        [Parameter] public string Value { get; set; }
+        [Parameter] public EventCallback<string> ValueChanged { get; set; }
+        [Parameter] public Expression<Func<string>> For { get; set; }
+
         [Parameter] public EventCallback<string> OnSearch { get; set; }
+        [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
 
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
-        private async Task OnValueChanged(string value)
+        private async Task OnValueChanged(string newValue)
         {
-            await SetValueAsync(value);
-            await OnSearch.InvokeAsync(value);
+            Value = newValue;
+            await ValueChanged.InvokeAsync(newValue);
         }
     }
 }

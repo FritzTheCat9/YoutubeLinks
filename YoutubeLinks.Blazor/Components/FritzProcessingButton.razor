@@ -1,10 +1,8 @@
-﻿@inherits MudButton
-
-<MudButton ButtonType=ButtonType
+﻿<MudButton ButtonType=ButtonType
            Color=Color
            Disabled=_processing
            OnClick=OnClick 
-           UserAttributes="UserAttributes">
+           UserAttributes=UserAttributes>
     @if (_processing)
     {
         <MudProgressCircular Class="ms-n1"

@@ -26,17 +26,14 @@
                            For="() => FormModel.File"
                            Accept=".json, .txt"
                            AppendMultipleFiles=false
-                           Context="file"
                            Class="mb-3">
-                <ButtonTemplate>
-                    <MudButton HtmlTag="label"
-                               for=@file
-                               Variant=Variant.Filled
+                <ActivatorContent>
+                    <MudButton Variant=Variant.Filled
                                Color=Color.Primary
                                StartIcon=@Icons.Material.Filled.FileUpload>
                         @Localizer[nameof(AppStrings.AddPlaylistJsonOrTxtFile)]
                     </MudButton>
-                </ButtonTemplate>
+                </ActivatorContent>
             </MudFileUpload>
             <FritzValidationMessage For="() => FormModel.File" />
             @if (FormModel?.File is not null)

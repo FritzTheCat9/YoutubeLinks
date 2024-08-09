@@ -99,7 +99,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 await ReloadLinks();
         }
 
-        private async Task<TableData<LinkDto>> ServerReload(TableState state)
+        private async Task<TableData<LinkDto>> ServerReload(TableState state, CancellationToken token)
         {
             try
             {

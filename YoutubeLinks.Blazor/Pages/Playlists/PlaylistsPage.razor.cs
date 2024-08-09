@@ -65,7 +65,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
         }
 
-        private async Task<TableData<PlaylistDto>> ServerReload(TableState state)
+        private async Task<TableData<PlaylistDto>> ServerReload(TableState state, CancellationToken token)
         {
             var query = new GetAllUserPlaylists.Query
             {

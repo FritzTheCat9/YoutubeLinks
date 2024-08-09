@@ -27,13 +27,13 @@ namespace YoutubeLinks.Blazor.Layout
             {
                 DefaultBorderRadius = "10px",
             },
-            Palette = new PaletteLight()
+            PaletteLight = new PaletteLight()
             {
                 Error = Colors.Red.Default,
                 ErrorContrastText = Colors.Red.Default,
                 ErrorDarken = Colors.Red.Default,
                 ErrorLighten = Colors.Red.Default,
-
+                
                 AppbarBackground = "80BCBD",
                 DrawerBackground = "AAD9BB",
                 Background = "D5F0C1",
@@ -42,11 +42,11 @@ namespace YoutubeLinks.Blazor.Layout
                 Primary = "9A3E88",
                 Warning = Colors.Yellow.Darken4,
                 
-                AppbarText = Colors.Grey.Darken4,
-                DrawerIcon = Colors.Grey.Darken3,
+                AppbarText = Colors.Gray.Darken4,
+                DrawerIcon = Colors.Gray.Darken3,
 
-                TextPrimary = Colors.Grey.Darken3,
-                TextSecondary = Colors.Grey.Darken2,
+                TextPrimary = Colors.Gray.Darken3,
+                TextSecondary = Colors.Gray.Darken2,
             },
             PaletteDark = new PaletteDark()
             {

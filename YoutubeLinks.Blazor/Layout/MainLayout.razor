@@ -5,6 +5,7 @@
                   Theme="_customTheme" />
 <MudDialogProvider FullWidth=true />
 <MudSnackbarProvider />
+<MudPopoverProvider />
 
 <style>
     .mud-input-control-helper-container {
@@ -30,21 +31,21 @@
                        UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.ToggleNavMenuButton } }) />
         @Localizer[nameof(AppStrings.AppName)]
         <MudSpacer />
-        <MudTooltip Text=@_text>
+        <FritzTooltip Text=@_text>
             <MudIconButton Icon=@_icon
                            Color=Color.Inherit
                            OnClick=OnThemeChange
                            Style="margin-right: 5px;"
                            UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.ChangeThemeButton } }) />
-        </MudTooltip>
-        <MudTooltip Text=@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]>
+        </FritzTooltip>
+        <FritzTooltip Text=@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]>
             <MudIconButton Icon=@Icons.Custom.Brands.GitHub
                            Color=Color.Inherit
                            Href=https://github.com/FritzTheCat9/YoutubeLinks
                            Target=_blank
                            Style="margin-right: 5px;"
                            UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.RedirectToProjectGithubPageButton } }) />
-        </MudTooltip>
+        </FritzTooltip>
         <Auth ChangeThemeColor="ChangeThemeColor" UserChanged="UserChanged" />
     </MudAppBar>
     <MudDrawer @bind-Open=_drawerOpen

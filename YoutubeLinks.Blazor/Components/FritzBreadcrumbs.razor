@@ -1,6 +1,4 @@
-﻿@inherits MudBreadcrumbs
-
-<MudBreadcrumbs Items=Items>
+﻿<MudBreadcrumbs Items=Items>
     <ItemTemplate Context="item">
         <MudLink Href=@item.Href
                  UserAttributes=@(new() { { TestConst.TestId, item.Text } })>

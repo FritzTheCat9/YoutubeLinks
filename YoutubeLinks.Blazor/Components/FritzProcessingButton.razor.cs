@@ -5,12 +5,18 @@ using YoutubeLinks.Blazor.Localization;
 
 namespace YoutubeLinks.Blazor.Components
 {
-    public partial class FritzProcessingButton : MudButton
+    public partial class FritzProcessingButton : ComponentBase
     {
         private bool _processing;
 
         [Parameter] public string ProcessingButtonText { get; set; }
         [Parameter] public string ButtonText { get; set; }
+
+        [Parameter] public ButtonType ButtonType { get; set; }
+        [Parameter] public Color Color { get; set; }
+        [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
+
+        [Parameter] public EventCallback OnClick { get; set; }
 
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
