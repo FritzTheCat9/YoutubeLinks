@@ -76,17 +76,18 @@ namespace YoutubeLinks.Api.Services
             var normalizedFileName = $"{title}.mp3";
             var normalizedFilePath = Path.Combine(_tmpFolderPath, normalizedFileName);
 
+            if (File.Exists(normalizedFilePath))
+                File.Delete(normalizedFilePath);
+
             File.Move(filePath, normalizedFilePath);
 
             var youtubeFile = new YoutubeFile
             {
-                FileBytes = File.ReadAllBytes(normalizedFilePath),
+                FilePath = normalizedFilePath,
                 ContentType = "audio/mpeg",
                 FileName = normalizedFileName,
                 YoutubeFileType = YoutubeFileType.MP3,
             };
-
-            File.Delete(normalizedFilePath);
 
             return youtubeFile;
         }
@@ -118,17 +119,18 @@ namespace YoutubeLinks.Api.Services
             var normalizedFileName = $"{title}.mp4";
             var normalizedFilePath = Path.Combine(_tmpFolderPath, normalizedFileName);
 
+            if (File.Exists(normalizedFilePath))
+                File.Delete(normalizedFilePath);
+
             File.Move(filePath, normalizedFilePath);
 
             var youtubeFile = new YoutubeFile
             {
-                FileBytes = File.ReadAllBytes(normalizedFilePath),
+                FilePath = normalizedFilePath,
                 ContentType = "video/mp4",
                 FileName = normalizedFileName,
                 YoutubeFileType = YoutubeFileType.MP4,
             };
-
-            File.Delete(normalizedFilePath);
 
             return youtubeFile;
         }

@@ -63,11 +63,14 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 _processingButton.SetProcessing(true);
 
                 var response = await LinkApiClient.DownloadSingleLink(Command);
-                var content = await response.Content.ReadAsStreamAsync();
-                var streamRef = new DotNetStreamReference(content);
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                {
+                    var streamRef = new DotNetStreamReference(stream);
+                    var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
+
+                    await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                }
 
                 _downloadLinkResults.Add(new()
                 {
@@ -79,7 +82,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
             {
                 _customValidator.DisplayErrors(validationException.Errors);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _downloadLinkResults.Add(new()
                 {

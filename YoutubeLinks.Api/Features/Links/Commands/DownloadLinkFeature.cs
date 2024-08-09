@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.IO;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Helpers;
@@ -19,7 +20,15 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 CancellationToken cancellationToken) =>
             {
                 var file = await mediator.Send(command, cancellationToken);
-                return Results.File(file.FileBytes, file.ContentType, file.FileName);
+
+                var fileStream = new FileStream(file.FilePath,
+                                                FileMode.Open,
+                                                FileAccess.Read,
+                                                FileShare.Read,
+                                                4096,
+                                                FileOptions.DeleteOnClose);
+
+                return Results.Stream(fileStream, file.ContentType, file.FileName, enableRangeProcessing: true);
             })
                 .WithTags(Tags.Links)
                 .AllowAnonymous();

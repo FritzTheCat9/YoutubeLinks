@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Components.WebAssembly.Http;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -83,7 +84,13 @@ namespace YoutubeLinks.Blazor.Clients
         public async Task<HttpResponseMessage> PostReturnHttpResponseMessage<TRequest>(string url, TRequest tRequest)
         {
             await AddHeaderValues();
-            var response = await _client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{_baseUrl}{url}");
+            request.Content = JsonContent.Create(tRequest);
+
+            request.SetBrowserResponseStreamingEnabled(true);
+
+            var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
             if (!response.IsSuccessStatusCode)
                 await HandleErrors(response);

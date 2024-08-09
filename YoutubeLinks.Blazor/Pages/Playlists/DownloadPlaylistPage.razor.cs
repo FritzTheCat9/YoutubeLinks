@@ -150,15 +150,18 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                 };
 
                 var response = await LinkApiClient.DownloadLink(command);
-                var content = await response.Content.ReadAsStreamAsync();
-                var streamRef = new DotNetStreamReference(content);
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                {
+                    var streamRef = new DotNetStreamReference(stream);
+                    var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
+
+                    await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                }
 
                 await SetLinkAsDownloaded(link.Id);
 
-                _downloadLinkResults.Add(new()
+                _downloadLinkResults.Insert(0, new()
                 {
                     Link = link,
                     Success = true,
@@ -167,7 +170,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             }
             catch (Exception)
             {
-                _downloadLinkResults.Add(new()
+                _downloadLinkResults.Insert(0, new()
                 {
                     Link = link,
                     Success = false,
