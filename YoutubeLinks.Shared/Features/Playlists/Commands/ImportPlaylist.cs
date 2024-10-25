@@ -54,13 +54,13 @@ namespace YoutubeLinks.Shared.Features.Playlists.Commands
 
         public class FileValidator : AbstractValidator<IBrowserFile>
         {
-            private const int _maxFileSize = 5242880;
+            private const int MaxFileSize = 5242880;
             private readonly List<string> _allowedFileTypes = ["application/json", "text/plain"];
 
             public FileValidator(IStringLocalizer<ValidationMessage> localizer)
             {
                 RuleFor(x => x.Size)
-                    .LessThanOrEqualTo(_maxFileSize)
+                    .LessThanOrEqualTo(MaxFileSize)
                     .WithMessage(x => localizer[nameof(ValidationMessageString.FileMaxFileSize)]);
 
                 RuleFor(x => x.ContentType)

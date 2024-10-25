@@ -3,17 +3,17 @@ using YoutubeLinks.Shared.Extensions;
 
 namespace YoutubeLinks.Api.Extensions
 {
-    public static class CORSExtensions
+    public static class MyCorsExtensions
     {
         private const string PolicyName = "MyCorsPolicy";
-        private const string _sectionName = "Auth";
+        private const string SectionName = "Auth";
 
-        public static IServiceCollection AddCORS(
+        public static IServiceCollection AddMyCors(
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<AuthOptions>(configuration.GetRequiredSection(_sectionName));
-            var authOptions = configuration.GetOptions<AuthOptions>(_sectionName);
+            services.Configure<AuthOptions>(configuration.GetRequiredSection(SectionName));
+            var authOptions = configuration.GetOptions<AuthOptions>(SectionName);
 
             services.AddCors(options =>
             {
@@ -29,7 +29,7 @@ namespace YoutubeLinks.Api.Extensions
             return services;
         }
 
-        public static WebApplication UseCORS(this WebApplication app)
+        public static WebApplication UseMyCors(this WebApplication app)
         {
             app.UseCors(PolicyName);
 

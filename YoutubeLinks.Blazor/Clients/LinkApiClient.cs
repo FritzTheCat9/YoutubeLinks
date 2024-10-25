@@ -22,7 +22,7 @@ namespace YoutubeLinks.Blazor.Clients
     public class LinkApiClient : ILinkApiClient
     {
         private readonly IApiClient _apiClient;
-        private const string _url = "api/links";
+        private const string Url = "api/links";
 
         public LinkApiClient(IApiClient apiClient)
         {
@@ -30,30 +30,30 @@ namespace YoutubeLinks.Blazor.Clients
         }
 
         public async Task<PagedList<LinkDto>> GetAllPaginatedLinks(GetAllPaginatedLinks.Query query)
-            => await _apiClient.Post<GetAllPaginatedLinks.Query, PagedList<LinkDto>>($"{_url}/allPaginated", query);
+            => await _apiClient.Post<GetAllPaginatedLinks.Query, PagedList<LinkDto>>($"{Url}/allPaginated", query);
 
         public async Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query)
-            => await _apiClient.Post<Query, IEnumerable<LinkInfoDto>>($"{_url}/all", query);
+            => await _apiClient.Post<Query, IEnumerable<LinkInfoDto>>($"{Url}/all", query);
 
         public async Task<LinkDto> GetLink(int id)
-            => await _apiClient.Get<LinkDto>($"{_url}/{id}");
+            => await _apiClient.Get<LinkDto>($"{Url}/{id}");
 
         public async Task CreateLink(CreateLink.Command command)
-            => await _apiClient.Post(_url, command);
+            => await _apiClient.Post(Url, command);
 
         public async Task UpdateLink(UpdateLink.Command command)
-            => await _apiClient.Put($"{_url}/{command.Id}", command);
+            => await _apiClient.Put($"{Url}/{command.Id}", command);
 
         public async Task SetLinkDownloadedFlag(SetLinkDownloadedFlag.Command command)
-            => await _apiClient.Put($"{_url}/{command.Id}/downloaded", command);
+            => await _apiClient.Put($"{Url}/{command.Id}/downloaded", command);
 
         public async Task DeleteLink(int id)
-            => await _apiClient.Delete($"{_url}/{id}");
+            => await _apiClient.Delete($"{Url}/{id}");
 
         public async Task<HttpResponseMessage> DownloadLink(DownloadLink.Command command)
-            => await _apiClient.PostReturnHttpResponseMessage($"{_url}/download", command);
+            => await _apiClient.PostReturnHttpResponseMessage($"{Url}/download", command);
 
         public async Task<HttpResponseMessage> DownloadSingleLink(DownloadSingleLink.Command command)
-            => await _apiClient.PostReturnHttpResponseMessage($"{_url}/downloadSingle", command);
+            => await _apiClient.PostReturnHttpResponseMessage($"{Url}/downloadSingle", command);
     }
 }

@@ -4,14 +4,14 @@ namespace YoutubeLinks.Blazor.Clients
 {
     public static class ApiClientsExtensions
     {
-        private const string _sectionName = "Api";
+        private const string SectionName = "Api";
 
         public static IServiceCollection AddApiClients(
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<ApiOptions>(configuration.GetRequiredSection(_sectionName));
-            var apiOptions = configuration.GetOptions<ApiOptions>(_sectionName);
+            services.Configure<ApiOptions>(configuration.GetRequiredSection(SectionName));
+            var apiOptions = configuration.GetOptions<ApiOptions>(SectionName);
 
             services.AddScoped(sp => new HttpClient
             {

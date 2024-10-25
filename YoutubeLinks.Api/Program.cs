@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwagger()
-                .AddCORS(builder.Configuration)
+                .AddMyCors(builder.Configuration)
                 .AddMediatr()
                 .AddDatabase(builder.Configuration)
                 .AddAuth(builder.Configuration)
@@ -38,7 +38,7 @@ if (app.Environment.IsDevelopment())
 app.UseMyLocalization()
    .UseExceptionMiddleware()
    .AddEndpoints()
-   .UseCORS()
+   .UseMyCors()
    .UseAuth();
 
 app.Run();

@@ -5,9 +5,9 @@ namespace YoutubeLinks.Api.Extensions
 {
     public static class PageListExtensions<T>
     {
-        private static readonly int _minPage = 0;
-        private static readonly int _minPageSize = 0;
-        private static readonly int _maxPageSize = 100;
+        private const int MinPage = 0;
+        private const int MinPageSize = 0;
+        private const int MaxPageSize = 100;
 
         public static PagedList<T> Create(
             IQueryable<T> source,
@@ -35,12 +35,15 @@ namespace YoutubeLinks.Api.Extensions
 
         private static void Validate(int page, int pageSize)
         {
-            if (page <= _minPage)
-                throw new MyValidationException(nameof(page), $"{nameof(page)} should be greater than {_minPage}");
-            if (pageSize <= _minPageSize)
-                throw new MyValidationException(nameof(pageSize), $"{nameof(pageSize)} should be greater than {_minPageSize}");
-            if (pageSize > _maxPageSize)
-                throw new MyValidationException(nameof(pageSize), $"{nameof(pageSize)} should be less than or equal to {_maxPageSize}");
+            if (page <= MinPage)
+                throw new MyValidationException(nameof(page), $"{nameof(page)} should be greater than {MinPage}");
+            switch (pageSize)
+            {
+                case <= MinPageSize:
+                    throw new MyValidationException(nameof(pageSize), $"{nameof(pageSize)} should be greater than {MinPageSize}");
+                case > MaxPageSize:
+                    throw new MyValidationException(nameof(pageSize), $"{nameof(pageSize)} should be less than or equal to {MaxPageSize}");
+            }
         }
     }
 }

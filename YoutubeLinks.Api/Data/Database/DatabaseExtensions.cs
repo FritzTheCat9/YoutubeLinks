@@ -7,14 +7,14 @@ namespace YoutubeLinks.Api.Data.Database
 {
     public static class DatabaseExtensions
     {
-        private const string _sectionName = "Database";
+        private const string SectionName = "Database";
 
         public static IServiceCollection AddDatabase(
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<DatabaseOptions>(configuration.GetRequiredSection(_sectionName));
-            var options = configuration.GetOptions<DatabaseOptions>(_sectionName);
+            services.Configure<DatabaseOptions>(configuration.GetRequiredSection(SectionName));
+            var options = configuration.GetOptions<DatabaseOptions>(SectionName);
 
             services.AddSingleton<IClock, Clock>();
 

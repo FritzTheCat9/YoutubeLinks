@@ -4,18 +4,18 @@ namespace YoutubeLinks.Api.Emails
 {
     public static class EmailExtensions
     {
-        private const string _sectionName = "Email";
+        private const string SectionName = "Email";
 
         public static IServiceCollection AddEmails(
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<EmailOptions>(configuration.GetRequiredSection(_sectionName));
-            var emailOptions = configuration.GetOptions<EmailOptions>(_sectionName);
+            services.Configure<EmailOptions>(configuration.GetRequiredSection(SectionName));
+            var emailOptions = configuration.GetOptions<EmailOptions>(SectionName);
 
             services.AddFluentEmail(emailOptions.Email)
                     .AddRazorRenderer()
-                    .AddSmtpSender(emailOptions.SMTPHost,
+                    .AddSmtpSender(emailOptions.SmtpHost,
                                    emailOptions.Port,
                                    emailOptions.Email,
                                    emailOptions.Password);

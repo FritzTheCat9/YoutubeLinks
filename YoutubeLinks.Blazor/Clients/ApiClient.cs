@@ -25,8 +25,8 @@ namespace YoutubeLinks.Blazor.Clients
         private readonly HttpClient _client;
         private readonly IJwtProvider _jwtProvider;
         private readonly string _baseUrl;
-        private const string _authScheme = "Bearer";
-        private const string _languageHeader = "Accept-Language";
+        private const string AuthScheme = "Bearer";
+        private const string LanguageHeader = "Accept-Language";
 
         public ApiClient(
             HttpClient client,
@@ -128,10 +128,10 @@ namespace YoutubeLinks.Blazor.Clients
         private async Task AddHeaderValues()
         {
             var token = await _jwtProvider.GetJwtDto();
-            _client.DefaultRequestHeaders.Authorization = token is not null ? new AuthenticationHeaderValue(_authScheme, token.AccessToken) : null;
+            _client.DefaultRequestHeaders.Authorization = token is not null ? new AuthenticationHeaderValue(AuthScheme, token.AccessToken) : null;
 
             var currentCultureName = CultureInfo.CurrentCulture.Name;
-            _client.DefaultRequestHeaders.Add(_languageHeader, currentCultureName);
+            _client.DefaultRequestHeaders.Add(LanguageHeader, currentCultureName);
         }
 
         private static async Task HandleErrors(HttpResponseMessage response)
