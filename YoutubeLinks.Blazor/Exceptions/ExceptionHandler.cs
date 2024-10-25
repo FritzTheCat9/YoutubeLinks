@@ -25,13 +25,13 @@ namespace YoutubeLinks.Blazor.Exceptions
         {
             switch (exception)
             {
-                case MyUnauthorizedException unauthorizedException:
+                case MyUnauthorizedException:
                     _navigationManager.NavigateTo("error/unauthorized-error");
                     break;
-                case MyForbiddenException forbiddenException:
+                case MyForbiddenException:
                     _navigationManager.NavigateTo("error/forbidden-error");
                     break;
-                case MyNotFoundException notFoundException:
+                case MyNotFoundException:
                     _navigationManager.NavigateTo("error/notfound-error");
                     break;
                 case MyValidationException validationException:

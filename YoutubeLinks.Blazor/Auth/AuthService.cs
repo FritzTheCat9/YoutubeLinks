@@ -37,13 +37,15 @@ namespace YoutubeLinks.Blazor.Auth
 
         public async Task<int?> GetCurrentUserId()
         {
-            var authStateProvider = (_authStateProvider as AuthStateProvider);
+            if (_authStateProvider is not AuthStateProvider authStateProvider)
+                return null;
+
             var authState = await authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
-            if (!(user.Identity?.IsAuthenticated ?? false)) 
+            if (!(user.Identity?.IsAuthenticated ?? false))
                 return null;
-            
+
             var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdString == null)
@@ -53,16 +55,18 @@ namespace YoutubeLinks.Blazor.Auth
                 return null;
 
             return userIdInt;
-
         }
 
         public async Task<bool> IsLoggedInUser(int userId)
         {
-            var authStateProvider = (_authStateProvider as AuthStateProvider);
+            if (_authStateProvider is not AuthStateProvider authStateProvider)
+                return false;
+
             var authState = await authStateProvider.GetAuthenticationStateAsync();
+
             var user = authState.User;
 
-            if (!(user.Identity?.IsAuthenticated ?? false)) 
+            if (!(user.Identity?.IsAuthenticated ?? false))
                 return false;
             var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -80,7 +84,7 @@ namespace YoutubeLinks.Blazor.Auth
             await _jwtProvider.SetJwtDto(token);
 
             var authStateProvider = (_authStateProvider as AuthStateProvider);
-            authStateProvider.NotifyAuthStateChanged();
+            authStateProvider?.NotifyAuthStateChanged();
 
             if (!string.IsNullOrEmpty(redirectUrl))
                 _navigationManager.NavigateTo(redirectUrl);
@@ -91,7 +95,7 @@ namespace YoutubeLinks.Blazor.Auth
             await _jwtProvider.RemoveJwtDto();
 
             var authStateProvider = (_authStateProvider as AuthStateProvider);
-            authStateProvider.NotifyAuthStateChanged();
+            authStateProvider?.NotifyAuthStateChanged();
 
             if (!string.IsNullOrEmpty(redirectUrl))
                 _navigationManager.NavigateTo(redirectUrl);
@@ -102,11 +106,16 @@ namespace YoutubeLinks.Blazor.Auth
             try
             {
                 var jwt = await _jwtProvider.GetJwtDto();
-                if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
+                if (jwt is null || string.IsNullOrEmpty(jwt.RefreshToken))
+                {
                     await Logout();
-
-                var newJwt = await _userApiClient.RefreshToken(new RefreshToken.Command { RefreshToken = jwt.RefreshToken });
-                await Login(newJwt);
+                }
+                else
+                {
+                    var newJwt = await _userApiClient.RefreshToken(new RefreshToken.Command
+                        { RefreshToken = jwt.RefreshToken });
+                    await Login(newJwt);
+                }
             }
             catch (Exception)
             {

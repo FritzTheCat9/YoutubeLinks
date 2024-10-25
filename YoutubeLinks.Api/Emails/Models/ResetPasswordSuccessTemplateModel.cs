@@ -2,7 +2,7 @@
 {
     public class ResetPasswordSuccessTemplateModel : BaseTemplateModel
     {
-        public string UserName { get; set; }
+        public string UserName { get; init; }
 
         public ResetPasswordSuccessTemplateModel()
         {

@@ -18,10 +18,8 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             app.MapPost("/api/users/resendConfirmationEmail", async (
                 ResendConfirmationEmail.Command command,
                 IMediator mediator,
-                CancellationToken cancellationToken) =>
-            {
-                return Results.Ok(await mediator.Send(command, cancellationToken));
-            })
+                CancellationToken cancellationToken) 
+                    => Results.Ok(await mediator.Send(command, cancellationToken)))
                 .WithTags(Tags.Users)
                 .AllowAnonymous();
         }

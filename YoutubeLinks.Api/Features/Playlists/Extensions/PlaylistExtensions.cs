@@ -41,16 +41,19 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
 
         public static PlaylistJsonModel GetPlaylistModel(this Playlist playlist)
         {
-            var links = playlist.Links.Select(x => new LinkJsonModel()
-            {
-                Title = x.Title,
-                Url = x.Url,
-                VideoId = x.VideoId
-            }).OrderBy(x => x.Title);
+            var links = playlist.Links
+                .Select(x => new LinkJsonModel()
+                {
+                    Title = x.Title,
+                    Url = x.Url,
+                    VideoId = x.VideoId
+                })
+                .OrderBy(x => x.Title)
+                .ToList();
 
             var playlistModel = new PlaylistJsonModel()
             {
-                LinksCount = links.Count(),
+                LinksCount = links.Count,
                 LinkModels = links,
             };
 

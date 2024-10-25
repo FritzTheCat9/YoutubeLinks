@@ -17,7 +17,7 @@ namespace YoutubeLinks.Api.Behaviors
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-            var requestName = typeof(TRequest).FullName.Split('.').LastOrDefault();
+            var requestName = typeof(TRequest).FullName?.Split('.').LastOrDefault();
 
             _logger.LogInformation("[MediatR] Starting request {RequestName}", requestName);
 

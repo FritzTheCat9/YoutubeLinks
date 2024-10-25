@@ -6,16 +6,18 @@ namespace YoutubeLinks.Api.Extensions
     {
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
+            const string bearer = "Bearer";
+
             services.AddSwaggerGen(setup =>
             {
-                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                setup.AddSecurityDefinition(bearer, new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
-                    Scheme = "Bearer",
+                    Scheme = bearer,
                 });
 
                 setup.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -26,7 +28,7 @@ namespace YoutubeLinks.Api.Extensions
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = bearer
                             }
                         },
                         []
@@ -34,7 +36,7 @@ namespace YoutubeLinks.Api.Extensions
                 });
 
                 // Fix for swagger bug for endpoints with name containing '+': (https://github.com/swagger-api/swagger-ui/issues/7911)
-                setup.CustomSchemaIds(s => s.FullName.Replace("+", "."));
+                setup.CustomSchemaIds(s => s.FullName?.Replace("+", "."));
             });
 
             return services;

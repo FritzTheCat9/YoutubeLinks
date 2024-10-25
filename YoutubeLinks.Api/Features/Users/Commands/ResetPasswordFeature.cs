@@ -18,10 +18,8 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             app.MapPost("/api/users/resetPassword", async (
                 ResetPassword.Command command,
                 IMediator mediator,
-                CancellationToken cancellationToken) =>
-            {
-                return Results.Ok(await mediator.Send(command, cancellationToken));
-            })
+                CancellationToken cancellationToken) 
+                    => Results.Ok(await mediator.Send(command, cancellationToken)))
                 .WithTags(Tags.Users)
                 .AllowAnonymous();
         }
@@ -72,7 +70,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
                     UserName = user.UserName,
                 });
 
-                return isTokenAssignedToUser;
+                return true;
             }
         }
     }

@@ -14,21 +14,15 @@ namespace YoutubeLinks.Api.Services
 
     public class YoutubeService : IYoutubeService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ILogger<YoutubeService> _logger;
         private readonly string _ytDlpPath;
         private readonly string _ffmpegPath;
         private readonly string _tmpFolderPath;
 
-        public YoutubeService(
-            IWebHostEnvironment webHostEnvironment,
-            ILogger<YoutubeService> logger)
+        public YoutubeService(IWebHostEnvironment webHostEnvironment)
         {
-            _webHostEnvironment = webHostEnvironment;
-            _logger = logger;
-            _ytDlpPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "yt-dlp" : "yt-dlp.exe");
-            _ffmpegPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "ffmpeg" : "ffmpeg.exe");
-            _tmpFolderPath = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), "Tmp");
+            _ytDlpPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "yt-dlp" : "yt-dlp.exe");
+            _ffmpegPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), OperatingSystem.IsLinux() ? "ffmpeg" : "ffmpeg.exe");
+            _tmpFolderPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Tmp");
         }
 
         public async Task<string> GetVideoTitle(string videoId)

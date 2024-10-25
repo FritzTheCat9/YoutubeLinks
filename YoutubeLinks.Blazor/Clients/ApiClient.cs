@@ -34,7 +34,7 @@ namespace YoutubeLinks.Blazor.Clients
         {
             _client = client;
             _jwtProvider = jwtProvider;
-            _baseUrl = client.BaseAddress.ToString();
+            _baseUrl = client.BaseAddress?.ToString();
         }
 
         public async Task<HttpResponseMessage> Get(string url)

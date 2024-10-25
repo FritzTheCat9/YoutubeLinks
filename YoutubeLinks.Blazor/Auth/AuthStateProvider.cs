@@ -30,9 +30,7 @@ namespace YoutubeLinks.Blazor.Auth
 
             try
             {
-                var jsonToken = tokenHandler.ReadToken(token.AccessToken) as JwtSecurityToken;
-
-                if (jsonToken != null)
+                if (tokenHandler.ReadToken(token.AccessToken) is JwtSecurityToken jsonToken)
                 {
                     if (jsonToken.ValidTo < DateTime.UtcNow)
                         return authenticationState;

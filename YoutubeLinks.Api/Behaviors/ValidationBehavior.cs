@@ -31,7 +31,7 @@ namespace YoutubeLinks.Api.Behaviors
                 .ToDictionary(group => group.Key, group => group.Select(failure => failure.ErrorMessage)
                                                                 .ToList());
 
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new MyValidationException(errors);
 
             var result = await next();

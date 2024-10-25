@@ -2,8 +2,8 @@
 {
     public class EmailConfirmationTemplateModel : BaseTemplateModel
     {
-        public string UserName { get; set; }
-        public string Link { get; set; }
+        public string UserName { get; init; }
+        public string Link { get; init; }
 
         public EmailConfirmationTemplateModel()
         {

@@ -9,8 +9,6 @@ namespace YoutubeLinks.Api.Auth
         bool IsInAnyRole(params string[] roleNames);
         bool IsLoggedInUser(int userId);
         int? GetCurrentUserId();
-
-        ClaimsPrincipal User { get; }
     }
 
     public class AuthService : IAuthService

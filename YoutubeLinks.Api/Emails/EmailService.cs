@@ -11,7 +11,6 @@ namespace YoutubeLinks.Api.Emails
     public class EmailService : IEmailService
     {
         private readonly EmailOptions _options;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IFluentEmail _fluentEmail;
         private readonly ILogger<EmailService> _logger;
         private readonly string _templatesFolder;
@@ -23,10 +22,9 @@ namespace YoutubeLinks.Api.Emails
             ILogger<EmailService> logger)
         {
             _options = options.Value;
-            _webHostEnvironment = webHostEnvironment;
             _fluentEmail = fluentEmail;
             _logger = logger;
-            _templatesFolder = Path.Combine(Path.GetFullPath(_webHostEnvironment.ContentRootPath), "Emails", "Templates");
+            _templatesFolder = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Emails", "Templates");
         }
 
         public async Task SendEmail<T>(string to, T model) where T : BaseTemplateModel
@@ -49,15 +47,9 @@ namespace YoutubeLinks.Api.Emails
         }
     }
 
-    public class EmailData<TemplateModel>
-    {
-        public string To { get; set; }
-        public TemplateModel Model { get; set; }
-    }
-
     public class BaseTemplateModel
     {
-        public string Subject { get; set; }
-        public string TemplateFileName { get; set; }
+        public string Subject { get; protected init; }
+        public string TemplateFileName { get; protected init; }
     }
 }

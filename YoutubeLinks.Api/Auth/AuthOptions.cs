@@ -2,9 +2,9 @@
 {
     public class AuthOptions
     {
-        public string Issuer { get; set; }
-        public string Audience { get; set; }
-        public string SigningKey { get; set; }
-        public string FrontendUrl { get; set; }
+        public string Issuer { get; init; }
+        public string Audience { get; init; }
+        public string SigningKey { get; init; }
+        public string FrontendUrl { get; init; }
     }
 }

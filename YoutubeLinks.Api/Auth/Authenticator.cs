@@ -18,7 +18,6 @@ namespace YoutubeLinks.Api.Auth
     public class Authenticator : IAuthenticator
     {
         private readonly IClock _clock;
-        private readonly AuthOptions _options;
         private readonly string _issuer;
         private readonly string _audience;
         private readonly SigningCredentials _signingCredentials;
@@ -28,12 +27,13 @@ namespace YoutubeLinks.Api.Auth
             IClock clock,
             IOptions<AuthOptions> options)
         {
+            var authOptions = options.Value;
+            
             _clock = clock;
-            _options = options.Value;
-            _issuer = _options.Issuer;
-            _audience = _options.Audience;
+            _issuer = authOptions.Issuer;
+            _audience = authOptions.Audience;
             _signingCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey)),
                 SecurityAlgorithms.HmacSha256);
         }
 

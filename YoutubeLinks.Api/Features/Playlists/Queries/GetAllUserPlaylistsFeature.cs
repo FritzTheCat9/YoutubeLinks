@@ -17,10 +17,8 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
             app.MapPost("/api/playlists/all", async (
                 GetAllUserPlaylists.Query query,
                 IMediator mediator,
-                CancellationToken cancellationToken) =>
-            {
-                return Results.Ok(await mediator.Send(query, cancellationToken));
-            })
+                CancellationToken cancellationToken) 
+                    => Results.Ok(await mediator.Send(query, cancellationToken)))
                 .WithTags(Tags.Playlists)
                 .AllowAnonymous();
         }
@@ -38,7 +36,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
                 _authService = authService;
             }
 
-            public async Task<PagedList<PlaylistDto>> Handle(
+            public Task<PagedList<PlaylistDto>> Handle(
                 GetAllUserPlaylists.Query query,
                 CancellationToken cancellationToken)
             {
@@ -52,7 +50,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
                                                                                       query.Page,
                                                                                       query.PageSize);
 
-                return playlistsPagedList;
+                return Task.FromResult(playlistsPagedList);
             }
         }
     }

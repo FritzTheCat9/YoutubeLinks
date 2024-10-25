@@ -15,10 +15,8 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
             app.MapPost("/api/playlists/resetDownloadedFlag", async (
                 ResetLinksDownloadedFlag.Command command,
                 IMediator mediator,
-                CancellationToken cancellationToken) =>
-            {
-                return Results.Ok(await mediator.Send(command, cancellationToken));
-            })
+                CancellationToken cancellationToken) 
+                    => Results.Ok(await mediator.Send(command, cancellationToken)))
                 .WithTags(Tags.Playlists)
                 .RequireAuthorization(Policy.User);
         }

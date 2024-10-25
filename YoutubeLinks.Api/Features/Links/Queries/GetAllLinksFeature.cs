@@ -15,10 +15,8 @@ namespace YoutubeLinks.Api.Features.Links.Queries
             app.MapPost("/api/links/all", async (
                 Query query,
                 IMediator mediator,
-                CancellationToken cancellationToken) =>
-            {
-                return Results.Ok(await mediator.Send(query, cancellationToken));
-            })
+                CancellationToken cancellationToken) 
+                    => Results.Ok(await mediator.Send(query, cancellationToken)))
                 .WithTags(Tags.Links)
                 .AllowAnonymous();
         }
