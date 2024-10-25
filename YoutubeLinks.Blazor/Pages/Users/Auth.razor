@@ -4,7 +4,7 @@
                   Spacing="2"
                   AlignItems="AlignItems.Center">
             <MudText UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.UserNameText} })">
-                @context.User.Identity.Name
+                @context.User.Identity?.Name
             </MudText>
             <MudButton Variant="Variant.Filled"
                        Color="Color.Secondary"

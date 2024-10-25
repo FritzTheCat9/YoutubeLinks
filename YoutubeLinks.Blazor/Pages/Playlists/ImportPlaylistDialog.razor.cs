@@ -81,7 +81,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                     return;
             }
 
-            _form.EditContext.Validate();
+            _form.EditContext?.Validate();
         }
 
         private async Task SetJsonFileVariables(IBrowserFile file)

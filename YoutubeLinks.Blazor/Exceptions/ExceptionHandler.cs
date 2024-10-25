@@ -38,7 +38,7 @@ namespace YoutubeLinks.Blazor.Exceptions
                     _validationErrors.Errors = validationException.Errors;
                     _navigationManager.NavigateTo("error/validation-error");
                     break;
-                case MyServerException serverException:
+                case MyServerException:
                     _navigationManager.NavigateTo("error/server-error");
                     break;
                 default:

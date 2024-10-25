@@ -29,8 +29,8 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
         private class DownloadLinkResult
         {
-            public GetAllLinks.LinkInfoDto Link { get; set; }
-            public bool Success { get; set; }
+            public GetAllLinks.LinkInfoDto Link { get; init; }
+            public bool Success { get; init; }
         }
 
         private bool _downloading;

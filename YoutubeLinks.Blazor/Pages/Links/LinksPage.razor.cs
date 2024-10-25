@@ -211,7 +211,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 var response = await LinkApiClient.DownloadLink(command);
                 var content = await response.Content.ReadAsStreamAsync();
                 var streamRef = new DotNetStreamReference(content);
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
+                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
                 await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 

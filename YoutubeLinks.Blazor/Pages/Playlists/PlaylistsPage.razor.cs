@@ -172,7 +172,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                 var content = await response.Content.ReadAsStreamAsync();
                 var streamRef = new DotNetStreamReference(content);
-                var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{fileExtension}";
+                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ?? $"default_name.{fileExtension}";
 
                 await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
             }

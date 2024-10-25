@@ -25,14 +25,14 @@
                                        Color=Color.Warning
                                        Size=Size.Small
                                        OnClick=CreateUserPlaylist
-                                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.CreatePlaylistButton } }) />
+                                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.CreatePlaylistButton } })/>
                     </FritzTooltip>
                     <FritzTooltip Text=@Localizer[nameof(AppStrings.ImportPlaylistFromJson)]>
                         <MudIconButton Icon=@Icons.Material.Filled.ImportExport
                                        Color=Color.Info
                                        Size=Size.Small
                                        OnClick=ImportPlaylistFromJson
-                                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.ImportPlaylistButton } }) />
+                                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.ImportPlaylistButton } })/>
                     </FritzTooltip>
                 }
             </Authorized>

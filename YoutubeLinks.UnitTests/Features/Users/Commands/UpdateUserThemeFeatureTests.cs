@@ -99,7 +99,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
                     return handler.Handle(callInfo.Arg<UpdateUserTheme.Command>(), CancellationToken.None);
                 });
 
-            var result = await mediator.Send(command, CancellationToken.None);
+            await mediator.Send(command, CancellationToken.None);
 
             await userRepository.Received().Update(Arg.Any<User>());
         }

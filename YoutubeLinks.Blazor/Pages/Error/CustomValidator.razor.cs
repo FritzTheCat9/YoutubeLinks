@@ -22,13 +22,6 @@ namespace YoutubeLinks.Blazor.Pages.Error
             EditContext.OnFieldChanged += FieldChanged;
         }
 
-        public void ClearErrors()
-        {
-            _validationMessageStore.Clear();
-
-            EditContext.NotifyValidationStateChanged();
-        }
-
         public void DisplayErrors(Dictionary<string, List<string>> errors)
         {
             foreach (var error in errors)

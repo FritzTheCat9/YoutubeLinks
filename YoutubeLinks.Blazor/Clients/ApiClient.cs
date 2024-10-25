@@ -145,17 +145,17 @@ namespace YoutubeLinks.Blazor.Clients
                     var validationErrorResponse = JsonConvert.DeserializeObject<ValidationErrorResponse>(error);
                     throw new MyValidationException(validationErrorResponse.Errors);
                 case ExceptionType.Unauthorized:
-                    var unauthorizedErrorResponse = JsonConvert.DeserializeObject<UnauthorizedErrorResponse>(error);
+                    JsonConvert.DeserializeObject<UnauthorizedErrorResponse>(error);
                     throw new MyUnauthorizedException();
                 case ExceptionType.Forbidden:
-                    var forbiddenErrorResponse = JsonConvert.DeserializeObject<ForbiddenErrorResponse>(error);
+                    JsonConvert.DeserializeObject<ForbiddenErrorResponse>(error);
                     throw new MyForbiddenException();
                 case ExceptionType.NotFound:
-                    var notFoundErrorResponse = JsonConvert.DeserializeObject<NotFoundErrorResponse>(error);
+                    JsonConvert.DeserializeObject<NotFoundErrorResponse>(error);
                     throw new MyNotFoundException();
                 case ExceptionType.Server:
                 default:
-                    var serverErrorResponse = JsonConvert.DeserializeObject<ServerErrorResponse>(error);
+                    JsonConvert.DeserializeObject<ServerErrorResponse>(error);
                     throw new MyServerException();
             }
         }

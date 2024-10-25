@@ -104,7 +104,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
                 }
             };
 
-            var dialog = await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
+            await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
         }
 
         private async Task Logout()

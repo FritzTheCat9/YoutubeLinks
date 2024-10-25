@@ -23,8 +23,8 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
         private class DownloadLinkResult
         {
-            public string Url { get; set; }
-            public bool Success { get; set; }
+            public string Url { get; init; }
+            public bool Success { get; init; }
         }
 
         public class DownloadLinkPageConst
@@ -67,7 +67,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 await using (var stream = await response.Content.ReadAsStreamAsync())
                 {
                     var streamRef = new DotNetStreamReference(stream);
-                    var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
+                    var filename = response.Content.Headers.ContentDisposition?.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
 
                     await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
                 }
