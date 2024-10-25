@@ -16,20 +16,11 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
 public class UpdateLinkFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly IClock _clock;
-    private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-    private readonly IPlaylistRepository _playlistRepository;
-    private readonly IYoutubeService _youtubeService;
-
-    public UpdateLinkFeatureTests()
-    {
-        _playlistRepository = Substitute.For<IPlaylistRepository>();
-        _authService = Substitute.For<IAuthService>();
-        _youtubeService = Substitute.For<IYoutubeService>();
-        _clock = Substitute.For<IClock>();
-        _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IStringLocalizer<ApiValidationMessage> _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
+    private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 
     [Fact]
     public async Task UpdateLinkHandler_ThrowsNotFoundException_IfLinkIsNotFound()

@@ -16,22 +16,12 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
 public class CreateLinkFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly IClock _clock;
-    private readonly ILinkRepository _linkRepository;
-    private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-    private readonly IPlaylistRepository _playlistRepository;
-    private readonly IYoutubeService _youtubeService;
-
-    public CreateLinkFeatureTests()
-    {
-        _linkRepository = Substitute.For<ILinkRepository>();
-        _playlistRepository = Substitute.For<IPlaylistRepository>();
-        _authService = Substitute.For<IAuthService>();
-        _youtubeService = Substitute.For<IYoutubeService>();
-        _clock = Substitute.For<IClock>();
-        _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly ILinkRepository _linkRepository = Substitute.For<ILinkRepository>();
+    private readonly IStringLocalizer<ApiValidationMessage> _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
+    private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 
     [Fact]
     public async Task CreateLinkHandler_ThrowsValidationException_IfVideoIdIsNull()

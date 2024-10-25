@@ -225,18 +225,11 @@ public class ImportPlaylistTests
             .WithErrorMessage(message);
     }
 
-    private class MockBrowserFile : IBrowserFile
+    private class MockBrowserFile(string name, long size, string contentType) : IBrowserFile
     {
-        public MockBrowserFile(string name, long size, string contentType)
-        {
-            Name = name;
-            Size = size;
-            ContentType = contentType;
-        }
-
-        public string Name { get; }
-        public long Size { get; }
-        public string ContentType { get; }
+        public string Name { get; } = name;
+        public long Size { get; } = size;
+        public string ContentType { get; } = contentType;
         public DateTimeOffset LastModified { get; }
 
         public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)

@@ -13,12 +13,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
 
 public class ExportPlaylistFeatureTests
 {
-    private readonly IAuthService _authService;
-
-    public ExportPlaylistFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task ExportPlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

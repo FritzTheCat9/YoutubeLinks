@@ -33,35 +33,25 @@ public static class DownloadLinkFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<DownloadLink.Command, YoutubeFile>
+    public class Handler(
+        IAuthService authService,
+        ILinkRepository linkRepository,
+        IYoutubeService youtubeService)
+        : IRequestHandler<DownloadLink.Command, YoutubeFile>
     {
-        private readonly IAuthService _authService;
-        private readonly ILinkRepository _linkRepository;
-        private readonly IYoutubeService _youtubeService;
-
-        public Handler(
-            IAuthService authService,
-            ILinkRepository linkRepository,
-            IYoutubeService youtubeService)
-        {
-            _authService = authService;
-            _linkRepository = linkRepository;
-            _youtubeService = youtubeService;
-        }
-
         public async Task<YoutubeFile> Handle(
             DownloadLink.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(link.Playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
             var isPublicPlaylist = link.Playlist.Public;
 
             if (!isUserPlaylist && !isPublicPlaylist)
                 throw new MyForbiddenException();
 
-            var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
+            var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, youtubeService);
             var youtubeFile = await downloader.Download(link.VideoId, link.Title);
 
             return youtubeFile;

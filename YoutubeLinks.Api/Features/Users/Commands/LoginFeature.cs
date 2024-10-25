@@ -23,43 +23,31 @@ public static class LoginFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<Login.Command, JwtDto>
+    public class Handler(
+        IPasswordService passwordService,
+        IUserRepository userRepository,
+        IAuthenticator authenticator,
+        IStringLocalizer<ApiValidationMessage> localizer)
+        : IRequestHandler<Login.Command, JwtDto>
     {
-        private readonly IAuthenticator _authenticator;
-        private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-        private readonly IPasswordService _passwordService;
-        private readonly IUserRepository _userRepository;
-
-        public Handler(
-            IPasswordService passwordService,
-            IUserRepository userRepository,
-            IAuthenticator authenticator,
-            IStringLocalizer<ApiValidationMessage> localizer)
-        {
-            _passwordService = passwordService;
-            _userRepository = userRepository;
-            _authenticator = authenticator;
-            _localizer = localizer;
-        }
-
         public async Task<JwtDto> Handle(Login.Command command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmail(command.Email) ??
+            var user = await userRepository.GetByEmail(command.Email) ??
                        throw new MyValidationException(nameof(Login.Command.Email),
-                           _localizer[nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
+                           localizer[nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (!user.EmailConfirmed)
                 throw new MyValidationException(nameof(Login.Command.Email),
-                    _localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
+                    localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
 
-            if (!_passwordService.Validate(command.Password, user.Password))
+            if (!passwordService.Validate(command.Password, user.Password))
                 throw new MyValidationException(nameof(Login.Command.Password),
-                    _localizer[nameof(ApiValidationMessageString.PasswordIsIncorrect)]);
+                    localizer[nameof(ApiValidationMessageString.PasswordIsIncorrect)]);
 
-            var jwt = _authenticator.CreateTokens(user);
+            var jwt = authenticator.CreateTokens(user);
 
             user.RefreshToken = jwt.RefreshToken;
-            await _userRepository.Update(user);
+            await userRepository.Update(user);
 
             return jwt;
         }

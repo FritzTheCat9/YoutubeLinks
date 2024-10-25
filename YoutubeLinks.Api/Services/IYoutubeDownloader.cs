@@ -7,35 +7,19 @@ public interface IYoutubeDownloader
     Task<YoutubeFile> Download(string videoId, string videoTitle = null);
 }
 
-public class Mp3YoutubeDownloader : IYoutubeDownloader
+public class Mp3YoutubeDownloader(IYoutubeService youtubeService) : IYoutubeDownloader
 {
-    private readonly IYoutubeService _youtubeService;
-
-    public Mp3YoutubeDownloader(
-        IYoutubeService youtubeService)
-    {
-        _youtubeService = youtubeService;
-    }
-
     public async Task<YoutubeFile> Download(string videoId, string videoTitle = null)
     {
-        return await _youtubeService.GetMp3File(videoId, videoTitle);
+        return await youtubeService.GetMp3File(videoId, videoTitle);
     }
 }
 
-public class Mp4YoutubeDownloader : IYoutubeDownloader
+public class Mp4YoutubeDownloader(IYoutubeService youtubeService) : IYoutubeDownloader
 {
-    private readonly IYoutubeService _youtubeService;
-
-    public Mp4YoutubeDownloader(
-        IYoutubeService youtubeService)
-    {
-        _youtubeService = youtubeService;
-    }
-
     public async Task<YoutubeFile> Download(string videoId, string videoTitle = null)
     {
-        return await _youtubeService.GetMp4File(videoId, videoTitle);
+        return await youtubeService.GetMp4File(videoId, videoTitle);
     }
 }
 

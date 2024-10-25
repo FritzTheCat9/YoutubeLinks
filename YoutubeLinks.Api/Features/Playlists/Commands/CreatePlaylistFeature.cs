@@ -26,39 +26,29 @@ public static class CreatePlaylistFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<CreatePlaylist.Command, int>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService,
+        IClock clock)
+        : IRequestHandler<CreatePlaylist.Command, int>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService,
-            IClock clock)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-            _clock = clock;
-        }
-
         public async Task<int> Handle(
             CreatePlaylist.Command command,
             CancellationToken cancellationToken)
         {
-            var currentUserId = _authService.GetCurrentUserId() ?? throw new MyForbiddenException();
+            var currentUserId = authService.GetCurrentUserId() ?? throw new MyForbiddenException();
 
             var playlist = new Playlist
             {
                 Id = 0,
-                Created = _clock.Current(),
-                Modified = _clock.Current(),
+                Created = clock.Current(),
+                Modified = clock.Current(),
                 Name = command.Name,
                 Public = command.Public,
                 UserId = currentUserId
             };
 
-            return await _playlistRepository.Create(playlist);
+            return await playlistRepository.Create(playlist);
         }
     }
 }

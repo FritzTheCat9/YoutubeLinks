@@ -14,14 +14,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Queries;
 
 public class GetAllPaginatedLinksFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly ILinkRepository _linkRepository;
-
-    public GetAllPaginatedLinksFeatureTests()
-    {
-        _linkRepository = Substitute.For<ILinkRepository>();
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly ILinkRepository _linkRepository = Substitute.For<ILinkRepository>();
 
     [Fact]
     public async Task GetAllPaginatedLinksHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

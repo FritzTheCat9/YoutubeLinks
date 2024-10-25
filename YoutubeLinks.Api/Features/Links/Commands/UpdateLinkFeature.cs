@@ -30,64 +30,48 @@ public static class UpdateLinkFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<UpdateLink.Command, Unit>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        ILinkRepository linkRepository,
+        IAuthService authService,
+        IYoutubeService youtubeService,
+        IClock clock,
+        IStringLocalizer<ApiValidationMessage> localizer)
+        : IRequestHandler<UpdateLink.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly ILinkRepository _linkRepository;
-        private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-        private readonly IPlaylistRepository _playlistRepository;
-        private readonly IYoutubeService _youtubeService;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            ILinkRepository linkRepository,
-            IAuthService authService,
-            IYoutubeService youtubeService,
-            IClock clock,
-            IStringLocalizer<ApiValidationMessage> localizer)
-        {
-            _playlistRepository = playlistRepository;
-            _linkRepository = linkRepository;
-            _authService = authService;
-            _youtubeService = youtubeService;
-            _clock = clock;
-            _localizer = localizer;
-        }
-
         public async Task<Unit> Handle(
             UpdateLink.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            if (!_authService.IsLoggedInUser(link.Playlist.UserId))
+            if (!authService.IsLoggedInUser(link.Playlist.UserId))
                 throw new MyForbiddenException();
 
             var videoId = YoutubeHelpers.GetVideoId(command.Url);
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
-                    _localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+                    localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
 
             command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
 
             var urlExists =
-                await _playlistRepository.LinkUrlExistsInOtherLinksThan(command.Url, link.PlaylistId, command.Id);
+                await playlistRepository.LinkUrlExistsInOtherLinksThan(command.Url, link.PlaylistId, command.Id);
             if (urlExists)
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
-                    _localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
+                    localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
 
             if (string.IsNullOrWhiteSpace(link.Title) || command.Url != link.Url)
-                link.Title = await _youtubeService.GetVideoTitle(videoId);
+                link.Title = await youtubeService.GetVideoTitle(videoId);
             else
                 link.Title = YoutubeHelpers.NormalizeVideoTitle(command.Title);
 
-            link.Modified = _clock.Current();
+            link.Modified = clock.Current();
             link.Url = command.Url;
             link.VideoId = videoId;
             link.Downloaded = command.Downloaded;
 
-            await _linkRepository.Update(link);
+            await linkRepository.Update(link);
             return Unit.Value;
         }
     }

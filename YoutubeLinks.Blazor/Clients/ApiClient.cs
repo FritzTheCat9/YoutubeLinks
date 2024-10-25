@@ -20,27 +20,18 @@ public interface IApiClient
     Task Delete(string url);
 }
 
-public class ApiClient : IApiClient
+public class ApiClient(
+    HttpClient client,
+    IJwtProvider jwtProvider) : IApiClient
 {
     private const string AuthScheme = "Bearer";
     private const string LanguageHeader = "Accept-Language";
-    private readonly string _baseUrl;
-    private readonly HttpClient _client;
-    private readonly IJwtProvider _jwtProvider;
-
-    public ApiClient(
-        HttpClient client,
-        IJwtProvider jwtProvider)
-    {
-        _client = client;
-        _jwtProvider = jwtProvider;
-        _baseUrl = client.BaseAddress?.ToString();
-    }
+    private readonly string _baseUrl = client.BaseAddress?.ToString();
 
     public async Task<HttpResponseMessage> Get(string url)
     {
         await AddHeaderValues();
-        var response = await _client.GetAsync($"{_baseUrl}{url}");
+        var response = await client.GetAsync($"{_baseUrl}{url}");
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -51,7 +42,7 @@ public class ApiClient : IApiClient
     public async Task<TResponse> Get<TResponse>(string url)
     {
         await AddHeaderValues();
-        var response = await _client.GetAsync($"{_baseUrl}{url}");
+        var response = await client.GetAsync($"{_baseUrl}{url}");
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -63,7 +54,7 @@ public class ApiClient : IApiClient
     public async Task Post<TRequest>(string url, TRequest tRequest)
     {
         await AddHeaderValues();
-        var response = await _client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
+        var response = await client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -72,7 +63,7 @@ public class ApiClient : IApiClient
     public async Task<TResponse> Post<TRequest, TResponse>(string url, TRequest tRequest)
     {
         await AddHeaderValues();
-        var response = await _client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
+        var response = await client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -90,7 +81,7 @@ public class ApiClient : IApiClient
 
         request.SetBrowserResponseStreamingEnabled(true);
 
-        var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+        var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -101,7 +92,7 @@ public class ApiClient : IApiClient
     public async Task Put<TRequest>(string url, TRequest tRequest)
     {
         await AddHeaderValues();
-        var response = await _client.PutAsJsonAsync($"{_baseUrl}{url}", tRequest);
+        var response = await client.PutAsJsonAsync($"{_baseUrl}{url}", tRequest);
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -110,7 +101,7 @@ public class ApiClient : IApiClient
     public async Task Put(string url)
     {
         await AddHeaderValues();
-        var response = await _client.PutAsync($"{_baseUrl}{url}", null);
+        var response = await client.PutAsync($"{_baseUrl}{url}", null);
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -119,7 +110,7 @@ public class ApiClient : IApiClient
     public async Task Delete(string url)
     {
         await AddHeaderValues();
-        var response = await _client.DeleteAsync($"{_baseUrl}{url}");
+        var response = await client.DeleteAsync($"{_baseUrl}{url}");
 
         if (!response.IsSuccessStatusCode)
             await HandleErrors(response);
@@ -127,12 +118,12 @@ public class ApiClient : IApiClient
 
     private async Task AddHeaderValues()
     {
-        var token = await _jwtProvider.GetJwtDto();
-        _client.DefaultRequestHeaders.Authorization =
+        var token = await jwtProvider.GetJwtDto();
+        client.DefaultRequestHeaders.Authorization =
             token is not null ? new AuthenticationHeaderValue(AuthScheme, token.AccessToken) : null;
 
         var currentCultureName = CultureInfo.CurrentCulture.Name;
-        _client.DefaultRequestHeaders.Add(LanguageHeader, currentCultureName);
+        client.DefaultRequestHeaders.Add(LanguageHeader, currentCultureName);
     }
 
     private static async Task HandleErrors(HttpResponseMessage response)

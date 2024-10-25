@@ -13,12 +13,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
 
 public class GetPlaylistFeatureTests
 {
-    private readonly IAuthService _authService;
-
-    public GetPlaylistFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task GetPlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

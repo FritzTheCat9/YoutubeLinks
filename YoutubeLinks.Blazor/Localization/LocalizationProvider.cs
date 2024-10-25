@@ -9,18 +9,11 @@ public interface ILocalizationProvider
     Task SetCulture(string culture);
 }
 
-public class LocalizationProvider : ILocalizationProvider
+public class LocalizationProvider(ILocalStorageService localStorage) : ILocalizationProvider
 {
-    private readonly ILocalStorageService _localStorage;
-
-    public LocalizationProvider(ILocalStorageService localStorage)
-    {
-        _localStorage = localStorage;
-    }
-
     public async Task<string> GetCulture()
-        => await _localStorage.GetItemAsync<string>(LocalizationConsts.CultureKey);
+        => await localStorage.GetItemAsync<string>(LocalizationConsts.CultureKey);
 
     public async Task SetCulture(string culture)
-        => await _localStorage.SetItemAsync(LocalizationConsts.CultureKey, culture);
+        => await localStorage.SetItemAsync(LocalizationConsts.CultureKey, culture);
 }

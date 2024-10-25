@@ -15,18 +15,11 @@ public interface ILinkRepository
     Task SaveChanges();
 }
 
-public class LinkRepository : ILinkRepository
+public class LinkRepository(AppDbContext dbContext) : ILinkRepository
 {
-    private readonly AppDbContext _dbContext;
-
-    public LinkRepository(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public IQueryable<Link> AsQueryable(int playlistId, bool loadPrivate = false)
     {
-        var query = _dbContext.Links.Include(x => x.Playlist)
+        var query = dbContext.Links.Include(x => x.Playlist)
             .Where(x => x.PlaylistId == playlistId);
 
         if (!loadPrivate)
@@ -37,32 +30,32 @@ public class LinkRepository : ILinkRepository
     }
 
     public async Task<IEnumerable<Link>> GetAll()
-        => await _dbContext.Links.Include(x => x.Playlist)
+        => await dbContext.Links.Include(x => x.Playlist)
             .ToListAsync();
 
     public async Task<Link> Get(int id)
-        => await _dbContext.Links.Include(x => x.Playlist)
+        => await dbContext.Links.Include(x => x.Playlist)
             .FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<int> Create(Link link)
     {
-        await _dbContext.AddAsync(link);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.AddAsync(link);
+        await dbContext.SaveChangesAsync();
         return link.Id;
     }
 
     public Task Update(Link link)
     {
-        _dbContext.Update(link);
+        dbContext.Update(link);
         return Task.CompletedTask;
     }
 
     public Task Delete(Link link)
     {
-        _dbContext.Remove(link);
+        dbContext.Remove(link);
         return Task.CompletedTask;
     }
 
     public async Task SaveChanges()
-        => await _dbContext.SaveChangesAsync();
+        => await dbContext.SaveChangesAsync();
 }

@@ -1,15 +1,9 @@
 ﻿namespace YoutubeLinks.Shared.Exceptions;
 
-public class ErrorResponse
+public class ErrorResponse(ExceptionType type, string message)
 {
-    public ErrorResponse(ExceptionType type, string message)
-    {
-        Type = type;
-        Message = message;
-    }
-
-    public ExceptionType Type { get; set; }
-    public string Message { get; set; }
+    public ExceptionType Type { get; set; } = type;
+    public string Message { get; set; } = message;
 }
 
 public class ValidationErrorResponse : ErrorResponse
@@ -26,30 +20,10 @@ public class ValidationErrorResponse : ErrorResponse
     public Dictionary<string, List<string>> Errors { get; set; } = [];
 }
 
-public class ServerErrorResponse : ErrorResponse
-{
-    public ServerErrorResponse(ExceptionType type, string message) : base(type, message)
-    {
-    }
-}
+public class ServerErrorResponse(ExceptionType type, string message) : ErrorResponse(type, message);
 
-public class UnauthorizedErrorResponse : ErrorResponse
-{
-    public UnauthorizedErrorResponse(ExceptionType type, string message) : base(type, message)
-    {
-    }
-}
+public class UnauthorizedErrorResponse(ExceptionType type, string message) : ErrorResponse(type, message);
 
-public class ForbiddenErrorResponse : ErrorResponse
-{
-    public ForbiddenErrorResponse(ExceptionType type, string message) : base(type, message)
-    {
-    }
-}
+public class ForbiddenErrorResponse(ExceptionType type, string message) : ErrorResponse(type, message);
 
-public class NotFoundErrorResponse : ErrorResponse
-{
-    public NotFoundErrorResponse(ExceptionType type, string message) : base(type, message)
-    {
-    }
-}
+public class NotFoundErrorResponse(ExceptionType type, string message) : ErrorResponse(type, message);

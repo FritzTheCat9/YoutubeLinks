@@ -1,11 +1,7 @@
 ﻿namespace YoutubeLinks.Shared.Exceptions;
 
-public abstract class CustomException : Exception
+public abstract class CustomException(string message) : Exception(message)
 {
-    protected CustomException(string message) : base(message)
-    {
-    }
-
     public ExceptionType Type { get; set; }
 }
 

@@ -12,12 +12,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
 public class DeleteLinkFeatureTests
 {
-    private readonly IAuthService _authService;
-
-    public DeleteLinkFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task DeleteLinkHandler_ThrowsNotFoundException_IfLinkIsNotFound()

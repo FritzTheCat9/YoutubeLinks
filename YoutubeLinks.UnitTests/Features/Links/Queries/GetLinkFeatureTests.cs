@@ -13,12 +13,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Queries;
 
 public class GetLinkFeatureTests
 {
-    private readonly IAuthService _authService;
-
-    public GetLinkFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task GetLinkHandler_ThrowsNotFoundException_IfLinkIsNotFound()

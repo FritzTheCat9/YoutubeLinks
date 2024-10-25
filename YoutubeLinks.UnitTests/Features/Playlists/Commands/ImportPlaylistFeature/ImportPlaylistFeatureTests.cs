@@ -17,18 +17,10 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
 
 public class ImportPlaylistFeatureTests
 {
-    private readonly IClock _clock;
-    private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-    private readonly IPlaylistRepository _playlistRepository;
-    private readonly IYoutubeService _youtubeService;
-
-    public ImportPlaylistFeatureTests()
-    {
-        _playlistRepository = Substitute.For<IPlaylistRepository>();
-        _youtubeService = Substitute.For<IYoutubeService>();
-        _clock = Substitute.For<IClock>();
-        _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-    }
+    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IStringLocalizer<ApiValidationMessage> _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
+    private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 
     [Fact]
     public async Task ImportPlaylistHandler_ThrowsForbiddenException_IfUserIsNotAuthenticated()

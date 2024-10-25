@@ -22,21 +22,14 @@ public static class GetAllPublicPlaylistsFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<GetAllPublicPlaylists.Query, PagedList<PlaylistDto>>
+    public class Handler(IPlaylistRepository playlistRepository)
+        : IRequestHandler<GetAllPublicPlaylists.Query, PagedList<PlaylistDto>>
     {
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository)
-        {
-            _playlistRepository = playlistRepository;
-        }
-
         public Task<PagedList<PlaylistDto>> Handle(
             GetAllPublicPlaylists.Query query,
             CancellationToken cancellationToken)
         {
-            var playlistQuery = _playlistRepository.AsQueryablePublic();
+            var playlistQuery = playlistRepository.AsQueryablePublic();
 
             playlistQuery = playlistQuery.FilterPlaylists(query);
             playlistQuery = playlistQuery.SortPlaylists(query);

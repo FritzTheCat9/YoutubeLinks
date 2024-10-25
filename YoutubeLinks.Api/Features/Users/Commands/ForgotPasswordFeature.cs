@@ -24,45 +24,33 @@ public static class ForgotPasswordFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<ForgotPassword.Command, Unit>
+    public class Handler(
+        IUserRepository userRepository,
+        IEmailService emailService,
+        IForgotPasswordService forgotPasswordService,
+        IStringLocalizer<ApiValidationMessage> validationLocalizer)
+        : IRequestHandler<ForgotPassword.Command, Unit>
     {
-        private readonly IEmailService _emailService;
-        private readonly IForgotPasswordService _forgotPasswordService;
-        private readonly IUserRepository _userRepository;
-        private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer;
-
-        public Handler(
-            IUserRepository userRepository,
-            IEmailService emailService,
-            IForgotPasswordService forgotPasswordService,
-            IStringLocalizer<ApiValidationMessage> validationLocalizer)
-        {
-            _userRepository = userRepository;
-            _emailService = emailService;
-            _forgotPasswordService = forgotPasswordService;
-            _validationLocalizer = validationLocalizer;
-        }
-
         public async Task<Unit> Handle(
             ForgotPassword.Command command,
             CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmail(command.Email) ??
+            var user = await userRepository.GetByEmail(command.Email) ??
                        throw new MyValidationException(nameof(ForgotPassword.Command.Email),
-                           _validationLocalizer[
+                           validationLocalizer[
                                nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (!user.EmailConfirmed)
                 throw new MyValidationException(nameof(ForgotPassword.Command.Email),
-                    _validationLocalizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
+                    validationLocalizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
 
-            user.ForgotPasswordToken = _forgotPasswordService.GenerateForgotPasswordToken(command.Email);
-            await _userRepository.Update(user);
+            user.ForgotPasswordToken = forgotPasswordService.GenerateForgotPasswordToken(command.Email);
+            await userRepository.Update(user);
 
-            await _emailService.SendEmail(user.Email, new ForgotPasswordTemplateModel
+            await emailService.SendEmail(user.Email, new ForgotPasswordTemplateModel
             {
                 UserName = user.UserName,
-                Link = _forgotPasswordService.GenerateForgotPasswordLink(user.Email, user.ForgotPasswordToken)
+                Link = forgotPasswordService.GenerateForgotPasswordLink(user.Email, user.ForgotPasswordToken)
             });
 
             return Unit.Value;

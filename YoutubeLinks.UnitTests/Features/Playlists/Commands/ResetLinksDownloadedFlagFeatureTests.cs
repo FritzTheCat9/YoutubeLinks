@@ -12,12 +12,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
 public class ResetLinksDownloadedFlagFeatureTests
 {
-    private readonly IAuthService _authService;
-
-    public ResetLinksDownloadedFlagFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task ResetLinksDownloadedFlagHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

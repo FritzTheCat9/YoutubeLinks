@@ -13,14 +13,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class UpdateUserThemeFeatureTests
 {
-    private readonly IClock _clock;
-    private readonly IUserRepository _userRepository;
-
-    public UpdateUserThemeFeatureTests()
-    {
-        _userRepository = Substitute.For<IUserRepository>();
-        _clock = Substitute.For<IClock>();
-    }
+    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
 
     [Fact]
     public async Task UpdateUserThemeHandler_ThrowsForbiddenException_IfCommandUserIdIsNotEqualToCurrentLoggedUserId()

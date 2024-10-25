@@ -28,39 +28,25 @@ public static class ImportPlaylistFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<ImportPlaylist.Command, int>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService,
+        IYoutubeService youtubeService,
+        IClock clock,
+        IStringLocalizer<ApiValidationMessage> localizer)
+        : IRequestHandler<ImportPlaylist.Command, int>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-        private readonly IPlaylistRepository _playlistRepository;
-        private readonly IYoutubeService _youtubeService;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService,
-            IYoutubeService youtubeService,
-            IClock clock,
-            IStringLocalizer<ApiValidationMessage> localizer)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-            _youtubeService = youtubeService;
-            _clock = clock;
-            _localizer = localizer;
-        }
-
         public async Task<int> Handle(
             ImportPlaylist.Command command,
             CancellationToken cancellationToken)
         {
-            var currentUserId = _authService.GetCurrentUserId() ?? throw new MyForbiddenException();
+            var currentUserId = authService.GetCurrentUserId() ?? throw new MyForbiddenException();
 
             var playlist = new Playlist
             {
                 Id = 0,
-                Created = _clock.Current(),
-                Modified = _clock.Current(),
+                Created = clock.Current(),
+                Modified = clock.Current(),
                 Name = command.Name,
                 Public = command.Public,
                 UserId = currentUserId
@@ -68,11 +54,11 @@ public static class ImportPlaylistFeature
 
             var importer = PlaylistImporterHelpers.GetImporter(command.PlaylistFileType);
 
-            var links = (await importer.Import(_youtubeService, _clock, _localizer, command)).ToList();
+            var links = (await importer.Import(youtubeService, clock, localizer, command)).ToList();
 
             playlist.Links.AddRange(links);
 
-            return await _playlistRepository.Create(playlist);
+            return await playlistRepository.Create(playlist);
         }
     }
 }

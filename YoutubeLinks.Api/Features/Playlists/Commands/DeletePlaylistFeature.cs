@@ -24,30 +24,22 @@ public static class DeletePlaylistFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<DeletePlaylist.Command, Unit>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
+        : IRequestHandler<DeletePlaylist.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-        }
-
         public async Task<Unit> Handle(
             DeletePlaylist.Command command,
             CancellationToken cancellationToken)
         {
-            var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
                 throw new MyForbiddenException();
 
-            await _playlistRepository.Delete(playlist);
+            await playlistRepository.Delete(playlist);
             return Unit.Value;
         }
     }

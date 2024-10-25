@@ -20,70 +20,63 @@ public interface IUserRepository
     Task Delete(User user);
 }
 
-public class UserRepository : IUserRepository
+public class UserRepository(AppDbContext dbContext) : IUserRepository
 {
-    private readonly AppDbContext _dbContext;
-
-    public UserRepository(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public IQueryable<User> AsQueryable()
-        => _dbContext.Users.AsQueryable();
+        => dbContext.Users.AsQueryable();
 
     public async Task<IEnumerable<User>> GetAll()
-        => await _dbContext.Users
+        => await dbContext.Users
             .ToListAsync();
 
     public async Task<User> Get(int id)
-        => await _dbContext.Users
+        => await dbContext.Users
             .FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<User> GetByEmail(string email)
-        => await _dbContext.Users
+        => await dbContext.Users
             .FirstOrDefaultAsync(x => x.Email == email);
 
     public async Task<User> GetByUserName(string userName)
-        => await _dbContext.Users
+        => await dbContext.Users
             .FirstOrDefaultAsync(x => x.UserName == userName);
 
     public async Task<bool> EmailExists(string email)
-        => await _dbContext.Users
+        => await dbContext.Users
             .AnyAsync(x => x.Email == email);
 
     public async Task<bool> UserNameExists(string userName)
-        => await _dbContext.Users
+        => await dbContext.Users
             .AnyAsync(x => x.UserName == userName);
 
     public async Task<bool> IsEmailConfirmationTokenAssignedToUser(string email, string token)
-        => await _dbContext.Users
+        => await dbContext.Users
             .AnyAsync(x => x.Email == email
                            && x.EmailConfirmationToken == token);
 
 
     public async Task<bool> IsForgotPasswordTokenAssignedToUser(string email, string token)
-        => await _dbContext.Users
+        => await dbContext.Users
             .AnyAsync(x => x.Email == email
                            && x.ForgotPasswordToken == token);
 
 
     public async Task<int> Create(User user)
     {
-        await _dbContext.AddAsync(user);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.AddAsync(user);
+        await dbContext.SaveChangesAsync();
         return user.Id;
     }
 
     public Task Update(User user)
     {
-        _dbContext.Update(user);
+        dbContext.Update(user);
         return Task.CompletedTask;
     }
 
     public Task Delete(User user)
     {
-        _dbContext.Remove(user);
+        dbContext.Remove(user);
         return Task.CompletedTask;
     }
 }

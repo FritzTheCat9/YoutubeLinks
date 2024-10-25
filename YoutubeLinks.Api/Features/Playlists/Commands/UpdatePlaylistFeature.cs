@@ -26,37 +26,27 @@ public static class UpdatePlaylistFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<UpdatePlaylist.Command, Unit>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService,
+        IClock clock)
+        : IRequestHandler<UpdatePlaylist.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService,
-            IClock clock)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-            _clock = clock;
-        }
-
         public async Task<Unit> Handle(
             UpdatePlaylist.Command command,
             CancellationToken cancellationToken)
         {
-            var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
                 throw new MyForbiddenException();
 
             playlist.Name = command.Name;
             playlist.Public = command.Public;
-            playlist.Modified = _clock.Current();
+            playlist.Modified = clock.Current();
 
-            await _playlistRepository.Update(playlist);
+            await playlistRepository.Update(playlist);
             return Unit.Value;
         }
     }

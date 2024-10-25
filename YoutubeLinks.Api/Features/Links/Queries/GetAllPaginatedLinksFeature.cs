@@ -24,30 +24,20 @@ public static class GetAllPaginatedLinksFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>
+    public class Handler(
+        ILinkRepository linkRepository,
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
+        : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>
     {
-        private readonly IAuthService _authService;
-        private readonly ILinkRepository _linkRepository;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            ILinkRepository linkRepository,
-            IPlaylistRepository playlistRepository,
-            IAuthService authService)
-        {
-            _linkRepository = linkRepository;
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-        }
-
         public async Task<PagedList<LinkDto>> Handle(
             GetAllPaginatedLinks.Query query,
             CancellationToken cancellationToken)
         {
-            var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
-            var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
+            var linkQuery = linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
 
             linkQuery = linkQuery.FilterLinks(query);
             linkQuery = linkQuery.SortLinks(query);

@@ -30,23 +30,15 @@ public static class DownloadSingleLinkFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<DownloadSingleLink.Command, YoutubeFile>
+    public class Handler(IYoutubeService youtubeService) : IRequestHandler<DownloadSingleLink.Command, YoutubeFile>
     {
-        private readonly IYoutubeService _youtubeService;
-
-        public Handler(
-            IYoutubeService youtubeService)
-        {
-            _youtubeService = youtubeService;
-        }
-
         public async Task<YoutubeFile> Handle(
             DownloadSingleLink.Command command,
             CancellationToken cancellationToken)
         {
             var videoId = YoutubeHelpers.GetVideoId(command.Url);
 
-            var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
+            var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, youtubeService);
             var youtubeFile = await downloader.Download(videoId);
 
             return youtubeFile;

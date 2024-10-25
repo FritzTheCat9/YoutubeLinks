@@ -15,14 +15,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class ConfirmEmailFeatureTests
 {
-    private readonly IEmailService _emailService;
-    private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer;
-
-    public ConfirmEmailFeatureTests()
-    {
-        _emailService = Substitute.For<IEmailService>();
-        _validationLocalizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-    }
+    private readonly IEmailService _emailService = Substitute.For<IEmailService>();
+    private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
 
     [Fact]
     public async Task ConfirmEmailHandler_ThrowsValidationException_IfUserWithGivenEmailDoesNotExist()

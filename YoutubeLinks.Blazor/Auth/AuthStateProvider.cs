@@ -5,18 +5,11 @@ using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Auth;
 
-public class AuthStateProvider : AuthenticationStateProvider
+public class AuthStateProvider(IJwtProvider jwtProvider) : AuthenticationStateProvider
 {
-    private readonly IJwtProvider _jwtProvider;
-
-    public AuthStateProvider(IJwtProvider jwtProvider)
-    {
-        _jwtProvider = jwtProvider;
-    }
-
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var token = await _jwtProvider.GetJwtDto();
+        var token = await jwtProvider.GetJwtDto();
         var authenticationState = new AuthenticationState(new ClaimsPrincipal());
 
         if (token == null || string.IsNullOrEmpty(token.AccessToken))

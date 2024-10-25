@@ -4,15 +4,8 @@ using YoutubeLinks.Shared.Exceptions;
 
 namespace YoutubeLinks.Api.Exceptions;
 
-public class ExceptionMiddleware : IMiddleware
+public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) : IMiddleware
 {
-    private readonly ILogger<ExceptionMiddleware> _logger;
-
-    public ExceptionMiddleware(ILogger<ExceptionMiddleware> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task InvokeAsync(
         HttpContext context,
         RequestDelegate next)
@@ -23,7 +16,7 @@ public class ExceptionMiddleware : IMiddleware
         }
         catch (Exception exception)
         {
-            _logger.LogError("[Api Exception] {Exception}", exception);
+            logger.LogError("[Api Exception] {Exception}", exception);
             await HandleExceptionAsync(exception, context);
         }
     }
@@ -79,15 +72,9 @@ public class ExceptionMiddleware : IMiddleware
         await context.Response.WriteAsync(jsonString);
     }
 
-    private class ErrorHelperModel
+    private class ErrorHelperModel(int statusCode, ErrorResponse errorResponse)
     {
-        public ErrorHelperModel(int statusCode, ErrorResponse errorResponse)
-        {
-            StatusCode = statusCode;
-            ErrorResponse = errorResponse;
-        }
-
-        public int StatusCode { get; }
-        public ErrorResponse ErrorResponse { get; }
+        public int StatusCode { get; } = statusCode;
+        public ErrorResponse ErrorResponse { get; } = errorResponse;
     }
 }

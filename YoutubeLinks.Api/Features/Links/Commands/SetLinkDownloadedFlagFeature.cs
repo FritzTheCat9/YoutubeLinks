@@ -26,35 +26,25 @@ public static class SetLinkDownloadedFlagFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>
+    public class Handler(
+        ILinkRepository linkRepository,
+        IAuthService authService,
+        IClock clock)
+        : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly ILinkRepository _linkRepository;
-
-        public Handler(
-            ILinkRepository linkRepository,
-            IAuthService authService,
-            IClock clock)
-        {
-            _linkRepository = linkRepository;
-            _authService = authService;
-            _clock = clock;
-        }
-
         public async Task<Unit> Handle(
             SetLinkDownloadedFlag.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            if (!_authService.IsLoggedInUser(link.Playlist.UserId))
+            if (!authService.IsLoggedInUser(link.Playlist.UserId))
                 throw new MyForbiddenException();
 
-            link.Modified = _clock.Current();
+            link.Modified = clock.Current();
             link.Downloaded = command.Downloaded;
 
-            await _linkRepository.Update(link);
+            await linkRepository.Update(link);
             return Unit.Value;
         }
     }

@@ -16,28 +16,16 @@ public interface IAuthService
     Task RefreshToken();
 }
 
-public class AuthService : IAuthService
+public class AuthService(
+    AuthenticationStateProvider stateProvider,
+    IJwtProvider jwtProvider,
+    IUserApiClient userApiClient,
+    NavigationManager navigationManager)
+    : IAuthService
 {
-    private readonly AuthenticationStateProvider _authStateProvider;
-    private readonly IJwtProvider _jwtProvider;
-    private readonly NavigationManager _navigationManager;
-    private readonly IUserApiClient _userApiClient;
-
-    public AuthService(
-        AuthenticationStateProvider authStateProvider,
-        IJwtProvider jwtProvider,
-        IUserApiClient userApiClient,
-        NavigationManager navigationManager)
-    {
-        _authStateProvider = authStateProvider;
-        _jwtProvider = jwtProvider;
-        _userApiClient = userApiClient;
-        _navigationManager = navigationManager;
-    }
-
     public async Task<int?> GetCurrentUserId()
     {
-        if (_authStateProvider is not AuthStateProvider authStateProvider)
+        if (stateProvider is not AuthStateProvider authStateProvider)
             return null;
 
         var authState = await authStateProvider.GetAuthenticationStateAsync();
@@ -59,7 +47,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> IsLoggedInUser(int userId)
     {
-        if (_authStateProvider is not AuthStateProvider authStateProvider)
+        if (stateProvider is not AuthStateProvider authStateProvider)
             return false;
 
         var authState = await authStateProvider.GetAuthenticationStateAsync();
@@ -81,38 +69,38 @@ public class AuthService : IAuthService
 
     public async Task Login(JwtDto token, string redirectUrl = null)
     {
-        await _jwtProvider.SetJwtDto(token);
+        await jwtProvider.SetJwtDto(token);
 
-        var authStateProvider = _authStateProvider as AuthStateProvider;
+        var authStateProvider = stateProvider as AuthStateProvider;
         authStateProvider?.NotifyAuthStateChanged();
 
         if (!string.IsNullOrEmpty(redirectUrl))
-            _navigationManager.NavigateTo(redirectUrl);
+            navigationManager.NavigateTo(redirectUrl);
     }
 
     public async Task Logout(string redirectUrl = null)
     {
-        await _jwtProvider.RemoveJwtDto();
+        await jwtProvider.RemoveJwtDto();
 
-        var authStateProvider = _authStateProvider as AuthStateProvider;
+        var authStateProvider = stateProvider as AuthStateProvider;
         authStateProvider?.NotifyAuthStateChanged();
 
         if (!string.IsNullOrEmpty(redirectUrl))
-            _navigationManager.NavigateTo(redirectUrl);
+            navigationManager.NavigateTo(redirectUrl);
     }
 
     public async Task RefreshToken()
     {
         try
         {
-            var jwt = await _jwtProvider.GetJwtDto();
+            var jwt = await jwtProvider.GetJwtDto();
             if (jwt is null || string.IsNullOrEmpty(jwt.RefreshToken))
             {
                 await Logout();
             }
             else
             {
-                var newJwt = await _userApiClient.RefreshToken(new RefreshToken.Command
+                var newJwt = await userApiClient.RefreshToken(new RefreshToken.Command
                     { RefreshToken = jwt.RefreshToken });
                 await Login(newJwt);
             }

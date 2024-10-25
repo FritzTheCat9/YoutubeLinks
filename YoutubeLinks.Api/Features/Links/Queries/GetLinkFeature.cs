@@ -26,26 +26,18 @@ public static class GetLinkFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<GetLink.Query, LinkDto>
+    public class Handler(
+        ILinkRepository linkRepository,
+        IAuthService authService)
+        : IRequestHandler<GetLink.Query, LinkDto>
     {
-        private readonly IAuthService _authService;
-        private readonly ILinkRepository _linkRepository;
-
-        public Handler(
-            ILinkRepository linkRepository,
-            IAuthService authService)
-        {
-            _linkRepository = linkRepository;
-            _authService = authService;
-        }
-
         public async Task<LinkDto> Handle(
             GetLink.Query query,
             CancellationToken cancellationToken)
         {
-            var link = await _linkRepository.Get(query.Id) ?? throw new MyNotFoundException();
+            var link = await linkRepository.Get(query.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(link.Playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
             if (!link.Playlist.Public
                 && !isUserPlaylist)
                 throw new MyForbiddenException();

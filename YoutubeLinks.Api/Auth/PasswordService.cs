@@ -9,19 +9,12 @@ public interface IPasswordService
     bool Validate(string password, string hashedPassword);
 }
 
-public class PasswordService : IPasswordService
+public class PasswordService(IPasswordHasher<User> passwordHasher) : IPasswordService
 {
-    private readonly IPasswordHasher<User> _passwordHasher;
-
-    public PasswordService(IPasswordHasher<User> passwordHasher)
-    {
-        _passwordHasher = passwordHasher;
-    }
-
     public string Hash(string password)
-        => _passwordHasher.HashPassword(default!, password);
+        => passwordHasher.HashPassword(default!, password);
 
     public bool Validate(string password, string hashedPassword)
-        => _passwordHasher.VerifyHashedPassword(default!, hashedPassword, password)
+        => passwordHasher.VerifyHashedPassword(default!, hashedPassword, password)
             is PasswordVerificationResult.Success;
 }

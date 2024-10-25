@@ -21,30 +21,22 @@ public static class ResetLinksDownloadedFlagFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<ResetLinksDownloadedFlag.Command, Unit>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
+        : IRequestHandler<ResetLinksDownloadedFlag.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-        }
-
         public async Task<Unit> Handle(
             ResetLinksDownloadedFlag.Command command,
             CancellationToken cancellationToken)
         {
-            var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
                 throw new MyForbiddenException();
 
-            await _playlistRepository.SetLinksDownloadedFlag(playlist, command.IsDownloaded);
+            await playlistRepository.SetLinksDownloadedFlag(playlist, command.IsDownloaded);
 
             return Unit.Value;
         }

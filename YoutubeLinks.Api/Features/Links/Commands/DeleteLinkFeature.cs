@@ -24,30 +24,22 @@ public static class DeleteLinkFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<DeleteLink.Command, Unit>
+    public class Handler(
+        IAuthService authService,
+        ILinkRepository linkRepository)
+        : IRequestHandler<DeleteLink.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly ILinkRepository _linkRepository;
-
-        public Handler(
-            IAuthService authService,
-            ILinkRepository linkRepository)
-        {
-            _authService = authService;
-            _linkRepository = linkRepository;
-        }
-
         public async Task<Unit> Handle(
             DeleteLink.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(link.Playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
             if (!isUserPlaylist)
                 throw new MyForbiddenException();
 
-            await _linkRepository.Delete(link);
+            await linkRepository.Delete(link);
             return Unit.Value;
         }
     }

@@ -5,12 +5,7 @@ namespace YoutubeLinks.UnitTests.Localization;
 
 public class TestStringLocalizer<T> : IStringLocalizer<T>
 {
-    private readonly Dictionary<string, string> _localizations;
-
-    public TestStringLocalizer()
-    {
-        _localizations = new Dictionary<string, string>();
-    }
+    private readonly Dictionary<string, string> _localizations = new();
 
     public LocalizedString this[string name]
         => new(name, _localizations.TryGetValue(name, out var value) ? value : name, true);

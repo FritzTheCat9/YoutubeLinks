@@ -26,36 +26,26 @@ public static class UpdateUserThemeFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<UpdateUserTheme.Command, Unit>
+    public class Handler(
+        IUserRepository userRepository,
+        IAuthService authService,
+        IClock clock)
+        : IRequestHandler<UpdateUserTheme.Command, Unit>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly IUserRepository _userRepository;
-
-        public Handler(
-            IUserRepository userRepository,
-            IAuthService authService,
-            IClock clock)
-        {
-            _userRepository = userRepository;
-            _authService = authService;
-            _clock = clock;
-        }
-
         public async Task<Unit> Handle(
             UpdateUserTheme.Command command,
             CancellationToken cancellationToken)
         {
-            var isLoggedInUser = _authService.IsLoggedInUser(command.Id);
+            var isLoggedInUser = authService.IsLoggedInUser(command.Id);
             if (!isLoggedInUser)
                 throw new MyForbiddenException();
 
-            var user = await _userRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var user = await userRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
             user.ThemeColor = command.ThemeColor;
-            user.Modified = _clock.Current();
+            user.Modified = clock.Current();
 
-            await _userRepository.Update(user);
+            await userRepository.Update(user);
             return Unit.Value;
         }
     }

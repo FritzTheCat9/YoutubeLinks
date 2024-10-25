@@ -24,26 +24,18 @@ public static class ExportPlaylistFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<ExportPlaylist.Command, PlaylistFile>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
+        : IRequestHandler<ExportPlaylist.Command, PlaylistFile>
     {
-        private readonly IAuthService _authService;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-        }
-
         public async Task<PlaylistFile> Handle(
             ExportPlaylist.Command command,
             CancellationToken cancellationToken)
         {
-            var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!playlist.Public
                 && !isUserPlaylist)
                 throw new MyForbiddenException();

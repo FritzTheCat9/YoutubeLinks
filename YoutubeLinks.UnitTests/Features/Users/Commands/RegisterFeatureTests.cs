@@ -17,20 +17,11 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class RegisterFeatureTests
 {
-    private readonly IClock _clock;
-    private readonly IEmailConfirmationService _emailConfirmationService;
-    private readonly IEmailService _emailService;
-    private readonly IPasswordService _passwordService;
-    private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer;
-
-    public RegisterFeatureTests()
-    {
-        _clock = Substitute.For<IClock>();
-        _passwordService = Substitute.For<IPasswordService>();
-        _emailService = Substitute.For<IEmailService>();
-        _emailConfirmationService = Substitute.For<IEmailConfirmationService>();
-        _validationLocalizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-    }
+    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IEmailConfirmationService _emailConfirmationService = Substitute.For<IEmailConfirmationService>();
+    private readonly IEmailService _emailService = Substitute.For<IEmailService>();
+    private readonly IPasswordService _passwordService = Substitute.For<IPasswordService>();
+    private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
 
     [Fact]
     public async Task RegisterHandler_ThrowsValidationException_IfEmailExists()

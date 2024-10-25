@@ -25,20 +25,13 @@ public static class GetUserFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<GetUser.Query, UserDto>
+    public class Handler(IUserRepository userRepository) : IRequestHandler<GetUser.Query, UserDto>
     {
-        private readonly IUserRepository _userRepository;
-
-        public Handler(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
         public async Task<UserDto> Handle(
             GetUser.Query query,
             CancellationToken cancellationToken)
         {
-            var user = await _userRepository.Get(query.Id) ?? throw new MyNotFoundException();
+            var user = await userRepository.Get(query.Id) ?? throw new MyNotFoundException();
             return user.ToDto();
         }
     }

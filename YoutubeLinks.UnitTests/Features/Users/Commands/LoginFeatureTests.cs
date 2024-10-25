@@ -15,16 +15,9 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class LoginFeatureTests
 {
-    private readonly IAuthenticator _authenticator;
-    private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-    private readonly IPasswordService _passwordService;
-
-    public LoginFeatureTests()
-    {
-        _passwordService = Substitute.For<IPasswordService>();
-        _authenticator = Substitute.For<IAuthenticator>();
-        _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-    }
+    private readonly IAuthenticator _authenticator = Substitute.For<IAuthenticator>();
+    private readonly IStringLocalizer<ApiValidationMessage> _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+    private readonly IPasswordService _passwordService = Substitute.For<IPasswordService>();
 
     [Fact]
     public async Task LoginHandler_ThrowsValidationException_IfUserWithGivenEmailDoesNotExist()

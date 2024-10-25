@@ -13,14 +13,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
 public class CreatePlaylistFeatureTests
 {
-    private readonly IClock _clock;
-    private readonly IPlaylistRepository _playlistRepository;
-
-    public CreatePlaylistFeatureTests()
-    {
-        _playlistRepository = Substitute.For<IPlaylistRepository>();
-        _clock = Substitute.For<IClock>();
-    }
+    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
     public async Task CreatePlaylistHandler_ThrowsForbiddenException_IfUserIsNotAuthenticated()

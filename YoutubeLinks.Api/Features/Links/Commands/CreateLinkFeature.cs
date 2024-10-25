@@ -30,31 +30,15 @@ public static class CreateLinkFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<CreateLink.Command, int>
+    public class Handler(
+        ILinkRepository linkRepository,
+        IPlaylistRepository playlistRepository,
+        IAuthService authService,
+        IYoutubeService youtubeService,
+        IClock clock,
+        IStringLocalizer<ApiValidationMessage> localizer)
+        : IRequestHandler<CreateLink.Command, int>
     {
-        private readonly IAuthService _authService;
-        private readonly IClock _clock;
-        private readonly ILinkRepository _linkRepository;
-        private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-        private readonly IPlaylistRepository _playlistRepository;
-        private readonly IYoutubeService _youtubeService;
-
-        public Handler(
-            ILinkRepository linkRepository,
-            IPlaylistRepository playlistRepository,
-            IAuthService authService,
-            IYoutubeService youtubeService,
-            IClock clock,
-            IStringLocalizer<ApiValidationMessage> localizer)
-        {
-            _linkRepository = linkRepository;
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-            _youtubeService = youtubeService;
-            _clock = clock;
-            _localizer = localizer;
-        }
-
         public async Task<int> Handle(
             CreateLink.Command command,
             CancellationToken cancellationToken)
@@ -62,18 +46,18 @@ public static class CreateLinkFeature
             var videoId = YoutubeHelpers.GetVideoId(command.Url);
             if (string.IsNullOrWhiteSpace(videoId))
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
-                    _localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+                    localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
 
             command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
-            var videoTitle = await _youtubeService.GetVideoTitle(videoId);
+            var videoTitle = await youtubeService.GetVideoTitle(videoId);
 
-            await ValidateCommand(command, _localizer);
+            await ValidateCommand(command, localizer);
 
             var link = new Link
             {
                 Id = 0,
-                Created = _clock.Current(),
-                Modified = _clock.Current(),
+                Created = clock.Current(),
+                Modified = clock.Current(),
                 Url = command.Url,
                 VideoId = videoId,
                 Title = videoTitle,
@@ -81,18 +65,18 @@ public static class CreateLinkFeature
                 PlaylistId = command.PlaylistId
             };
 
-            return await _linkRepository.Create(link);
+            return await linkRepository.Create(link);
         }
 
         private async Task ValidateCommand(CreateLink.Command command, IStringLocalizer<ApiValidationMessage> localizer)
         {
-            var playlist = await _playlistRepository.Get(command.PlaylistId) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(command.PlaylistId) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
                 throw new MyForbiddenException();
 
-            var urlExists = await _playlistRepository.LinkUrlExists(command.Url, playlist.Id);
+            var urlExists = await playlistRepository.LinkUrlExists(command.Url, playlist.Id);
             if (urlExists)
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);

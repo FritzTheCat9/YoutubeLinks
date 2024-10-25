@@ -23,25 +23,17 @@ public static class GetAllUserPlaylistsFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>
+    public class Handler(
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
+        : IRequestHandler<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>
     {
-        private readonly IAuthService _authService;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            IPlaylistRepository playlistRepository,
-            IAuthService authService)
-        {
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-        }
-
         public Task<PagedList<PlaylistDto>> Handle(
             GetAllUserPlaylists.Query query,
             CancellationToken cancellationToken)
         {
-            var isUserPlaylist = _authService.IsLoggedInUser(query.UserId);
-            var playlistQuery = _playlistRepository.AsQueryable(query.UserId, isUserPlaylist);
+            var isUserPlaylist = authService.IsLoggedInUser(query.UserId);
+            var playlistQuery = playlistRepository.AsQueryable(query.UserId, isUserPlaylist);
 
             playlistQuery = playlistQuery.FilterPlaylists(query);
             playlistQuery = playlistQuery.SortPlaylists(query);

@@ -24,45 +24,33 @@ public static class ResendConfirmationEmailFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<ResendConfirmationEmail.Command, Unit>
+    public class Handler(
+        IUserRepository userRepository,
+        IEmailService emailService,
+        IEmailConfirmationService emailConfirmationService,
+        IStringLocalizer<ApiValidationMessage> validationLocalizer)
+        : IRequestHandler<ResendConfirmationEmail.Command, Unit>
     {
-        private readonly IEmailConfirmationService _emailConfirmationService;
-        private readonly IEmailService _emailService;
-        private readonly IUserRepository _userRepository;
-        private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer;
-
-        public Handler(
-            IUserRepository userRepository,
-            IEmailService emailService,
-            IEmailConfirmationService emailConfirmationService,
-            IStringLocalizer<ApiValidationMessage> validationLocalizer)
-        {
-            _userRepository = userRepository;
-            _emailService = emailService;
-            _emailConfirmationService = emailConfirmationService;
-            _validationLocalizer = validationLocalizer;
-        }
-
         public async Task<Unit> Handle(
             ResendConfirmationEmail.Command command,
             CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmail(command.Email) ??
+            var user = await userRepository.GetByEmail(command.Email) ??
                        throw new MyValidationException(nameof(ResendConfirmationEmail.Command.Email),
-                           _validationLocalizer[
+                           validationLocalizer[
                                nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (user.EmailConfirmed)
                 throw new MyValidationException(nameof(ResendConfirmationEmail.Command.Email),
-                    _validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
+                    validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
 
-            user.EmailConfirmationToken = _emailConfirmationService.GenerateEmailConfirmationToken(command.Email);
-            await _userRepository.Update(user);
+            user.EmailConfirmationToken = emailConfirmationService.GenerateEmailConfirmationToken(command.Email);
+            await userRepository.Update(user);
 
-            await _emailService.SendEmail(user.Email, new EmailConfirmationTemplateModel
+            await emailService.SendEmail(user.Email, new EmailConfirmationTemplateModel
             {
                 UserName = user.UserName,
-                Link = _emailConfirmationService.GenerateConfirmationLink(user.Email, user.EmailConfirmationToken)
+                Link = emailConfirmationService.GenerateConfirmationLink(user.Email, user.EmailConfirmationToken)
             });
 
             return Unit.Value;

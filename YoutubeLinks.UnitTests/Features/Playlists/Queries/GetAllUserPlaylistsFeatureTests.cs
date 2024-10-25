@@ -13,14 +13,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
 
 public class GetAllUserPlaylistsFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly IPlaylistRepository _playlistRepository;
-
-    public GetAllUserPlaylistsFeatureTests()
-    {
-        _playlistRepository = Substitute.For<IPlaylistRepository>();
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
     public async Task GetAllUserPlaylistsHandler_ReturnsPlaylistsPagedList()

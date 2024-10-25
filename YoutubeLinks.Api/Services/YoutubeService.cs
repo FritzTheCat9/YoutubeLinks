@@ -12,20 +12,13 @@ public interface IYoutubeService
     Task<YoutubeFile> GetMp4File(string videoId, string videoTitle = null);
 }
 
-public class YoutubeService : IYoutubeService
+public class YoutubeService(IWebHostEnvironment webHostEnvironment) : IYoutubeService
 {
-    private readonly string _ffmpegPath;
-    private readonly string _tmpFolderPath;
-    private readonly string _ytDlpPath;
-
-    public YoutubeService(IWebHostEnvironment webHostEnvironment)
-    {
-        _ytDlpPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath),
-            OperatingSystem.IsLinux() ? "yt-dlp" : "yt-dlp.exe");
-        _ffmpegPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath),
-            OperatingSystem.IsLinux() ? "ffmpeg" : "ffmpeg.exe");
-        _tmpFolderPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Tmp");
-    }
+    private readonly string _ffmpegPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath),
+        OperatingSystem.IsLinux() ? "ffmpeg" : "ffmpeg.exe");
+    private readonly string _tmpFolderPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Tmp");
+    private readonly string _ytDlpPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath),
+        OperatingSystem.IsLinux() ? "yt-dlp" : "yt-dlp.exe");
 
     public async Task<string> GetVideoTitle(string videoId)
     {

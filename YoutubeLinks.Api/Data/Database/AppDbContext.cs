@@ -5,17 +5,10 @@ using YoutubeLinks.Api.Data.Entities;
 
 namespace YoutubeLinks.Api.Data.Database;
 
-public class AppDbContext : DbContext
+public class AppDbContext(
+    DbContextOptions<AppDbContext> options,
+    IClock clock) : DbContext(options)
 {
-    private readonly IClock _clock;
-
-    public AppDbContext(
-        DbContextOptions<AppDbContext> options,
-        IClock clock) : base(options)
-    {
-        _clock = clock;
-    }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Playlist> Playlists { get; set; }
     public DbSet<Link> Links { get; set; }
@@ -24,7 +17,7 @@ public class AppDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        var date = _clock.Current();
+        var date = clock.Current();
 
         modelBuilder.Entity<User>().HasData(new List<User>
         {

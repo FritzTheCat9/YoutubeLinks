@@ -12,14 +12,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Queries;
 
 public class GetAllLinksFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly ILinkRepository _linkRepository;
-
-    public GetAllLinksFeatureTests()
-    {
-        _linkRepository = Substitute.For<ILinkRepository>();
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly ILinkRepository _linkRepository = Substitute.For<ILinkRepository>();
 
     [Fact]
     public async Task GetAllLinksHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

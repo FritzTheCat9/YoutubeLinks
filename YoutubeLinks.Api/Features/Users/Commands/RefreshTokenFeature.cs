@@ -24,44 +24,32 @@ public static class RefreshTokenFeature
             .RequireAuthorization(Policy.User);
     }
 
-    public class Handler : IRequestHandler<RefreshToken.Command, JwtDto>
+    public class Handler(
+        IAuthService authService,
+        IUserRepository userRepository,
+        IAuthenticator authenticator,
+        IStringLocalizer<ApiValidationMessage> localizer)
+        : IRequestHandler<RefreshToken.Command, JwtDto>
     {
-        private readonly IAuthenticator _authenticator;
-        private readonly IAuthService _authService;
-        private readonly IStringLocalizer<ApiValidationMessage> _localizer;
-        private readonly IUserRepository _userRepository;
-
-        public Handler(
-            IAuthService authService,
-            IUserRepository userRepository,
-            IAuthenticator authenticator,
-            IStringLocalizer<ApiValidationMessage> localizer)
-        {
-            _authService = authService;
-            _userRepository = userRepository;
-            _authenticator = authenticator;
-            _localizer = localizer;
-        }
-
         public async Task<JwtDto> Handle(RefreshToken.Command command, CancellationToken cancellationToken)
         {
-            var currentUserId = _authService.GetCurrentUserId() ?? throw new MyForbiddenException();
-            var user = await _userRepository.Get(currentUserId) ?? throw new MyNotFoundException();
+            var currentUserId = authService.GetCurrentUserId() ?? throw new MyForbiddenException();
+            var user = await userRepository.Get(currentUserId) ?? throw new MyNotFoundException();
 
             if (!user.EmailConfirmed)
                 throw new MyValidationException(nameof(Login.Command.Email),
-                    _localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
+                    localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
 
             if (user.RefreshToken != command.RefreshToken) // check hashed token = token
                 throw new MyValidationException(nameof(RefreshToken.Command.RefreshToken),
-                    _localizer[nameof(ApiValidationMessageString.RefreshTokenIsNotValid)]);
+                    localizer[nameof(ApiValidationMessageString.RefreshTokenIsNotValid)]);
 
             // check if refresh token expired
 
-            var jwt = _authenticator.CreateTokens(user);
+            var jwt = authenticator.CreateTokens(user);
 
             user.RefreshToken = jwt.RefreshToken;
-            await _userRepository.Update(user);
+            await userRepository.Update(user);
 
             return jwt;
         }

@@ -12,12 +12,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
 public class DeletePlaylistFeatureTests
 {
-    private readonly IAuthService _authService;
-
-    public DeletePlaylistFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task DeletePlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

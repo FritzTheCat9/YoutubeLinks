@@ -21,30 +21,20 @@ public static class GetAllLinksFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<Query, IEnumerable<LinkInfoDto>>
+    public class Handler(
+        ILinkRepository linkRepository,
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
+        : IRequestHandler<Query, IEnumerable<LinkInfoDto>>
     {
-        private readonly IAuthService _authService;
-        private readonly ILinkRepository _linkRepository;
-        private readonly IPlaylistRepository _playlistRepository;
-
-        public Handler(
-            ILinkRepository linkRepository,
-            IPlaylistRepository playlistRepository,
-            IAuthService authService)
-        {
-            _linkRepository = linkRepository;
-            _playlistRepository = playlistRepository;
-            _authService = authService;
-        }
-
         public async Task<IEnumerable<LinkInfoDto>> Handle(
             Query query,
             CancellationToken cancellationToken)
         {
-            var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
 
-            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
-            var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
+            var linkQuery = linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
 
             if (isUserPlaylist)
                 linkQuery = linkQuery.FilterDownloaded(query);

@@ -4,15 +4,9 @@ using YoutubeLinks.Shared.Exceptions;
 
 namespace YoutubeLinks.Api.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+    : IPipelineBehavior<TRequest, TResponse>
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
-
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
@@ -20,7 +14,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     {
         var validationContext = new ValidationContext<TRequest>(request);
 
-        var errors = _validators
+        var errors = validators
             .Select(validator => validator.Validate(validationContext))
             .Where(validationResult => !validationResult.IsValid)
             .SelectMany(validationResult => validationResult.Errors)
@@ -38,15 +32,9 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         return result;
     }
 
-    private class ValidationError
+    private class ValidationError(string propertyName, string errorMessage)
     {
-        public ValidationError(string propertyName, string errorMessage)
-        {
-            PropertyName = propertyName;
-            ErrorMessage = errorMessage;
-        }
-
-        public string PropertyName { get; }
-        public string ErrorMessage { get; }
+        public string PropertyName { get; } = propertyName;
+        public string ErrorMessage { get; } = errorMessage;
     }
 }

@@ -14,14 +14,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
 public class DownloadLinkFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly IYoutubeService _youtubeService;
-
-    public DownloadLinkFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-        _youtubeService = Substitute.For<IYoutubeService>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 
     [Fact]
     public async Task DownloadLinkHandler_ThrowsNotFoundException_IfLinkIsNotFound()

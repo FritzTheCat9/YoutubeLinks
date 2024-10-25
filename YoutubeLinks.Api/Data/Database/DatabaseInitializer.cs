@@ -2,22 +2,14 @@
 
 namespace YoutubeLinks.Api.Data.Database;
 
-public class DatabaseInitializer : IHostedService
+public class DatabaseInitializer(
+    IServiceProvider serviceProvider,
+    ILogger<DatabaseInitializer> logger)
+    : IHostedService
 {
-    private readonly ILogger<DatabaseInitializer> _logger;
-    private readonly IServiceProvider _serviceProvider;
-
-    public DatabaseInitializer(
-        IServiceProvider serviceProvider,
-        ILogger<DatabaseInitializer> logger)
-    {
-        _serviceProvider = serviceProvider;
-        _logger = logger;
-    }
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         try
@@ -26,7 +18,7 @@ public class DatabaseInitializer : IHostedService
         }
         catch (Exception ex)
         {
-            _logger.LogError("[DatabaseInitializer] Error while creating and migrating the database: {0}", ex.Message);
+            logger.LogError("[DatabaseInitializer] Error while creating and migrating the database: {0}", ex.Message);
         }
     }
 

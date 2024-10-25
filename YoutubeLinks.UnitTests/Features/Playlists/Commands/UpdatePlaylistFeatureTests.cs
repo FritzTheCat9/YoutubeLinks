@@ -13,14 +13,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
 public class UpdatePlaylistFeatureTests
 {
-    private readonly IAuthService _authService;
-    private readonly IClock _clock;
-
-    public UpdatePlaylistFeatureTests()
-    {
-        _authService = Substitute.For<IAuthService>();
-        _clock = Substitute.For<IClock>();
-    }
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IClock _clock = Substitute.For<IClock>();
 
     [Fact]
     public async Task UpdatePlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()

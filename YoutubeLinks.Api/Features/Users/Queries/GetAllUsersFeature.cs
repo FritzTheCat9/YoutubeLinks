@@ -22,21 +22,13 @@ public static class GetAllUsersFeature
             .AllowAnonymous();
     }
 
-    public class Handler : IRequestHandler<GetAllUsers.Query, PagedList<UserDto>>
+    public class Handler(IUserRepository userRepository) : IRequestHandler<GetAllUsers.Query, PagedList<UserDto>>
     {
-        private readonly IUserRepository _userRepository;
-
-        public Handler(
-            IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
         public async Task<PagedList<UserDto>> Handle(
             GetAllUsers.Query query,
             CancellationToken cancellationToken)
         {
-            var usersQuery = _userRepository.AsQueryable();
+            var usersQuery = userRepository.AsQueryable();
 
             usersQuery = usersQuery.FilterMyUsers(query);
             usersQuery = usersQuery.SortMyUsers(query);

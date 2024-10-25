@@ -19,18 +19,11 @@ public interface IPlaylistRepository
     Task Delete(Playlist playlist);
 }
 
-public class PlaylistRepository : IPlaylistRepository
+public class PlaylistRepository(AppDbContext dbContext) : IPlaylistRepository
 {
-    private readonly AppDbContext _dbContext;
-
-    public PlaylistRepository(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public IQueryable<Playlist> AsQueryable(int userId, bool loadPrivate = false)
     {
-        var query = _dbContext.Playlists.Include(x => x.Links)
+        var query = dbContext.Playlists.Include(x => x.Links)
             .Include(x => x.User)
             .Where(x => x.UserId == userId);
 
@@ -42,7 +35,7 @@ public class PlaylistRepository : IPlaylistRepository
     }
 
     public IQueryable<Playlist> AsQueryablePublic()
-        => _dbContext.Playlists
+        => dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .Where(x => x.Public)
@@ -50,14 +43,14 @@ public class PlaylistRepository : IPlaylistRepository
             .AsQueryable();
 
     public async Task<IEnumerable<Playlist>> GetAll()
-        => await _dbContext.Playlists
+        => await dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .AsSplitQuery()
             .ToListAsync();
 
     public async Task<IEnumerable<Playlist>> GetAllPublic()
-        => await _dbContext.Playlists
+        => await dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .Where(x => x.Public)
@@ -65,46 +58,46 @@ public class PlaylistRepository : IPlaylistRepository
             .ToListAsync();
 
     public async Task<Playlist> Get(int id)
-        => await _dbContext.Playlists
+        => await dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<bool> LinkUrlExists(string url, int playlistId)
-        => await _dbContext.Links
+        => await dbContext.Links
             .AnyAsync(x => x.Url == url
                            && x.PlaylistId == playlistId);
 
     public async Task<bool> LinkUrlExistsInOtherLinksThan(string url, int playlistId, int id)
-        => await _dbContext.Links
+        => await dbContext.Links
             .Where(x => x.Id != id)
             .AnyAsync(x => x.Url == url
                            && x.PlaylistId == playlistId);
 
     public async Task<int> Create(Playlist playlist)
     {
-        await _dbContext.AddAsync(playlist);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.AddAsync(playlist);
+        await dbContext.SaveChangesAsync();
         return playlist.Id;
     }
 
     public Task Update(Playlist playlist)
     {
-        _dbContext.Update(playlist);
+        dbContext.Update(playlist);
         return Task.CompletedTask;
     }
 
     public Task SetLinksDownloadedFlag(Playlist playlist, bool flag)
     {
         playlist.Links.ForEach(x => x.Downloaded = flag);
-        _dbContext.Update(playlist);
+        dbContext.Update(playlist);
         return Task.CompletedTask;
     }
 
     public Task Delete(Playlist playlist)
     {
-        _dbContext.Remove(playlist);
+        dbContext.Remove(playlist);
         return Task.CompletedTask;
     }
 }
