@@ -8,9 +8,9 @@ public static class EndpointsExtensions
 {
     public static WebApplication AddEndpoints(this WebApplication app)
     {
-        app.AddUserEndpoints();
-        app.AddPlaylistsEndpoints();
-        app.AddLinksEndpoints();
+        app.AddUserEndpoints()
+            .AddPlaylistsEndpoints()
+            .AddLinksEndpoints();
 
         return app;
     }

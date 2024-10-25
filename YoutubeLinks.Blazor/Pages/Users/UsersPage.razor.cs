@@ -15,7 +15,6 @@ public partial class UsersPage : ComponentBase
 {
     private List<BreadcrumbItem> _items;
     private PagedList<UserDto> _myUsers;
-
     private string _searchString = "";
     private MudTable<UserDto> _table;
 

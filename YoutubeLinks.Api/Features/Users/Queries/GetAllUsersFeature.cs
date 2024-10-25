@@ -14,10 +14,12 @@ public static class GetAllUsersFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/users/all", async (
-                    GetAllUsers.Query query,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(query, cancellationToken)))
+                GetAllUsers.Query query,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(query, cancellationToken));
+            })
             .WithTags(Tags.Users)
             .AllowAnonymous();
     }

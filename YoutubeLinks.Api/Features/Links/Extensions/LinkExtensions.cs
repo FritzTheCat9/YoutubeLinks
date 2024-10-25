@@ -11,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions;
 
 public static class LinkExtensions
 {
-    public static void AddLinksEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder AddLinksEndpoints(this IEndpointRouteBuilder app)
     {
         CreateLinkFeature.Endpoint(app);
         DeleteLinkFeature.Endpoint(app);
@@ -22,6 +22,8 @@ public static class LinkExtensions
         GetAllLinksFeature.Endpoint(app);
         GetAllPaginatedLinksFeature.Endpoint(app);
         GetLinkFeature.Endpoint(app);
+
+        return app;
     }
 
     public static LinkDto ToDto(this Link link)

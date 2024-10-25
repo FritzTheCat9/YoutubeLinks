@@ -15,7 +15,6 @@ public partial class ResetPasswordPage
     private CustomValidator _customValidator;
     private bool _parsingError;
     private FritzProcessingButton _processingButton;
-
     private bool _success;
 
     [SupplyParameterFromQuery] public string Email { get; set; }

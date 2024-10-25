@@ -16,10 +16,12 @@ public static class GetAllPaginatedLinksFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/links/allPaginated", async (
-                    GetAllPaginatedLinks.Query query,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(query, cancellationToken)))
+                GetAllPaginatedLinks.Query query,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(query, cancellationToken));
+            })
             .WithTags(Tags.Links)
             .AllowAnonymous();
     }

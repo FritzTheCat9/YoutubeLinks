@@ -15,10 +15,12 @@ public static class LoginFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/users/login", async (
-                    Login.Command command,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(command, cancellationToken)))
+                Login.Command command,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(command, cancellationToken));
+            })
             .WithTags(Tags.Users)
             .AllowAnonymous();
     }

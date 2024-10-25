@@ -52,7 +52,6 @@ public partial class MainLayout : LayoutComponentBase
     private bool _drawerOpen = true;
     private string _icon = Icons.Material.Rounded.LightMode;
     private bool _isDarkMode;
-
     private MudThemeProvider _mudThemeProvider;
     private string _text;
     private ThemeColor _themeColor = ThemeColor.System;

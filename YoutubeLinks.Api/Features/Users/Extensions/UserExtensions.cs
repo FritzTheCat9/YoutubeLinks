@@ -10,7 +10,7 @@ namespace YoutubeLinks.Api.Features.Users.Extensions;
 
 public static class UserExtensions
 {
-    public static void AddUserEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder AddUserEndpoints(this IEndpointRouteBuilder app)
     {
         ConfirmEmailFeature.Endpoint(app);
         ForgotPasswordFeature.Endpoint(app);
@@ -22,6 +22,8 @@ public static class UserExtensions
         UpdateUserThemeFeature.Endpoint(app);
         GetAllUsersFeature.Endpoint(app);
         GetUserFeature.Endpoint(app);
+
+        return app;
     }
 
     public static UserDto ToDto(this User user)

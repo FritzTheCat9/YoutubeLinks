@@ -13,10 +13,12 @@ public static class GetAllLinksFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/links/all", async (
-                    Query query,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(query, cancellationToken)))
+                Query query,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(query, cancellationToken));
+            })
             .WithTags(Tags.Links)
             .AllowAnonymous();
     }

@@ -15,10 +15,12 @@ public static class GetAllUserPlaylistsFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/playlists/all", async (
-                    GetAllUserPlaylists.Query query,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(query, cancellationToken)))
+                GetAllUserPlaylists.Query query,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(query, cancellationToken));
+            })
             .WithTags(Tags.Playlists)
             .AllowAnonymous();
     }

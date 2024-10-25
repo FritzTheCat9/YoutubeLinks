@@ -16,10 +16,12 @@ public static class ResendConfirmationEmailFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/users/resendConfirmationEmail", async (
-                    ResendConfirmationEmail.Command command,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(command, cancellationToken)))
+                ResendConfirmationEmail.Command command,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(command, cancellationToken));
+            })
             .WithTags(Tags.Users)
             .AllowAnonymous();
     }

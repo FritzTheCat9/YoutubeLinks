@@ -37,7 +37,6 @@ public partial class LinksPage : ComponentBase
     private bool _isUserPlaylist;
     private List<BreadcrumbItem> _items;
     private PagedList<LinkDto> _linkPagedList;
-
     private string _searchString = "";
     private MudTable<LinkDto> _table;
     private bool _tableView = true;

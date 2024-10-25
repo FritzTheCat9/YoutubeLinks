@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions;
 
 public static class PlaylistExtensions
 {
-    public static void AddPlaylistsEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder AddPlaylistsEndpoints(this IEndpointRouteBuilder app)
     {
         CreatePlaylistFeature.Endpoint(app);
         DeletePlaylistFeature.Endpoint(app);
@@ -24,6 +24,8 @@ public static class PlaylistExtensions
         GetAllPublicPlaylistsFeature.Endpoint(app);
         GetAllUserPlaylistsFeature.Endpoint(app);
         GetPlaylistFeature.Endpoint(app);
+
+        return app;
     }
 
     public static PlaylistDto ToDto(this Playlist playlist)

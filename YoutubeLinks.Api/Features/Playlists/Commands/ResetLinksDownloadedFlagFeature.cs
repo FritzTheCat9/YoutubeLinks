@@ -13,10 +13,12 @@ public static class ResetLinksDownloadedFlagFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/playlists/resetDownloadedFlag", async (
-                    ResetLinksDownloadedFlag.Command command,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(command, cancellationToken)))
+                ResetLinksDownloadedFlag.Command command,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(command, cancellationToken));
+            })
             .WithTags(Tags.Playlists)
             .RequireAuthorization(Policy.User);
     }

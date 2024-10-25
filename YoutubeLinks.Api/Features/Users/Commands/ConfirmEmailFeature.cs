@@ -15,10 +15,12 @@ public static class ConfirmEmailFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/users/confirmEmail", async (
-                    ConfirmEmail.Command command,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(command, cancellationToken)))
+                ConfirmEmail.Command command,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(command, cancellationToken));
+            })
             .WithTags(Tags.Users)
             .AllowAnonymous();
     }

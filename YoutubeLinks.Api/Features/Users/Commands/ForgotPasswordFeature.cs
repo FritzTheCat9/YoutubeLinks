@@ -16,10 +16,12 @@ public static class ForgotPasswordFeature
     public static void Endpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/users/forgotPassword", async (
-                    ForgotPassword.Command command,
-                    IMediator mediator,
-                    CancellationToken cancellationToken)
-                => Results.Ok(await mediator.Send(command, cancellationToken)))
+                ForgotPassword.Command command,
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
+            {
+                return Results.Ok(await mediator.Send(command, cancellationToken));
+            })
             .WithTags(Tags.Users)
             .AllowAnonymous();
     }
