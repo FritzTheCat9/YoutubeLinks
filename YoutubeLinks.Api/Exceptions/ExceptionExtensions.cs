@@ -1,19 +1,18 @@
-﻿namespace YoutubeLinks.Api.Exceptions
+﻿namespace YoutubeLinks.Api.Exceptions;
+
+public static class ExceptionExtensions
 {
-    public static class ExceptionExtensions
+    public static IServiceCollection AddExceptionMiddleware(this IServiceCollection services)
     {
-        public static IServiceCollection AddExceptionMiddleware(this IServiceCollection services)
-        {
-            services.AddSingleton<ExceptionMiddleware>();
+        services.AddSingleton<ExceptionMiddleware>();
 
-            return services;
-        }
+        return services;
+    }
 
-        public static WebApplication UseExceptionMiddleware(this WebApplication app)
-        {
-            app.UseMiddleware<ExceptionMiddleware>();
+    public static WebApplication UseExceptionMiddleware(this WebApplication app)
+    {
+        app.UseMiddleware<ExceptionMiddleware>();
 
-            return app;
-        }
+        return app;
     }
 }

@@ -7,13 +7,13 @@ using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
-namespace YoutubeLinks.Api.Features.Links.Commands
+namespace YoutubeLinks.Api.Features.Links.Commands;
+
+public static class SetLinkDownloadedFlagFeature
 {
-    public static class SetLinkDownloadedFlagFeature
+    public static void Endpoint(this IEndpointRouteBuilder app)
     {
-        public static void Endpoint(this IEndpointRouteBuilder app)
-        {
-            app.MapPut("/api/links/{id:int}/downloaded", async (
+        app.MapPut("/api/links/{id:int}/downloaded", async (
                 int id,
                 SetLinkDownloadedFlag.Command command,
                 IMediator mediator,
@@ -22,41 +22,40 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 command.Id = id;
                 return Results.Ok(await mediator.Send(command, cancellationToken));
             })
-                .WithTags(Tags.Links)
-                .RequireAuthorization(Policy.User);
+            .WithTags(Tags.Links)
+            .RequireAuthorization(Policy.User);
+    }
+
+    public class Handler : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>
+    {
+        private readonly IAuthService _authService;
+        private readonly IClock _clock;
+        private readonly ILinkRepository _linkRepository;
+
+        public Handler(
+            ILinkRepository linkRepository,
+            IAuthService authService,
+            IClock clock)
+        {
+            _linkRepository = linkRepository;
+            _authService = authService;
+            _clock = clock;
         }
 
-        public class Handler : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>
+        public async Task<Unit> Handle(
+            SetLinkDownloadedFlag.Command command,
+            CancellationToken cancellationToken)
         {
-            private readonly ILinkRepository _linkRepository;
-            private readonly IAuthService _authService;
-            private readonly IClock _clock;
+            var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            public Handler(
-                ILinkRepository linkRepository,
-                IAuthService authService,
-                IClock clock)
-            {
-                _linkRepository = linkRepository;
-                _authService = authService;
-                _clock = clock;
-            }
+            if (!_authService.IsLoggedInUser(link.Playlist.UserId))
+                throw new MyForbiddenException();
 
-            public async Task<Unit> Handle(
-                SetLinkDownloadedFlag.Command command,
-                CancellationToken cancellationToken)
-            {
-                var link = await _linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            link.Modified = _clock.Current();
+            link.Downloaded = command.Downloaded;
 
-                if (!_authService.IsLoggedInUser(link.Playlist.UserId))
-                    throw new MyForbiddenException();
-
-                link.Modified = _clock.Current();
-                link.Downloaded = command.Downloaded;
-
-                await _linkRepository.Update(link);
-                return Unit.Value;
-            }
+            await _linkRepository.Update(link);
+            return Unit.Value;
         }
     }
 }

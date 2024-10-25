@@ -1,36 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Data.Entities;
 
-namespace YoutubeLinks.Api.Data.Database
+namespace YoutubeLinks.Api.Data.Database;
+
+public class AppDbContext : DbContext
 {
-    public class AppDbContext : DbContext
+    private readonly IClock _clock;
+
+    public AppDbContext(
+        DbContextOptions<AppDbContext> options,
+        IClock clock) : base(options)
     {
-        private readonly IClock _clock;
+        _clock = clock;
+    }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Playlist> Playlists { get; set; }
-        public DbSet<Link> Links { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Playlist> Playlists { get; set; }
+    public DbSet<Link> Links { get; set; }
 
-        public AppDbContext(
-            DbContextOptions<AppDbContext> options,
-            IClock clock) : base(options)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        var date = _clock.Current();
+
+        modelBuilder.Entity<User>().HasData(new List<User>
         {
-            _clock = clock;
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-            var date = _clock.Current();
-
-            modelBuilder.Entity<User>().HasData(new List<User>()
+            new()
             {
-                new() { Id = 1, Email = "ytlinksapp@gmail.com", UserName = "Admin", Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", EmailConfirmed = true, EmailConfirmationToken = null, IsAdmin = true, Created = date, Modified = date },
-                new() { Id = 2, Email = "ytlinksapp1@gmail.com", UserName = "User", Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", EmailConfirmed = true, EmailConfirmationToken = null, IsAdmin = false, Created = date, Modified = date },
-            });
-        }
+                Id = 1, Email = "ytlinksapp@gmail.com", UserName = "Admin",
+                Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+                EmailConfirmed = true, EmailConfirmationToken = null, IsAdmin = true, Created = date, Modified = date
+            },
+            new()
+            {
+                Id = 2, Email = "ytlinksapp1@gmail.com", UserName = "User",
+                Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+                EmailConfirmed = true, EmailConfirmationToken = null, IsAdmin = false, Created = date, Modified = date
+            }
+        });
     }
 }

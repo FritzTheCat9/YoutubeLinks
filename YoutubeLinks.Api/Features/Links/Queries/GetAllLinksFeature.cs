@@ -6,55 +6,54 @@ using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Shared.Exceptions;
 using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
 
-namespace YoutubeLinks.Api.Features.Links.Queries
+namespace YoutubeLinks.Api.Features.Links.Queries;
+
+public static class GetAllLinksFeature
 {
-    public static class GetAllLinksFeature
+    public static void Endpoint(this IEndpointRouteBuilder app)
     {
-        public static void Endpoint(this IEndpointRouteBuilder app)
+        app.MapPost("/api/links/all", async (
+                    Query query,
+                    IMediator mediator,
+                    CancellationToken cancellationToken)
+                => Results.Ok(await mediator.Send(query, cancellationToken)))
+            .WithTags(Tags.Links)
+            .AllowAnonymous();
+    }
+
+    public class Handler : IRequestHandler<Query, IEnumerable<LinkInfoDto>>
+    {
+        private readonly IAuthService _authService;
+        private readonly ILinkRepository _linkRepository;
+        private readonly IPlaylistRepository _playlistRepository;
+
+        public Handler(
+            ILinkRepository linkRepository,
+            IPlaylistRepository playlistRepository,
+            IAuthService authService)
         {
-            app.MapPost("/api/links/all", async (
-                Query query,
-                IMediator mediator,
-                CancellationToken cancellationToken) 
-                    => Results.Ok(await mediator.Send(query, cancellationToken)))
-                .WithTags(Tags.Links)
-                .AllowAnonymous();
+            _linkRepository = linkRepository;
+            _playlistRepository = playlistRepository;
+            _authService = authService;
         }
 
-        public class Handler : IRequestHandler<Query, IEnumerable<LinkInfoDto>>
+        public async Task<IEnumerable<LinkInfoDto>> Handle(
+            Query query,
+            CancellationToken cancellationToken)
         {
-            private readonly ILinkRepository _linkRepository;
-            private readonly IPlaylistRepository _playlistRepository;
-            private readonly IAuthService _authService;
+            var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
 
-            public Handler(
-                ILinkRepository linkRepository,
-                IPlaylistRepository playlistRepository,
-                IAuthService authService)
-            {
-                _linkRepository = linkRepository;
-                _playlistRepository = playlistRepository;
-                _authService = authService;
-            }
+            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
 
-            public async Task<IEnumerable<LinkInfoDto>> Handle(
-                Query query,
-                CancellationToken cancellationToken)
-            {
-                var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
+            if (isUserPlaylist)
+                linkQuery = linkQuery.FilterDownloaded(query);
 
-                var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
-                var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
+            linkQuery = linkQuery.SortLinks();
 
-                if (isUserPlaylist)
-                    linkQuery = linkQuery.FilterDownloaded(query);
+            var linkInfoDtos = linkQuery.ToLinkInfoDtos();
 
-                linkQuery = linkQuery.SortLinks();
-
-                var linkInfoDtos = linkQuery.ToLinkInfoDtos();
-
-                return linkInfoDtos;
-            }
+            return linkInfoDtos;
         }
     }
 }

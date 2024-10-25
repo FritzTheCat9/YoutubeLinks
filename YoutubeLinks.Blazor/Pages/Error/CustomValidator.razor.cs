@@ -1,49 +1,43 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace YoutubeLinks.Blazor.Pages.Error
+namespace YoutubeLinks.Blazor.Pages.Error;
+
+public partial class CustomValidator : ComponentBase
 {
-    public partial class CustomValidator : ComponentBase
+    private ValidationMessageStore _validationMessageStore;
+
+    [CascadingParameter] private EditContext EditContext { get; set; }
+
+    protected override void OnInitialized()
     {
-        private ValidationMessageStore _validationMessageStore;
+        if (EditContext is null) throw new Exception();
 
-        [CascadingParameter] private EditContext EditContext { get; set; }
+        _validationMessageStore = new ValidationMessageStore(EditContext);
 
-        protected override void OnInitialized()
-        {
-            if (EditContext is null)
-            {
-                throw new Exception();
-            }
+        EditContext.OnValidationRequested += ValidationRequested;
+        EditContext.OnFieldChanged += FieldChanged;
+    }
 
-            _validationMessageStore = new ValidationMessageStore(EditContext);
+    public void DisplayErrors(Dictionary<string, List<string>> errors)
+    {
+        foreach (var error in errors)
+            _validationMessageStore.Add(new FieldIdentifier(EditContext.Model, error.Key), error.Value);
 
-            EditContext.OnValidationRequested += ValidationRequested;
-            EditContext.OnFieldChanged += FieldChanged;
-        }
+        EditContext.NotifyValidationStateChanged();
+    }
 
-        public void DisplayErrors(Dictionary<string, List<string>> errors)
-        {
-            foreach (var error in errors)
-            {
-                _validationMessageStore.Add(new FieldIdentifier(EditContext.Model, error.Key), error.Value);
-            }
+    private void ValidationRequested(object sender, ValidationRequestedEventArgs e)
+    {
+        _validationMessageStore.Clear();
 
-            EditContext.NotifyValidationStateChanged();
-        }
+        EditContext.NotifyValidationStateChanged();
+    }
 
-        private void ValidationRequested(object sender, ValidationRequestedEventArgs e)
-        {
-            _validationMessageStore.Clear();
+    private void FieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        _validationMessageStore.Clear(e.FieldIdentifier);
 
-            EditContext.NotifyValidationStateChanged();
-        }
-
-        private void FieldChanged(object sender, FieldChangedEventArgs e)
-        {
-            _validationMessageStore.Clear(e.FieldIdentifier);
-
-            EditContext.NotifyValidationStateChanged();
-        }
+        EditContext.NotifyValidationStateChanged();
     }
 }

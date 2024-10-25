@@ -1,8 +1,7 @@
-﻿namespace YoutubeLinks.Shared.Abstractions
+﻿namespace YoutubeLinks.Shared.Abstractions;
+
+public interface ISortedQuery
 {
-    public interface ISortedQuery
-    {
-        public string SortColumn { get; set; }
-        public SortOrder SortOrder { get; set; }
-    }
+    public string SortColumn { get; set; }
+    public SortOrder SortOrder { get; set; }
 }

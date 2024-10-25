@@ -5,7 +5,7 @@
     @Localizer[nameof(AppStrings.DownloadLink)]
 </PageTitle>
 
-<FritzBreadcrumbs Items="_items" />
+<FritzBreadcrumbs Items="_items"/>
 
 <MudPaper Class="pa-4"
           Elevation="3">
@@ -14,8 +14,8 @@
     </MudText>
     <EditForm Model="Command"
               OnValidSubmit="HandleValidSubmit">
-        <CustomValidator @ref="_customValidator" />
-        <FluentValidationValidator />
+        <CustomValidator @ref="_customValidator"/>
+        <FluentValidationValidator/>
 
         <MudStack Row="true"
                   Justify="Justify.Center"
@@ -25,7 +25,7 @@
                             For="() => Command.Url"
                             Variant="Variant.Outlined"
                             ShrinkLabel
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.UrlInput } })" />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.UrlInput } })"/>
 
             <MudSelect T="YoutubeFileType"
                        Label="@Localizer[nameof(AppStrings.FileType)]"
@@ -48,10 +48,10 @@
                                    Color="Color.Primary"
                                    ProcessingButtonText="@Localizer[nameof(AppStrings.Downloading)]"
                                    ButtonText="@Localizer[nameof(AppStrings.Download)]"
-                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.DownloadButton} })" />
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.DownloadButton } })"/>
         </MudStack>
-        <FritzValidationMessage For="() => Command.Url" />
-        <FritzValidationMessage For="() => Command.YoutubeFileType" />
+        <FritzValidationMessage For="() => Command.Url"/>
+        <FritzValidationMessage For="() => Command.YoutubeFileType"/>
     </EditForm>
 </MudPaper>
 

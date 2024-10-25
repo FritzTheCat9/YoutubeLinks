@@ -6,50 +6,49 @@ using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
-namespace YoutubeLinks.Api.Features.Playlists.Commands
+namespace YoutubeLinks.Api.Features.Playlists.Commands;
+
+public static class DeletePlaylistFeature
 {
-    public static class DeletePlaylistFeature
+    public static void Endpoint(this IEndpointRouteBuilder app)
     {
-        public static void Endpoint(this IEndpointRouteBuilder app)
-        {
-            app.MapDelete("/api/playlists/{id:int}", async (
+        app.MapDelete("/api/playlists/{id:int}", async (
                 int id,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var command = new DeletePlaylist.Command() { Id = id };
+                var command = new DeletePlaylist.Command { Id = id };
                 return Results.Ok(await mediator.Send(command, cancellationToken));
             })
-                .WithTags(Tags.Playlists)
-                .RequireAuthorization(Policy.User);
+            .WithTags(Tags.Playlists)
+            .RequireAuthorization(Policy.User);
+    }
+
+    public class Handler : IRequestHandler<DeletePlaylist.Command, Unit>
+    {
+        private readonly IAuthService _authService;
+        private readonly IPlaylistRepository _playlistRepository;
+
+        public Handler(
+            IPlaylistRepository playlistRepository,
+            IAuthService authService)
+        {
+            _playlistRepository = playlistRepository;
+            _authService = authService;
         }
 
-        public class Handler : IRequestHandler<DeletePlaylist.Command, Unit>
+        public async Task<Unit> Handle(
+            DeletePlaylist.Command command,
+            CancellationToken cancellationToken)
         {
-            private readonly IPlaylistRepository _playlistRepository;
-            private readonly IAuthService _authService;
+            var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            public Handler(
-                IPlaylistRepository playlistRepository,
-                IAuthService authService)
-            {
-                _playlistRepository = playlistRepository;
-                _authService = authService;
-            }
+            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            if (!isUserPlaylist)
+                throw new MyForbiddenException();
 
-            public async Task<Unit> Handle(
-                DeletePlaylist.Command command,
-                CancellationToken cancellationToken)
-            {
-                var playlist = await _playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
-
-                var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
-                if (!isUserPlaylist)
-                    throw new MyForbiddenException();
-
-                await _playlistRepository.Delete(playlist);
-                return Unit.Value;
-            }
+            await _playlistRepository.Delete(playlist);
+            return Unit.Value;
         }
     }
 }

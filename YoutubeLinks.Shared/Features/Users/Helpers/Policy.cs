@@ -1,8 +1,7 @@
-﻿namespace YoutubeLinks.Shared.Features.Users.Helpers
+﻿namespace YoutubeLinks.Shared.Features.Users.Helpers;
+
+public static class Policy
 {
-    public static class Policy
-    {
-        public const string User = "user";
-        public const string Admin = "admin";
-    }
+    public const string User = "user";
+    public const string Admin = "admin";
 }

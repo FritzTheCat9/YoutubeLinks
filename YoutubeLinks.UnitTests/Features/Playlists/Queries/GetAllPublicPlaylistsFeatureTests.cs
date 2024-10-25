@@ -8,48 +8,47 @@ using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
-namespace YoutubeLinks.UnitTests.Features.Playlists.Queries
+namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
+
+public class GetAllPublicPlaylistsFeatureTests
 {
-    public class GetAllPublicPlaylistsFeatureTests
+    [Fact]
+    public async Task GetAllPublicPlaylistsHandler_ReturnsPlaylistsPagedList()
     {
-        [Fact]
-        public async Task GetAllPublicPlaylistsHandler_ReturnsPlaylistsPagedList()
+        var query = new GetAllPublicPlaylists.Query
         {
-            var query = new GetAllPublicPlaylists.Query
+            Page = 1,
+            PageSize = 10,
+            SortColumn = "name",
+            SortOrder = SortOrder.Ascending,
+            SearchTerm = ""
+        };
+
+        var list = new List<Playlist>
+        {
+            new()
             {
-                Page = 1,
-                PageSize = 10,
-                SortColumn = "name",
-                SortOrder = SortOrder.Ascending,
-                SearchTerm = "",
-            };
+                Id = 1
+            }
+        };
 
-            var list = new List<Playlist>()
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var mediator = Substitute.For<IMediator>();
+
+        playlistRepository.AsQueryablePublic().Returns(list.AsQueryable());
+
+        mediator.Send(Arg.Any<GetAllPublicPlaylists.Query>(), CancellationToken.None)
+            .Returns(callInfo =>
             {
-                new()
-                {
-                    Id = 1,
-                }
-            };
+                var handler = new GetAllPublicPlaylistsFeature.Handler(playlistRepository);
+                return handler.Handle(callInfo.Arg<GetAllPublicPlaylists.Query>(), CancellationToken.None);
+            });
 
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var mediator = Substitute.For<IMediator>();
+        var result = await mediator.Send(query, CancellationToken.None);
 
-            playlistRepository.AsQueryablePublic().Returns(list.AsQueryable());
-
-            mediator.Send(Arg.Any<GetAllPublicPlaylists.Query>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new GetAllPublicPlaylistsFeature.Handler(playlistRepository);
-                    return handler.Handle(callInfo.Arg<GetAllPublicPlaylists.Query>(), CancellationToken.None);
-                });
-
-            var result = await mediator.Send(query, CancellationToken.None);
-
-            result.Should().NotBeNull();
-            result.Should().BeOfType<PagedList<PlaylistDto>>();
-            result.TotalCount.Should().Be(1);
-            result.Items.Count.Should().Be(1);
-        }
+        result.Should().NotBeNull();
+        result.Should().BeOfType<PagedList<PlaylistDto>>();
+        result.TotalCount.Should().Be(1);
+        result.Items.Count.Should().Be(1);
     }
 }

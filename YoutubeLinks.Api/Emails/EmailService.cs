@@ -1,55 +1,56 @@
 ﻿using FluentEmail.Core;
 using Microsoft.Extensions.Options;
 
-namespace YoutubeLinks.Api.Emails
+namespace YoutubeLinks.Api.Emails;
+
+public interface IEmailService
 {
-    public interface IEmailService
+    Task SendEmail<T>(string to, T model) where T : BaseTemplateModel;
+}
+
+public class EmailService : IEmailService
+{
+    private readonly IFluentEmail _fluentEmail;
+    private readonly ILogger<EmailService> _logger;
+    private readonly EmailOptions _options;
+    private readonly string _templatesFolder;
+
+    public EmailService(
+        IOptions<EmailOptions> options,
+        IWebHostEnvironment webHostEnvironment,
+        IFluentEmail fluentEmail,
+        ILogger<EmailService> logger)
     {
-        Task SendEmail<T>(string to, T model) where T : BaseTemplateModel;
+        _options = options.Value;
+        _fluentEmail = fluentEmail;
+        _logger = logger;
+        _templatesFolder = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Emails", "Templates");
     }
 
-    public class EmailService : IEmailService
+    public async Task SendEmail<T>(string to, T model) where T : BaseTemplateModel
     {
-        private readonly EmailOptions _options;
-        private readonly IFluentEmail _fluentEmail;
-        private readonly ILogger<EmailService> _logger;
-        private readonly string _templatesFolder;
-
-        public EmailService(
-            IOptions<EmailOptions> options,
-            IWebHostEnvironment webHostEnvironment,
-            IFluentEmail fluentEmail,
-            ILogger<EmailService> logger)
+        if (!_options.SendEmails)
         {
-            _options = options.Value;
-            _fluentEmail = fluentEmail;
-            _logger = logger;
-            _templatesFolder = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Emails", "Templates");
+            _logger.LogError("[Email Service] Sending emails is disabled in appsettings.json {SendEmails}",
+                _options.SendEmails);
+
+            return;
         }
 
-        public async Task SendEmail<T>(string to, T model) where T : BaseTemplateModel
-        {
-            if (!_options.SendEmails)
-            {
-                _logger.LogError("[Email Service] Sending emails is disabled in appsettings.json {SendEmails}", _options.SendEmails);
+        var email = _fluentEmail.SetFrom(_options.Email)
+            .To(to)
+            .Subject(model.Subject)
+            .UsingTemplateFromFile(Path.Combine(_templatesFolder, model.TemplateFileName), model);
 
-                return;
-            }
+        await email.SendAsync();
 
-            var email = _fluentEmail.SetFrom(_options.Email)
-                                    .To(to)
-                                    .Subject(model.Subject)
-                                    .UsingTemplateFromFile(Path.Combine(_templatesFolder, model.TemplateFileName), model);
-
-            await email.SendAsync();
-
-            _logger.LogInformation("[Email Service] {Subject} email successfully sent to: {To}, ({TemplateFileName})", model.Subject, to, model.TemplateFileName);
-        }
+        _logger.LogInformation("[Email Service] {Subject} email successfully sent to: {To}, ({TemplateFileName})",
+            model.Subject, to, model.TemplateFileName);
     }
+}
 
-    public class BaseTemplateModel
-    {
-        public string Subject { get; protected init; }
-        public string TemplateFileName { get; protected init; }
-    }
+public class BaseTemplateModel
+{
+    public string Subject { get; protected init; }
+    public string TemplateFileName { get; protected init; }
 }

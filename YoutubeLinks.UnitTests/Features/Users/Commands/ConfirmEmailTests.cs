@@ -4,109 +4,108 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Localization;
 using YoutubeLinks.UnitTests.Localization;
 
-namespace YoutubeLinks.UnitTests.Features.Users.Commands
+namespace YoutubeLinks.UnitTests.Features.Users.Commands;
+
+public class ConfirmEmailTests
 {
-    public class ConfirmEmailTests
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void ConfirmEmailCommandValidator_Email_ShouldNotBeEmpty(string email)
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void ConfirmEmailCommandValidator_Email_ShouldNotBeEmpty(string email)
+        const string message = "Email should not be empty.";
+
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.EmailNotEmpty), message);
+
+        var validator = new ConfirmEmail.Validator(localizer);
+
+        var command = new ConfirmEmail.Command
         {
-            const string message = "Email should not be empty.";
+            Email = email
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.EmailNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new ConfirmEmail.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+            .WithErrorMessage(message);
+    }
 
-            var command = new ConfirmEmail.Command
-            {
-                Email = email,
-            };
+    [Theory]
+    [InlineData("012345678901234567890123456789012345678901234567890")]
+    [InlineData("0123456789012345678901234567890123456789012345678901")]
+    public void ConfirmEmailCommandValidator_Email_ShouldBeShorterThanMaximumStringLength(string email)
+    {
+        var message =
+            $"The length of email must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {email.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.EmailMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Email)
-                  .WithErrorMessage(message);
-        }
+        var validator = new ConfirmEmail.Validator(localizer);
 
-        [Theory]
-        [InlineData("012345678901234567890123456789012345678901234567890")]
-        [InlineData("0123456789012345678901234567890123456789012345678901")]
-        public void ConfirmEmailCommandValidator_Email_ShouldBeShorterThanMaximumStringLength(string email)
+        var command = new ConfirmEmail.Command
         {
-            var message =
-                $"The length of email must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {email.Length} characters.";
+            Email = email
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.EmailMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new ConfirmEmail.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+            .WithErrorMessage(message);
+    }
 
-            var command = new ConfirmEmail.Command
-            {
-                Email = email,
-            };
+    [Theory]
+    [InlineData("@a")]
+    [InlineData("a@")]
+    [InlineData("a.com")]
+    [InlineData("https://google.com")]
+    public void ConfirmEmailCommandValidator_Email_ShouldBeEmailAddress(string email)
+    {
+        const string message = "Email address is not valid.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.EmailIsEmailAddress), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Email)
-                  .WithErrorMessage(message);
-        }
+        var validator = new ConfirmEmail.Validator(localizer);
 
-        [Theory]
-        [InlineData("@a")]
-        [InlineData("a@")]
-        [InlineData("a.com")]
-        [InlineData("https://google.com")]
-        public void ConfirmEmailCommandValidator_Email_ShouldBeEmailAddress(string email)
+        var command = new ConfirmEmail.Command
         {
-            const string message = "Email address is not valid.";
+            Email = email
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.EmailIsEmailAddress), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new ConfirmEmail.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+            .WithErrorMessage(message);
+    }
 
-            var command = new ConfirmEmail.Command
-            {
-                Email = email,
-            };
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void ConfirmEmailCommandValidator_Token_ShouldNotBeEmpty(string token)
+    {
+        const string message = "Token should not be empty.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.TokenNotEmpty), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Email)
-                  .WithErrorMessage(message);
-        }
+        var validator = new ConfirmEmail.Validator(localizer);
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void ConfirmEmailCommandValidator_Token_ShouldNotBeEmpty(string token)
+        var command = new ConfirmEmail.Command
         {
-            const string message = "Token should not be empty.";
+            Token = token
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.TokenNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new ConfirmEmail.Validator(localizer);
-
-            var command = new ConfirmEmail.Command
-            {
-                Token = token,
-            };
-
-            var result = validator.TestValidate(command);
-
-            result.ShouldHaveValidationErrorFor(x => x.Token)
-                  .WithErrorMessage(message);
-        }
+        result.ShouldHaveValidationErrorFor(x => x.Token)
+            .WithErrorMessage(message);
     }
 }

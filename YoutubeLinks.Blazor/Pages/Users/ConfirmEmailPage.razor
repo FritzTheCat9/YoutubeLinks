@@ -11,24 +11,24 @@
 
         <EditForm Model=_command
                   OnValidSubmit=OnValidSubmit>
-            <CustomValidator @ref=_customValidator />
-            <FluentValidationValidator />
+            <CustomValidator @ref=_customValidator/>
+            <FluentValidationValidator/>
 
             <FritzTextField @bind-Value=_command.Email
                             For="() => _command.Email"
-                            HideField=true />
-            <FritzValidationMessage For="() => _command.Email" />
+                            HideField=true/>
+            <FritzValidationMessage For="() => _command.Email"/>
 
             <FritzTextField @bind-Value=_command.Token
                             For="() => _command.Token"
-                            HideField=true />
-            <FritzValidationMessage For="() => _command.Token" />
+                            HideField=true/>
+            <FritzValidationMessage For="() => _command.Token"/>
 
             <FritzProcessingButton @ref=_processingButton
                                    ButtonType=ButtonType.Submit
                                    Color=Color.Primary
                                    Variant=Variant.Filled
-                                   ButtonText=@Localizer[nameof(AppStrings.ConfirmEmail)] />
+                                   ButtonText=@Localizer[nameof(AppStrings.ConfirmEmail)]/>
         </EditForm>
     }
     else

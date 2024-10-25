@@ -8,13 +8,13 @@ using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
-namespace YoutubeLinks.Api.Features.Playlists.Commands
+namespace YoutubeLinks.Api.Features.Playlists.Commands;
+
+public static class CreatePlaylistFeature
 {
-    public static class CreatePlaylistFeature
+    public static void Endpoint(this IEndpointRouteBuilder app)
     {
-        public static void Endpoint(this IEndpointRouteBuilder app)
-        {
-            app.MapPost("/api/playlists", async (
+        app.MapPost("/api/playlists", async (
                 CreatePlaylist.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
@@ -22,44 +22,43 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
                 var playlistId = await mediator.Send(command, cancellationToken);
                 return Results.CreatedAtRoute("GetPlaylist", new { id = playlistId });
             })
-                .WithTags(Tags.Playlists)
-                .RequireAuthorization(Policy.User);
+            .WithTags(Tags.Playlists)
+            .RequireAuthorization(Policy.User);
+    }
+
+    public class Handler : IRequestHandler<CreatePlaylist.Command, int>
+    {
+        private readonly IAuthService _authService;
+        private readonly IClock _clock;
+        private readonly IPlaylistRepository _playlistRepository;
+
+        public Handler(
+            IPlaylistRepository playlistRepository,
+            IAuthService authService,
+            IClock clock)
+        {
+            _playlistRepository = playlistRepository;
+            _authService = authService;
+            _clock = clock;
         }
 
-        public class Handler : IRequestHandler<CreatePlaylist.Command, int>
+        public async Task<int> Handle(
+            CreatePlaylist.Command command,
+            CancellationToken cancellationToken)
         {
-            private readonly IPlaylistRepository _playlistRepository;
-            private readonly IAuthService _authService;
-            private readonly IClock _clock;
+            var currentUserId = _authService.GetCurrentUserId() ?? throw new MyForbiddenException();
 
-            public Handler(
-                IPlaylistRepository playlistRepository,
-                IAuthService authService,
-                IClock clock)
+            var playlist = new Playlist
             {
-                _playlistRepository = playlistRepository;
-                _authService = authService;
-                _clock = clock;
-            }
+                Id = 0,
+                Created = _clock.Current(),
+                Modified = _clock.Current(),
+                Name = command.Name,
+                Public = command.Public,
+                UserId = currentUserId
+            };
 
-            public async Task<int> Handle(
-                CreatePlaylist.Command command,
-                CancellationToken cancellationToken)
-            {
-                var currentUserId = _authService.GetCurrentUserId() ?? throw new MyForbiddenException();
-
-                var playlist = new Playlist
-                {
-                    Id = 0,
-                    Created = _clock.Current(),
-                    Modified = _clock.Current(),
-                    Name = command.Name,
-                    Public = command.Public,
-                    UserId = currentUserId,
-                };
-
-                return await _playlistRepository.Create(playlist);
-            }
+            return await _playlistRepository.Create(playlist);
         }
     }
 }

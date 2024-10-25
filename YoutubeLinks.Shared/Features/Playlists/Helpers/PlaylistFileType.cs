@@ -1,8 +1,7 @@
-﻿namespace YoutubeLinks.Shared.Features.Playlists.Helpers
+﻿namespace YoutubeLinks.Shared.Features.Playlists.Helpers;
+
+public enum PlaylistFileType
 {
-    public enum PlaylistFileType
-    {
-        Json,
-        Txt,
-    }
+    Json,
+    Txt
 }

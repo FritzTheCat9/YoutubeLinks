@@ -5,7 +5,7 @@
     @Localizer[nameof(AppStrings.Users)]
 </PageTitle>
 
-<FritzBreadcrumbs Items="_items" />
+<FritzBreadcrumbs Items="_items"/>
 
 <MudTable ServerData="ServerReload"
           Dense="true"
@@ -17,10 +17,10 @@
         <MudText Typo="Typo.h6">
             @Localizer[nameof(AppStrings.Users)]
         </MudText>
-        <MudSpacer />
+        <MudSpacer/>
         <FritzSearchTextField @bind-Value="_searchString"
                               OnSearch="() => _table.ReloadServerData()"
-                              UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.SearchInput } })" />
+                              UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.SearchInput } })"/>
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
@@ -65,7 +65,7 @@
                                Color="Color.Primary"
                                Size="Size.Small"
                                OnClick="() => RedirectToUserPlaylistsPage(user.Id)"
-                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.NavigateToUserPlaylistsButton } })" />
+                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.NavigateToUserPlaylistsButton } })"/>
             </FritzTooltip>
         </MudTd>
     </RowTemplate>
@@ -81,6 +81,6 @@
     </LoadingContent>
     <PagerContent>
         <MudTablePager RowsPerPageString="@Localizer[nameof(AppStrings.RowsPerPage)]"
-                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]" />
+                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]"/>
     </PagerContent>
 </MudTable>

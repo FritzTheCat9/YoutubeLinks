@@ -26,7 +26,7 @@ services:
       - ASPNETCORE_URLS=http://+:7000
       - ASPNETCORE_HTTP_PORTS=7000
       - ASPNETCORE_ENVIRONMENT=Development
-      
+  
   youtubelinks.database:
     image: mcr.microsoft.com/mssql/server:latest
     container_name: youtubelinks.database
@@ -48,7 +48,7 @@ services:
       - 8081:80
     environment:
       ACCEPT_EULA: 'Y'
-      
+
 volumes:
   mssql_volume:
     driver: local

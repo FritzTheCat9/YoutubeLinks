@@ -4,356 +4,355 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Localization;
 using YoutubeLinks.UnitTests.Localization;
 
-namespace YoutubeLinks.UnitTests.Features.Users.Commands
+namespace YoutubeLinks.UnitTests.Features.Users.Commands;
+
+public class RegisterTests
 {
-    public class RegisterTests
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void RegisterCommandValidator_Email_ShouldNotBeEmpty(string email)
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void RegisterCommandValidator_Email_ShouldNotBeEmpty(string email)
+        const string message = "Email should not be empty.";
+
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.EmailNotEmpty), message);
+
+        var validator = new Register.Validator(localizer);
+
+        var command = new Register.Command
         {
-            const string message = "Email should not be empty.";
+            Email = email
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.EmailNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                Email = email,
-            };
+    [Theory]
+    [InlineData("012345678901234567890123456789012345678901234567890")]
+    [InlineData("0123456789012345678901234567890123456789012345678901")]
+    public void RegisterCommandValidator_Email_ShouldBeShorterThanMaximumStringLength(string email)
+    {
+        var message =
+            $"The length of email must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {email.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.EmailMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Email)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("012345678901234567890123456789012345678901234567890")]
-        [InlineData("0123456789012345678901234567890123456789012345678901")]
-        public void RegisterCommandValidator_Email_ShouldBeShorterThanMaximumStringLength(string email)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of email must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {email.Length} characters.";
+            Email = email
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.EmailMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                Email = email,
-            };
+    [Theory]
+    [InlineData("@a")]
+    [InlineData("a@")]
+    [InlineData("a.com")]
+    [InlineData("https://google.com")]
+    public void RegisterCommandValidator_Email_ShouldBeEmailAddress(string email)
+    {
+        const string message = "Email address is not valid.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.EmailIsEmailAddress), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Email)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("@a")]
-        [InlineData("a@")]
-        [InlineData("a.com")]
-        [InlineData("https://google.com")]
-        public void RegisterCommandValidator_Email_ShouldBeEmailAddress(string email)
+        var command = new Register.Command
         {
-            const string message = "Email address is not valid.";
+            Email = email
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.EmailIsEmailAddress), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                Email = email,
-            };
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void RegisterCommandValidator_UserName_ShouldNotBeEmpty(string userName)
+    {
+        const string message = "User name should not be empty.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UserNameNotEmpty), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Email)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void RegisterCommandValidator_UserName_ShouldNotBeEmpty(string userName)
+        var command = new Register.Command
         {
-            const string message = "User name should not be empty.";
+            UserName = userName
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UserNameNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.UserName)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                UserName = userName,
-            };
+    [Theory]
+    [InlineData("12345")]
+    [InlineData("123456")]
+    public void RegisterCommandValidator_UserName_ShouldBeGreaterThanMinimumStringLength(string userName)
+    {
+        var message =
+            $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {userName.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UserNameMinimumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.UserName)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("12345")]
-        [InlineData("123456")]
-        public void RegisterCommandValidator_UserName_ShouldBeGreaterThanMinimumStringLength(string userName)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {userName.Length} characters.";
+            UserName = userName
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UserNameMinimumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.UserName)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                UserName = userName,
-            };
+    [Theory]
+    [InlineData("012345678901234567890123456789012345678901234567890")]
+    [InlineData("0123456789012345678901234567890123456789012345678901")]
+    public void RegisterCommandValidator_UserName_ShouldBeShorterThanMaximumStringLength(string userName)
+    {
+        var message =
+            $"The length of user name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {userName.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UserNameMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.UserName)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("012345678901234567890123456789012345678901234567890")]
-        [InlineData("0123456789012345678901234567890123456789012345678901")]
-        public void RegisterCommandValidator_UserName_ShouldBeShorterThanMaximumStringLength(string userName)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of user name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {userName.Length} characters.";
+            UserName = userName
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UserNameMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.UserName)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                UserName = userName,
-            };
+    [Theory]
+    [InlineData("Name!")]
+    [InlineData("123asd$")]
+    [InlineData("123 asd ASD")]
+    [InlineData("123 Test %^&*")]
+    public void RegisterCommandValidator_UserName_ShouldMatchUserNameRegex(string userName)
+    {
+        const string message = "UserName can contain only: a-z, A-Z, 0-9 and _ characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UserNameMatchesRegex), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.UserName)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("Name!")]
-        [InlineData("123asd$")]
-        [InlineData("123 asd ASD")]
-        [InlineData("123 Test %^&*")]
-        public void RegisterCommandValidator_UserName_ShouldMatchUserNameRegex(string userName)
+        var command = new Register.Command
         {
-            const string message = "UserName can contain only: a-z, A-Z, 0-9 and _ characters.";
+            UserName = userName
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UserNameMatchesRegex), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.UserName)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                UserName = userName,
-            };
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void RegisterCommandValidator_Password_ShouldNotBeEmpty(string password)
+    {
+        const string message = "Password should not be empty.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.PasswordNotEmpty), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.UserName)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void RegisterCommandValidator_Password_ShouldNotBeEmpty(string password)
+        var command = new Register.Command
         {
-            const string message = "Password should not be empty.";
+            Password = password
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.PasswordNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Password)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                Password = password,
-            };
+    [Theory]
+    [InlineData("12345")]
+    [InlineData("123456")]
+    public void RegisterCommandValidator_Password_ShouldBeGreaterThanMinimumStringLength(string password)
+    {
+        var message =
+            $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {password.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.PasswordMinimumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Password)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("12345")]
-        [InlineData("123456")]
-        public void RegisterCommandValidator_Password_ShouldBeGreaterThanMinimumStringLength(string password)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {password.Length} characters.";
+            Password = password
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.PasswordMinimumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Password)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                Password = password,
-            };
+    [Theory]
+    [InlineData("012345678901234567890123456789012345678901234567890")]
+    [InlineData("0123456789012345678901234567890123456789012345678901")]
+    public void RegisterCommandValidator_Password_ShouldBeShorterThanMaximumStringLength(string password)
+    {
+        var message =
+            $"The length of password must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {password.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.PasswordMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Password)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("012345678901234567890123456789012345678901234567890")]
-        [InlineData("0123456789012345678901234567890123456789012345678901")]
-        public void RegisterCommandValidator_Password_ShouldBeShorterThanMaximumStringLength(string password)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of password must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {password.Length} characters.";
+            Password = password
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.PasswordMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Password)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                Password = password,
-            };
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void RegisterCommandValidator_RepeatPassword_ShouldNotBeEmpty(string repeatPassword)
+    {
+        const string message = "Password should not be empty.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.PasswordNotEmpty), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Password)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void RegisterCommandValidator_RepeatPassword_ShouldNotBeEmpty(string repeatPassword)
+        var command = new Register.Command
         {
-            const string message = "Password should not be empty.";
+            RepeatPassword = repeatPassword
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.PasswordNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                RepeatPassword = repeatPassword,
-            };
+    [Theory]
+    [InlineData("12345")]
+    [InlineData("123456")]
+    public void RegisterCommandValidator_RepeatPassword_ShouldBeGreaterThanMinimumStringLength(string repeatPassword)
+    {
+        var message =
+            $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {repeatPassword.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.PasswordMinimumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("12345")]
-        [InlineData("123456")]
-        public void RegisterCommandValidator_RepeatPassword_ShouldBeGreaterThanMinimumStringLength(string repeatPassword)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {repeatPassword.Length} characters.";
+            RepeatPassword = repeatPassword
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.PasswordMinimumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                RepeatPassword = repeatPassword,
-            };
+    [Theory]
+    [InlineData("012345678901234567890123456789012345678901234567890")]
+    [InlineData("0123456789012345678901234567890123456789012345678901")]
+    public void RegisterCommandValidator_RepeatPassword_ShouldBeShorterThanMaximumStringLength(string repeatPassword)
+    {
+        var message =
+            $"The length of password must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {repeatPassword.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.PasswordMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("012345678901234567890123456789012345678901234567890")]
-        [InlineData("0123456789012345678901234567890123456789012345678901")]
-        public void RegisterCommandValidator_RepeatPassword_ShouldBeShorterThanMaximumStringLength(string repeatPassword)
+        var command = new Register.Command
         {
-            var message =
-                $"The length of password must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {repeatPassword.Length} characters.";
+            RepeatPassword = repeatPassword
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.PasswordMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
+            .WithErrorMessage(message);
+    }
 
-            var command = new Register.Command
-            {
-                RepeatPassword = repeatPassword,
-            };
+    [Theory]
+    [InlineData("123", "1234")]
+    [InlineData("123", "12")]
+    [InlineData("123", "124")]
+    [InlineData("password", "not the same password")]
+    public void RegisterCommandValidator_RepeatPassword_ShouldBeEqualToPassword(string password, string repeatPassword)
+    {
+        const string message = "The passwords entered must match.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.RepeatPasswordEqualPassword), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
-                  .WithErrorMessage(message);
-        }
+        var validator = new Register.Validator(localizer);
 
-        [Theory]
-        [InlineData("123", "1234")]
-        [InlineData("123", "12")]
-        [InlineData("123", "124")]
-        [InlineData("password", "not the same password")]
-        public void RegisterCommandValidator_RepeatPassword_ShouldBeEqualToPassword(string password, string repeatPassword)
+        var command = new Register.Command
         {
-            const string message = "The passwords entered must match.";
+            Password = password,
+            RepeatPassword = repeatPassword
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.RepeatPasswordEqualPassword), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new Register.Validator(localizer);
-
-            var command = new Register.Command
-            {
-                Password = password,
-                RepeatPassword = repeatPassword,
-            };
-
-            var result = validator.TestValidate(command);
-
-            result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
-                  .WithErrorMessage(message);
-        }
+        result.ShouldHaveValidationErrorFor(x => x.RepeatPassword)
+            .WithErrorMessage(message);
     }
 }

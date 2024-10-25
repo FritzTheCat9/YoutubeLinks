@@ -1,4 +1,5 @@
 # YoutubeLinks
+
 The YoutubeLinks application allow users to save YouTube links as playlists.\
 Users are able to download mp3/mp4 files from the playlists they create.\
 Downloading playlist links as mp3/mp4 files tested on more than 3000 links.
@@ -12,6 +13,7 @@ Max downloaded mp4 file: length - 25:44, size - 973 MB\
 Larger files not tested or can not work correctly.
 
 ## Table of contents
+
 * [Youtube video](#youtube-video-presentation)
 * [Launch](#launch)
 * [Presentation](#presentation)
@@ -24,22 +26,30 @@ Larger files not tested or can not work correctly.
 * [Project status](#project-status)
 
 ## Launch
+
 Run application with one command (setup all docker containers, create database, apply migrations):
+
 ```
 cd C:\Users\bartl\source\repos\YoutubeLinks
 docker compose up --build -d
 ```
 
 Created containers:
+
 - C# Web API backend:
+
 ```
 http://localhost:5000
 ```
+
 - Blazor WASM frontend:
+
 ```
 http://localhost:7000
 ```
+
 - MSSQL database:
+
 ```
 Host: localhost 
 Port: 1433 
@@ -48,12 +58,15 @@ Username: sa
 Password: Password1!
 Server: youtubelinks.database
 ```
+
 - Seq Api logs:
+
 ```
 http://localhost:8081
 ```
 
 Login credentials:
+
 ```
 Admin:
 - Email: ytlinksapp@gmail.com
@@ -84,15 +97,19 @@ Download playlist view:
 ![Download playlists image](./images/4_playlist_downloading.png)
 
 ## Technologies
+
 - C# 12
 - .NET 8.0
 - Blazor WebAssembly
 - Vue 3.4.21
 
 ## Architecture
-Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQL database. Monolithic architecture with Vertical Slices. Code separated by feature.
+
+Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQL database. Monolithic architecture with
+Vertical Slices. Code separated by feature.
 
 ## Project types and references
+
 - YoutubeLinks.Api - ASP .NET Core Web API (Backend)
 - YoutubeLinks.Blazor - Blazor WebAssembly Standalone App (Frontend)
 - YoutubeLinks.Shared - Class Library (Backend and Frontend shared code)
@@ -101,23 +118,31 @@ Blazor WebAssembly frontend with .NET Minimal API backend connecting to the MSSQ
 - youtube-links - Vue Project (Frontend 2)
 
 ## Packages
+
 Nuget packages and libraries used in projects.
 
 - Api
-    - [EntityFrameworkCore](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer) - ORM for connecting to the database
+    - [EntityFrameworkCore](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer) - ORM for connecting
+      to the database
     - [MediatR](https://www.nuget.org/packages/MediatR/) - CQRS, Vertical Slices (code separated by Features)
-    - [FluentValidation](https://www.nuget.org/packages/FluentValidation) - Commands, Queries and server side logic validation
-    - [FluentEmail](https://www.nuget.org/packages/FluentEmail.Razor) - Sending registation confirmation email and registration successed email 
+    - [FluentValidation](https://www.nuget.org/packages/FluentValidation) - Commands, Queries and server side logic
+      validation
+    - [FluentEmail](https://www.nuget.org/packages/FluentEmail.Razor) - Sending registation confirmation email and
+      registration successed email
     - [Serilog](https://www.nuget.org/packages/Serilog/3.1.2-dev-02097) - Logging to console and file
-    - [JwtBearer](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer) - Jwt Token Authentication
+    - [JwtBearer](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer) - Jwt Token
+      Authentication
     - [Swagger](https://www.nuget.org/packages/Swashbuckle.AspNetCore) - Manual Api testing
-    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get youtube videos titles, download videos as .mp3 and .mp4 files
+    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get youtube videos titles, download videos as .mp3
+      and .mp4 files
 - Blazor
     - [MudBlazor](https://www.nuget.org/packages/MudBlazor) - Blazor UI library
-    - [Blazored.FluentValidation](https://www.nuget.org/packages/Blazored.FluentValidation) - Frontend validation + Backend validation
+    - [Blazored.FluentValidation](https://www.nuget.org/packages/Blazored.FluentValidation) - Frontend validation +
+      Backend validation
     - [Blazored.LocalStorage](https://www.nuget.org/packages/Blazored.LocalStorage) - store Jwt Token in local storage
-    
+
 ## Features
+
 - Users
     - Register new user and send confirmation email
     - Resend confirmation email
@@ -151,17 +176,24 @@ Nuget packages and libraries used in projects.
     - Links grid / table view
 
 ## Roles
+
 - Admin - ony one user have Admin role
 - User - can view website data, can do CRUD operations on owned playlists and links
 - Anonymous - can view website data (public playlists / links)
 
 ## Project status
-Project created as part of the "[100 Commits](https://100commitow.pl)" competition. The challenge is to add changes to the repository every day for 100 days.
+
+Project created as part of the "[100 Commits](https://100commitow.pl)" competition. The challenge is to add changes to
+the repository every day for 100 days.
 
 ![100 Commits results image](./images/100commitow_results.jpeg)
 
-I achieved 8th place in the "[100 Commits](https://100commitow.pl)" competition organized by "[DevMentors.io](https://devmentors.io)". Over 100 days, I developed the "YoutubeLinks" application, which allows users to create playlists from YouTube links and download those playlists as MP3 and MP4 files.
+I achieved 8th place in the "[100 Commits](https://100commitow.pl)" competition organized
+by "[DevMentors.io](https://devmentors.io)". Over 100 days, I developed the "YoutubeLinks" application, which allows
+users to create playlists from YouTube links and download those playlists as MP3 and MP4 files.
 
 ![100 Commits results photo image](./images/100commitow_results_photo.jpeg)
 
-This project was a significant adventure that taught me perseverance and systematic work to achieve my project goals within the given timeframe. The "[100 Commits](https://100commitow.pl)" gala was a fantastic event, well-organized with engaging talks. I look forward to a potential second edition of the competition in the future.
+This project was a significant adventure that taught me perseverance and systematic work to achieve my project goals
+within the given timeframe. The "[100 Commits](https://100commitow.pl)" gala was a fantastic event, well-organized with
+engaging talks. I look forward to a potential second edition of the competition in the future.

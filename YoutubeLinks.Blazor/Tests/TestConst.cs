@@ -1,7 +1,6 @@
-﻿namespace YoutubeLinks.Blazor.Tests
+﻿namespace YoutubeLinks.Blazor.Tests;
+
+public static class TestConst
 {
-    public static class TestConst
-    {
-        public const string TestId = "data-testid";
-    }
+    public const string TestId = "data-testid";
 }

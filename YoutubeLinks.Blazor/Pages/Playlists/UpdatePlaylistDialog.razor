@@ -1,28 +1,28 @@
 ﻿<EditForm Model="Command"
           OnValidSubmit="HandleValidSubmit">
-    <CustomValidator @ref="_customValidator" />
-    <FluentValidationValidator />
+    <CustomValidator @ref="_customValidator"/>
+    <FluentValidationValidator/>
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
             <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
                             @bind-Value="Command.Name"
                             For="() => Command.Name"
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdatePlaylistDialogConst.NameInput} })" />
-            <FritzValidationMessage For="() => Command.Name" />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdatePlaylistDialogConst.NameInput } })"/>
+            <FritzValidationMessage For="() => Command.Name"/>
 
             <MudCheckBox T="bool"
                          Label="@Localizer[nameof(AppStrings.Public)]"
                          @bind-Value="Command.Public"
                          For="() => Command.Public"
                          Color="Color.Primary"
-                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdatePlaylistDialogConst.PublicCheckbox } })" />
-            <FritzValidationMessage For="() => Command.Public" />
+                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdatePlaylistDialogConst.PublicCheckbox } })"/>
+            <FritzValidationMessage For="() => Command.Public"/>
         </DialogContent>
         <DialogActions>
             <MudButton ButtonType="ButtonType.Submit"
                        Color="Color.Primary"
-                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdatePlaylistDialogConst.UpdatePlaylistButton} })">
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdatePlaylistDialogConst.UpdatePlaylistButton } })">
                 @Localizer[nameof(AppStrings.Update)]
             </MudButton>
         </DialogActions>

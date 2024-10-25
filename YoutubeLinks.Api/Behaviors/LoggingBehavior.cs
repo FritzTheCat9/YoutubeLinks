@@ -1,36 +1,36 @@
-﻿using MediatR;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using MediatR;
 
-namespace YoutubeLinks.Api.Behaviors
+namespace YoutubeLinks.Api.Behaviors;
+
+public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
-    public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
+
+    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     {
-        private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
+        _logger = logger;
+    }
 
-        public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
-        {
-            _logger = logger;
-        }
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        var requestName = typeof(TRequest).FullName?.Split('.').LastOrDefault();
 
-        public async Task<TResponse> Handle(
-            TRequest request,
-            RequestHandlerDelegate<TResponse> next,
-            CancellationToken cancellationToken)
-        {
-            var requestName = typeof(TRequest).FullName?.Split('.').LastOrDefault();
+        _logger.LogInformation("[MediatR] Starting request {RequestName}", requestName);
 
-            _logger.LogInformation("[MediatR] Starting request {RequestName}", requestName);
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        var response = await next();
 
-            var response = await next();
+        stopwatch.Stop();
 
-            stopwatch.Stop();
+        _logger.LogInformation("[MediatR] Completed request {RequestName} in {Elapsed}", requestName,
+            stopwatch.Elapsed);
 
-            _logger.LogInformation("[MediatR] Completed request {RequestName} in {Elapsed}", requestName, stopwatch.Elapsed);
-
-            return response;
-        }
+        return response;
     }
 }

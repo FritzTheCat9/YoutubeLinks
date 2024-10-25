@@ -3,34 +3,33 @@ using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Shared.Extensions;
 
-namespace YoutubeLinks.Api.Data.Database
+namespace YoutubeLinks.Api.Data.Database;
+
+public static class DatabaseExtensions
 {
-    public static class DatabaseExtensions
+    private const string SectionName = "Database";
+
+    public static IServiceCollection AddDatabase(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        private const string SectionName = "Database";
+        services.Configure<DatabaseOptions>(configuration.GetRequiredSection(SectionName));
+        var options = configuration.GetOptions<DatabaseOptions>(SectionName);
 
-        public static IServiceCollection AddDatabase(
-            this IServiceCollection services,
-            IConfiguration configuration)
+        services.AddSingleton<IClock, Clock>();
+
+        services.AddDbContext<AppDbContext>(x =>
         {
-            services.Configure<DatabaseOptions>(configuration.GetRequiredSection(SectionName));
-            var options = configuration.GetOptions<DatabaseOptions>(SectionName);
+            x.UseSqlServer(options.ConnectionString);
+            //x.EnableSensitiveDataLogging();
+        });
 
-            services.AddSingleton<IClock, Clock>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+        services.AddScoped<ILinkRepository, LinkRepository>();
 
-            services.AddDbContext<AppDbContext>(x =>
-            {
-                x.UseSqlServer(options.ConnectionString);
-                //x.EnableSensitiveDataLogging();
-            });
+        services.AddHostedService<DatabaseInitializer>();
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IPlaylistRepository, PlaylistRepository>();
-            services.AddScoped<ILinkRepository, LinkRepository>();
-
-            services.AddHostedService<DatabaseInitializer>();
-
-            return services;
-        }
+        return services;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace YoutubeLinks.Shared.Abstractions
+﻿namespace YoutubeLinks.Shared.Abstractions;
+
+public enum SortOrder
 {
-    public enum SortOrder
-    {
-        None = 0,
-        Ascending = 1,
-        Descending = 2,
-    }
+    None = 0,
+    Ascending = 1,
+    Descending = 2
 }

@@ -7,7 +7,7 @@
 
 @if (_playlist is not null && _linkInfoList is not null)
 {
-    <FritzBreadcrumbs Items=_items />
+    <FritzBreadcrumbs Items=_items/>
 
     <MudItem xs=12>
         <MudPaper Class="pa-4 mt-4"
@@ -48,7 +48,7 @@
                                    ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
                                    ButtonText=@Localizer[nameof(AppStrings.Download)]
                                    OnClick=DownloadPlaylistLinks
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } }) />
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } })/>
 
             @if (_downloading)
             {

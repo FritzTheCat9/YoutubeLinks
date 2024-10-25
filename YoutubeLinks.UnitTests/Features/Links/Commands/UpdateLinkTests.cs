@@ -5,122 +5,122 @@ using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Localization;
 using YoutubeLinks.UnitTests.Localization;
 
-namespace YoutubeLinks.UnitTests.Features.Links.Commands
+namespace YoutubeLinks.UnitTests.Features.Links.Commands;
+
+public class UpdateLinkTestsTests
 {
-    public class UpdateLinkTestsTests
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void UpdateLinkValidator_Url_ShouldNotBeEmpty(string url)
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void UpdateLinkValidator_Url_ShouldNotBeEmpty(string url)
+        const string message = "Youtube video url should not be empty.";
+
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
+
+        var validator = new UpdateLink.Validator(localizer);
+
+        var command = new UpdateLink.Command
         {
-            const string message = "Youtube video url should not be empty.";
+            Id = 1,
+            Url = url,
+            Downloaded = true
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new UpdateLink.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Url)
+            .WithErrorMessage(message);
+    }
 
-            var command = new UpdateLink.Command
-            {
-                Id = 1,
-                Url = url,
-                Downloaded = true,
-            };
+    [Theory]
+    [InlineData("asd")]
+    [InlineData("test.test.com")]
+    [InlineData("https://www.google.com")]
+    [InlineData("https://www.youtube.com/watch?v=")]
+    [InlineData("https://www.youtube.com/watch?v=asd")]
+    [InlineData("https://www.youtube.com/watch")]
+    public void UpdateLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
+    {
+        const string message = "This is not a valid link to the YouTube video.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Url)
-                  .WithErrorMessage(message);
-        }
+        var validator = new UpdateLink.Validator(localizer);
 
-        [Theory]
-        [InlineData("asd")]
-        [InlineData("test.test.com")]
-        [InlineData("https://www.google.com")]
-        [InlineData("https://www.youtube.com/watch?v=")]
-        [InlineData("https://www.youtube.com/watch?v=asd")]
-        [InlineData("https://www.youtube.com/watch")]
-        public void UpdateLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
+        var command = new UpdateLink.Command
         {
-            const string message = "This is not a valid link to the YouTube video.";
+            Id = 1,
+            Url = url,
+            Downloaded = true
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new UpdateLink.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Url)
+            .WithErrorMessage(message);
+    }
 
-            var command = new UpdateLink.Command
-            {
-                Id = 1,
-                Url = url,
-                Downloaded = true,
-            };
+    [Theory]
+    [InlineData("Title \\")]
+    [InlineData("Title ////")]
+    [InlineData("Title :")]
+    [InlineData("Title *")]
+    [InlineData("Title ?")]
+    [InlineData("Title \"\"")]
+    [InlineData("Title <")]
+    [InlineData("Title >")]
+    [InlineData("Title |")]
+    public void UpdateLinkValidator_Title_ShouldHaveValidCharacters(string title)
+    {
+        const string message = "Title contains invalid characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.TitleHaveValidCharacters), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Url)
-                  .WithErrorMessage(message);
-        }
+        var validator = new UpdateLink.Validator(localizer);
 
-        [Theory]
-        [InlineData("Title \\")]
-        [InlineData("Title ////")]
-        [InlineData("Title :")]
-        [InlineData("Title *")]
-        [InlineData("Title ?")]
-        [InlineData("Title \"\"")]
-        [InlineData("Title <")]
-        [InlineData("Title >")]
-        [InlineData("Title |")]
-        public void UpdateLinkValidator_Title_ShouldHaveValidCharacters(string title)
+        var command = new UpdateLink.Command
         {
-            const string message = "Title contains invalid characters.";
+            Id = 1,
+            Title = title,
+            Downloaded = true
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.TitleHaveValidCharacters), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new UpdateLink.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Title)
+            .WithErrorMessage(message);
+    }
 
-            var command = new UpdateLink.Command
-            {
-                Id = 1,
-                Title = title,
-                Downloaded = true,
-            };
+    [Theory]
+    [InlineData(
+        "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345")]
+    public void UpdateLinkValidator_Title_ShouldHaveLengthShorterThanMaximum(string title)
+    {
+        var message =
+            $"The length of name must be {YoutubeHelpers.MaximumTitleLength} characters or fewer. You entered {title.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.TitleMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Title)
-                  .WithErrorMessage(message);
-        }
+        var validator = new UpdateLink.Validator(localizer);
 
-        [Theory]
-        [InlineData("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345")]
-        public void UpdateLinkValidator_Title_ShouldHaveLengthShorterThanMaximum(string title)
+        var command = new UpdateLink.Command
         {
-            var message =
-                $"The length of name must be {YoutubeHelpers.MaximumTitleLength} characters or fewer. You entered {title.Length} characters.";
+            Id = 1,
+            Title = title,
+            Downloaded = true
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.TitleMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new UpdateLink.Validator(localizer);
-
-            var command = new UpdateLink.Command
-            {
-                Id = 1,
-                Title = title,
-                Downloaded = true,
-            };
-
-            var result = validator.TestValidate(command);
-
-            result.ShouldHaveValidationErrorFor(x => x.Title)
-                  .WithErrorMessage(message);
-        }
+        result.ShouldHaveValidationErrorFor(x => x.Title)
+            .WithErrorMessage(message);
     }
 }

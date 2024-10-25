@@ -1,62 +1,60 @@
 ﻿using System.Security.Claims;
 using YoutubeLinks.Shared.Exceptions;
 
-namespace YoutubeLinks.Api.Auth
+namespace YoutubeLinks.Api.Auth;
+
+public interface IAuthService
 {
-    public interface IAuthService
+    bool IsInRole(string roleName);
+    bool IsInAnyRole(params string[] roleNames);
+    bool IsLoggedInUser(int userId);
+    int? GetCurrentUserId();
+}
+
+public class AuthService : IAuthService
+{
+    public AuthService(IHttpContextAccessor httpContextAccessor)
     {
-        bool IsInRole(string roleName);
-        bool IsInAnyRole(params string[] roleNames);
-        bool IsLoggedInUser(int userId);
-        int? GetCurrentUserId();
+        if (httpContextAccessor.HttpContext is null)
+            throw new MyServerException();
+
+        User = httpContextAccessor.HttpContext.User;
     }
 
-    public class AuthService : IAuthService
+    private ClaimsPrincipal User { get; }
+
+    public bool IsInRole(string roleName)
+        => User.IsInRole(roleName);
+
+    public bool IsInAnyRole(params string[] roleNames) 
+        => roleNames.Any(roleName => User.IsInRole(roleName));
+
+    public bool IsLoggedInUser(int userId)
     {
-        public ClaimsPrincipal User { get; }
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        public AuthService(IHttpContextAccessor httpContextAccessor)
-        {
-            if (httpContextAccessor.HttpContext is null)
-                throw new MyServerException();
+        if (userIdString == null)
+            return false;
 
-            User = httpContextAccessor.HttpContext.User;
-        }
+        if (!int.TryParse(userIdString, out var userIdInt))
+            return false;
 
-        public bool IsInRole(string roleName)
-            => User.IsInRole(roleName);
+        return userId == userIdInt;
+    }
 
-        public bool IsInAnyRole(params string[] roleNames) 
-            => roleNames.Any(roleName => User.IsInRole(roleName));
+    public int? GetCurrentUserId()
+    {
+        if (!(User.Identity?.IsAuthenticated ?? false))
+            return null;
 
-        public bool IsLoggedInUser(int userId)
-        {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (userIdString == null)
-                return false;
+        if (userIdString == null)
+            return null;
 
-            if (!int.TryParse(userIdString, out var userIdInt))
-                return false;
+        if (!int.TryParse(userIdString, out var userIdInt))
+            return null;
 
-            return userId == userIdInt;
-        }
-
-        public int? GetCurrentUserId()
-        {
-            if (!(User.Identity?.IsAuthenticated ?? false)) 
-                return null;
-            
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userIdString == null)
-                return null;
-
-            if (!int.TryParse(userIdString, out var userIdInt))
-                return null;
-
-            return userIdInt;
-
-        }
+        return userIdInt;
     }
 }

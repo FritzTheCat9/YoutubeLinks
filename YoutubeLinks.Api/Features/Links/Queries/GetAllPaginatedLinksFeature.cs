@@ -9,55 +9,54 @@ using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
 
-namespace YoutubeLinks.Api.Features.Links.Queries
+namespace YoutubeLinks.Api.Features.Links.Queries;
+
+public static class GetAllPaginatedLinksFeature
 {
-    public static class GetAllPaginatedLinksFeature
+    public static void Endpoint(this IEndpointRouteBuilder app)
     {
-        public static void Endpoint(this IEndpointRouteBuilder app)
+        app.MapPost("/api/links/allPaginated", async (
+                    GetAllPaginatedLinks.Query query,
+                    IMediator mediator,
+                    CancellationToken cancellationToken)
+                => Results.Ok(await mediator.Send(query, cancellationToken)))
+            .WithTags(Tags.Links)
+            .AllowAnonymous();
+    }
+
+    public class Handler : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>
+    {
+        private readonly IAuthService _authService;
+        private readonly ILinkRepository _linkRepository;
+        private readonly IPlaylistRepository _playlistRepository;
+
+        public Handler(
+            ILinkRepository linkRepository,
+            IPlaylistRepository playlistRepository,
+            IAuthService authService)
         {
-            app.MapPost("/api/links/allPaginated", async (
-                GetAllPaginatedLinks.Query query,
-                IMediator mediator,
-                CancellationToken cancellationToken) 
-                    => Results.Ok(await mediator.Send(query, cancellationToken)))
-                .WithTags(Tags.Links)
-                .AllowAnonymous();
+            _linkRepository = linkRepository;
+            _playlistRepository = playlistRepository;
+            _authService = authService;
         }
 
-        public class Handler : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>
+        public async Task<PagedList<LinkDto>> Handle(
+            GetAllPaginatedLinks.Query query,
+            CancellationToken cancellationToken)
         {
-            private readonly ILinkRepository _linkRepository;
-            private readonly IPlaylistRepository _playlistRepository;
-            private readonly IAuthService _authService;
+            var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
 
-            public Handler(
-                ILinkRepository linkRepository,
-                IPlaylistRepository playlistRepository,
-                IAuthService authService)
-            {
-                _linkRepository = linkRepository;
-                _playlistRepository = playlistRepository;
-                _authService = authService;
-            }
+            var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
+            var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
 
-            public async Task<PagedList<LinkDto>> Handle(
-                GetAllPaginatedLinks.Query query,
-                CancellationToken cancellationToken)
-            {
-                var playlist = await _playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
+            linkQuery = linkQuery.FilterLinks(query);
+            linkQuery = linkQuery.SortLinks(query);
 
-                var isUserPlaylist = _authService.IsLoggedInUser(playlist.UserId);
-                var linkQuery = _linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
+            var linksPagedList = PageListExtensions<LinkDto>.Create(linkQuery.Select(x => x.ToDto()),
+                query.Page,
+                query.PageSize);
 
-                linkQuery = linkQuery.FilterLinks(query);
-                linkQuery = linkQuery.SortLinks(query);
-
-                var linksPagedList = PageListExtensions<LinkDto>.Create(linkQuery.Select(x => x.ToDto()),
-                                                                                  query.Page,
-                                                                                  query.PageSize);
-
-                return linksPagedList;
-            }
+            return linksPagedList;
         }
     }
 }

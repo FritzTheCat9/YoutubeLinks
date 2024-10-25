@@ -1,7 +1,7 @@
 ﻿<EditForm Model="Command"
           OnValidSubmit="HandleValidSubmit">
-    <CustomValidator @ref="_customValidator" />
-    <FluentValidationValidator />
+    <CustomValidator @ref="_customValidator"/>
+    <FluentValidationValidator/>
 
     <MudStack Row="true"
               Justify="Justify.Center"
@@ -11,14 +11,14 @@
                         For="() => Command.Url"
                         Variant="Variant.Outlined"
                         ShrinkLabel
-                        UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreateLinkFormConst.UrlInput} })" />
+                        UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreateLinkFormConst.UrlInput } })"/>
 
         <FritzProcessingButton @ref="_processingButton"
                                ButtonType="ButtonType.Submit"
                                Color="Color.Primary"
                                ProcessingButtonText="@Localizer[nameof(AppStrings.Creating)]"
                                ButtonText="@Localizer[nameof(AppStrings.Create)]"
-                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreateLinkFormConst.CreateButton} })" />
+                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreateLinkFormConst.CreateButton } })"/>
     </MudStack>
-    <FritzValidationMessage For="() => Command.Url" />
+    <FritzValidationMessage For="() => Command.Url"/>
 </EditForm>

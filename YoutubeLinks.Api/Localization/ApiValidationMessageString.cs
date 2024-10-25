@@ -1,17 +1,16 @@
-﻿namespace YoutubeLinks.Api.Localization
+﻿namespace YoutubeLinks.Api.Localization;
+
+public enum ApiValidationMessageString
 {
-    public enum ApiValidationMessageString
-    {
-        EmailIsAlreadyTaken,
-        UserNameIsAlreadyTaken,
-        EmailUserWithGivenEmailDoesNotExist,
-        EmailIsNotConfirmed,
-        PasswordIsIncorrect,
-        EmailAlreadyConfirmed,
-        TokenIsNotAssignedToThisUser,
-        UrlMustBeUnique,
-        UrlIdNotValid,
-        RefreshTokenIsNotValid,
-        NewPasswordShouldNotBeEqualToOldPassword,
-    }
+    EmailIsAlreadyTaken,
+    UserNameIsAlreadyTaken,
+    EmailUserWithGivenEmailDoesNotExist,
+    EmailIsNotConfirmed,
+    PasswordIsIncorrect,
+    EmailAlreadyConfirmed,
+    TokenIsNotAssignedToThisUser,
+    UrlMustBeUnique,
+    UrlIdNotValid,
+    RefreshTokenIsNotValid,
+    NewPasswordShouldNotBeEqualToOldPassword
 }

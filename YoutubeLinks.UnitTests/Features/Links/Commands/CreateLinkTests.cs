@@ -4,63 +4,62 @@ using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Localization;
 using YoutubeLinks.UnitTests.Localization;
 
-namespace YoutubeLinks.UnitTests.Features.Links.Commands
+namespace YoutubeLinks.UnitTests.Features.Links.Commands;
+
+public class CreateLinkTests
 {
-    public class CreateLinkTests
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void CreateLinkValidator_Url_ShouldNotBeEmpty(string url)
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void CreateLinkValidator_Url_ShouldNotBeEmpty(string url)
+        const string message = "Youtube video url should not be empty.";
+
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
+
+        var validator = new CreateLink.Validator(localizer);
+
+        var command = new CreateLink.Command
         {
-            const string message = "Youtube video url should not be empty.";
+            Url = url,
+            PlaylistId = 1
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new CreateLink.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Url)
+            .WithErrorMessage(message);
+    }
 
-            var command = new CreateLink.Command
-            {
-                Url = url,
-                PlaylistId = 1
-            };
+    [Theory]
+    [InlineData("asd")]
+    [InlineData("www.google.com")]
+    [InlineData("test.test.com")]
+    [InlineData("https://www.youtube.com/watch?v=")]
+    [InlineData("https://www.youtube.com/watch?v=asd")]
+    [InlineData("https://www.youtube.com/watch")]
+    public void CreateLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
+    {
+        const string message = "This is not a valid link to the YouTube video.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Url)
-                  .WithErrorMessage(message);
-        }
+        var validator = new CreateLink.Validator(localizer);
 
-        [Theory]
-        [InlineData("asd")]
-        [InlineData("www.google.com")]
-        [InlineData("test.test.com")]
-        [InlineData("https://www.youtube.com/watch?v=")]
-        [InlineData("https://www.youtube.com/watch?v=asd")]
-        [InlineData("https://www.youtube.com/watch")]
-        public void CreateLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
+        var command = new CreateLink.Command
         {
-            const string message = "This is not a valid link to the YouTube video.";
+            Url = url,
+            PlaylistId = 1
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new CreateLink.Validator(localizer);
-
-            var command = new CreateLink.Command
-            {
-                Url = url,
-                PlaylistId = 1
-            };
-
-            var result = validator.TestValidate(command);
-
-            result.ShouldHaveValidationErrorFor(x => x.Url)
-                  .WithErrorMessage(message);
-        }
+        result.ShouldHaveValidationErrorFor(x => x.Url)
+            .WithErrorMessage(message);
     }
 }

@@ -8,50 +8,49 @@ using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
-namespace YoutubeLinks.Api.Features.Playlists.Queries
+namespace YoutubeLinks.Api.Features.Playlists.Queries;
+
+public static class GetAllUserPlaylistsFeature
 {
-    public static class GetAllUserPlaylistsFeature
+    public static void Endpoint(this IEndpointRouteBuilder app)
     {
-        public static void Endpoint(this IEndpointRouteBuilder app)
+        app.MapPost("/api/playlists/all", async (
+                    GetAllUserPlaylists.Query query,
+                    IMediator mediator,
+                    CancellationToken cancellationToken)
+                => Results.Ok(await mediator.Send(query, cancellationToken)))
+            .WithTags(Tags.Playlists)
+            .AllowAnonymous();
+    }
+
+    public class Handler : IRequestHandler<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>
+    {
+        private readonly IAuthService _authService;
+        private readonly IPlaylistRepository _playlistRepository;
+
+        public Handler(
+            IPlaylistRepository playlistRepository,
+            IAuthService authService)
         {
-            app.MapPost("/api/playlists/all", async (
-                GetAllUserPlaylists.Query query,
-                IMediator mediator,
-                CancellationToken cancellationToken) 
-                    => Results.Ok(await mediator.Send(query, cancellationToken)))
-                .WithTags(Tags.Playlists)
-                .AllowAnonymous();
+            _playlistRepository = playlistRepository;
+            _authService = authService;
         }
 
-        public class Handler : IRequestHandler<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>
+        public Task<PagedList<PlaylistDto>> Handle(
+            GetAllUserPlaylists.Query query,
+            CancellationToken cancellationToken)
         {
-            private readonly IPlaylistRepository _playlistRepository;
-            private readonly IAuthService _authService;
+            var isUserPlaylist = _authService.IsLoggedInUser(query.UserId);
+            var playlistQuery = _playlistRepository.AsQueryable(query.UserId, isUserPlaylist);
 
-            public Handler(
-                IPlaylistRepository playlistRepository,
-                IAuthService authService)
-            {
-                _playlistRepository = playlistRepository;
-                _authService = authService;
-            }
+            playlistQuery = playlistQuery.FilterPlaylists(query);
+            playlistQuery = playlistQuery.SortPlaylists(query);
 
-            public Task<PagedList<PlaylistDto>> Handle(
-                GetAllUserPlaylists.Query query,
-                CancellationToken cancellationToken)
-            {
-                var isUserPlaylist = _authService.IsLoggedInUser(query.UserId);
-                var playlistQuery = _playlistRepository.AsQueryable(query.UserId, isUserPlaylist);
+            var playlistsPagedList = PageListExtensions<PlaylistDto>.Create(playlistQuery.Select(x => x.ToDto()),
+                query.Page,
+                query.PageSize);
 
-                playlistQuery = playlistQuery.FilterPlaylists(query);
-                playlistQuery = playlistQuery.SortPlaylists(query);
-
-                var playlistsPagedList = PageListExtensions<PlaylistDto>.Create(playlistQuery.Select(x => x.ToDto()),
-                                                                                      query.Page,
-                                                                                      query.PageSize);
-
-                return Task.FromResult(playlistsPagedList);
-            }
+            return Task.FromResult(playlistsPagedList);
         }
     }
 }

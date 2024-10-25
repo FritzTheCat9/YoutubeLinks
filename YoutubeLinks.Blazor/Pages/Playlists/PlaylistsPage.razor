@@ -5,7 +5,7 @@
     @Localizer[nameof(AppStrings.Playlists)]
 </PageTitle>
 
-<FritzBreadcrumbs Items="_items" />
+<FritzBreadcrumbs Items="_items"/>
 
 <MudTable ServerData="ServerReload"
           @ref="_table"
@@ -37,10 +37,10 @@
                 }
             </Authorized>
         </AuthorizeView>
-        <MudSpacer />
+        <MudSpacer/>
         <FritzSearchTextField @bind-Value="_searchString"
                               OnSearch="() => _table.ReloadServerData()"
-                              UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.SearchInput } })" />
+                              UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.SearchInput } })"/>
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
@@ -69,13 +69,13 @@
             @if (context.Public)
             {
                 <FritzTooltip Text=@Localizer[nameof(AppStrings.Public)]>
-                    <MudIcon Icon=@Icons.Material.Filled.Visibility />
+                    <MudIcon Icon=@Icons.Material.Filled.Visibility/>
                 </FritzTooltip>
             }
             else
             {
                 <FritzTooltip Text=@Localizer[nameof(AppStrings.Private)]>
-                    <MudIcon Icon=@Icons.Material.Filled.VisibilityOff />
+                    <MudIcon Icon=@Icons.Material.Filled.VisibilityOff/>
                 </FritzTooltip>
             }
         </MudTd>
@@ -85,7 +85,7 @@
                                Color="Color.Primary"
                                Size="Size.Small"
                                OnClick="() => RedirectToLinksPage(context.Id)"
-                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.NavigateToPlaylistLinksButton } })" />
+                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.NavigateToPlaylistLinksButton } })"/>
             </FritzTooltip>
         </MudTd>
         <MudTd DataLabel="@Localizer[nameof(AppStrings.Actions)]">
@@ -111,7 +111,7 @@
                                    Color="Color.Info"
                                    Size="Size.Small"
                                    OnClick="() => RedirectToDownloadPlaylistPage(context.Id)"
-                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.DownloadPlaylistButton } })" />
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.DownloadPlaylistButton } })"/>
                 </FritzTooltip>
                 <AuthorizeView Policy="@Policy.User"
                                Context="auth">
@@ -123,14 +123,14 @@
                                                Color=Color.Warning
                                                Size=Size.Small
                                                OnClick="() => UpdateUserPlaylist(context)"
-                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.UpdatePlaylistButton } }) />
+                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.UpdatePlaylistButton } })/>
                             </FritzTooltip>
                             <FritzTooltip Text=@Localizer[nameof(AppStrings.DeletePlaylist)]>
                                 <MudIconButton Icon=@Icons.Material.Filled.Delete
                                                Color=Color.Warning
                                                Size=Size.Small
                                                OnClick="() => DeleteUserPlaylist(context.Id)"
-                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.DeletePlaylistButton } }) />
+                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, PlaylistsPageConst.DeletePlaylistButton } })/>
                             </FritzTooltip>
                         }
                     </Authorized>
@@ -150,6 +150,6 @@
     </LoadingContent>
     <PagerContent>
         <MudTablePager RowsPerPageString="@Localizer[nameof(AppStrings.RowsPerPage)]"
-                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]" />
+                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]"/>
     </PagerContent>
 </MudTable>

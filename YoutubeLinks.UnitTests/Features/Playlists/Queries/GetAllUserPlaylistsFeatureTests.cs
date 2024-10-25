@@ -9,60 +9,59 @@ using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
-namespace YoutubeLinks.UnitTests.Features.Playlists.Queries
+namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
+
+public class GetAllUserPlaylistsFeatureTests
 {
-    public class GetAllUserPlaylistsFeatureTests
+    private readonly IAuthService _authService;
+    private readonly IPlaylistRepository _playlistRepository;
+
+    public GetAllUserPlaylistsFeatureTests()
     {
-        private readonly IPlaylistRepository _playlistRepository;
-        private readonly IAuthService _authService;
+        _playlistRepository = Substitute.For<IPlaylistRepository>();
+        _authService = Substitute.For<IAuthService>();
+    }
 
-        public GetAllUserPlaylistsFeatureTests()
+    [Fact]
+    public async Task GetAllUserPlaylistsHandler_ReturnsPlaylistsPagedList()
+    {
+        var query = new GetAllUserPlaylists.Query
         {
-            _playlistRepository = Substitute.For<IPlaylistRepository>();
-            _authService = Substitute.For<IAuthService>();
-        }
+            Page = 1,
+            PageSize = 10,
+            SortColumn = "name",
+            SortOrder = SortOrder.Ascending,
+            SearchTerm = "",
+            UserId = 1
+        };
 
-        [Fact]
-        public async Task GetAllUserPlaylistsHandler_ReturnsPlaylistsPagedList()
+        var list = new List<Playlist>
         {
-            var query = new GetAllUserPlaylists.Query
+            new()
             {
-                Page = 1,
-                PageSize = 10,
-                SortColumn = "name",
-                SortOrder = SortOrder.Ascending,
-                SearchTerm = "",
-                UserId = 1,
-            };
+                Id = 1
+            }
+        };
 
-            var list = new List<Playlist>()
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var authService = Substitute.For<IAuthService>();
+        var mediator = Substitute.For<IMediator>();
+
+        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        playlistRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
+
+        mediator.Send(Arg.Any<GetAllUserPlaylists.Query>(), CancellationToken.None)
+            .Returns(callInfo =>
             {
-                new()
-                {
-                    Id = 1,
-                }
-            };
+                var handler = new GetAllUserPlaylistsFeature.Handler(playlistRepository, authService);
+                return handler.Handle(callInfo.Arg<GetAllUserPlaylists.Query>(), CancellationToken.None);
+            });
 
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var authService = Substitute.For<IAuthService>();
-            var mediator = Substitute.For<IMediator>();
+        var result = await mediator.Send(query, CancellationToken.None);
 
-            authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-            playlistRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
-
-            mediator.Send(Arg.Any<GetAllUserPlaylists.Query>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new GetAllUserPlaylistsFeature.Handler(playlistRepository, authService);
-                    return handler.Handle(callInfo.Arg<GetAllUserPlaylists.Query>(), CancellationToken.None);
-                });
-
-            var result = await mediator.Send(query, CancellationToken.None);
-
-            result.Should().NotBeNull();
-            result.Should().BeOfType<PagedList<PlaylistDto>>();
-            result.TotalCount.Should().Be(1);
-            result.Items.Count.Should().Be(1);
-        }
+        result.Should().NotBeNull();
+        result.Should().BeOfType<PagedList<PlaylistDto>>();
+        result.TotalCount.Should().Be(1);
+        result.Items.Count.Should().Be(1);
     }
 }

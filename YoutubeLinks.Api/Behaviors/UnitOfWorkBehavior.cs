@@ -1,57 +1,55 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Data.Database;
 
-namespace YoutubeLinks.Api.Behaviors
+namespace YoutubeLinks.Api.Behaviors;
+
+public class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
-    public class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    private readonly AppDbContext _dbContext;
+    private readonly ILogger<UnitOfWorkBehavior<TRequest, TResponse>> _logger;
+
+    public UnitOfWorkBehavior(
+        AppDbContext dbContext,
+        ILogger<UnitOfWorkBehavior<TRequest, TResponse>> logger)
     {
-        private readonly AppDbContext _dbContext;
-        private readonly ILogger<UnitOfWorkBehavior<TRequest, TResponse>> _logger;
+        _dbContext = dbContext;
+        _logger = logger;
+    }
 
-        private static bool IsNotCommand
-            => !typeof(TRequest).Name.EndsWith("Command");
-        private static bool IsDownloadLinkCommand
-            => typeof(TRequest).Name.EndsWith("DownloadLinkCommand");
+    private static bool IsNotCommand
+        => !typeof(TRequest).Name.EndsWith("Command");
 
-        public UnitOfWorkBehavior(
-            AppDbContext dbContext,
-            ILogger<UnitOfWorkBehavior<TRequest, TResponse>> logger)
+    private static bool IsDownloadLinkCommand
+        => typeof(TRequest).Name.EndsWith("DownloadLinkCommand");
+
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        if (IsNotCommand || IsDownloadLinkCommand)
+            return await next();
+
+        _logger.LogInformation("[UnitOfWork] Begin Transaction");
+
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        try
         {
-            _dbContext = dbContext;
-            _logger = logger;
+            var response = await next();
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+
+            _logger.LogInformation("[UnitOfWork] Commited Transaction");
+
+            return response;
         }
-
-        public async Task<TResponse> Handle(
-            TRequest request,
-            RequestHandlerDelegate<TResponse> next,
-            CancellationToken cancellationToken)
+        catch (Exception exception)
         {
-            if (IsNotCommand || IsDownloadLinkCommand)
-            {
-                return await next();
-            }
+            _logger.LogError("[UnitOfWork] Rollback Transaction {Exception}", exception);
 
-            _logger.LogInformation("[UnitOfWork] Begin Transaction");
-
-            await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
-
-            try
-            {
-                var response = await next();
-                await _dbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                _logger.LogInformation("[UnitOfWork] Commited Transaction");
-
-                return response;
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError("[UnitOfWork] Rollback Transaction {Exception}", exception);
-
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
         }
     }
 }

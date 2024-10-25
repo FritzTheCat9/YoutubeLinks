@@ -9,135 +9,134 @@ using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
-namespace YoutubeLinks.UnitTests.Features.Playlists.Queries
+namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
+
+public class GetPlaylistFeatureTests
 {
-    public class GetPlaylistFeatureTests
+    private readonly IAuthService _authService;
+
+    public GetPlaylistFeatureTests()
     {
-        private readonly IAuthService _authService;
+        _authService = Substitute.For<IAuthService>();
+    }
 
-        public GetPlaylistFeatureTests()
+    [Fact]
+    public async Task GetPlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
+    {
+        var query = new GetPlaylist.Query
         {
-            _authService = Substitute.For<IAuthService>();
-        }
+            Id = 1
+        };
 
-        [Fact]
-        public async Task GetPlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
-        {
-            var query = new GetPlaylist.Query
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var mediator = Substitute.For<IMediator>();
+
+        playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
+
+        mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
+            .Returns(callInfo =>
             {
-                Id = 1,
-            };
-
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var mediator = Substitute.For<IMediator>();
-
-            playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
-
-            mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new GetPlaylistFeature.Handler(playlistRepository, _authService);
-                    return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
-                });
-
-            var action = async () => await mediator.Send(query, CancellationToken.None);
-
-            await Assert.ThrowsAsync<MyNotFoundException>(action);
-        }
-
-        [Fact]
-        public async Task GetPlaylistHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUserAndPlaylistIsNotPublic()
-        {
-            var query = new GetPlaylist.Query
-            {
-                Id = 1,
-            };
-
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var authService = Substitute.For<IAuthService>();
-            var mediator = Substitute.For<IMediator>();
-
-            playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
-            {
-                UserId = 1,
-                Public = false,
+                var handler = new GetPlaylistFeature.Handler(playlistRepository, _authService);
+                return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
             });
-            authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-            mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new GetPlaylistFeature.Handler(playlistRepository, authService);
-                    return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
-                });
+        var action = async () => await mediator.Send(query, CancellationToken.None);
 
-            var action = async () => await mediator.Send(query, CancellationToken.None);
+        await Assert.ThrowsAsync<MyNotFoundException>(action);
+    }
 
-            await Assert.ThrowsAsync<MyForbiddenException>(action);
-        }
-
-        [Fact]
-        public async Task GetPlaylistandler_ReturnsPlaylistDto_IfPlaylistIsPublic()
+    [Fact]
+    public async Task GetPlaylistHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUserAndPlaylistIsNotPublic()
+    {
+        var query = new GetPlaylist.Query
         {
-            var query = new GetPlaylist.Query
-            {
-                Id = 1,
-            };
+            Id = 1
+        };
 
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var authService = Substitute.For<IAuthService>();
-            var mediator = Substitute.For<IMediator>();
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var authService = Substitute.For<IAuthService>();
+        var mediator = Substitute.For<IMediator>();
 
-            playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
-            {
-                UserId = 1,
-                Public = true,
-            });
-            authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
-
-            mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new GetPlaylistFeature.Handler(playlistRepository, authService);
-                    return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
-                });
-
-            var result = await mediator.Send(query, CancellationToken.None);
-
-            result.Should().BeOfType<PlaylistDto>();
-            result.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task GetPlaylistHandler_ReturnsPlaylistDto_IfPlaylistIsOwnedByLoggedInUser()
+        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
         {
-            var query = new GetPlaylist.Query
-            {
-                Id = 1,
-            };
+            UserId = 1,
+            Public = false
+        });
+        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var authService = Substitute.For<IAuthService>();
-            var mediator = Substitute.For<IMediator>();
-
-            playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
+        mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
+            .Returns(callInfo =>
             {
-                UserId = 1,
-                Public = false,
+                var handler = new GetPlaylistFeature.Handler(playlistRepository, authService);
+                return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
             });
-            authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
 
-            mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new GetPlaylistFeature.Handler(playlistRepository, authService);
-                    return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
-                });
+        var action = async () => await mediator.Send(query, CancellationToken.None);
 
-            var result = await mediator.Send(query, CancellationToken.None);
+        await Assert.ThrowsAsync<MyForbiddenException>(action);
+    }
 
-            result.Should().BeOfType<PlaylistDto>();
-            result.Should().NotBeNull();
-        }
+    [Fact]
+    public async Task GetPlaylistandler_ReturnsPlaylistDto_IfPlaylistIsPublic()
+    {
+        var query = new GetPlaylist.Query
+        {
+            Id = 1
+        };
+
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var authService = Substitute.For<IAuthService>();
+        var mediator = Substitute.For<IMediator>();
+
+        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
+        {
+            UserId = 1,
+            Public = true
+        });
+        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+
+        mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
+            .Returns(callInfo =>
+            {
+                var handler = new GetPlaylistFeature.Handler(playlistRepository, authService);
+                return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
+            });
+
+        var result = await mediator.Send(query, CancellationToken.None);
+
+        result.Should().BeOfType<PlaylistDto>();
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetPlaylistHandler_ReturnsPlaylistDto_IfPlaylistIsOwnedByLoggedInUser()
+    {
+        var query = new GetPlaylist.Query
+        {
+            Id = 1
+        };
+
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var authService = Substitute.For<IAuthService>();
+        var mediator = Substitute.For<IMediator>();
+
+        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
+        {
+            UserId = 1,
+            Public = false
+        });
+        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+
+        mediator.Send(Arg.Any<GetPlaylist.Query>(), CancellationToken.None)
+            .Returns(callInfo =>
+            {
+                var handler = new GetPlaylistFeature.Handler(playlistRepository, authService);
+                return handler.Handle(callInfo.Arg<GetPlaylist.Query>(), CancellationToken.None);
+            });
+
+        var result = await mediator.Send(query, CancellationToken.None);
+
+        result.Should().BeOfType<PlaylistDto>();
+        result.Should().NotBeNull();
     }
 }

@@ -4,58 +4,57 @@ using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Localization;
 using YoutubeLinks.UnitTests.Localization;
 
-namespace YoutubeLinks.UnitTests.Features.Playlists.Commands
+namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
+
+public class UpdatePlaylistTests
 {
-    public class UpdatePlaylistTests
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void UpdatePlaylistCommandValidator_Name_ShouldNotBeEmpty(string name)
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void UpdatePlaylistCommandValidator_Name_ShouldNotBeEmpty(string name)
+        const string message = "Name should not be empty.";
+
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.NameNotEmpty), message);
+
+        var validator = new UpdatePlaylist.Validator(localizer);
+
+        var command = new UpdatePlaylist.Command
         {
-            const string message = "Name should not be empty.";
+            Name = name
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.NameNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new UpdatePlaylist.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Name)
+            .WithErrorMessage(message);
+    }
 
-            var command = new UpdatePlaylist.Command
-            {
-                Name = name,
-            };
+    [Theory]
+    [InlineData("012345678901234567890123456789012345678901234567890")]
+    [InlineData("0123456789012345678901234567890123456789012345678901")]
+    public void UpdatePlaylistCommandValidator_Name_ShouldBeShorterThanMaximumStringLength(string name)
+    {
+        var message =
+            $"The length of name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {name.Length} characters.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.NameMaximumLength), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Name)
-                  .WithErrorMessage(message);
-        }
+        var validator = new UpdatePlaylist.Validator(localizer);
 
-        [Theory]
-        [InlineData("012345678901234567890123456789012345678901234567890")]
-        [InlineData("0123456789012345678901234567890123456789012345678901")]
-        public void UpdatePlaylistCommandValidator_Name_ShouldBeShorterThanMaximumStringLength(string name)
+        var command = new UpdatePlaylist.Command
         {
-            var message =
-                $"The length of name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {name.Length} characters.";
+            Name = name
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.NameMaximumLength), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new UpdatePlaylist.Validator(localizer);
-
-            var command = new UpdatePlaylist.Command
-            {
-                Name = name,
-            };
-
-            var result = validator.TestValidate(command);
-
-            result.ShouldHaveValidationErrorFor(x => x.Name)
-                  .WithErrorMessage(message);
-        }
+        result.ShouldHaveValidationErrorFor(x => x.Name)
+            .WithErrorMessage(message);
     }
 }

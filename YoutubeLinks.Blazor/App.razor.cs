@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
-namespace YoutubeLinks.Blazor
+namespace YoutubeLinks.Blazor;
+
+public partial class App
 {
-    public partial class App
-    {
-        [Inject] public IStringLocalizer<App> Localizer { get; set; }
-    }
+    [Inject] public IStringLocalizer<App> Localizer { get; set; }
 }

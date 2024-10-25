@@ -1,7 +1,5 @@
-﻿namespace YoutubeLinks.Api
-{
-    public class ApiValidationMessage
-    {
+﻿namespace YoutubeLinks.Api;
 
-    }
+public class ApiValidationMessage
+{
 }

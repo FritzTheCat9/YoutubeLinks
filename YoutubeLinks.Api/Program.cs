@@ -12,16 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwagger()
-                .AddMyCors(builder.Configuration)
-                .AddMediatr()
-                .AddDatabase(builder.Configuration)
-                .AddAuth(builder.Configuration)
-                .AddServices(builder.Environment)
-                .AddEmails(builder.Configuration)
-                .AddExceptionMiddleware()
-                .AddMyLocalization()
-                .AddLogging(builder.Configuration)
-                .AddHttpContextAccessor();
+    .AddMyCors(builder.Configuration)
+    .AddMediatr()
+    .AddDatabase(builder.Configuration)
+    .AddAuth(builder.Configuration)
+    .AddServices(builder.Environment)
+    .AddEmails(builder.Configuration)
+    .AddExceptionMiddleware()
+    .AddMyLocalization()
+    .AddLogging(builder.Configuration)
+    .AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -36,9 +36,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMyLocalization()
-   .UseExceptionMiddleware()
-   .AddEndpoints()
-   .UseMyCors()
-   .UseAuth();
+    .UseExceptionMiddleware()
+    .AddEndpoints()
+    .UseMyCors()
+    .UseAuth();
 
 app.Run();

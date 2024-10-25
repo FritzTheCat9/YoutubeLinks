@@ -5,89 +5,88 @@ using YoutubeLinks.Shared.Features.Links.Helpers;
 using YoutubeLinks.Shared.Localization;
 using YoutubeLinks.UnitTests.Localization;
 
-namespace YoutubeLinks.UnitTests.Features.Links.Commands
+namespace YoutubeLinks.UnitTests.Features.Links.Commands;
+
+public class DownloadSingleLinkTests
 {
-    public class DownloadSingleLinkTests
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("    ")]
+    [InlineData("   ")]
+    public void DownloadSingleLinkValidator_Url_ShouldNotBeEmpty(string url)
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        [InlineData("   ")]
-        public void DownloadSingleLinkValidator_Url_ShouldNotBeEmpty(string url)
+        const string message = "Youtube video url should not be empty.";
+
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
+
+        var validator = new DownloadSingleLink.Validator(localizer);
+
+        var command = new DownloadSingleLink.Command
         {
-            const string message = "Youtube video url should not be empty.";
+            Url = url,
+            YoutubeFileType = YoutubeFileType.Mp3
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new DownloadSingleLink.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Url)
+            .WithErrorMessage(message);
+    }
 
-            var command = new DownloadSingleLink.Command
-            {
-                Url = url, 
-                YoutubeFileType = YoutubeFileType.Mp3,
-            };
+    [Theory]
+    [InlineData("asd")]
+    [InlineData("test.test.com")]
+    [InlineData("https://www.google.com")]
+    [InlineData("https://www.youtube.com/watch?v=")]
+    [InlineData("https://www.youtube.com/watch?v=asd")]
+    [InlineData("https://www.youtube.com/watch")]
+    public void DownloadSingleLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
+    {
+        const string message = "This is not a valid link to the YouTube video.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Url)
-                  .WithErrorMessage(message);
-        }
+        var validator = new DownloadSingleLink.Validator(localizer);
 
-        [Theory]
-        [InlineData("asd")]
-        [InlineData("test.test.com")]
-        [InlineData("https://www.google.com")]
-        [InlineData("https://www.youtube.com/watch?v=")]
-        [InlineData("https://www.youtube.com/watch?v=asd")]
-        [InlineData("https://www.youtube.com/watch")]
-        public void DownloadSingleLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
+        var command = new DownloadSingleLink.Command
         {
-            const string message = "This is not a valid link to the YouTube video.";
+            Url = url,
+            YoutubeFileType = YoutubeFileType.Mp3
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new DownloadSingleLink.Validator(localizer);
+        result.ShouldHaveValidationErrorFor(x => x.Url)
+            .WithErrorMessage(message);
+    }
 
-            var command = new DownloadSingleLink.Command
-            {
-                Url = url,
-                YoutubeFileType = YoutubeFileType.Mp3,
-            };
+    [Theory]
+    [InlineData((YoutubeFileType)2)]
+    [InlineData((YoutubeFileType)3)]
+    [InlineData((YoutubeFileType)4)]
+    [InlineData((YoutubeFileType)5)]
+    public void DownloadSingleLinkValidator_YoutubeFileType_ShouldBeInEnum(YoutubeFileType youtubeFileType)
+    {
+        var message = $"YoutubeFileType has a range of values which does not include: {youtubeFileType}.";
 
-            var result = validator.TestValidate(command);
+        var localizer = new TestStringLocalizer<ValidationMessage>();
+        localizer.AddTranslation(nameof(ValidationMessageString.YoutubeFileTypeIsInEnum), message);
 
-            result.ShouldHaveValidationErrorFor(x => x.Url)
-                  .WithErrorMessage(message);
-        }
+        var validator = new DownloadSingleLink.Validator(localizer);
 
-        [Theory]
-        [InlineData((YoutubeFileType)2)]
-        [InlineData((YoutubeFileType)3)]
-        [InlineData((YoutubeFileType)4)]
-        [InlineData((YoutubeFileType)5)]
-        public void DownloadSingleLinkValidator_YoutubeFileType_ShouldBeInEnum(YoutubeFileType youtubeFileType)
+        var command = new DownloadSingleLink.Command
         {
-            var message = $"YoutubeFileType has a range of values which does not include: {youtubeFileType}.";
+            Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            YoutubeFileType = youtubeFileType
+        };
 
-            var localizer = new TestStringLocalizer<ValidationMessage>();
-            localizer.AddTranslation(nameof(ValidationMessageString.YoutubeFileTypeIsInEnum), message);
+        var result = validator.TestValidate(command);
 
-            var validator = new DownloadSingleLink.Validator(localizer);
-
-            var command = new DownloadSingleLink.Command
-            {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                YoutubeFileType = youtubeFileType,
-            };
-
-            var result = validator.TestValidate(command);
-
-            result.ShouldHaveValidationErrorFor(x => x.YoutubeFileType)
-                  .WithErrorMessage(message);
-        }
+        result.ShouldHaveValidationErrorFor(x => x.YoutubeFileType)
+            .WithErrorMessage(message);
     }
 }

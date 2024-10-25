@@ -1,192 +1,197 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+    <!-- 
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+        <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="EmailIsEmailAddress" xml:space="preserve">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="EmailIsEmailAddress" xml:space="preserve">
     <value>Email address is not valid.</value>
   </data>
-  <data name="EmailMaximumLength" xml:space="preserve">
+    <data name="EmailMaximumLength" xml:space="preserve">
     <value>The length of email must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
   </data>
-  <data name="EmailNotEmpty" xml:space="preserve">
+    <data name="EmailNotEmpty" xml:space="preserve">
     <value>Email should not be empty.</value>
   </data>
-  <data name="FileContentTypeShouldBeJsonOrTxt" xml:space="preserve">
+    <data name="FileContentTypeShouldBeJsonOrTxt" xml:space="preserve">
     <value>The file should be in .json or .txt format.</value>
   </data>
-  <data name="FileMaxFileSize" xml:space="preserve">
+    <data name="FileMaxFileSize" xml:space="preserve">
     <value>The file size must be less than or equal to {ComparisonValue} bytes. The added file have {PropertyValue} bytes.</value>
   </data>
-  <data name="FileNotEmpty" xml:space="preserve">
+    <data name="FileNotEmpty" xml:space="preserve">
     <value>Select file.</value>
   </data>
-  <data name="NameMaximumLength" xml:space="preserve">
+    <data name="NameMaximumLength" xml:space="preserve">
     <value>The length of name must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
   </data>
-  <data name="NameNotEmpty" xml:space="preserve">
+    <data name="NameNotEmpty" xml:space="preserve">
     <value>Name should not be empty.</value>
   </data>
-  <data name="PasswordMaximumLength" xml:space="preserve">
+    <data name="PasswordMaximumLength" xml:space="preserve">
     <value>The length of password must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
   </data>
-  <data name="PasswordMinimumLength" xml:space="preserve">
+    <data name="PasswordMinimumLength" xml:space="preserve">
     <value>The length of password must be at least {MinLength} characters. You entered {TotalLength} characters.</value>
   </data>
-  <data name="PasswordNotEmpty" xml:space="preserve">
+    <data name="PasswordNotEmpty" xml:space="preserve">
     <value>Password should not be empty.</value>
   </data>
-  <data name="PlaylistFileTypeIsInEnum" xml:space="preserve">
+    <data name="PlaylistFileTypeIsInEnum" xml:space="preserve">
     <value>PlaylistFileType has a range of values which does not include: {PropertyValue}.</value>
   </data>
-  <data name="RepeatPasswordEqualPassword" xml:space="preserve">
+    <data name="RepeatPasswordEqualPassword" xml:space="preserve">
     <value>The passwords entered must match.</value>
   </data>
-  <data name="ThemeColorIsInEnum" xml:space="preserve">
+    <data name="ThemeColorIsInEnum" xml:space="preserve">
     <value>ThemeColor has a range of values which does not include: {PropertyValue}.</value>
   </data>
-  <data name="TitleHaveValidCharacters" xml:space="preserve">
+    <data name="TitleHaveValidCharacters" xml:space="preserve">
     <value>Title contains invalid characters.</value>
   </data>
-  <data name="TitleMaximumLength" xml:space="preserve">
+    <data name="TitleMaximumLength" xml:space="preserve">
     <value>The length of title must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
   </data>
-  <data name="TokenNotEmpty" xml:space="preserve">
+    <data name="TokenNotEmpty" xml:space="preserve">
     <value>Token should not be empty.</value>
   </data>
-  <data name="UrlNotEmpty" xml:space="preserve">
+    <data name="UrlNotEmpty" xml:space="preserve">
     <value>Youtube video url should not be empty.</value>
   </data>
-  <data name="UserNameMatchesRegex" xml:space="preserve">
+    <data name="UserNameMatchesRegex" xml:space="preserve">
     <value>User name can contain only: a-z, A-Z, 0-9 and _ characters.</value>
   </data>
-  <data name="UserNameMaximumLength" xml:space="preserve">
+    <data name="UserNameMaximumLength" xml:space="preserve">
     <value>The length of user name must be {MaxLength} characters or fewer. You entered {TotalLength} characters.</value>
   </data>
-  <data name="UserNameMinimumLength" xml:space="preserve">
+    <data name="UserNameMinimumLength" xml:space="preserve">
     <value>The length of user name must be at least {MinLength} characters. You entered {TotalLength} characters.</value>
   </data>
-  <data name="UserNameNotEmpty" xml:space="preserve">
+    <data name="UserNameNotEmpty" xml:space="preserve">
     <value>User name should not be empty.</value>
   </data>
-  <data name="VideoUrlMatchesRegex" xml:space="preserve">
+    <data name="VideoUrlMatchesRegex" xml:space="preserve">
     <value>This is not a valid link to the YouTube video.</value>
   </data>
-  <data name="YoutubeFileTypeIsInEnum" xml:space="preserve">
+    <data name="YoutubeFileTypeIsInEnum" xml:space="preserve">
     <value>YoutubeFileType has a range of values which does not include: {PropertyValue}.</value>
   </data>
 </root>

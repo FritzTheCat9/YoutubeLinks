@@ -1,24 +1,24 @@
 ﻿<EditForm Model="FormModel"
           OnValidSubmit="HandleValidSubmit"
           @ref="_form">
-    <CustomValidator @ref="_customValidator" />
-    <FluentValidationValidator />
+    <CustomValidator @ref="_customValidator"/>
+    <FluentValidationValidator/>
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
             <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
                             @bind-Value="FormModel.Name"
                             For="() => FormModel.Name"
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.NameInput } })" />
-            <FritzValidationMessage For="() => FormModel.Name" />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.NameInput } })"/>
+            <FritzValidationMessage For="() => FormModel.Name"/>
 
             <MudCheckBox T="bool"
                          Label="@Localizer[nameof(AppStrings.Public)]"
                          @bind-Value="FormModel.Public"
                          For="() => FormModel.Public"
                          Color="Color.Primary"
-                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.PublicCheckbox } })" />
-            <FritzValidationMessage For="() => FormModel.Public" />
+                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.PublicCheckbox } })"/>
+            <FritzValidationMessage For="() => FormModel.Public"/>
 
             <MudFileUpload T="IBrowserFile"
                            @bind-Files="FormModel.File"
@@ -35,14 +35,14 @@
                     </MudButton>
                 </ActivatorContent>
             </MudFileUpload>
-            <FritzValidationMessage For="() => FormModel.File" />
+            <FritzValidationMessage For="() => FormModel.File"/>
             @if (FormModel?.File is not null)
             {
-                <FritzValidationMessage For="() => FormModel.File.Size" />
-                <FritzValidationMessage For="() => FormModel.File.ContentType" />
+                <FritzValidationMessage For="() => FormModel.File.Size"/>
+                <FritzValidationMessage For="() => FormModel.File.ContentType"/>
             }
-            <FritzValidationMessage For="() => FormModel.ExportedLinks" />
-            <FritzValidationMessage For="() => FormModel.ExportedLinkUrls" />
+            <FritzValidationMessage For="() => FormModel.ExportedLinks"/>
+            <FritzValidationMessage For="() => FormModel.ExportedLinkUrls"/>
 
             <MudText Typo="Typo.subtitle2"
                      Color="Color.Warning">
@@ -55,7 +55,7 @@
                                    Color="Color.Primary"
                                    ProcessingButtonText="@Localizer[nameof(AppStrings.Importing)]"
                                    ButtonText="@Localizer[nameof(AppStrings.Import)]"
-                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.ImportPlaylistButton } })" />
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.ImportPlaylistButton } })"/>
         </DialogActions>
     </MudDialog>
 </EditForm>

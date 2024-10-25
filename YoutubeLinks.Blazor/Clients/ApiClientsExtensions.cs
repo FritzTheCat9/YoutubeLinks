@@ -1,30 +1,29 @@
 ﻿using YoutubeLinks.Shared.Extensions;
 
-namespace YoutubeLinks.Blazor.Clients
+namespace YoutubeLinks.Blazor.Clients;
+
+public static class ApiClientsExtensions
 {
-    public static class ApiClientsExtensions
+    private const string SectionName = "Api";
+
+    public static IServiceCollection AddApiClients(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        private const string SectionName = "Api";
+        services.Configure<ApiOptions>(configuration.GetRequiredSection(SectionName));
+        var apiOptions = configuration.GetOptions<ApiOptions>(SectionName);
 
-        public static IServiceCollection AddApiClients(
-            this IServiceCollection services,
-            IConfiguration configuration)
+        services.AddScoped(sp => new HttpClient
         {
-            services.Configure<ApiOptions>(configuration.GetRequiredSection(SectionName));
-            var apiOptions = configuration.GetOptions<ApiOptions>(SectionName);
+            BaseAddress = new Uri(apiOptions.Url),
+            Timeout = TimeSpan.FromMinutes(60)
+        });
 
-            services.AddScoped(sp => new HttpClient
-            {
-                BaseAddress = new Uri(apiOptions.Url),
-                Timeout = TimeSpan.FromMinutes(60)
-            });
+        services.AddScoped<IApiClient, ApiClient>();
+        services.AddScoped<IUserApiClient, UserApiClient>();
+        services.AddScoped<IPlaylistApiClient, PlaylistApiClient>();
+        services.AddScoped<ILinkApiClient, LinkApiClient>();
 
-            services.AddScoped<IApiClient, ApiClient>();
-            services.AddScoped<IUserApiClient, UserApiClient>();
-            services.AddScoped<IPlaylistApiClient, PlaylistApiClient>();
-            services.AddScoped<ILinkApiClient, LinkApiClient>();
-
-            return services;
-        }
+        return services;
     }
 }

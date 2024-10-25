@@ -8,106 +8,105 @@ using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 
-namespace YoutubeLinks.UnitTests.Features.Playlists.Commands
+namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
+
+public class ResetLinksDownloadedFlagFeatureTests
 {
-    public class ResetLinksDownloadedFlagFeatureTests
+    private readonly IAuthService _authService;
+
+    public ResetLinksDownloadedFlagFeatureTests()
     {
-        private readonly IAuthService _authService;
+        _authService = Substitute.For<IAuthService>();
+    }
 
-        public ResetLinksDownloadedFlagFeatureTests()
+    [Fact]
+    public async Task ResetLinksDownloadedFlagHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
+    {
+        var command = new ResetLinksDownloadedFlag.Command
         {
-            _authService = Substitute.For<IAuthService>();
-        }
+            Id = 1,
+            IsDownloaded = false
+        };
 
-        [Fact]
-        public async Task ResetLinksDownloadedFlagHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
-        {
-            var command = new ResetLinksDownloadedFlag.Command
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var mediator = Substitute.For<IMediator>();
+
+        playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
+
+        mediator.Send(Arg.Any<ResetLinksDownloadedFlag.Command>(), CancellationToken.None)
+            .Returns(callInfo =>
             {
-                Id = 1,
-                IsDownloaded = false,
-            };
-
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var mediator = Substitute.For<IMediator>();
-
-            playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
-
-            mediator.Send(Arg.Any<ResetLinksDownloadedFlag.Command>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new ResetLinksDownloadedFlagFeature.Handler(playlistRepository, _authService);
-                    return handler.Handle(callInfo.Arg<ResetLinksDownloadedFlag.Command>(), CancellationToken.None);
-                });
-
-            var action = async () => await mediator.Send(command, CancellationToken.None);
-
-            await Assert.ThrowsAsync<MyNotFoundException>(action);
-            await playlistRepository.DidNotReceive().SetLinksDownloadedFlag(Arg.Any<Playlist>(), Arg.Any<bool>());
-        }
-
-        [Fact]
-        public async Task ResetLinksDownloadedFlagHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUser()
-        {
-            var command = new ResetLinksDownloadedFlag.Command
-            {
-                Id = 1,
-                IsDownloaded = false,
-            };
-
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var authService = Substitute.For<IAuthService>();
-            var mediator = Substitute.For<IMediator>();
-
-            playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist()
-            {
-                UserId = 1,
+                var handler = new ResetLinksDownloadedFlagFeature.Handler(playlistRepository, _authService);
+                return handler.Handle(callInfo.Arg<ResetLinksDownloadedFlag.Command>(), CancellationToken.None);
             });
-            authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-            mediator.Send(Arg.Any<ResetLinksDownloadedFlag.Command>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new ResetLinksDownloadedFlagFeature.Handler(playlistRepository, authService);
-                    return handler.Handle(callInfo.Arg<ResetLinksDownloadedFlag.Command>(), CancellationToken.None);
-                });
+        var action = async () => await mediator.Send(command, CancellationToken.None);
 
-            var action = async () => await mediator.Send(command, CancellationToken.None);
+        await Assert.ThrowsAsync<MyNotFoundException>(action);
+        await playlistRepository.DidNotReceive().SetLinksDownloadedFlag(Arg.Any<Playlist>(), Arg.Any<bool>());
+    }
 
-            await Assert.ThrowsAsync<MyForbiddenException>(action);
-            await playlistRepository.DidNotReceive().SetLinksDownloadedFlag(Arg.Any<Playlist>(), Arg.Any<bool>());
-        }
-
-        [Fact]
-        public async Task ResetLinksDownloadedFlagHandler_SetPlaylistLinksDownloadedFlag()
+    [Fact]
+    public async Task ResetLinksDownloadedFlagHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUser()
+    {
+        var command = new ResetLinksDownloadedFlag.Command
         {
-            var command = new ResetLinksDownloadedFlag.Command
-            {
-                Id = 1,
-                IsDownloaded = false,
-            };
+            Id = 1,
+            IsDownloaded = false
+        };
 
-            var playlistRepository = Substitute.For<IPlaylistRepository>();
-            var authService = Substitute.For<IAuthService>();
-            var mediator = Substitute.For<IMediator>();
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var authService = Substitute.For<IAuthService>();
+        var mediator = Substitute.For<IMediator>();
 
-            playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist()
+        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
+        {
+            UserId = 1
+        });
+        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+
+        mediator.Send(Arg.Any<ResetLinksDownloadedFlag.Command>(), CancellationToken.None)
+            .Returns(callInfo =>
             {
-                UserId = 1,
+                var handler = new ResetLinksDownloadedFlagFeature.Handler(playlistRepository, authService);
+                return handler.Handle(callInfo.Arg<ResetLinksDownloadedFlag.Command>(), CancellationToken.None);
             });
-            authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
 
-            mediator.Send(Arg.Any<ResetLinksDownloadedFlag.Command>(), CancellationToken.None)
-                .Returns(callInfo =>
-                {
-                    var handler = new ResetLinksDownloadedFlagFeature.Handler(playlistRepository, authService);
-                    return handler.Handle(callInfo.Arg<ResetLinksDownloadedFlag.Command>(), CancellationToken.None);
-                });
+        var action = async () => await mediator.Send(command, CancellationToken.None);
 
-            var result = await mediator.Send(command, CancellationToken.None);
+        await Assert.ThrowsAsync<MyForbiddenException>(action);
+        await playlistRepository.DidNotReceive().SetLinksDownloadedFlag(Arg.Any<Playlist>(), Arg.Any<bool>());
+    }
 
-            result.Should().Be(Unit.Value);
-            await playlistRepository.Received().SetLinksDownloadedFlag(Arg.Any<Playlist>(), Arg.Any<bool>());
-        }
+    [Fact]
+    public async Task ResetLinksDownloadedFlagHandler_SetPlaylistLinksDownloadedFlag()
+    {
+        var command = new ResetLinksDownloadedFlag.Command
+        {
+            Id = 1,
+            IsDownloaded = false
+        };
+
+        var playlistRepository = Substitute.For<IPlaylistRepository>();
+        var authService = Substitute.For<IAuthService>();
+        var mediator = Substitute.For<IMediator>();
+
+        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
+        {
+            UserId = 1
+        });
+        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+
+        mediator.Send(Arg.Any<ResetLinksDownloadedFlag.Command>(), CancellationToken.None)
+            .Returns(callInfo =>
+            {
+                var handler = new ResetLinksDownloadedFlagFeature.Handler(playlistRepository, authService);
+                return handler.Handle(callInfo.Arg<ResetLinksDownloadedFlag.Command>(), CancellationToken.None);
+            });
+
+        var result = await mediator.Send(command, CancellationToken.None);
+
+        result.Should().Be(Unit.Value);
+        await playlistRepository.Received().SetLinksDownloadedFlag(Arg.Any<Playlist>(), Arg.Any<bool>());
     }
 }
