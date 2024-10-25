@@ -13,20 +13,26 @@ public class AuthStateProvider(IJwtProvider jwtProvider) : AuthenticationStatePr
         var authenticationState = new AuthenticationState(new ClaimsPrincipal());
 
         if (token == null || string.IsNullOrEmpty(token.AccessToken))
+        {
             return authenticationState;
+        }
 
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var isTokenValid = tokenHandler.CanReadToken(token.AccessToken);
         if (!isTokenValid)
+        {
             return authenticationState;
+        }
 
         try
         {
             if (tokenHandler.ReadToken(token.AccessToken) is JwtSecurityToken jsonToken)
             {
                 if (jsonToken.ValidTo < DateTime.UtcNow)
+                {
                     return authenticationState;
+                }
 
                 return new AuthenticationState(new ClaimsPrincipal(
                     new ClaimsIdentity(jsonToken.Claims,

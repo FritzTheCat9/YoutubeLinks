@@ -23,7 +23,9 @@ public partial class FritzProcessingButton : ComponentBase
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(ProcessingButtonText))
+        {
             ProcessingButtonText = Localizer[nameof(AppStrings.Processing)];
+        }
     }
 
     public void SetProcessing(bool processing)

@@ -45,9 +45,11 @@ public static class UserExtensions
         var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
             users = users.Where(x =>
                 x.UserName.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase)
                 || x.Email.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
+        }
 
         return users;
     }

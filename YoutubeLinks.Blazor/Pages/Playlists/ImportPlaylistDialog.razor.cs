@@ -58,7 +58,9 @@ public partial class ImportPlaylistDialog : ComponentBase
         var fileValidator = new ImportPlaylist.FileValidator(SharedLocalizer);
         var validationResult = await fileValidator.ValidateAsync(FormModel.File);
         if (!validationResult.IsValid)
+        {
             return;
+        }
 
         var file = e.File;
 

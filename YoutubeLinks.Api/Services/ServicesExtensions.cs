@@ -12,7 +12,9 @@ public static class ServiceExtensions
         var ffmpegZipPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "ffmpeg.zip");
         var ffmpegPath = Path.GetFullPath(webHostEnvironment.ContentRootPath);
         if (!File.Exists(Path.Combine(ffmpegPath, "ffmpeg.exe")))
+        {
             ZipFile.ExtractToDirectory(ffmpegZipPath, ffmpegPath);
+        }
 
         services.AddScoped<IYoutubeService, YoutubeService>();
 

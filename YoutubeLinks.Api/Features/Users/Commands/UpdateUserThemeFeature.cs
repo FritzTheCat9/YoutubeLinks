@@ -38,7 +38,9 @@ public static class UpdateUserThemeFeature
         {
             var isLoggedInUser = authService.IsLoggedInUser(command.Id);
             if (!isLoggedInUser)
+            {
                 throw new MyForbiddenException();
+            }
 
             var user = await userRepository.Get(command.Id) ?? throw new MyNotFoundException();
 

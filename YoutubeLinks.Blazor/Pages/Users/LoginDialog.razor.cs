@@ -67,7 +67,9 @@ public partial class LoginDialog : ComponentBase
                 Localizer[nameof(AppStrings.ResendConfirmationEmail)], parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await OpenResendConfirmationEmailSuccessDialog();
+        }
     }
 
     private async Task OpenResendConfirmationEmailSuccessDialog()
@@ -100,7 +102,9 @@ public partial class LoginDialog : ComponentBase
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await OpenForgotPasswordEmailSentSuccessfullyDialog();
+        }
     }
 
     private async Task OpenForgotPasswordEmailSentSuccessfullyDialog()

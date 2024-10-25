@@ -59,8 +59,10 @@ public static class LinkExtensions
         var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
             links = links.Where(x =>
                 x.Title.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
+        }
 
         return links;
     }

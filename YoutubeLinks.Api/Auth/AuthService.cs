@@ -16,7 +16,9 @@ public class AuthService : IAuthService
     public AuthService(IHttpContextAccessor httpContextAccessor)
     {
         if (httpContextAccessor.HttpContext is null)
+        {
             throw new MyServerException();
+        }
 
         User = httpContextAccessor.HttpContext.User;
     }
@@ -38,10 +40,14 @@ public class AuthService : IAuthService
         var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userIdString == null)
+        {
             return false;
+        }
 
         if (!int.TryParse(userIdString, out var userIdInt))
+        {
             return false;
+        }
 
         return userId == userIdInt;
     }
@@ -49,15 +55,21 @@ public class AuthService : IAuthService
     public int? GetCurrentUserId()
     {
         if (!(User.Identity?.IsAuthenticated ?? false))
+        {
             return null;
+        }
 
         var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userIdString == null)
+        {
             return null;
+        }
 
         if (!int.TryParse(userIdString, out var userIdInt))
+        {
             return null;
+        }
 
         return userIdInt;
     }

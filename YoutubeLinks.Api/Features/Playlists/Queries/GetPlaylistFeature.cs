@@ -40,7 +40,9 @@ public static class GetPlaylistFeature
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!playlist.Public
                 && !isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             return playlist.ToDto();
         }

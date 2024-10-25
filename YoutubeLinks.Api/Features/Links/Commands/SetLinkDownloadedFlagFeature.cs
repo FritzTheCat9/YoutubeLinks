@@ -39,7 +39,9 @@ public static class SetLinkDownloadedFlagFeature
             var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
             if (!authService.IsLoggedInUser(link.Playlist.UserId))
+            {
                 throw new MyForbiddenException();
+            }
 
             link.Modified = clock.Current();
             link.Downloaded = command.Downloaded;

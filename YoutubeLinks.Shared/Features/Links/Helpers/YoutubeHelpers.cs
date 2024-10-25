@@ -38,7 +38,9 @@ public static class YoutubeHelpers
         sanitizedTitle = sanitizedTitle.Trim();
 
         if (sanitizedTitle.Length > MaximumTitleLength)
+        {
             sanitizedTitle = sanitizedTitle.Substring(0, MaximumTitleLength);
+        }
 
         return sanitizedTitle;
     }

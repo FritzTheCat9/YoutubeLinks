@@ -13,10 +13,14 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
         PolicyAuthorizationResult authorizeResult)
     {
         if (authorizeResult.Challenged)
+        {
             throw new MyUnauthorizedException();
+        }
 
         if (authorizeResult.Forbidden)
+        {
             throw new MyForbiddenException();
+        }
 
         await next(context);
     }

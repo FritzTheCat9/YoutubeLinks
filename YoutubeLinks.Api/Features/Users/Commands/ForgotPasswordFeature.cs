@@ -41,8 +41,10 @@ public static class ForgotPasswordFeature
                                nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (!user.EmailConfirmed)
+            {
                 throw new MyValidationException(nameof(ForgotPassword.Command.Email),
                     validationLocalizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
+            }
 
             user.ForgotPasswordToken = forgotPasswordService.GenerateForgotPasswordToken(command.Email);
             await userRepository.Update(user);

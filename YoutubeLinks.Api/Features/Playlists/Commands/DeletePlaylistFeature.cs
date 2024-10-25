@@ -37,7 +37,9 @@ public static class DeletePlaylistFeature
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             await playlistRepository.Delete(playlist);
             return Unit.Value;

@@ -45,8 +45,10 @@ public static class CreateLinkFeature
         {
             var videoId = YoutubeHelpers.GetVideoId(command.Url);
             if (string.IsNullOrWhiteSpace(videoId))
+            {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+            }
 
             command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
             var videoTitle = await youtubeService.GetVideoTitle(videoId);
@@ -74,12 +76,16 @@ public static class CreateLinkFeature
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             var urlExists = await playlistRepository.LinkUrlExists(command.Url, playlist.Id);
             if (urlExists)
+            {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
+            }
         }
     }
 }

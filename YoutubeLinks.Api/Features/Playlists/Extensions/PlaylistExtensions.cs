@@ -69,8 +69,10 @@ public static class PlaylistExtensions
         var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
             playlists = playlists.Where(x =>
                 x.Name.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
+        }
 
         return playlists;
     }
@@ -106,8 +108,10 @@ public static class PlaylistExtensions
         var searchTerm = query.SearchTerm?.ToLower()?.Trim();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
             playlists = playlists.Where(x =>
                 x.Name.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
+        }
 
         return playlists;
     }

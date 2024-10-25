@@ -21,7 +21,9 @@ public partial class FritzCopyToClipboardButton : ComponentBase
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(TooltipText))
+        {
             TooltipText = Localizer[nameof(AppStrings.CopyToClipboard)];
+        }
     }
 
     private async Task CopyTextToClipboard()

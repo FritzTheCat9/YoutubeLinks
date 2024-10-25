@@ -28,7 +28,9 @@ public class PlaylistRepository(AppDbContext dbContext) : IPlaylistRepository
             .Where(x => x.UserId == userId);
 
         if (!loadPrivate)
+        {
             query = query.Where(x => x.Public);
+        }
 
         return query.AsSplitQuery()
             .AsQueryable();

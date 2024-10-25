@@ -119,7 +119,9 @@ public partial class MainLayout : LayoutComponentBase
     private Task OnSystemPreferenceChanged(bool newValue)
     {
         if (_themeColor != ThemeColor.System)
+        {
             return Task.CompletedTask;
+        }
 
         _isDarkMode = newValue;
         StateHasChanged();
@@ -148,7 +150,9 @@ public partial class MainLayout : LayoutComponentBase
     {
         var userId = await AuthService.GetCurrentUserId();
         if (userId is null)
+        {
             return;
+        }
 
         try
         {

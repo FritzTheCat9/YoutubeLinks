@@ -26,21 +26,29 @@ public class AuthService(
     public async Task<int?> GetCurrentUserId()
     {
         if (stateProvider is not AuthStateProvider authStateProvider)
+        {
             return null;
+        }
 
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         if (!(user.Identity?.IsAuthenticated ?? false))
+        {
             return null;
+        }
 
         var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userIdString == null)
+        {
             return null;
+        }
 
         if (!int.TryParse(userIdString, out var userIdInt))
+        {
             return null;
+        }
 
         return userIdInt;
     }
@@ -48,21 +56,30 @@ public class AuthService(
     public async Task<bool> IsLoggedInUser(int userId)
     {
         if (stateProvider is not AuthStateProvider authStateProvider)
+        {
             return false;
+        }
 
         var authState = await authStateProvider.GetAuthenticationStateAsync();
 
         var user = authState.User;
 
         if (!(user.Identity?.IsAuthenticated ?? false))
+        {
             return false;
+        }
+
         var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userIdString == null)
+        {
             return false;
+        }
 
         if (!int.TryParse(userIdString, out var userIdInt))
+        {
             return false;
+        }
 
         return userId == userIdInt;
     }
@@ -75,7 +92,9 @@ public class AuthService(
         authStateProvider?.NotifyAuthStateChanged();
 
         if (!string.IsNullOrEmpty(redirectUrl))
+        {
             navigationManager.NavigateTo(redirectUrl);
+        }
     }
 
     public async Task Logout(string redirectUrl = null)
@@ -86,7 +105,9 @@ public class AuthService(
         authStateProvider?.NotifyAuthStateChanged();
 
         if (!string.IsNullOrEmpty(redirectUrl))
+        {
             navigationManager.NavigateTo(redirectUrl);
+        }
     }
 
     public async Task RefreshToken()

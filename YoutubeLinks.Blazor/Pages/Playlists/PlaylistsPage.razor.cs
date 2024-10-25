@@ -83,6 +83,7 @@ public partial class PlaylistsPage : ComponentBase
 
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             try
             {
                 await PlaylistApiClient.DeletePlaylist(id);
@@ -92,6 +93,7 @@ public partial class PlaylistsPage : ComponentBase
             {
                 ExceptionHandler.HandleExceptions(ex);
             }
+        }
     }
 
     private async Task UpdateUserPlaylist(PlaylistDto playlistDto)
@@ -115,7 +117,9 @@ public partial class PlaylistsPage : ComponentBase
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await _table.ReloadServerData();
+        }
     }
 
     private async Task CreateUserPlaylist()
@@ -138,7 +142,9 @@ public partial class PlaylistsPage : ComponentBase
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await _table.ReloadServerData();
+        }
     }
 
     private async Task ExportPlaylistToFile(int id, PlaylistFileType playlistFileType)
@@ -188,7 +194,9 @@ public partial class PlaylistsPage : ComponentBase
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await _table.ReloadServerData();
+        }
     }
 
     private void RedirectToLinksPage(int id)

@@ -37,12 +37,16 @@ public static class LoginFeature
                            localizer[nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (!user.EmailConfirmed)
+            {
                 throw new MyValidationException(nameof(Login.Command.Email),
                     localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
+            }
 
             if (!passwordService.Validate(command.Password, user.Password))
+            {
                 throw new MyValidationException(nameof(Login.Command.Password),
                     localizer[nameof(ApiValidationMessageString.PasswordIsIncorrect)]);
+            }
 
             var jwt = authenticator.CreateTokens(user);
 

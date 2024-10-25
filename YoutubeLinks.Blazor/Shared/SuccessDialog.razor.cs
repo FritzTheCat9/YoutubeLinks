@@ -18,10 +18,14 @@ public partial class SuccessDialog : ComponentBase
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(ContentText))
+        {
             ContentText = Localizer[nameof(AppStrings.Success)];
+        }
 
         if (string.IsNullOrWhiteSpace(ButtonText))
+        {
             ButtonText = Localizer[nameof(AppStrings.Ok)];
+        }
     }
 
     private void Submit()

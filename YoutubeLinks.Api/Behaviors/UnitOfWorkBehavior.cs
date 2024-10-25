@@ -20,7 +20,9 @@ public class UnitOfWorkBehavior<TRequest, TResponse>(
         CancellationToken cancellationToken)
     {
         if (IsNotCommand || IsDownloadLinkCommand)
+        {
             return await next();
+        }
 
         logger.LogInformation("[UnitOfWork] Begin Transaction");
 

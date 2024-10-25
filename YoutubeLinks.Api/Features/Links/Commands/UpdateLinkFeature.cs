@@ -46,25 +46,35 @@ public static class UpdateLinkFeature
             var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
             if (!authService.IsLoggedInUser(link.Playlist.UserId))
+            {
                 throw new MyForbiddenException();
+            }
 
             var videoId = YoutubeHelpers.GetVideoId(command.Url);
             if (string.IsNullOrWhiteSpace(videoId))
+            {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+            }
 
             command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
 
             var urlExists =
                 await playlistRepository.LinkUrlExistsInOtherLinksThan(command.Url, link.PlaylistId, command.Id);
             if (urlExists)
+            {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
+            }
 
             if (string.IsNullOrWhiteSpace(link.Title) || command.Url != link.Url)
+            {
                 link.Title = await youtubeService.GetVideoTitle(videoId);
+            }
             else
+            {
                 link.Title = YoutubeHelpers.NormalizeVideoTitle(command.Title);
+            }
 
             link.Modified = clock.Current();
             link.Url = command.Url;

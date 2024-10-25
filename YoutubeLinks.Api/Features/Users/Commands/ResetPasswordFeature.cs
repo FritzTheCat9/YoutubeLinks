@@ -43,12 +43,16 @@ public static class ResetPasswordFeature
             var isTokenAssignedToUser =
                 await userRepository.IsForgotPasswordTokenAssignedToUser(user.Email, command.Token);
             if (!isTokenAssignedToUser)
+            {
                 throw new MyValidationException(nameof(ResetPassword.Command.Token),
                     validationLocalizer[nameof(ApiValidationMessageString.TokenIsNotAssignedToThisUser)]);
+            }
 
             if (passwordService.Validate(command.NewPassword, user.Password))
+            {
                 throw new MyValidationException(nameof(ResetPassword.Command.NewPassword),
                     validationLocalizer[nameof(ApiValidationMessageString.NewPasswordShouldNotBeEqualToOldPassword)]);
+            }
 
             user.Password = passwordService.Hash(command.NewPassword);
             user.ForgotPasswordToken = null;

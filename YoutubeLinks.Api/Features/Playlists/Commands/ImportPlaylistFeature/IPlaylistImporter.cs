@@ -57,8 +57,10 @@ public class TxtPlaylistImporter : IPlaylistImporter
         foreach (var videoId in command.ExportedLinkUrls.Select(YoutubeHelpers.GetVideoId))
         {
             if (string.IsNullOrWhiteSpace(videoId))
+            {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+            }
 
             var url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
             var videoTitle = await youtubeService.GetVideoTitle(videoId);

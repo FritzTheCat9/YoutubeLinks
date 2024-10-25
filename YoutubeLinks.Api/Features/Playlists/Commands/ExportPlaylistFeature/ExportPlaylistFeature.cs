@@ -38,7 +38,9 @@ public static class ExportPlaylistFeature
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!playlist.Public
                 && !isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             var exporter = PlaylistExporterHelpers.GetExporter(command.PlaylistFileType);
 

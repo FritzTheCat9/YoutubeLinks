@@ -41,8 +41,10 @@ public static class ResendConfirmationEmailFeature
                                nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (user.EmailConfirmed)
+            {
                 throw new MyValidationException(nameof(ResendConfirmationEmail.Command.Email),
                     validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
+            }
 
             user.EmailConfirmationToken = emailConfirmationService.GenerateEmailConfirmationToken(command.Email);
             await userRepository.Update(user);

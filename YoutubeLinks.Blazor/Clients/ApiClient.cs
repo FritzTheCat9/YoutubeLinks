@@ -34,7 +34,9 @@ public class ApiClient(
         var response = await client.GetAsync($"{_baseUrl}{url}");
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
 
         return response;
     }
@@ -45,7 +47,9 @@ public class ApiClient(
         var response = await client.GetAsync($"{_baseUrl}{url}");
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
 
         var tResponse = await response.Content.ReadFromJsonAsync<TResponse>();
         return tResponse;
@@ -57,7 +61,9 @@ public class ApiClient(
         var response = await client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
     }
 
     public async Task<TResponse> Post<TRequest, TResponse>(string url, TRequest tRequest)
@@ -66,7 +72,9 @@ public class ApiClient(
         var response = await client.PostAsJsonAsync($"{_baseUrl}{url}", tRequest);
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
 
         var tResponse = await response.Content.ReadFromJsonAsync<TResponse>();
         return tResponse;
@@ -84,7 +92,9 @@ public class ApiClient(
         var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
 
         return response;
     }
@@ -95,7 +105,9 @@ public class ApiClient(
         var response = await client.PutAsJsonAsync($"{_baseUrl}{url}", tRequest);
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
     }
 
     public async Task Put(string url)
@@ -104,7 +116,9 @@ public class ApiClient(
         var response = await client.PutAsync($"{_baseUrl}{url}", null);
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
     }
 
     public async Task Delete(string url)
@@ -113,7 +127,9 @@ public class ApiClient(
         var response = await client.DeleteAsync($"{_baseUrl}{url}");
 
         if (!response.IsSuccessStatusCode)
+        {
             await HandleErrors(response);
+        }
     }
 
     private async Task AddHeaderValues()

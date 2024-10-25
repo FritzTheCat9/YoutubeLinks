@@ -63,7 +63,9 @@ public partial class DownloadPlaylistPage : ComponentBase
         _isUserPlaylist = await AuthService.IsLoggedInUser(_playlist.UserId);
 
         if (!_playlist.Public && !_isUserPlaylist)
+        {
             NavigationManager.NavigateTo("/error/forbidden-error");
+        }
 
         await LoadLinkInformation();
     }

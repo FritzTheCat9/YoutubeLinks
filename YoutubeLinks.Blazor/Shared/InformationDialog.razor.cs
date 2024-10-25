@@ -18,10 +18,14 @@ public partial class InformationDialog : ComponentBase
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(ContentText))
+        {
             ContentText = Localizer[nameof(AppStrings.InformationConfirmInfo)];
+        }
 
         if (string.IsNullOrWhiteSpace(ButtonText))
+        {
             ButtonText = Localizer[nameof(AppStrings.Yes)];
+        }
     }
 
     private void Submit()

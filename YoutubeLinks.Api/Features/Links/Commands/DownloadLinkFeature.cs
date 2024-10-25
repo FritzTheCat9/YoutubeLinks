@@ -49,7 +49,9 @@ public static class DownloadLinkFeature
             var isPublicPlaylist = link.Playlist.Public;
 
             if (!isUserPlaylist && !isPublicPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, youtubeService);
             var youtubeFile = await downloader.Download(link.VideoId, link.Title);

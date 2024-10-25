@@ -40,7 +40,9 @@ public static class UpdatePlaylistFeature
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             playlist.Name = command.Name;
             playlist.Public = command.Public;

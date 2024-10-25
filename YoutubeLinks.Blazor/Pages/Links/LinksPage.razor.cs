@@ -77,9 +77,13 @@ public partial class LinksPage : ComponentBase
     private async Task RefreshView()
     {
         if (_tableView)
+        {
             await _table.ReloadServerData();
+        }
         else
+        {
             await ReloadLinks();
+        }
     }
 
     private async Task<TableData<LinkDto>> ServerReload(TableState state, CancellationToken token)
@@ -143,6 +147,7 @@ public partial class LinksPage : ComponentBase
 
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             try
             {
                 await LinkApiClient.DeleteLink(id);
@@ -152,6 +157,7 @@ public partial class LinksPage : ComponentBase
             {
                 ExceptionHandler.HandleExceptions(ex);
             }
+        }
     }
 
     private async Task UpdatePlaylistLink(LinkDto linkDto)
@@ -176,7 +182,9 @@ public partial class LinksPage : ComponentBase
                 options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await RefreshView();
+        }
     }
 
     private async Task DownloadPlaylistLink(int id, YoutubeFileType youtubeFileType)
@@ -235,6 +243,7 @@ public partial class LinksPage : ComponentBase
 
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             try
             {
                 var command = new ResetLinksDownloadedFlag.Command
@@ -250,6 +259,7 @@ public partial class LinksPage : ComponentBase
             {
                 ExceptionHandler.HandleExceptions(ex);
             }
+        }
     }
 
     private static string ConvertToEmbedUrl(string url)

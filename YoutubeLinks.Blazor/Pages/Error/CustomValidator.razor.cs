@@ -11,7 +11,10 @@ public partial class CustomValidator : ComponentBase
 
     protected override void OnInitialized()
     {
-        if (EditContext is null) throw new Exception();
+        if (EditContext is null)
+        {
+            throw new Exception();
+        }
 
         _validationMessageStore = new ValidationMessageStore(EditContext);
 

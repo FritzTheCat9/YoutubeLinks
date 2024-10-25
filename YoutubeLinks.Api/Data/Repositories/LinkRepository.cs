@@ -23,7 +23,9 @@ public class LinkRepository(AppDbContext dbContext) : ILinkRepository
             .Where(x => x.PlaylistId == playlistId);
 
         if (!loadPrivate)
+        {
             query = query.Where(x => x.Playlist.Public);
+        }
 
         return query.AsSplitQuery()
             .AsQueryable();

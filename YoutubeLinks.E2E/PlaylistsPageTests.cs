@@ -166,7 +166,9 @@ public class PlaylistsPageTests : PageTestBase
             await Page.ClickAsync("div.mud-select-input");
             var mudSelects = await Page.QuerySelectorAllAsync("div.mud-popover div.mud-list-item");
             if (mudSelects.Count >= 2)
+            {
                 await mudSelects[1].ClickAsync();
+            }
         }
 
         await ApiResponseOkAfterButtonClick(DownloadPlaylistPageConst.DownloadButton, "links/download");

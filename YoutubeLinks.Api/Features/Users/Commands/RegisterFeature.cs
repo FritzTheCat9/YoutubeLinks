@@ -73,13 +73,17 @@ public static class RegisterFeature
         {
             var emailExists = await userRepository.EmailExists(command.Email);
             if (emailExists)
+            {
                 throw new MyValidationException(nameof(Register.Command.Email),
                     validationLocalizer[nameof(ApiValidationMessageString.EmailIsAlreadyTaken)]);
+            }
 
             var userNameExists = await userRepository.UserNameExists(command.UserName);
             if (userNameExists)
+            {
                 throw new MyValidationException(nameof(Register.Command.UserName),
                     validationLocalizer[nameof(ApiValidationMessageString.UserNameIsAlreadyTaken)]);
+            }
         }
     }
 }

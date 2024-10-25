@@ -40,6 +40,7 @@ public partial class Auth : ComponentBase
             await DialogService.ShowAsync<LoginDialog>(Localizer[nameof(AppStrings.Login)], parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             if (result.Data is JwtDto token)
             {
                 await AuthService.Login(token);
@@ -47,13 +48,16 @@ public partial class Auth : ComponentBase
                 await LoadUserTheme();
                 await UserChanged.InvokeAsync();
             }
+        }
     }
 
     private async Task LoadUserTheme()
     {
         var userId = await AuthService.GetCurrentUserId();
         if (userId is null)
+        {
             return;
+        }
 
         try
         {
@@ -82,7 +86,9 @@ public partial class Auth : ComponentBase
             await DialogService.ShowAsync<RegisterDialog>(Localizer[nameof(AppStrings.Register)], parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
+        {
             await OpenRegistrationSuccessDialog();
+        }
     }
 
     private async Task OpenRegistrationSuccessDialog()

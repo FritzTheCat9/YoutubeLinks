@@ -32,7 +32,9 @@ public class YoutubeService(IWebHostEnvironment webHostEnvironment) : IYoutubeSe
 
         var videoDataRequest = await youtubeDl.RunVideoDataFetch($"{YoutubeHelpers.VideoPathBase}{videoId}");
         if (!videoDataRequest.Success)
+        {
             throw new MyServerException();
+        }
 
         var title = videoDataRequest.Data.Title;
         var normalizedTitle = YoutubeHelpers.NormalizeVideoTitle(title);
@@ -64,18 +66,24 @@ public class YoutubeService(IWebHostEnvironment webHostEnvironment) : IYoutubeSe
         var runResult =
             await youtubeDl.RunAudioDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
         if (!runResult.Success)
+        {
             throw new MyServerException();
+        }
 
         var filePath = Path.Combine(_tmpFolderPath, fileName);
 
         if (!File.Exists(filePath))
+        {
             throw new MyServerException();
+        }
 
         var normalizedFileName = $"{title}.mp3";
         var normalizedFilePath = Path.Combine(_tmpFolderPath, normalizedFileName);
 
         if (File.Exists(normalizedFilePath))
+        {
             File.Delete(normalizedFilePath);
+        }
 
         File.Move(filePath, normalizedFilePath);
 
@@ -112,18 +120,24 @@ public class YoutubeService(IWebHostEnvironment webHostEnvironment) : IYoutubeSe
         var runResult =
             await youtubeDl.RunVideoDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
         if (!runResult.Success)
+        {
             throw new MyServerException();
+        }
 
         var filePath = Path.Combine(_tmpFolderPath, fileName);
 
         if (!File.Exists(filePath))
+        {
             throw new MyServerException();
+        }
 
         var normalizedFileName = $"{title}.mp4";
         var normalizedFilePath = Path.Combine(_tmpFolderPath, normalizedFileName);
 
         if (File.Exists(normalizedFilePath))
+        {
             File.Delete(normalizedFilePath);
+        }
 
         File.Move(filePath, normalizedFilePath);
 

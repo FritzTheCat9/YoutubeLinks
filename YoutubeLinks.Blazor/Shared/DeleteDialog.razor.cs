@@ -18,10 +18,14 @@ public partial class DeleteDialog : ComponentBase
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(ContentText))
+        {
             ContentText = Localizer[nameof(AppStrings.DeleteConfirmInfo)];
+        }
 
         if (string.IsNullOrWhiteSpace(ButtonText))
+        {
             ButtonText = Localizer[nameof(AppStrings.Delete)];
+        }
     }
 
     private void Submit()

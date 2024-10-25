@@ -60,7 +60,9 @@ public class Authenticator : IAuthenticator
         };
 
         if (user.IsAdmin)
+        {
             claims.Add(new Claim(ClaimTypes.Role, Policy.Admin));
+        }
 
         var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);
         var accessToken = _jwtHandler.WriteToken(jwt);

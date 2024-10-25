@@ -37,7 +37,9 @@ public static class DeleteLinkFeature
 
             var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
             if (!isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             await linkRepository.Delete(link);
             return Unit.Value;

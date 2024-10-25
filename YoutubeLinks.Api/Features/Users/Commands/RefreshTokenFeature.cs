@@ -37,12 +37,16 @@ public static class RefreshTokenFeature
             var user = await userRepository.Get(currentUserId) ?? throw new MyNotFoundException();
 
             if (!user.EmailConfirmed)
+            {
                 throw new MyValidationException(nameof(Login.Command.Email),
                     localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
+            }
 
             if (user.RefreshToken != command.RefreshToken) // check hashed token = token
+            {
                 throw new MyValidationException(nameof(RefreshToken.Command.RefreshToken),
                     localizer[nameof(ApiValidationMessageString.RefreshTokenIsNotValid)]);
+            }
 
             // check if refresh token expired
 

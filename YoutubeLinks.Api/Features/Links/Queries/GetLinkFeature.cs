@@ -40,7 +40,9 @@ public static class GetLinkFeature
             var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
             if (!link.Playlist.Public
                 && !isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             return link.ToDto();
         }

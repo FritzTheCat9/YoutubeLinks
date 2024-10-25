@@ -39,14 +39,18 @@ public static class ConfirmEmailFeature
                                nameof(ApiValidationMessageString.EmailUserWithGivenEmailDoesNotExist)]);
 
             if (user.EmailConfirmed)
+            {
                 throw new MyValidationException(nameof(ConfirmEmail.Command.Email),
                     validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
+            }
 
             var isTokenAssignedToUser =
                 await userRepository.IsEmailConfirmationTokenAssignedToUser(user.Email, command.Token);
             if (!isTokenAssignedToUser)
+            {
                 throw new MyValidationException(nameof(ConfirmEmail.Command.Token),
                     validationLocalizer[nameof(ApiValidationMessageString.TokenIsNotAssignedToThisUser)]);
+            }
 
             user.EmailConfirmed = true;
             user.EmailConfirmationToken = null;

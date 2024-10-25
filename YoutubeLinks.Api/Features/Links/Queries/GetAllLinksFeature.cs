@@ -37,7 +37,9 @@ public static class GetAllLinksFeature
             var linkQuery = linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
 
             if (isUserPlaylist)
+            {
                 linkQuery = linkQuery.FilterDownloaded(query);
+            }
 
             linkQuery = linkQuery.SortLinks();
 

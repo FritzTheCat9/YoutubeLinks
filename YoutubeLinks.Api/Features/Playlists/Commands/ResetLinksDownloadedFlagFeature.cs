@@ -34,7 +34,9 @@ public static class ResetLinksDownloadedFlagFeature
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
+            {
                 throw new MyForbiddenException();
+            }
 
             await playlistRepository.SetLinksDownloadedFlag(playlist, command.IsDownloaded);
 

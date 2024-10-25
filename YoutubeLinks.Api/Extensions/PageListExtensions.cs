@@ -36,7 +36,10 @@ public static class PageListExtensions<T>
     private static void Validate(int page, int pageSize)
     {
         if (page <= MinPage)
+        {
             throw new MyValidationException(nameof(page), $"{nameof(page)} should be greater than {MinPage}");
+        }
+
         switch (pageSize)
         {
             case <= MinPageSize:

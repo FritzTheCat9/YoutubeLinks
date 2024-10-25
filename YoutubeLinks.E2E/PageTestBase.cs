@@ -68,7 +68,9 @@ public abstract class PageTestBase : PageTest
         var savePath = Path.Combine(tempFolderPath, download.SuggestedFilename);
 
         if (!Directory.Exists(tempFolderPath))
+        {
             Directory.CreateDirectory(tempFolderPath);
+        }
 
         await download.SaveAsAsync(savePath);
     }
@@ -259,7 +261,10 @@ public abstract class PageTestBase : PageTest
         await FillInput(UpdateLinkDialogConst.UrlInput, updatedUrl);
         await FillInput(UpdateLinkDialogConst.TitleInput, updatedTitle);
         if (clickDownloadedCheckbox)
+        {
             await ClickElement(UpdateLinkDialogConst.DownloadedCheckbox);
+        }
+
         await ApiResponseOkAfterButtonClick(UpdateLinkDialogConst.UpdateButton, "links");
         await CheckLinksTableRowIsValid(updatedTitle);
     }
