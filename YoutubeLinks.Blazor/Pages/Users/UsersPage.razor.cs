@@ -64,13 +64,19 @@ public partial class UsersPage : ComponentBase
     }
 
     private static string GetUserHighestPolicy(UserDto user)
-        => user.IsAdmin ? Policy.Admin : Policy.User;
+    {
+        return user.IsAdmin ? Policy.Admin : Policy.User;
+    }
 
     private static Color GetColorBasedOnPolicy(string policy)
-        => policy == Policy.Admin ? Color.Error : Color.Success;
+    {
+        return policy == Policy.Admin ? Color.Error : Color.Success;
+    }
 
     private void RedirectToUserPlaylistsPage(int id)
-        => NavigationManager.NavigateTo($"/playlists/{id}");
+    {
+        NavigationManager.NavigateTo($"/playlists/{id}");
+    }
 
     public class UsersPageConst
     {

@@ -14,9 +14,13 @@ public class ThemeColorProvider(ILocalStorageService localStorageService) : IThe
     private const string ThemeColor = "ThemeColor";
 
     public async Task<ThemeColor> GetThemeColor()
-        => await localStorageService.GetItemAsync<ThemeColor?>(ThemeColor) ??
-           YoutubeLinks.Shared.Features.Users.Helpers.ThemeColor.System;
+    {
+        return await localStorageService.GetItemAsync<ThemeColor?>(ThemeColor) ??
+               YoutubeLinks.Shared.Features.Users.Helpers.ThemeColor.System;
+    }
 
     public async Task SetThemeColor(ThemeColor value)
-        => await localStorageService.SetItemAsync(ThemeColor, value);
+    {
+        await localStorageService.SetItemAsync(ThemeColor, value);
+    }
 }

@@ -12,8 +12,12 @@ public interface ILocalizationProvider
 public class LocalizationProvider(ILocalStorageService localStorage) : ILocalizationProvider
 {
     public async Task<string> GetCulture()
-        => await localStorage.GetItemAsync<string>(LocalizationConsts.CultureKey);
+    {
+        return await localStorage.GetItemAsync<string>(LocalizationConsts.CultureKey);
+    }
 
     public async Task SetCulture(string culture)
-        => await localStorage.SetItemAsync(LocalizationConsts.CultureKey, culture);
+    {
+        await localStorage.SetItemAsync(LocalizationConsts.CultureKey, culture);
+    }
 }

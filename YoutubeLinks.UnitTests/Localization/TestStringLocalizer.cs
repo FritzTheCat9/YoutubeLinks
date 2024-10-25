@@ -21,8 +21,12 @@ public class TestStringLocalizer<T> : IStringLocalizer<T>
     }
 
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-        => throw new NotImplementedException();
+    {
+        throw new NotImplementedException();
+    }
 
     public void AddTranslation(string key, string value)
-        => _localizations[key] = value;
+    {
+        _localizations[key] = value;
+    }
 }

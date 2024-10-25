@@ -11,9 +11,7 @@ public static class GetAllLinks
         public bool Downloaded { get; set; }
     }
 
-    public class Validator : AbstractValidator<Query>
-    {
-    }
+    public class Validator : AbstractValidator<Query> { }
 
     public class LinkInfoDto
     {

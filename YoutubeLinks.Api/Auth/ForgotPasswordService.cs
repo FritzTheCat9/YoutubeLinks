@@ -36,6 +36,8 @@ public class ForgotPasswordService : IForgotPasswordService
         return token;
     }
 
-    public string GenerateForgotPasswordLink(string email, string token) 
-        => $"{_baseUrl}/resetPassword?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
+    public string GenerateForgotPasswordLink(string email, string token)
+    {
+        return $"{_baseUrl}/resetPassword?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
+    }
 }

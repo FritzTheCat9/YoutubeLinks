@@ -24,6 +24,8 @@ public partial class FritzCopyToClipboardButton : ComponentBase
             TooltipText = Localizer[nameof(AppStrings.CopyToClipboard)];
     }
 
-    private async Task CopyTextToClipboard() 
-        => await JsRuntime.InvokeVoidAsync("copyToClipboard", CopiedText);
+    private async Task CopyTextToClipboard()
+    {
+        await JsRuntime.InvokeVoidAsync("copyToClipboard", CopiedText);
+    }
 }

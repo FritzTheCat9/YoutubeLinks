@@ -11,7 +11,5 @@ public static class GetPlaylist
         public int Id { get; set; }
     }
 
-    public class Validator : AbstractValidator<Query>
-    {
-    }
+    public class Validator : AbstractValidator<Query> { }
 }

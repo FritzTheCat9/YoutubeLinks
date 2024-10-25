@@ -11,7 +11,5 @@ public static class RefreshToken
         public string RefreshToken { get; set; }
     }
 
-    public class Validator : AbstractValidator<Command>
-    {
-    }
+    public class Validator : AbstractValidator<Command> { }
 }

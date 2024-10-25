@@ -30,12 +30,18 @@ public class LinkRepository(AppDbContext dbContext) : ILinkRepository
     }
 
     public async Task<IEnumerable<Link>> GetAll()
-        => await dbContext.Links.Include(x => x.Playlist)
+    {
+        return await dbContext.Links
+            .Include(x => x.Playlist)
             .ToListAsync();
+    }
 
     public async Task<Link> Get(int id)
-        => await dbContext.Links.Include(x => x.Playlist)
+    {
+        return await dbContext.Links
+            .Include(x => x.Playlist)
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
 
     public async Task<int> Create(Link link)
     {
@@ -57,5 +63,7 @@ public class LinkRepository(AppDbContext dbContext) : ILinkRepository
     }
 
     public async Task SaveChanges()
-        => await dbContext.SaveChangesAsync();
+    {
+        await dbContext.SaveChangesAsync();
+    }
 }

@@ -13,11 +13,17 @@ public interface IJwtProvider
 public class JwtProvider(ILocalStorageService localStorageService) : IJwtProvider
 {
     public async Task<JwtDto> GetJwtDto()
-        => await localStorageService.GetItemAsync<JwtDto>(Jwt.Dto) ?? null;
+    {
+        return await localStorageService.GetItemAsync<JwtDto>(Jwt.Dto) ?? null;
+    }
 
     public async Task SetJwtDto(JwtDto token)
-        => await localStorageService.SetItemAsync(Jwt.Dto, token);
+    {
+        await localStorageService.SetItemAsync(Jwt.Dto, token);
+    }
 
     public async Task RemoveJwtDto()
-        => await localStorageService.RemoveItemAsync(Jwt.Dto);
+    {
+        await localStorageService.RemoveItemAsync(Jwt.Dto);
+    }
 }

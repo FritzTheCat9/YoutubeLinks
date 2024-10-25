@@ -32,6 +32,8 @@ public partial class FritzProcessingButton : ComponentBase
         StateHasChanged();
     }
 
-    public bool IsProcessing() 
-        => _processing;
+    public bool IsProcessing()
+    {
+        return _processing;
+    }
 }

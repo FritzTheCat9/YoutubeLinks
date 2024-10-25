@@ -44,6 +44,8 @@ public class AuthStateProvider(IJwtProvider jwtProvider) : AuthenticationStatePr
         return authenticationState;
     }
 
-    public void NotifyAuthStateChanged() 
-        => NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    public void NotifyAuthStateChanged()
+    {
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
 }

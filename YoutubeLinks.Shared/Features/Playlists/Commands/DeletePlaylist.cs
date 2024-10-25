@@ -10,7 +10,5 @@ public static class DeletePlaylist
         public int Id { get; set; }
     }
 
-    public class Validator : AbstractValidator<Command>
-    {
-    }
+    public class Validator : AbstractValidator<Command> { }
 }

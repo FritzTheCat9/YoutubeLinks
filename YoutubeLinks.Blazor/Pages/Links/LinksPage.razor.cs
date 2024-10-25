@@ -252,8 +252,10 @@ public partial class LinksPage : ComponentBase
             }
     }
 
-    private static string ConvertToEmbedUrl(string url) 
-        => url.Replace("/watch?v=", "/embed/");
+    private static string ConvertToEmbedUrl(string url)
+    {
+        return url.Replace("/watch?v=", "/embed/");
+    }
 
     public class LinksPageConst
     {

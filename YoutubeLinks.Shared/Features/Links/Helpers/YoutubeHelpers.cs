@@ -50,8 +50,12 @@ public static class YoutubeHelpers
     }
 
     private static string GetInvalidPathAndFileNameCharacters()
-        => new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+    {
+        return new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+    }
 
     private static bool ContainsInvalidChars(string input, string invalidChars)
-        => input.IndexOfAny(invalidChars.ToCharArray()) != -1;
+    {
+        return input.IndexOfAny(invalidChars.ToCharArray()) != -1;
+    }
 }

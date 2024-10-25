@@ -24,29 +24,47 @@ public class LinkApiClient(IApiClient apiClient) : ILinkApiClient
     private const string Url = "api/links";
 
     public async Task<PagedList<LinkDto>> GetAllPaginatedLinks(GetAllPaginatedLinks.Query query)
-        => await apiClient.Post<GetAllPaginatedLinks.Query, PagedList<LinkDto>>($"{Url}/allPaginated", query);
+    {
+        return await apiClient.Post<GetAllPaginatedLinks.Query, PagedList<LinkDto>>($"{Url}/allPaginated", query);
+    }
 
     public async Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query)
-        => await apiClient.Post<Query, IEnumerable<LinkInfoDto>>($"{Url}/all", query);
+    {
+        return await apiClient.Post<Query, IEnumerable<LinkInfoDto>>($"{Url}/all", query);
+    }
 
     public async Task<LinkDto> GetLink(int id)
-        => await apiClient.Get<LinkDto>($"{Url}/{id}");
+    {
+        return await apiClient.Get<LinkDto>($"{Url}/{id}");
+    }
 
     public async Task CreateLink(CreateLink.Command command)
-        => await apiClient.Post(Url, command);
+    {
+        await apiClient.Post(Url, command);
+    }
 
     public async Task UpdateLink(UpdateLink.Command command)
-        => await apiClient.Put($"{Url}/{command.Id}", command);
+    {
+        await apiClient.Put($"{Url}/{command.Id}", command);
+    }
 
     public async Task SetLinkDownloadedFlag(SetLinkDownloadedFlag.Command command)
-        => await apiClient.Put($"{Url}/{command.Id}/downloaded", command);
+    {
+        await apiClient.Put($"{Url}/{command.Id}/downloaded", command);
+    }
 
     public async Task DeleteLink(int id)
-        => await apiClient.Delete($"{Url}/{id}");
+    {
+        await apiClient.Delete($"{Url}/{id}");
+    }
 
     public async Task<HttpResponseMessage> DownloadLink(DownloadLink.Command command)
-        => await apiClient.PostReturnHttpResponseMessage($"{Url}/download", command);
+    {
+        return await apiClient.PostReturnHttpResponseMessage($"{Url}/download", command);
+    }
 
     public async Task<HttpResponseMessage> DownloadSingleLink(DownloadSingleLink.Command command)
-        => await apiClient.PostReturnHttpResponseMessage($"{Url}/downloadSingle", command);
+    {
+        return await apiClient.PostReturnHttpResponseMessage($"{Url}/downloadSingle", command);
+    }
 }

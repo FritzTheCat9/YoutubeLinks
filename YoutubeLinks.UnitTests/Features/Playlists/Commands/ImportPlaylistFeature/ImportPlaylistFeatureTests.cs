@@ -18,7 +18,10 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
 public class ImportPlaylistFeatureTests
 {
     private readonly IClock _clock = Substitute.For<IClock>();
-    private readonly IStringLocalizer<ApiValidationMessage> _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+
+    private readonly IStringLocalizer<ApiValidationMessage> _localizer =
+        Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
     private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 

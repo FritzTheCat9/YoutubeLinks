@@ -203,7 +203,9 @@ public partial class MainLayout : LayoutComponentBase
     }
 
     private void DrawerToggle()
-        => _drawerOpen = !_drawerOpen;
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 
     public class MainLayoutConst
     {

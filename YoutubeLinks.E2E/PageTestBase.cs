@@ -31,19 +31,29 @@ public abstract class PageTestBase : PageTest
     }
 
     protected ILocator GetLocatorByTestId(string testId)
-        => Page.GetByTestId(testId).First;
+    {
+        return Page.GetByTestId(testId).First;
+    }
 
     protected async Task FillInput(string testId, string text)
-        => await Page.GetByTestId(testId).FillAsync(text);
+    {
+        await Page.GetByTestId(testId).FillAsync(text);
+    }
 
     protected async Task ClickElement(string testId)
-        => await Page.GetByTestId(testId).First.ClickAsync();
+    {
+        await Page.GetByTestId(testId).First.ClickAsync();
+    }
 
     protected async Task ClickEnter(string testId)
-        => await Page.GetByTestId(testId).PressAsync("Enter");
+    {
+        await Page.GetByTestId(testId).PressAsync("Enter");
+    }
 
     protected async Task NavigateToPage(string url = "")
-        => await Page.GotoAsync($"{BaseUrl}/{url}");
+    {
+        await Page.GotoAsync($"{BaseUrl}/{url}");
+    }
 
     protected async Task CheckText(string testId, string text)
     {
@@ -75,8 +85,10 @@ public abstract class PageTestBase : PageTest
 
     private const string ApiBaseUrl = "http://localhost:5000/api";
 
-    private Task<IResponse> WaitForApiResponse(string url) 
-        => Page.WaitForResponseAsync(response => response.Url.Contains($"{ApiBaseUrl}/{url}"));
+    private Task<IResponse> WaitForApiResponse(string url)
+    {
+        return Page.WaitForResponseAsync(response => response.Url.Contains($"{ApiBaseUrl}/{url}"));
+    }
 
     protected async Task ApiResponseOkAfterButtonClick(string testId, string url)
     {

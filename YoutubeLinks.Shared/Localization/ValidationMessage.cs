@@ -1,5 +1,3 @@
 ﻿namespace YoutubeLinks.Shared;
 
-public class ValidationMessage
-{
-}
+public class ValidationMessage { }

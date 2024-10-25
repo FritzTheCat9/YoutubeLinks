@@ -11,7 +11,5 @@ public static class ResetLinksDownloadedFlag
         public bool IsDownloaded { get; set; }
     }
 
-    public class Validator : AbstractValidator<Command>
-    {
-    }
+    public class Validator : AbstractValidator<Command> { }
 }

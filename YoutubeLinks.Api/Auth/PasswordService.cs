@@ -12,9 +12,13 @@ public interface IPasswordService
 public class PasswordService(IPasswordHasher<User> passwordHasher) : IPasswordService
 {
     public string Hash(string password)
-        => passwordHasher.HashPassword(default!, password);
+    {
+        return passwordHasher.HashPassword(default!, password);
+    }
 
     public bool Validate(string password, string hashedPassword)
-        => passwordHasher.VerifyHashedPassword(default!, hashedPassword, password)
+    {
+        return passwordHasher.VerifyHashedPassword(default!, hashedPassword, password)
             is PasswordVerificationResult.Success;
+    }
 }

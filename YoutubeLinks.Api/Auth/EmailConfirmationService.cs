@@ -36,6 +36,8 @@ public class EmailConfirmationService : IEmailConfirmationService
         return token;
     }
 
-    public string GenerateConfirmationLink(string email, string token) 
-        => $"{_baseUrl}/confirmEmail?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
+    public string GenerateConfirmationLink(string email, string token)
+    {
+        return $"{_baseUrl}/confirmEmail?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
+    }
 }

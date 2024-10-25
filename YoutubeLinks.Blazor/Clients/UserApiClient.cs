@@ -24,32 +24,52 @@ public class UserApiClient(IApiClient apiClient) : IUserApiClient
     private const string Url = "api/users";
 
     public async Task<bool> ConfirmEmail(ConfirmEmail.Command command)
-        => await apiClient.Post<ConfirmEmail.Command, bool>($"{Url}/confirmEmail", command);
+    {
+        return await apiClient.Post<ConfirmEmail.Command, bool>($"{Url}/confirmEmail", command);
+    }
 
     public async Task ForgotPassword(ForgotPassword.Command command)
-        => await apiClient.Post($"{Url}/forgotPassword", command);
+    {
+        await apiClient.Post($"{Url}/forgotPassword", command);
+    }
 
     public async Task<JwtDto> Login(Login.Command command)
-        => await apiClient.Post<Login.Command, JwtDto>($"{Url}/login", command);
+    {
+        return await apiClient.Post<Login.Command, JwtDto>($"{Url}/login", command);
+    }
 
     public async Task<JwtDto> RefreshToken(RefreshToken.Command command)
-        => await apiClient.Post<RefreshToken.Command, JwtDto>($"{Url}/refresh-token", command);
+    {
+        return await apiClient.Post<RefreshToken.Command, JwtDto>($"{Url}/refresh-token", command);
+    }
 
     public async Task Register(Register.Command command)
-        => await apiClient.Post($"{Url}/register", command);
+    {
+        await apiClient.Post($"{Url}/register", command);
+    }
 
     public async Task ResendConfirmationEmail(ResendConfirmationEmail.Command command)
-        => await apiClient.Post($"{Url}/resendConfirmationEmail", command);
+    {
+        await apiClient.Post($"{Url}/resendConfirmationEmail", command);
+    }
 
     public async Task<bool> ResetPassword(ResetPassword.Command command)
-        => await apiClient.Post<ResetPassword.Command, bool>($"{Url}/resetPassword", command);
+    {
+        return await apiClient.Post<ResetPassword.Command, bool>($"{Url}/resetPassword", command);
+    }
 
     public async Task UpdateUserTheme(UpdateUserTheme.Command command)
-        => await apiClient.Put($"{Url}/{command.Id}/theme", command);
+    {
+        await apiClient.Put($"{Url}/{command.Id}/theme", command);
+    }
 
     public async Task<PagedList<UserDto>> GetAllUsers(GetAllUsers.Query query)
-        => await apiClient.Post<GetAllUsers.Query, PagedList<UserDto>>($"{Url}/all", query);
+    {
+        return await apiClient.Post<GetAllUsers.Query, PagedList<UserDto>>($"{Url}/all", query);
+    }
 
     public async Task<UserDto> GetUser(int id)
-        => await apiClient.Get<UserDto>($"{Url}/{id}");
+    {
+        return await apiClient.Get<UserDto>($"{Url}/{id}");
+    }
 }

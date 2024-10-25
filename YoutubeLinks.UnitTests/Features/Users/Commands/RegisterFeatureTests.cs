@@ -21,7 +21,9 @@ public class RegisterFeatureTests
     private readonly IEmailConfirmationService _emailConfirmationService = Substitute.For<IEmailConfirmationService>();
     private readonly IEmailService _emailService = Substitute.For<IEmailService>();
     private readonly IPasswordService _passwordService = Substitute.For<IPasswordService>();
-    private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+
+    private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer =
+        Substitute.For<IStringLocalizer<ApiValidationMessage>>();
 
     [Fact]
     public async Task RegisterHandler_ThrowsValidationException_IfEmailExists()

@@ -19,7 +19,10 @@ public class CreateLinkFeatureTests
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
     private readonly IClock _clock = Substitute.For<IClock>();
     private readonly ILinkRepository _linkRepository = Substitute.For<ILinkRepository>();
-    private readonly IStringLocalizer<ApiValidationMessage> _localizer = Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+
+    private readonly IStringLocalizer<ApiValidationMessage> _localizer =
+        Substitute.For<IStringLocalizer<ApiValidationMessage>>();
+
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
     private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 

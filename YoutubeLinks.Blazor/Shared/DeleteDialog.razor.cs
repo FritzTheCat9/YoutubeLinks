@@ -25,10 +25,14 @@ public partial class DeleteDialog : ComponentBase
     }
 
     private void Submit()
-        => MudDialog.Close(DialogResult.Ok(true));
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
 
     private void Cancel()
-        => MudDialog.Cancel();
+    {
+        MudDialog.Cancel();
+    }
 
     public class DeleteDialogConst
     {

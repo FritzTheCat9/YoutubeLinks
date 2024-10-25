@@ -7,6 +7,8 @@ public interface IClock
 
 public class Clock : IClock
 {
-    public DateTime Current() 
-        => DateTime.UtcNow;
+    public DateTime Current()
+    {
+        return DateTime.UtcNow;
+    }
 }

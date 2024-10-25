@@ -16,7 +16,5 @@ public static class GetAllPublicPlaylists
         public SortOrder SortOrder { get; set; }
     }
 
-    public class Validator : AbstractValidator<Query>
-    {
-    }
+    public class Validator : AbstractValidator<Query> { }
 }

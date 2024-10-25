@@ -41,7 +41,8 @@ public class GetPlaylistFeatureTests
     }
 
     [Fact]
-    public async Task GetPlaylistHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUserAndPlaylistIsNotPublic()
+    public async Task
+        GetPlaylistHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUserAndPlaylistIsNotPublic()
     {
         var query = new GetPlaylist.Query
         {

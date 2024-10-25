@@ -23,42 +23,52 @@ public interface IUserRepository
 public class UserRepository(AppDbContext dbContext) : IUserRepository
 {
     public IQueryable<User> AsQueryable()
-        => dbContext.Users.AsQueryable();
+    {
+        return dbContext.Users.AsQueryable();
+    }
 
     public async Task<IEnumerable<User>> GetAll()
-        => await dbContext.Users
-            .ToListAsync();
+    {
+        return await dbContext.Users.ToListAsync();
+    }
 
     public async Task<User> Get(int id)
-        => await dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id == id);
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+    }
 
     public async Task<User> GetByEmail(string email)
-        => await dbContext.Users
-            .FirstOrDefaultAsync(x => x.Email == email);
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+    }
 
     public async Task<User> GetByUserName(string userName)
-        => await dbContext.Users
-            .FirstOrDefaultAsync(x => x.UserName == userName);
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+    }
 
     public async Task<bool> EmailExists(string email)
-        => await dbContext.Users
-            .AnyAsync(x => x.Email == email);
+    {
+        return await dbContext.Users.AnyAsync(x => x.Email == email);
+    }
 
     public async Task<bool> UserNameExists(string userName)
-        => await dbContext.Users
-            .AnyAsync(x => x.UserName == userName);
+    {
+        return await dbContext.Users.AnyAsync(x => x.UserName == userName);
+    }
 
     public async Task<bool> IsEmailConfirmationTokenAssignedToUser(string email, string token)
-        => await dbContext.Users
-            .AnyAsync(x => x.Email == email
-                           && x.EmailConfirmationToken == token);
+    {
+        return await dbContext.Users.AnyAsync(x => x.Email == email
+                                                   && x.EmailConfirmationToken == token);
+    }
 
 
     public async Task<bool> IsForgotPasswordTokenAssignedToUser(string email, string token)
-        => await dbContext.Users
-            .AnyAsync(x => x.Email == email
-                           && x.ForgotPasswordToken == token);
+    {
+        return await dbContext.Users.AnyAsync(x => x.Email == email
+                                                   && x.ForgotPasswordToken == token);
+    }
 
 
     public async Task<int> Create(User user)

@@ -35,45 +35,56 @@ public class PlaylistRepository(AppDbContext dbContext) : IPlaylistRepository
     }
 
     public IQueryable<Playlist> AsQueryablePublic()
-        => dbContext.Playlists
+    {
+        return dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .Where(x => x.Public)
             .AsSplitQuery()
             .AsQueryable();
+    }
 
     public async Task<IEnumerable<Playlist>> GetAll()
-        => await dbContext.Playlists
+    {
+        return await dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .AsSplitQuery()
             .ToListAsync();
+    }
 
     public async Task<IEnumerable<Playlist>> GetAllPublic()
-        => await dbContext.Playlists
+    {
+        return await dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .Where(x => x.Public)
             .AsSplitQuery()
             .ToListAsync();
+    }
 
     public async Task<Playlist> Get(int id)
-        => await dbContext.Playlists
+    {
+        return await dbContext.Playlists
             .Include(x => x.Links)
             .Include(x => x.User)
             .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
 
     public async Task<bool> LinkUrlExists(string url, int playlistId)
-        => await dbContext.Links
-            .AnyAsync(x => x.Url == url
-                           && x.PlaylistId == playlistId);
+    {
+        return await dbContext.Links.AnyAsync(x => x.Url == url
+                                                   && x.PlaylistId == playlistId);
+    }
 
     public async Task<bool> LinkUrlExistsInOtherLinksThan(string url, int playlistId, int id)
-        => await dbContext.Links
+    {
+        return await dbContext.Links
             .Where(x => x.Id != id)
             .AnyAsync(x => x.Url == url
                            && x.PlaylistId == playlistId);
+    }
 
     public async Task<int> Create(Playlist playlist)
     {

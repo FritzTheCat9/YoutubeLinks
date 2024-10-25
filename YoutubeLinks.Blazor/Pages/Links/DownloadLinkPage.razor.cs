@@ -15,8 +15,8 @@ namespace YoutubeLinks.Blazor.Pages.Links;
 
 public partial class DownloadLinkPage : ComponentBase
 {
-    private CustomValidator _customValidator;
     private readonly List<DownloadLinkResult> _downloadLinkResults = [];
+    private CustomValidator _customValidator;
     private List<BreadcrumbItem> _items;
     private FritzProcessingButton _processingButton;
 

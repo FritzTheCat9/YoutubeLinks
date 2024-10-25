@@ -25,5 +25,7 @@ public partial class SuccessDialog : ComponentBase
     }
 
     private void Submit()
-        => MudDialog.Close(DialogResult.Ok(true));
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
 }

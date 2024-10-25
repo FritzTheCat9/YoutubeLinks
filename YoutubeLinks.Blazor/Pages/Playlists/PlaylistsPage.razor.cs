@@ -191,11 +191,15 @@ public partial class PlaylistsPage : ComponentBase
             await _table.ReloadServerData();
     }
 
-    private void RedirectToLinksPage(int id) 
-        => NavigationManager.NavigateTo($"/links/{UserId}/{id}");
+    private void RedirectToLinksPage(int id)
+    {
+        NavigationManager.NavigateTo($"/links/{UserId}/{id}");
+    }
 
-    private void RedirectToDownloadPlaylistPage(int id) 
-        => NavigationManager.NavigateTo($"/downloadPlaylist/{id}");
+    private void RedirectToDownloadPlaylistPage(int id)
+    {
+        NavigationManager.NavigateTo($"/downloadPlaylist/{id}");
+    }
 
     public class PlaylistsPageConst
     {

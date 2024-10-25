@@ -16,7 +16,9 @@ public class EmailService(
     : IEmailService
 {
     private readonly EmailOptions _options = options.Value;
-    private readonly string _templatesFolder = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Emails", "Templates");
+
+    private readonly string _templatesFolder =
+        Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "Emails", "Templates");
 
     public async Task SendEmail<T>(string to, T model) where T : BaseTemplateModel
     {

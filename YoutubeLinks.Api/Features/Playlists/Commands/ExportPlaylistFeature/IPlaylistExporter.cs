@@ -49,7 +49,7 @@ public class TxtPlaylistExporter : IPlaylistExporter
     private static byte[] GetPlaylistTxtFileBytes(IEnumerable<LinkJsonModel> links)
     {
         var stringBuilder = new StringBuilder();
-        foreach (var link in links) 
+        foreach (var link in links)
             stringBuilder.AppendLine(link.Url);
         var fileText = stringBuilder.ToString();
 

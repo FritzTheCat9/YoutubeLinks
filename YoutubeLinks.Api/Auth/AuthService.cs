@@ -24,10 +24,14 @@ public class AuthService : IAuthService
     private ClaimsPrincipal User { get; }
 
     public bool IsInRole(string roleName)
-        => User.IsInRole(roleName);
+    {
+        return User.IsInRole(roleName);
+    }
 
-    public bool IsInAnyRole(params string[] roleNames) 
-        => roleNames.Any(roleName => User.IsInRole(roleName));
+    public bool IsInAnyRole(params string[] roleNames)
+    {
+        return roleNames.Any(roleName => User.IsInRole(roleName));
+    }
 
     public bool IsLoggedInUser(int userId)
     {

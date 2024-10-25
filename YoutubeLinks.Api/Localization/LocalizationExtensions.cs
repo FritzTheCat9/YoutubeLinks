@@ -15,7 +15,7 @@ public static class LocalizationExtensions
     {
         var supportedCultures = LocalizationConsts.SupportedCultures.Select(x => x.CultureInfo.Name)
             .ToArray();
-        
+
         var localizationOptions = new RequestLocalizationOptions()
             .SetDefaultCulture(LocalizationConsts.DefaultCulture)
             .AddSupportedCultures(supportedCultures)
