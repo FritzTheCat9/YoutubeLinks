@@ -1,20 +1,20 @@
-﻿<EditForm Model=Command
-          OnValidSubmit=HandleValidSubmit>
-    <CustomValidator @ref=_customValidator />
+﻿<EditForm Model="Command"
+          OnValidSubmit="HandleValidSubmit">
+    <CustomValidator @ref="_customValidator" />
     <FluentValidationValidator />
 
-    <MudDialog DefaultFocus=DefaultFocus.LastChild>
+    <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label=@Localizer[nameof(AppStrings.Email)]
-                            @bind-Value=Command.Email
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Email)]"
+                            @bind-Value="Command.Email"
                             For="() => Command.Email" />
             <FritzValidationMessage For="() => Command.Email" />
         </DialogContent>
         <DialogActions>
-            <FritzProcessingButton @ref=_processingButton
-                                   ButtonType=ButtonType.Submit
-                                   Color=Color.Primary
-                                   ButtonText=@Localizer[nameof(AppStrings.ResendConfirmationEmail)] />
+            <FritzProcessingButton @ref="_processingButton"
+                                   ButtonType="ButtonType.Submit"
+                                   Color="Color.Primary"
+                                   ButtonText="@Localizer[nameof(AppStrings.ResendConfirmationEmail)]" />
         </DialogActions>
     </MudDialog>
 </EditForm>

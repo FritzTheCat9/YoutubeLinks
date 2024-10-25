@@ -26,7 +26,7 @@ namespace YoutubeLinks.Api.Data.Database
             }
             catch (Exception ex)
             {
-                _logger.LogError("[DatabaseInitializer] Error while creating and migrationg the database: {0}", ex.Message);
+                _logger.LogError("[DatabaseInitializer] Error while creating and migrating the database: {0}", ex.Message);
             }
         }
 

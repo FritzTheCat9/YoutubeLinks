@@ -74,7 +74,7 @@ namespace YoutubeLinks.Api.Exceptions
                 }
             };
 
-            string jsonString = JsonConvert.SerializeObject(errorHelperModel.ErrorResponse, settings);
+            var jsonString = JsonConvert.SerializeObject(errorHelperModel.ErrorResponse, settings);
             await context.Response.WriteAsync(jsonString);
         }
 

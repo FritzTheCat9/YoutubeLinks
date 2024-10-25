@@ -12,20 +12,18 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
 {
     public static class CreatePlaylistFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists", async (
                 CreatePlaylist.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                int playlistId = await mediator.Send(command, cancellationToken);
+                var playlistId = await mediator.Send(command, cancellationToken);
                 return Results.CreatedAtRoute("GetPlaylist", new { id = playlistId });
             })
                 .WithTags(Tags.Playlists)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<CreatePlaylist.Command, int>

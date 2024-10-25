@@ -11,9 +11,9 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
 {
     public static class UpdatePlaylistFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("/api/playlists/{id}", async (
+            app.MapPut("/api/playlists/{id:int}", async (
                 int id,
                 UpdatePlaylist.Command command,
                 IMediator mediator,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
             })
                 .WithTags(Tags.Playlists)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<UpdatePlaylist.Command, Unit>

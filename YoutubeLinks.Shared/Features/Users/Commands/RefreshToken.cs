@@ -4,7 +4,7 @@ using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Shared.Features.Users.Commands
 {
-    public class RefreshToken
+    public static class RefreshToken
     {
         public class Command : IRequest<JwtDto>
         {

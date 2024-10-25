@@ -2,21 +2,21 @@
             Rounded="true"
             Margin="Margin.Normal">
     <MudNavLink Href="/"
-                Match=NavLinkMatch.All
-                Icon=@Icons.Material.Filled.Home>
+                Match="NavLinkMatch.All"
+                Icon="@Icons.Material.Filled.Home">
         @Localizer[nameof(AppStrings.Home)]
     </MudNavLink>
     <MudNavLink Href="/downloadLink"
-                Match=NavLinkMatch.Prefix
-                Icon=@Icons.Material.Filled.Download>
+                Match="NavLinkMatch.Prefix"
+                Icon="@Icons.Material.Filled.Download">
         @Localizer[nameof(AppStrings.DownloadLink)]
     </MudNavLink>
     <MudNavLink Href="/users"
-                Match=NavLinkMatch.Prefix
-                Icon=@Icons.Material.Filled.SupervisorAccount>
+                Match="NavLinkMatch.Prefix"
+                Icon="@Icons.Material.Filled.SupervisorAccount">
         @Localizer[nameof(AppStrings.Users)]
     </MudNavLink>
-    <AuthorizeView Policy=@Policy.User>
+    <AuthorizeView Policy="@Policy.User">
         <Authorized>
             @if (UserId is not null)
             {

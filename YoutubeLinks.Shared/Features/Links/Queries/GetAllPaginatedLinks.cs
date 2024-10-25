@@ -5,7 +5,7 @@ using YoutubeLinks.Shared.Features.Links.Responses;
 
 namespace YoutubeLinks.Shared.Features.Links.Queries
 {
-    public class GetAllPaginatedLinks
+    public static class GetAllPaginatedLinks
     {
         public class Query : IRequest<PagedList<LinkDto>>, IPagedQuery, ISortedQuery
         {

@@ -13,8 +13,8 @@ namespace YoutubeLinks.E2E
         {
             await NavigateToAdminPlaylists();
 
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
+            const string playlistName = "Test Playlist";
+            const bool playlistIsPublic = false;
 
             await CreateTestPlaylist(playlistName, playlistIsPublic);
 
@@ -25,7 +25,7 @@ namespace YoutubeLinks.E2E
         [TearDown]
         public async Task TearDown()
         {
-            var playlistName = "Test Playlist";
+            const string playlistName = "Test Playlist";
 
             await GoBackToPlaylistsPageFromLinksPage();
             await DeleteTestPlaylist(playlistName);
@@ -50,11 +50,11 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task CreateUpdateDeleteLink()
         {
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
-            var updatedTitle = "Rick Astley - Never Gonna Give You Up";
+            const string updatedTitle = "Rick Astley - Never Gonna Give You Up";
             await UpdateLink(title, url, updatedTitle, false);
 
             await DeleteLink(updatedTitle);
@@ -63,33 +63,33 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task CopyLinkToClipboard()
         {
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             await ClickElement(LinksPageConst.CopyToClipboardButton);
-            string clipboardText = await Page.EvaluateAsync<string>("navigator.clipboard.readText()");
+            var clipboardText = await Page.EvaluateAsync<string>("navigator.clipboard.readText()");
             Assert.That(clipboardText, Is.EqualTo(url));
 
             await DeleteLink(title);
         }
 
         [Test]
-        public async Task DownloadLinkAsMP3()
+        public async Task DownloadLinkAsMp3()
         {
-            await DownloadLink(LinksPageConst.DownloadMP3FileButton);
+            await DownloadLink(LinksPageConst.DownloadMp3FileButton);
         }
 
         [Test]
-        public async Task DownloadLinkAsMP4()
+        public async Task DownloadLinkAsMp4()
         {
-            await DownloadLink(LinksPageConst.DownloadMP4FileButton);
+            await DownloadLink(LinksPageConst.DownloadMp4FileButton);
         }
 
         private async Task DownloadLink(string downloadFileButton)
         {
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             var downloadTask = Page.WaitForDownloadAsync(new PageWaitForDownloadOptions { Timeout = 60000 });
@@ -104,8 +104,8 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task SetAllPlaylistLinksAsDownloadedAndUndownloaded()
         {
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             await ClickElement(LinksPageConst.SetAllPlaylistLinksAsDownloadedButton);
@@ -120,8 +120,8 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task SwitchToGridView()
         {
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             await ClickElement(LinksPageConst.SwitchToGridViewButton);

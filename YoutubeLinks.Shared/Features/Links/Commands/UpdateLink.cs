@@ -6,7 +6,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
 {
-    public class UpdateLink
+    public static class UpdateLink
     {
         public class Command : IRequest<Unit>
         {
@@ -29,7 +29,7 @@ namespace YoutubeLinks.Shared.Features.Links.Commands
                 When(x => !string.IsNullOrWhiteSpace(x.Title), () =>
                 {
                     RuleFor(x => x.Title)
-                        .Must(x => YoutubeHelpers.HaveValidCharactersInTitle(x))
+                        .Must(YoutubeHelpers.HaveValidCharactersInTitle)
                         .WithMessage(x => localizer[nameof(ValidationMessageString.TitleHaveValidCharacters)])
                         .MaximumLength(YoutubeHelpers.MaximumTitleLength)
                         .WithMessage(x => localizer[nameof(ValidationMessageString.TitleMaximumLength)]);

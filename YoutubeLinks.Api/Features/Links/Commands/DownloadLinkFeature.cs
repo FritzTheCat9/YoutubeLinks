@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.IO;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Helpers;
@@ -12,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 {
     public static class DownloadLinkFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/links/download", async (
                 DownloadLink.Command command,
@@ -32,8 +31,6 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             })
                 .WithTags(Tags.Links)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<DownloadLink.Command, YoutubeFile>
@@ -61,17 +58,14 @@ namespace YoutubeLinks.Api.Features.Links.Commands
                 var isUserPlaylist = _authService.IsLoggedInUser(link.Playlist.UserId);
                 var isPublicPlaylist = link.Playlist.Public;
 
-                if (isUserPlaylist || isPublicPlaylist)
-                {
-                    var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
-                    var youtubeFile = await downloader.Download(link.VideoId, link.Title);
-
-                    return youtubeFile;
-                }
-                else
-                {
+                if (!isUserPlaylist && !isPublicPlaylist) 
                     throw new MyForbiddenException();
-                }
+                
+                var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, _youtubeService);
+                var youtubeFile = await downloader.Download(link.VideoId, link.Title);
+
+                return youtubeFile;
+
             }
         }
     }

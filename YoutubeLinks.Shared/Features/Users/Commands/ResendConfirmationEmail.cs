@@ -5,7 +5,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Users.Commands
 {
-    public class ResendConfirmationEmail
+    public static class ResendConfirmationEmail
     {
         public class Command : IRequest<Unit>
         {

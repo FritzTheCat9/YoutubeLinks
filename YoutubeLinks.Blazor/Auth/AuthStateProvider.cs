@@ -39,7 +39,7 @@ namespace YoutubeLinks.Blazor.Auth
 
                     return new AuthenticationState(new ClaimsPrincipal(
                         new ClaimsIdentity(jsonToken.Claims,
-                                           Jwt.AuthnticationType,
+                                           Jwt.AuthenticationType,
                                            ClaimsIdentity.DefaultNameClaimType,
                                            ClaimsIdentity.DefaultRoleClaimType)));
                 }

@@ -22,10 +22,10 @@ namespace YoutubeLinks.E2E
         }
 
         /// <summary>
-        /// To login we should confirm registered user email
+        /// To login, we should confirm registered user email
         /// </summary>
         [Test]
-        public async Task LoginAsRegisterdUser()
+        public async Task LoginAsRegisteredUser()
         {
             await NavigateToPage();
             await ClickElement(AuthComponentConst.LoginButton);

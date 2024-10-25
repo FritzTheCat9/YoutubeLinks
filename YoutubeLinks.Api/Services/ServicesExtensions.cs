@@ -9,11 +9,11 @@ namespace YoutubeLinks.Api.Services
             IWebHostEnvironment webHostEnvironment)
         {
             // unpack ffmpeg.zip file (for yt-dlp on windows)
-            string _ffmpegZipPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "ffmpeg.zip");
-            string _ffmpegPath = Path.GetFullPath(webHostEnvironment.ContentRootPath);
-            if (!File.Exists(Path.Combine(_ffmpegPath, "ffmpeg.exe")))
+            var ffmpegZipPath = Path.Combine(Path.GetFullPath(webHostEnvironment.ContentRootPath), "ffmpeg.zip");
+            var ffmpegPath = Path.GetFullPath(webHostEnvironment.ContentRootPath);
+            if (!File.Exists(Path.Combine(ffmpegPath, "ffmpeg.exe")))
             {
-                ZipFile.ExtractToDirectory(_ffmpegZipPath, _ffmpegPath);
+                ZipFile.ExtractToDirectory(ffmpegZipPath, ffmpegPath);
             }
 
             services.AddScoped<IYoutubeService, YoutubeService>();

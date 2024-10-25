@@ -25,7 +25,7 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task CheckProjectOnGithub()
         {
-            var projectUrl = "https://github.com/FritzTheCat9/YoutubeLinks";
+            const string projectUrl = "https://github.com/FritzTheCat9/YoutubeLinks";
 
             await NavigateToPage();
 

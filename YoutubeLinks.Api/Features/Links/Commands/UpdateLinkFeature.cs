@@ -15,9 +15,9 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 {
     public static class UpdateLinkFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("/api/links/{id}", async (
+            app.MapPut("/api/links/{id:int}", async (
                 int id,
                 UpdateLink.Command command,
                 IMediator mediator,
@@ -28,8 +28,6 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             })
                 .WithTags(Tags.Links)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<UpdateLink.Command, Unit>

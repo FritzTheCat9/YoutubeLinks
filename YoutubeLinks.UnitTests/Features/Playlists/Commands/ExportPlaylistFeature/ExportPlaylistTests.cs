@@ -16,7 +16,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
         [InlineData((PlaylistFileType)5)]
         public void ExportPlaylistValidator_PlaylistFileType_ShouldBeInEnum(PlaylistFileType playlistFileType)
         {
-            var message = string.Format("PlaylistFileType has a range of values which does not include: {0}.", playlistFileType);
+            var message = $"PlaylistFileType has a range of values which does not include: {playlistFileType}.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PlaylistFileTypeIsInEnum), message);

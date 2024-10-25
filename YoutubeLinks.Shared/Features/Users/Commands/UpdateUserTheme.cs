@@ -6,7 +6,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Users.Commands
 {
-    public class UpdateUserTheme
+    public static class UpdateUserTheme
     {
         public class Command : IRequest<Unit>
         {

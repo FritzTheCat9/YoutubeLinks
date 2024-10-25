@@ -5,7 +5,7 @@ using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Shared.Features.Users.Queries
 {
-    public class GetAllUsers
+    public static class GetAllUsers
     {
         public class Query : IRequest<PagedList<UserDto>>, IPagedQuery, ISortedQuery
         {

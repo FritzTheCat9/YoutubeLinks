@@ -3,7 +3,7 @@ using MediatR;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Commands
 {
-    public class ResetLinksDownloadedFlag
+    public static class ResetLinksDownloadedFlag
     {
         public class Command : IRequest<Unit>
         {

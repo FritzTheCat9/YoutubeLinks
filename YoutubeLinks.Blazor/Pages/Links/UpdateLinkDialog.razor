@@ -1,37 +1,37 @@
-﻿<EditForm Model=Command
-          OnValidSubmit=HandleValidSubmit>
-    <CustomValidator @ref=_customValidator />
+﻿<EditForm Model="Command"
+          OnValidSubmit="HandleValidSubmit">
+    <CustomValidator @ref="_customValidator" />
     <FluentValidationValidator />
 
-    <MudDialog DefaultFocus=DefaultFocus.LastChild>
+    <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label=@Localizer[nameof(AppStrings.Url)]
-                            @bind-Value=Command.Url
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Url)]"
+                            @bind-Value="Command.Url"
                             For="() => Command.Url"
-                            UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.UrlInput} }) />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.UrlInput} })" />
             <FritzValidationMessage For="() => Command.Url" />
 
-            <FritzTextField Label=@Localizer[nameof(AppStrings.Title)]
-                            @bind-Value=Command.Title
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Title)]"
+                            @bind-Value="Command.Title"
                             For="() => Command.Title"
-                            UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.TitleInput} }) />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.TitleInput} })" />
             <FritzValidationMessage For="() => Command.Title" />
 
-            <MudCheckBox T=bool
-                         Label=@Localizer[nameof(AppStrings.Downloaded)]
-                         @bind-Value=Command.Downloaded
+            <MudCheckBox T="bool"
+                         Label="@Localizer[nameof(AppStrings.Downloaded)]"
+                         @bind-Value="Command.Downloaded"
                          For="() => Command.Downloaded"
-                         Color=Color.Primary
-                         UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.DownloadedCheckbox} }) />
+                         Color="Color.Primary"
+                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.DownloadedCheckbox} })" />
             <FritzValidationMessage For="() => Command.Downloaded" />
         </DialogContent>
         <DialogActions>
-            <FritzProcessingButton @ref=_processingButton
-                                   ButtonType=ButtonType.Submit
-                                   Color=Color.Primary
-                                   ProcessingButtonText=@Localizer[nameof(AppStrings.Updating)]
-                                   ButtonText=@Localizer[nameof(AppStrings.Update)]
-                                   UserAttributes=@(new() { { TestConst.TestId, UpdateLinkDialogConst.UpdateButton} }) />
+            <FritzProcessingButton @ref="_processingButton"
+                                   ButtonType="ButtonType.Submit"
+                                   Color="Color.Primary"
+                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Updating)]"
+                                   ButtonText="@Localizer[nameof(AppStrings.Update)]"
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.UpdateButton} })" />
         </DialogActions>
     </MudDialog>
 </EditForm>

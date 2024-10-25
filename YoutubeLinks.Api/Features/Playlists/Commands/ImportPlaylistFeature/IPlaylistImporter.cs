@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Localization;
-using System.Text;
 using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Localization;
@@ -21,7 +20,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature
             ImportPlaylist.Command command);
     }
 
-    public class JSONPlaylistImporter : IPlaylistImporter
+    public class JsonPlaylistImporter : IPlaylistImporter
     {
         public async Task<IEnumerable<Link>> Import(
             IYoutubeService youtubeService,
@@ -29,11 +28,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature
             IStringLocalizer<ApiValidationMessage> localizer,
             ImportPlaylist.Command command)
         {
-            var links = new List<Link>();
-
-            foreach (var exportedLink in command.ExportedLinks)
-            {
-                var link = new Link
+            var links = command.ExportedLinks.Select(exportedLink => new Link
                 {
                     Id = 0,
                     Created = clock.Current(),
@@ -42,16 +37,14 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature
                     VideoId = exportedLink.VideoId,
                     Title = exportedLink.Title,
                     Downloaded = false,
-                };
-
-                links.Add(link);
-            }
+                })
+                .ToList();
 
             return await Task.FromResult(links);
         }
     }
 
-    public class TXTPlaylistImporter : IPlaylistImporter
+    public class TxtPlaylistImporter : IPlaylistImporter
     {
         public async Task<IEnumerable<Link>> Import(
             IYoutubeService youtubeService,
@@ -61,12 +54,11 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature
         {
             var links = new List<Link>();
 
-            foreach (var exportedUrl in command.ExportedLinkUrls)
+            foreach (var videoId in command.ExportedLinkUrls.Select(YoutubeHelpers.GetVideoId))
             {
-                var videoId = YoutubeHelpers.GetVideoId(exportedUrl);
                 if (string.IsNullOrWhiteSpace(videoId))
                     throw new MyValidationException(nameof(CreateLink.Command.Url),
-                                                    localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
+                        localizer[nameof(ApiValidationMessageString.UrlIdNotValid)]);
 
                 var url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
                 var videoTitle = await youtubeService.GetVideoTitle(videoId);
@@ -95,8 +87,8 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature
         {
             return fileType switch
             {
-                PlaylistFileType.TXT => new TXTPlaylistImporter(),
-                _ => new JSONPlaylistImporter(),
+                PlaylistFileType.Txt => new TxtPlaylistImporter(),
+                _ => new JsonPlaylistImporter(),
             };
         }
     }

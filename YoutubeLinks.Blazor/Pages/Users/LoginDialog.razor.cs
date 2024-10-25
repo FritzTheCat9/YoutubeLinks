@@ -65,7 +65,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
             {
                 {
                     x => x.Command,
-                    new()
+                    new ResendConfirmationEmail.Command()
                 }
             };
 
@@ -96,7 +96,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
             {
                 {
                     x => x.Command,
-                    new()
+                    new ForgotPassword.Command()
                 }
             };
 

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Links.Extensions;
@@ -11,7 +10,7 @@ namespace YoutubeLinks.Api.Features.Links.Queries
 {
     public static class GetAllLinksFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/links/all", async (
                 Query query,
@@ -22,8 +21,6 @@ namespace YoutubeLinks.Api.Features.Links.Queries
             })
                 .WithTags(Tags.Links)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<Query, IEnumerable<LinkInfoDto>>

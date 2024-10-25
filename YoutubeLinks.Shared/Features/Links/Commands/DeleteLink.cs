@@ -3,7 +3,7 @@ using MediatR;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
 {
-    public class DeleteLink
+    public static class DeleteLink
     {
         public class Command : IRequest<Unit>
         {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Auth
@@ -40,20 +41,19 @@ namespace YoutubeLinks.Blazor.Auth
             var authState = await authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
-            if (user.Identity?.IsAuthenticated ?? false)
-            {
-                var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!(user.Identity?.IsAuthenticated ?? false)) 
+                return null;
+            
+            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (userIdString == null)
-                    return null;
+            if (userIdString == null)
+                return null;
 
-                if (!int.TryParse(userIdString, out int userIdInt))
-                    return null;
+            if (!int.TryParse(userIdString, out var userIdInt))
+                return null;
 
-                return userIdInt;
-            }
+            return userIdInt;
 
-            return null;
         }
 
         public async Task<bool> IsLoggedInUser(int userId)
@@ -62,23 +62,17 @@ namespace YoutubeLinks.Blazor.Auth
             var authState = await authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
-            if (user.Identity?.IsAuthenticated ?? false)
-            {
-                var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!(user.Identity?.IsAuthenticated ?? false)) 
+                return false;
+            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (userIdString == null)
-                    return false;
+            if (userIdString == null)
+                return false;
 
-                if (!int.TryParse(userIdString, out int userIdInt))
-                    return false;
+            if (!int.TryParse(userIdString, out var userIdInt))
+                return false;
 
-                if (userId != userIdInt)
-                    return false;
-
-                return true;
-            }
-
-            return false;
+            return userId == userIdInt;
         }
 
         public async Task Login(JwtDto token, string redirectUrl = null)
@@ -111,7 +105,7 @@ namespace YoutubeLinks.Blazor.Auth
                 if (jwt == null || string.IsNullOrEmpty(jwt.RefreshToken))
                     await Logout();
 
-                var newJwt = await _userApiClient.RefreshToken(new() { RefreshToken = jwt.RefreshToken });
+                var newJwt = await _userApiClient.RefreshToken(new RefreshToken.Command { RefreshToken = jwt.RefreshToken });
                 await Login(newJwt);
             }
             catch (Exception)

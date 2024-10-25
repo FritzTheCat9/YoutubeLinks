@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Links.Queries
 {
     public static class GetAllPaginatedLinksFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/links/allPaginated", async (
                 GetAllPaginatedLinks.Query query,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Links.Queries
             })
                 .WithTags(Tags.Links)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>

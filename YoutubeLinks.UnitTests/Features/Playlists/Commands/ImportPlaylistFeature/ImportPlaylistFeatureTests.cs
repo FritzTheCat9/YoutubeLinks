@@ -37,7 +37,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
             {
                 Name = "Name",
                 Public = true,
-                PlaylistFileType = PlaylistFileType.JSON,
+                PlaylistFileType = PlaylistFileType.Json,
             };
 
             var authService = Substitute.For<IAuthService>();
@@ -64,10 +64,10 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
             {
                 Name = "Name",
                 Public = true,
-                PlaylistFileType = PlaylistFileType.JSON,
+                PlaylistFileType = PlaylistFileType.Json,
                 ExportedLinks =
                 [
-                    new()
+                    new LinkJsonModel
                     {
                         Title = "Rick Astley - Never Gonna Give You Up",
                         Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -102,7 +102,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
             {
                 Name = "Name",
                 Public = true,
-                PlaylistFileType = PlaylistFileType.TXT,
+                PlaylistFileType = PlaylistFileType.Txt,
                 ExportedLinkUrls =
                 [
                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ",

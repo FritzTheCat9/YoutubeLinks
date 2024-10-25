@@ -26,7 +26,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
             var command = new ExportPlaylist.Command
             {
                 Id = 1,
-                PlaylistFileType = PlaylistFileType.JSON,
+                PlaylistFileType = PlaylistFileType.Json,
             };
 
             var playlistRepository = Substitute.For<IPlaylistRepository>();
@@ -52,7 +52,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
             var command = new ExportPlaylist.Command
             {
                 Id = 1,
-                PlaylistFileType = PlaylistFileType.JSON,
+                PlaylistFileType = PlaylistFileType.Json,
             };
 
             var playlistRepository = Substitute.For<IPlaylistRepository>();
@@ -84,7 +84,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
             var command = new ExportPlaylist.Command
             {
                 Id = 1,
-                PlaylistFileType = PlaylistFileType.JSON,
+                PlaylistFileType = PlaylistFileType.Json,
             };
 
             var playlistRepository = Substitute.For<IPlaylistRepository>();
@@ -112,7 +112,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
             result.Should().BeOfType<PlaylistFile>();
             result.ContentType.Should().Be("application/json");
             result.FileName.Should().Be("Name.json");
-            result.PlaylistFileType.Should().Be(PlaylistFileType.JSON);
+            result.PlaylistFileType.Should().Be(PlaylistFileType.Json);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
             var command = new ExportPlaylist.Command
             {
                 Id = 1,
-                PlaylistFileType = PlaylistFileType.TXT,
+                PlaylistFileType = PlaylistFileType.Txt,
             };
 
             var playlistRepository = Substitute.For<IPlaylistRepository>();
@@ -149,7 +149,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeatu
             result.Should().BeOfType<PlaylistFile>();
             result.ContentType.Should().Be("text/plain");
             result.FileName.Should().Be("Name.txt");
-            result.PlaylistFileType.Should().Be(PlaylistFileType.TXT);
+            result.PlaylistFileType.Should().Be(PlaylistFileType.Txt);
         }
     }
 }

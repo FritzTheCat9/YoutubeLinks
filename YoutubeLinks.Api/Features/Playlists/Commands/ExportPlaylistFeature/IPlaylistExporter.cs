@@ -11,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
         PlaylistFile Export(Playlist playlist);
     }
 
-    public class JSONPlaylistExporter : IPlaylistExporter
+    public class JsonPlaylistExporter : IPlaylistExporter
     {
         public PlaylistFile Export(Playlist playlist)
         {
@@ -21,7 +21,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
             {
                 FileBytes = JsonSerializer.SerializeToUtf8Bytes(playlistModel),
                 FileName = $"{playlist.Name}.json",
-                PlaylistFileType = PlaylistFileType.JSON,
+                PlaylistFileType = PlaylistFileType.Json,
                 ContentType = $"application/json",
             };
 
@@ -29,7 +29,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
         }
     }
 
-    public class TXTPlaylistExporter : IPlaylistExporter
+    public class TxtPlaylistExporter : IPlaylistExporter
     {
         public PlaylistFile Export(Playlist playlist)
         {
@@ -39,14 +39,14 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
             {
                 FileBytes = GetPlaylistTxtFileBytes(playlistModel.LinkModels),
                 FileName = $"{playlist.Name}.txt",
-                PlaylistFileType = PlaylistFileType.TXT, 
+                PlaylistFileType = PlaylistFileType.Txt, 
                 ContentType = $"text/plain",
             };
 
             return txtPlaylistFile;
         }
 
-        private static byte[] GetPlaylistTxtFileBytes(IEnumerable<LinkJSONModel> links)
+        private static byte[] GetPlaylistTxtFileBytes(IEnumerable<LinkJsonModel> links)
         {
             var stringBuilder = new StringBuilder();
             foreach (var link in links)
@@ -66,8 +66,8 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
         {
             return fileType switch
             {
-                PlaylistFileType.TXT => new TXTPlaylistExporter(),
-                _ => new JSONPlaylistExporter(),
+                PlaylistFileType.Txt => new TxtPlaylistExporter(),
+                _ => new JsonPlaylistExporter(),
             };
         }
     }

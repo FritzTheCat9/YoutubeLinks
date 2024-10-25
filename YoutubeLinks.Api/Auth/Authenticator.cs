@@ -21,7 +21,7 @@ namespace YoutubeLinks.Api.Auth
         private readonly AuthOptions _options;
         private readonly string _issuer;
         private readonly string _audience;
-        private readonly SigningCredentials _signingCredencials;
+        private readonly SigningCredentials _signingCredentials;
         private readonly JwtSecurityTokenHandler _jwtHandler = new();
 
         public Authenticator(
@@ -32,14 +32,14 @@ namespace YoutubeLinks.Api.Auth
             _options = options.Value;
             _issuer = _options.Issuer;
             _audience = _options.Audience;
-            _signingCredencials = new SigningCredentials(
+            _signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
                 SecurityAlgorithms.HmacSha256);
         }
 
         public JwtDto CreateTokens(User user)
         {
-            return new()
+            return new JwtDto
             {
                 AccessToken = GenerateAccessToken(user),
                 RefreshToken = GenerateRefreshToken(user),
@@ -60,9 +60,9 @@ namespace YoutubeLinks.Api.Auth
             };
 
             if (user.IsAdmin)
-                claims.Add(new(ClaimTypes.Role, Policy.Admin));
+                claims.Add(new Claim(ClaimTypes.Role, Policy.Admin));
 
-            var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredencials);
+            var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);
             var accessToken = _jwtHandler.WriteToken(jwt);
             return accessToken;
         }
@@ -77,7 +77,7 @@ namespace YoutubeLinks.Api.Auth
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
-            var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredencials);
+            var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);
             var refreshToken = _jwtHandler.WriteToken(jwt);
             return refreshToken;
         }

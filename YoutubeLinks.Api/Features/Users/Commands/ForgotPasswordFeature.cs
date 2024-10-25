@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
 {
     public static class ForgotPasswordFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/users/forgotPassword", async (
                 ForgotPassword.Command command,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             })
                 .WithTags(Tags.Users)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<ForgotPassword.Command, Unit>

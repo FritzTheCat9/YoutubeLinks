@@ -5,7 +5,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
 {
-    public class CreateLink
+    public static class CreateLink
     {
         public class Command : IRequest<int>
         {

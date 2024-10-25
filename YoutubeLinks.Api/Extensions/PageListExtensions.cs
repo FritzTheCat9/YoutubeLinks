@@ -11,36 +11,36 @@ namespace YoutubeLinks.Api.Extensions
 
         public static PagedList<T> Create(
             IQueryable<T> source,
-            int Page,
-            int PageSize)
+            int page,
+            int pageSize)
         {
-            Validate(Page, PageSize);
+            Validate(page, pageSize);
 
             var totalCount = source.Count();
-            var items = source.Skip((Page - 1) * PageSize)
-                              .Take(PageSize)
+            var items = source.Skip((page - 1) * pageSize)
+                              .Take(pageSize)
                               .ToList();
 
-            return new PagedList<T>(items, Page, PageSize, totalCount);
+            return new PagedList<T>(items, page, pageSize, totalCount);
         }
 
         public static PagedList<T> CreateEmpty(
-            int Page,
-            int PageSize)
+            int page,
+            int pageSize)
         {
-            Validate(Page, PageSize);
+            Validate(page, pageSize);
 
-            return new PagedList<T>([], Page, PageSize, 0);
+            return new PagedList<T>([], page, pageSize, 0);
         }
 
-        private static void Validate(int Page, int PageSize)
+        private static void Validate(int page, int pageSize)
         {
-            if (Page <= _minPage)
-                throw new MyValidationException(nameof(Page), $"{nameof(Page)} should be greater than {_minPage}");
-            if (PageSize <= _minPageSize)
-                throw new MyValidationException(nameof(PageSize), $"{nameof(PageSize)} should be greater than {_minPageSize}");
-            if (PageSize > _maxPageSize)
-                throw new MyValidationException(nameof(PageSize), $"{nameof(PageSize)} should be less than or equal to {_maxPageSize}");
+            if (page <= _minPage)
+                throw new MyValidationException(nameof(page), $"{nameof(page)} should be greater than {_minPage}");
+            if (pageSize <= _minPageSize)
+                throw new MyValidationException(nameof(pageSize), $"{nameof(pageSize)} should be greater than {_minPageSize}");
+            if (pageSize > _maxPageSize)
+                throw new MyValidationException(nameof(pageSize), $"{nameof(pageSize)} should be less than or equal to {_maxPageSize}");
         }
     }
 }

@@ -4,7 +4,7 @@ using YoutubeLinks.Shared.Features.Links.Responses;
 
 namespace YoutubeLinks.Shared.Features.Links.Queries
 {
-    public class GetLink
+    public static class GetLink
     {
         public class Query : IRequest<LinkDto>
         {

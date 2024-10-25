@@ -8,8 +8,8 @@ namespace YoutubeLinks.Api.Services
     public interface IYoutubeService
     {
         Task<string> GetVideoTitle(string videoId);
-        Task<YoutubeFile> GetMP3File(string videoId, string videoTitle = null);
-        Task<YoutubeFile> GetMP4File(string videoId, string videoTitle = null);
+        Task<YoutubeFile> GetMp3File(string videoId, string videoTitle = null);
+        Task<YoutubeFile> GetMp4File(string videoId, string videoTitle = null);
     }
 
     public class YoutubeService : IYoutubeService
@@ -33,11 +33,13 @@ namespace YoutubeLinks.Api.Services
 
         public async Task<string> GetVideoTitle(string videoId)
         {
-            var youtubeDL = new YoutubeDL();
-            youtubeDL.YoutubeDLPath = _ytDlpPath;
-            youtubeDL.FFmpegPath = _ffmpegPath;
+            var youtubeDl = new YoutubeDL
+            {
+                YoutubeDLPath = _ytDlpPath,
+                FFmpegPath = _ffmpegPath
+            };
 
-            var videoDataRequest = await youtubeDL.RunVideoDataFetch($"{YoutubeHelpers.VideoPathBase}{videoId}");
+            var videoDataRequest = await youtubeDl.RunVideoDataFetch($"{YoutubeHelpers.VideoPathBase}{videoId}");
             if (!videoDataRequest.Success)
                 throw new MyServerException();
 
@@ -47,24 +49,28 @@ namespace YoutubeLinks.Api.Services
             return normalizedTitle;
         }
 
-        public async Task<YoutubeFile> GetMP3File(string videoId, string videoTitle = null)
+        public async Task<YoutubeFile> GetMp3File(string videoId, string videoTitle = null)
         {
             var title = videoTitle ?? await GetVideoTitle(videoId);
             var fileName = $"{Guid.NewGuid()}.mp3";
 
-            var youtubeDL = new YoutubeDL();
-            youtubeDL.YoutubeDLPath = _ytDlpPath;
-            youtubeDL.FFmpegPath = _ffmpegPath;
-            youtubeDL.OutputFolder = _tmpFolderPath;
+            var youtubeDl = new YoutubeDL
+            {
+                YoutubeDLPath = _ytDlpPath,
+                FFmpegPath = _ffmpegPath,
+                OutputFolder = _tmpFolderPath
+            };
 
-            var options = new OptionSet();
-            options.ExtractAudio = true;
-            options.AudioQuality = 0;
-            options.AudioFormat = AudioConversionFormat.Mp3;
-            options.Output = Path.Combine(_tmpFolderPath, fileName);
-            options.EmbedThumbnail = true;
+            var options = new OptionSet
+            {
+                ExtractAudio = true,
+                AudioQuality = 0,
+                AudioFormat = AudioConversionFormat.Mp3,
+                Output = Path.Combine(_tmpFolderPath, fileName),
+                EmbedThumbnail = true
+            };
 
-            var runResult = await youtubeDL.RunAudioDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
+            var runResult = await youtubeDl.RunAudioDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
             if (!runResult.Success)
                 throw new MyServerException();
 
@@ -86,28 +92,32 @@ namespace YoutubeLinks.Api.Services
                 FilePath = normalizedFilePath,
                 ContentType = "audio/mpeg",
                 FileName = normalizedFileName,
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
 
             return youtubeFile;
         }
 
-        public async Task<YoutubeFile> GetMP4File(string videoId, string videoTitle = null)
+        public async Task<YoutubeFile> GetMp4File(string videoId, string videoTitle = null)
         {
             var title = videoTitle ?? await GetVideoTitle(videoId);
             var fileName = $"{Guid.NewGuid()}.mp4";
 
-            var youtubeDL = new YoutubeDL();
-            youtubeDL.YoutubeDLPath = _ytDlpPath;
-            youtubeDL.FFmpegPath = _ffmpegPath;
-            youtubeDL.OutputFolder = _tmpFolderPath;
+            var youtubeDl = new YoutubeDL
+            {
+                YoutubeDLPath = _ytDlpPath,
+                FFmpegPath = _ffmpegPath,
+                OutputFolder = _tmpFolderPath
+            };
 
-            var options = new OptionSet();
-            options.Output = Path.Combine(_tmpFolderPath, fileName);
-            options.Format = "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best";
-            options.EmbedThumbnail = true;
+            var options = new OptionSet
+            {
+                Output = Path.Combine(_tmpFolderPath, fileName),
+                Format = "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+                EmbedThumbnail = true
+            };
 
-            var runResult = await youtubeDL.RunVideoDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
+            var runResult = await youtubeDl.RunVideoDownload($"{YoutubeHelpers.VideoPathBase}{videoId}", overrideOptions: options);
             if (!runResult.Success)
                 throw new MyServerException();
 
@@ -129,7 +139,7 @@ namespace YoutubeLinks.Api.Services
                 FilePath = normalizedFilePath,
                 ContentType = "video/mp4",
                 FileName = normalizedFileName,
-                YoutubeFileType = YoutubeFileType.MP4,
+                YoutubeFileType = YoutubeFileType.Mp4,
             };
 
             return youtubeFile;

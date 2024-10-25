@@ -2,7 +2,7 @@
 {
     public enum PlaylistFileType
     {
-        JSON,
-        TXT,
+        Json,
+        Txt,
     }
 }

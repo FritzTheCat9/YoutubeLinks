@@ -15,20 +15,18 @@ namespace YoutubeLinks.Api.Features.Users.Commands
 {
     public static class RegisterFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/users/register", async (
                 Register.Command command,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                int userId = await mediator.Send(command, cancellationToken);
+                var userId = await mediator.Send(command, cancellationToken);
                 return Results.CreatedAtRoute("GetUser", new { id = userId });
             })
                 .WithTags(Tags.Users)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<Register.Command, int>

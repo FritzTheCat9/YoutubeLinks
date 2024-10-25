@@ -1,9 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider @ref=@_mudThemeProvider
-                  @bind-IsDarkMode=@_isDarkMode
+<MudThemeProvider @ref="_mudThemeProvider"
+                  @bind-IsDarkMode="_isDarkMode"
                   Theme="_customTheme" />
-<MudDialogProvider FullWidth=true />
+<MudDialogProvider FullWidth="true" />
 <MudSnackbarProvider />
 <MudPopoverProvider />
 
@@ -24,46 +24,46 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudIconButton Icon=@Icons.Material.Filled.Menu
-                       Color=Color.Inherit
-                       Edge=Edge.Start
-                       OnClick=DrawerToggle
-                       UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.ToggleNavMenuButton } }) />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="DrawerToggle"
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, MainLayoutConst.ToggleNavMenuButton } })" />
         @Localizer[nameof(AppStrings.AppName)]
         <MudSpacer />
-        <FritzTooltip Text=@_text>
-            <MudIconButton Icon=@_icon
-                           Color=Color.Inherit
-                           OnClick=OnThemeChange
+        <FritzTooltip Text="@_text">
+            <MudIconButton Icon="@_icon"
+                           Color="Color.Inherit"
+                           OnClick="OnThemeChange"
                            Style="margin-right: 5px;"
-                           UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.ChangeThemeButton } }) />
+                           UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, MainLayoutConst.ChangeThemeButton } })" />
         </FritzTooltip>
-        <FritzTooltip Text=@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]>
-            <MudIconButton Icon=@Icons.Custom.Brands.GitHub
-                           Color=Color.Inherit
-                           Href=https://github.com/FritzTheCat9/YoutubeLinks
-                           Target=_blank
+        <FritzTooltip Text="@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]">
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
+                           Color="Color.Inherit"
+                           Href="https://github.com/FritzTheCat9/YoutubeLinks"
+                           Target="_blank"
                            Style="margin-right: 5px;"
-                           UserAttributes=@(new() { { TestConst.TestId, MainLayoutConst.RedirectToProjectGithubPageButton } }) />
+                           UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, MainLayoutConst.RedirectToProjectGithubPageButton } })" />
         </FritzTooltip>
         <Auth ChangeThemeColor="ChangeThemeColor" UserChanged="UserChanged" />
     </MudAppBar>
-    <MudDrawer @bind-Open=_drawerOpen
-               Variant=DrawerVariant.Mini>
+    <MudDrawer @bind-Open="_drawerOpen"
+               Variant="DrawerVariant.Mini">
         <NavMenu UserId="UserId" />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth=MaxWidth.Large
+        <MudContainer MaxWidth="MaxWidth.Large"
                       Style="margin-top: 20px; margin-bottom: 80px">
             @Body
         </MudContainer>
     </MudMainContent>
-    <MudAppBar Bottom=true
-               Dense=true
-               Color=Color.Transparent
-               Elevation=0>
+    <MudAppBar Bottom="true"
+               Dense="true"
+               Color="Color.Transparent"
+               Elevation="0">
         <MudPaper Class="pa-4 mb-4"
-                  Elevation=3>
+                  Elevation="3">
             <MudText Typo="Typo.body1">
                 @Localizer[nameof(AppStrings.CreatedByText)]
             </MudText>

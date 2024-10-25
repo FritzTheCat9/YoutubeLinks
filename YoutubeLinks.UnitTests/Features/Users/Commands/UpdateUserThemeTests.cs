@@ -15,7 +15,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData((ThemeColor)5)]
         public void UpdateUserThemeValidator_YoutubeFileType_ShouldBeInEnum(ThemeColor themeColor)
         {
-            var message = string.Format("ThemeColor has a range of values which does not include: {0}.", themeColor);
+            var message = $"ThemeColor has a range of values which does not include: {themeColor}.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.ThemeColorIsInEnum), message);

@@ -5,7 +5,7 @@ using YoutubeLinks.Shared.Features.Playlists.Responses;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Queries
 {
-    public class GetAllPublicPlaylists
+    public static class GetAllPublicPlaylists
     {
         public class Query : IRequest<PagedList<PlaylistDto>>, IPagedQuery, ISortedQuery
         {

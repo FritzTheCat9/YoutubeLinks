@@ -13,9 +13,9 @@ using static YoutubeLinks.Blazor.Shared.DeleteDialog;
 
 namespace YoutubeLinks.E2E
 {
-    public class PageTestBase : PageTest
+    public abstract class PageTestBase : PageTest
     {
-        protected const string BaseUrl = "http://localhost:7000";
+        private const string BaseUrl = "http://localhost:7000";
 
         public override BrowserNewContextOptions ContextOptions()
         {
@@ -73,9 +73,9 @@ namespace YoutubeLinks.E2E
 
         #region Api
 
-        protected const string ApiBaseUrl = "http://localhost:5000/api";
+        private const string ApiBaseUrl = "http://localhost:5000/api";
 
-        protected Task<IResponse> WaitForApiResponse(string url)
+        private Task<IResponse> WaitForApiResponse(string url)
             => Page.WaitForResponseAsync(response => response.Url.Contains($"{ApiBaseUrl}/{url}"));
 
         protected async Task ApiResponseOkAfterButtonClick(string testId, string url)
@@ -98,21 +98,21 @@ namespace YoutubeLinks.E2E
 
         #region Auth
 
-        protected class AdminData
+        protected abstract class AdminData
         {
             public const string UserName = "Admin";
             public const string Email = "ytlinksapp@gmail.com";
             public const string Password = "Asd123!";
         }
 
-        protected class UserData
+        protected abstract class UserData
         {
             public const string UserName = "User";
             public const string Email = "ytlinksapp1@gmail.com";
             public const string Password = "Asd123!";
         }
 
-        protected class RegisterUserData
+        protected abstract class RegisterUserData
         {
             public const string UserName = "TestUser";
             public const string Email = "freakfightsfan@gmail.com";
@@ -202,7 +202,7 @@ namespace YoutubeLinks.E2E
             await CheckPlaylistsTableRowIsValid(playlistNameUpdated, playlistIsPublicUpdated);
         }
 
-        protected async Task CheckPlaylistsTableRowIsValid(string name, bool isPublic)
+        private async Task CheckPlaylistsTableRowIsValid(string name, bool isPublic)
         {
             await SearchPlaylist(name);
             await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToHaveTextAsync(name);
@@ -216,7 +216,7 @@ namespace YoutubeLinks.E2E
             await CheckPlaylistsTableRowIsHidden(playlistName);
         }
 
-        protected async Task CheckPlaylistsTableRowIsHidden(string name)
+        private async Task CheckPlaylistsTableRowIsHidden(string name)
         {
             await SearchPlaylist(name);
             await Expect(GetLocatorByTestId(PlaylistsPageConst.NameTableRowData)).ToBeHiddenAsync();
@@ -226,7 +226,7 @@ namespace YoutubeLinks.E2E
 
         #region Links
 
-        protected async Task SearchLink(string name)
+        private async Task SearchLink(string name)
         {
             await FillInput(LinksPageConst.SearchInput, name);
             await ClickEnter(LinksPageConst.SearchInput);
@@ -259,13 +259,13 @@ namespace YoutubeLinks.E2E
             await CheckLinksTableRowIsHidden(title);
         }
 
-        protected async Task CheckLinksTableRowIsValid(string title)
+        private async Task CheckLinksTableRowIsValid(string title)
         {
             await SearchLink(title);
             await Expect(GetLocatorByTestId(LinksPageConst.TitleTableRowData)).ToHaveTextAsync(title);
         }
 
-        protected async Task CheckLinksTableRowIsHidden(string title)
+        private async Task CheckLinksTableRowIsHidden(string title)
         {
             await SearchLink(title);
             await Expect(GetLocatorByTestId(LinksPageConst.TitleTableRowData)).ToBeHiddenAsync();

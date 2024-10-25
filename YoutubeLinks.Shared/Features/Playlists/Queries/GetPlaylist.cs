@@ -4,7 +4,7 @@ using YoutubeLinks.Shared.Features.Playlists.Responses;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Queries
 {
-    public class GetPlaylist
+    public static class GetPlaylist
     {
         public class Query : IRequest<PlaylistDto>
         {

@@ -40,7 +40,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
         {
             _items =
             [
-                new(Localizer[nameof(AppStrings.Users)], href: null, disabled: true),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], href: null, disabled: true),
             ];
         }
 
@@ -62,10 +62,10 @@ namespace YoutubeLinks.Blazor.Pages.Users
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExceptions(ex);
-                return new() { TotalItems = 0, Items = [] };
+                return new TableData<UserDto> { TotalItems = 0, Items = [] };
             }
 
-            return new()
+            return new TableData<UserDto>
             {
                 TotalItems = _myUsers.TotalCount,
                 Items = _myUsers.Items

@@ -16,7 +16,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("   ")]
         public void CreateLinkValidator_Url_ShouldNotBeEmpty(string url)
         {
-            var message = "Youtube video url should not be empty.";
+            const string message = "Youtube video url should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
@@ -44,7 +44,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("https://www.youtube.com/watch")]
         public void CreateLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
         {
-            var message = "This is not a valid link to the YouTube video.";
+            const string message = "This is not a valid link to the YouTube video.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);

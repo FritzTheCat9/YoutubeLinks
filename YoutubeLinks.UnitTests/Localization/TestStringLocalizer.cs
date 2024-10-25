@@ -12,19 +12,14 @@ namespace YoutubeLinks.UnitTests.Localization
             _localizations = new Dictionary<string, string>();
         }
 
-        public LocalizedString this[string name]
-        {
-            get
-            {
-                return new LocalizedString(name, _localizations.ContainsKey(name) ? _localizations[name] : name, true);
-            }
-        }
+        public LocalizedString this[string name] 
+            => new(name, _localizations.TryGetValue(name, out var value) ? value : name, true);
 
         public LocalizedString this[string name, params object[] arguments]
         {
             get
             {
-                var format = _localizations.ContainsKey(name) ? _localizations[name] : name;
+                var format = _localizations.TryGetValue(name, out var localization) ? localization : name;
                 var formatted = string.Format(CultureInfo.CurrentCulture, format, arguments);
                 return new LocalizedString(name, formatted, true);
             }

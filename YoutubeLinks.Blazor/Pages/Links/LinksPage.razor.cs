@@ -22,9 +22,9 @@ namespace YoutubeLinks.Blazor.Pages.Links
         private List<BreadcrumbItem> _items;
         private MudTable<LinkDto> _table;
 
-        private bool _disableDownloadPlaylistLinkButtons = false;
+        private bool _disableDownloadPlaylistLinkButtons;
         private bool _tableView = true;
-        private bool _isUserPlaylist = false;
+        private bool _isUserPlaylist;
 
         private string _searchString = "";
         private readonly GetAllPaginatedLinks.Query _query = new()
@@ -52,8 +52,8 @@ namespace YoutubeLinks.Blazor.Pages.Links
             public const string ModifiedTableSortLabel = "links-page-modified-table-sort-label";
             public const string ModifiedTableRowData = "links-page-modified-table-row-data";
             public const string CopyToClipboardButton = "links-page-copy-to-clipboard-button";
-            public const string DownloadMP3FileButton = "links-page-download-mp3-file-button";
-            public const string DownloadMP4FileButton = "links-page-download-mp4-file-button";
+            public const string DownloadMp3FileButton = "links-page-download-mp3-file-button";
+            public const string DownloadMp4FileButton = "links-page-download-mp4-file-button";
             public const string UpdateLinkButton = "links-page-update-link-button";
             public const string DeleteLinkButton = "links-page-delete-link-button";
             public const string SwitchToTableViewButton = "links-page-switch-to-table-view-button";
@@ -71,15 +71,15 @@ namespace YoutubeLinks.Blazor.Pages.Links
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
         [Inject] public IDialogService DialogService { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IJSRuntime JsRuntime { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
             _items =
             [
-                new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
-                new(Localizer[nameof(AppStrings.Playlists)], href: $"/playlists/{UserId}"),
-                new(Localizer[nameof(AppStrings.Links)], href: null, disabled: true),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], href: $"/users"),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Playlists)], href: $"/playlists/{UserId}"),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Links)], href: null, disabled: true),
             ];
 
             _createLinkCommand.PlaylistId = PlaylistId;
@@ -114,10 +114,10 @@ namespace YoutubeLinks.Blazor.Pages.Links
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExceptions(ex);
-                return new() { TotalItems = 0, Items = [] };
+                return new TableData<LinkDto> { TotalItems = 0, Items = [] };
             }
 
-            return new()
+            return new TableData<LinkDto>
             {
                 TotalItems = _linkPagedList.TotalCount,
                 Items = _linkPagedList.Items
@@ -180,7 +180,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
             {
                 {
                     x => x.Command,
-                    new()
+                    new UpdateLink.Command
                     {
                         Id = linkDto.Id,
                         Url = linkDto.Url,
@@ -213,7 +213,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
                 var streamRef = new DotNetStreamReference(content);
                 var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
                 await SetLinkAsDownloaded(id);
 

@@ -6,7 +6,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Users.Commands
 {
-    public class Login
+    public static class Login
     {
         public class Command : IRequest<JwtDto>
         {

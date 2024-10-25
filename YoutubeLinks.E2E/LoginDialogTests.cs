@@ -23,15 +23,15 @@
         }
 
         [Test]
-        public async Task ResendConfirmationEmail()
+        public Task ResendConfirmationEmail()
         {
-
+            return Task.CompletedTask;
         }
 
         [Test]
-        public async Task ForgotPassword()
+        public Task ForgotPassword()
         {
-
+            return Task.CompletedTask;
         }
     }
 }

@@ -16,14 +16,14 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadSingleLink.Command
             {
                 Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
             var youtubeFile = new YoutubeFile();
 
             var youtubeService = Substitute.For<IYoutubeService>();
             var mediator = Substitute.For<IMediator>();
 
-            youtubeService.GetMP3File(Arg.Any<string>()).Returns(youtubeFile);
+            youtubeService.GetMp3File(Arg.Any<string>()).Returns(youtubeFile);
 
             mediator.Send(Arg.Any<DownloadSingleLink.Command>(), CancellationToken.None)
                 .Returns(callInfo =>
@@ -35,8 +35,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var result = await mediator.Send(command, CancellationToken.None);
 
             result.Should().Be(youtubeFile);
-            await youtubeService.Received().GetMP3File(Arg.Any<string>());
-            await youtubeService.DidNotReceive().GetMP4File(Arg.Any<string>());
+            await youtubeService.Received().GetMp3File(Arg.Any<string>());
+            await youtubeService.DidNotReceive().GetMp4File(Arg.Any<string>());
         }
     }
 }

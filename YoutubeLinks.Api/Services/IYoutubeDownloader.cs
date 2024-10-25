@@ -7,11 +7,11 @@ namespace YoutubeLinks.Api.Services
         Task<YoutubeFile> Download(string videoId, string videoTitle = null);
     }
 
-    public class MP3YoutubeDownloader : IYoutubeDownloader
+    public class Mp3YoutubeDownloader : IYoutubeDownloader
     {
         private readonly IYoutubeService _youtubeService;
 
-        public MP3YoutubeDownloader(
+        public Mp3YoutubeDownloader(
             IYoutubeService youtubeService)
         {
             _youtubeService = youtubeService;
@@ -19,15 +19,15 @@ namespace YoutubeLinks.Api.Services
 
         public async Task<YoutubeFile> Download(string videoId, string videoTitle = null)
         {
-            return await _youtubeService.GetMP3File(videoId, videoTitle);
+            return await _youtubeService.GetMp3File(videoId, videoTitle);
         }
     }
 
-    public class MP4YoutubeDownloader : IYoutubeDownloader
+    public class Mp4YoutubeDownloader : IYoutubeDownloader
     {
         private readonly IYoutubeService _youtubeService;
 
-        public MP4YoutubeDownloader(
+        public Mp4YoutubeDownloader(
             IYoutubeService youtubeService)
         {
             _youtubeService = youtubeService;
@@ -35,7 +35,7 @@ namespace YoutubeLinks.Api.Services
 
         public async Task<YoutubeFile> Download(string videoId, string videoTitle = null)
         {
-            return await _youtubeService.GetMP4File(videoId, videoTitle);
+            return await _youtubeService.GetMp4File(videoId, videoTitle);
         }
     }
 
@@ -45,8 +45,8 @@ namespace YoutubeLinks.Api.Services
         {
             return fileType switch
             {
-                YoutubeFileType.MP4 => new MP4YoutubeDownloader(youtubeService),
-                _ => new MP3YoutubeDownloader(youtubeService),
+                YoutubeFileType.Mp4 => new Mp4YoutubeDownloader(youtubeService),
+                _ => new Mp3YoutubeDownloader(youtubeService),
             };
         }
     }

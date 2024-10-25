@@ -19,10 +19,10 @@ namespace YoutubeLinks.Api.Auth
         }
 
         public string Hash(string password)
-            => _passwordHasher.HashPassword(default, password);
+            => _passwordHasher.HashPassword(default!, password);
 
         public bool Validate(string password, string hashedPassword)
-            => _passwordHasher.VerifyHashedPassword(default, hashedPassword, password)
+            => _passwordHasher.VerifyHashedPassword(default!, hashedPassword, password)
                is PasswordVerificationResult.Success;
     }
 }

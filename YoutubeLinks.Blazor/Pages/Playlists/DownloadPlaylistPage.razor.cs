@@ -23,7 +23,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
         private PlaylistDto _playlist;
         private List<GetAllLinks.LinkInfoDto> _linkInfoList;
-        private YoutubeFileType _youtubeFileType = YoutubeFileType.MP3;
+        private YoutubeFileType _youtubeFileType = YoutubeFileType.Mp3;
 
         private List<DownloadLinkResult> _downloadLinkResults = [];
 
@@ -56,7 +56,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
         [Inject] public IDialogService DialogService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IJSRuntime JsRuntime { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -71,9 +71,9 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
             _items =
             [
-                new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
-                new(Localizer[nameof(AppStrings.Playlists)],  href: $"/playlists/{_playlist.UserId}"),
-                new(Localizer[nameof(AppStrings.DownloadPlaylist)], href: null, disabled: true),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], href: $"/users"),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Playlists)],  href: $"/playlists/{_playlist.UserId}"),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.DownloadPlaylist)], href: null, disabled: true),
             ];
 
             _isUserPlaylist = await AuthService.IsLoggedInUser(_playlist.UserId);
@@ -151,17 +151,17 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
                 var response = await LinkApiClient.DownloadLink(command);
 
-                using (var stream = await response.Content.ReadAsStreamAsync())
+                await using (var stream = await response.Content.ReadAsStreamAsync())
                 {
                     var streamRef = new DotNetStreamReference(stream);
                     var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-                    await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                    await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
                 }
 
                 await SetLinkAsDownloaded(link.Id);
 
-                _downloadLinkResults.Insert(0, new()
+                _downloadLinkResults.Insert(0, new DownloadLinkResult
                 {
                     Link = link,
                     Success = true,
@@ -170,7 +170,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             }
             catch (Exception)
             {
-                _downloadLinkResults.Insert(0, new()
+                _downloadLinkResults.Insert(0, new DownloadLinkResult
                 {
                     Link = link,
                     Success = false,

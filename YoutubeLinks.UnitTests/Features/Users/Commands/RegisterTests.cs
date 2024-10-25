@@ -16,7 +16,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("   ")]
         public void RegisterCommandValidator_Email_ShouldNotBeEmpty(string email)
         {
-            var message = "Email should not be empty.";
+            const string message = "Email should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.EmailNotEmpty), message);
@@ -39,8 +39,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void RegisterCommandValidator_Email_ShouldBeShorterThanMaximumStringLength(string email)
         {
-            var message = string.Format("The length of email must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, email.Length);
+            var message =
+                $"The length of email must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {email.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.EmailMaximumLength), message);
@@ -65,7 +65,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("https://google.com")]
         public void RegisterCommandValidator_Email_ShouldBeEmailAddress(string email)
         {
-            var message = "Email address is not valid.";
+            const string message = "Email address is not valid.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.EmailIsEmailAddress), message);
@@ -91,7 +91,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("   ")]
         public void RegisterCommandValidator_UserName_ShouldNotBeEmpty(string userName)
         {
-            var message = "User name should not be empty.";
+            const string message = "User name should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UserNameNotEmpty), message);
@@ -114,8 +114,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("123456")]
         public void RegisterCommandValidator_UserName_ShouldBeGreaterThanMinimumStringLength(string userName)
         {
-            var message = string.Format("The length of password must be at least {0} characters. You entered {1} characters.",
-                ValidationConsts.MinimumStringLength, userName.Length);
+            var message =
+                $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {userName.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UserNameMinimumLength), message);
@@ -138,8 +138,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void RegisterCommandValidator_UserName_ShouldBeShorterThanMaximumStringLength(string userName)
         {
-            var message = string.Format("The length of user name must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, userName.Length);
+            var message =
+                $"The length of user name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {userName.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UserNameMaximumLength), message);
@@ -164,7 +164,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("123 Test %^&*")]
         public void RegisterCommandValidator_UserName_ShouldMatchUserNameRegex(string userName)
         {
-            var message = "UserName can contain only: a-z, A-Z, 0-9 and _ characters.";
+            const string message = "UserName can contain only: a-z, A-Z, 0-9 and _ characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UserNameMatchesRegex), message);
@@ -190,7 +190,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("   ")]
         public void RegisterCommandValidator_Password_ShouldNotBeEmpty(string password)
         {
-            var message = "Password should not be empty.";
+            const string message = "Password should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PasswordNotEmpty), message);
@@ -213,8 +213,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("123456")]
         public void RegisterCommandValidator_Password_ShouldBeGreaterThanMinimumStringLength(string password)
         {
-            var message = string.Format("The length of password must be at least {0} characters. You entered {1} characters.",
-                ValidationConsts.MinimumStringLength, password.Length);
+            var message =
+                $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {password.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PasswordMinimumLength), message);
@@ -237,8 +237,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void RegisterCommandValidator_Password_ShouldBeShorterThanMaximumStringLength(string password)
         {
-            var message = string.Format("The length of password must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, password.Length);
+            var message =
+                $"The length of password must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {password.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PasswordMaximumLength), message);
@@ -264,7 +264,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("   ")]
         public void RegisterCommandValidator_RepeatPassword_ShouldNotBeEmpty(string repeatPassword)
         {
-            var message = "Password should not be empty.";
+            const string message = "Password should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PasswordNotEmpty), message);
@@ -287,8 +287,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("123456")]
         public void RegisterCommandValidator_RepeatPassword_ShouldBeGreaterThanMinimumStringLength(string repeatPassword)
         {
-            var message = string.Format("The length of password must be at least {0} characters. You entered {1} characters.",
-                ValidationConsts.MinimumStringLength, repeatPassword.Length);
+            var message =
+                $"The length of password must be at least {ValidationConsts.MinimumStringLength} characters. You entered {repeatPassword.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PasswordMinimumLength), message);
@@ -311,8 +311,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void RegisterCommandValidator_RepeatPassword_ShouldBeShorterThanMaximumStringLength(string repeatPassword)
         {
-            var message = string.Format("The length of password must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, repeatPassword.Length);
+            var message =
+                $"The length of password must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {repeatPassword.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.PasswordMaximumLength), message);
@@ -337,7 +337,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("password", "not the same password")]
         public void RegisterCommandValidator_RepeatPassword_ShouldBeEqualToPassword(string password, string repeatPassword)
         {
-            var message = "The passwords entered must match.";
+            const string message = "The passwords entered must match.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.RepeatPasswordEqualPassword), message);

@@ -5,7 +5,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Users.Commands
 {
-    public class ResetPassword
+    public static class ResetPassword
     {
         public class Command : IRequest<bool>
         {

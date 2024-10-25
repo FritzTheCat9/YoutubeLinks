@@ -16,7 +16,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("   ")]
         public void ConfirmEmailCommandValidator_Email_ShouldNotBeEmpty(string email)
         {
-            var message = "Email should not be empty.";
+            const string message = "Email should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.EmailNotEmpty), message);
@@ -39,8 +39,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void ConfirmEmailCommandValidator_Email_ShouldBeShorterThanMaximumStringLength(string email)
         {
-            var message = string.Format("The length of email must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, email.Length);
+            var message =
+                $"The length of email must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {email.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.EmailMaximumLength), message);
@@ -65,7 +65,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("https://google.com")]
         public void ConfirmEmailCommandValidator_Email_ShouldBeEmailAddress(string email)
         {
-            var message = "Email address is not valid.";
+            const string message = "Email address is not valid.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.EmailIsEmailAddress), message);
@@ -91,7 +91,7 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands
         [InlineData("   ")]
         public void ConfirmEmailCommandValidator_Token_ShouldNotBeEmpty(string token)
         {
-            var message = "Token should not be empty.";
+            const string message = "Token should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.TokenNotEmpty), message);

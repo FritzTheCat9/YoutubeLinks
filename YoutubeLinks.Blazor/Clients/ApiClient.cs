@@ -25,8 +25,8 @@ namespace YoutubeLinks.Blazor.Clients
         private readonly HttpClient _client;
         private readonly IJwtProvider _jwtProvider;
         private readonly string _baseUrl;
-        private readonly string _authScheme = "Bearer";
-        private readonly string _languageHeader = "Accept-Language";
+        private const string _authScheme = "Bearer";
+        private const string _languageHeader = "Accept-Language";
 
         public ApiClient(
             HttpClient client,

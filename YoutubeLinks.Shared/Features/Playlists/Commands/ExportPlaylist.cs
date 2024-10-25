@@ -6,7 +6,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Commands
 {
-    public class ExportPlaylist
+    public static class ExportPlaylist
     {
         public class Command : IRequest<PlaylistFile>
         {

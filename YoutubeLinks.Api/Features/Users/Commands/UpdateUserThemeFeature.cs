@@ -11,9 +11,9 @@ namespace YoutubeLinks.Api.Features.Users.Commands
 {
     public static class UpdateUserThemeFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("/api/users/{id}/theme", async (
+            app.MapPut("/api/users/{id:int}/theme", async (
                 int id,
                 UpdateUserTheme.Command command,
                 IMediator mediator,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             })
                 .WithTags(Tags.Users)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<UpdateUserTheme.Command, Unit>

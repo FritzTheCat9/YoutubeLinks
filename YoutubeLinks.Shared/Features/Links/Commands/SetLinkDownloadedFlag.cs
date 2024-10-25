@@ -3,7 +3,7 @@ using MediatR;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
 {
-    public class SetLinkDownloadedFlag
+    public static class SetLinkDownloadedFlag
     {
         public class Command : IRequest<Unit>
         {

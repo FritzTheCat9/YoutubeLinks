@@ -1,28 +1,28 @@
-﻿<EditForm Model=Command
-          OnValidSubmit=HandleValidSubmit>
-    <CustomValidator @ref=_customValidator />
+﻿<EditForm Model="Command"
+          OnValidSubmit="HandleValidSubmit">
+    <CustomValidator @ref="_customValidator" />
     <FluentValidationValidator />
 
-    <MudDialog DefaultFocus=DefaultFocus.LastChild>
+    <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label=@Localizer[nameof(AppStrings.Name)]
-                            @bind-Value=Command.Name
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
+                            @bind-Value="Command.Name"
                             For="() => Command.Name"
-                            UserAttributes=@(new() { { TestConst.TestId, CreatePlaylistDialogConst.NameInput} }) />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreatePlaylistDialogConst.NameInput} })" />
             <FritzValidationMessage For="() => Command.Name" />
 
-            <MudCheckBox T=bool
-                         Label=@Localizer[nameof(AppStrings.Public)]
-                         @bind-Value=Command.Public
+            <MudCheckBox T="bool"
+                         Label="@Localizer[nameof(AppStrings.Public)]"
+                         @bind-Value="Command.Public"
                          For="() => Command.Public"
-                         Color=Color.Primary
-                         UserAttributes=@(new() { { TestConst.TestId, CreatePlaylistDialogConst.PublicCheckbox } }) />
+                         Color="Color.Primary"
+                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreatePlaylistDialogConst.PublicCheckbox } })" />
             <FritzValidationMessage For="() => Command.Public" />
         </DialogContent>
         <DialogActions>
-            <MudButton ButtonType=ButtonType.Submit
-                       Color=Color.Primary
-                       UserAttributes=@(new() { { TestConst.TestId, CreatePlaylistDialogConst.CreatePlaylistButton } })>
+            <MudButton ButtonType="ButtonType.Submit"
+                       Color="Color.Primary"
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreatePlaylistDialogConst.CreatePlaylistButton } })">
                 @Localizer[nameof(AppStrings.Create)]
             </MudButton>
         </DialogActions>

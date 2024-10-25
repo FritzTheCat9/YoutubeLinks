@@ -8,7 +8,7 @@
 
     public static class Jwt
     {
-        public static readonly string Dto = "JwtDto";
-        public static readonly string AuthnticationType = "Jwt";
+        public const string Dto = "JwtDto";
+        public const string AuthenticationType = "Jwt";
     }
 }

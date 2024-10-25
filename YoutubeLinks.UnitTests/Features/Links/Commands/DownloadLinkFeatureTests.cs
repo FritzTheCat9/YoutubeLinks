@@ -29,7 +29,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadLink.Command
             {
                 Id = 1,
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
 
             var linkRepository = Substitute.For<ILinkRepository>();
@@ -55,7 +55,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadLink.Command
             {
                 Id = 1,
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
 
             var linkRepository = Substitute.For<ILinkRepository>();
@@ -90,7 +90,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadLink.Command
             {
                 Id = 1,
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
             var youtubeFile = new YoutubeFile();
 
@@ -108,7 +108,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
                 }
             });
             authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-            youtubeService.GetMP3File(Arg.Any<string>()).Returns(youtubeFile);
+            youtubeService.GetMp3File(Arg.Any<string>()).Returns(youtubeFile);
 
             mediator.Send(Arg.Any<DownloadLink.Command>(), CancellationToken.None)
                 .Returns(callInfo =>
@@ -120,8 +120,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var result = await mediator.Send(command, CancellationToken.None);
 
             result.Should().Be(youtubeFile);
-            await youtubeService.Received().GetMP3File(Arg.Any<string>());
-            await youtubeService.DidNotReceive().GetMP4File(Arg.Any<string>());
+            await youtubeService.Received().GetMp3File(Arg.Any<string>());
+            await youtubeService.DidNotReceive().GetMp4File(Arg.Any<string>());
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadLink.Command
             {
                 Id = 1,
-                YoutubeFileType = YoutubeFileType.MP4,
+                YoutubeFileType = YoutubeFileType.Mp4,
             };
             var youtubeFile = new YoutubeFile();
 
@@ -148,7 +148,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
                 }
             });
             authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
-            youtubeService.GetMP4File(Arg.Any<string>()).Returns(youtubeFile);
+            youtubeService.GetMp4File(Arg.Any<string>()).Returns(youtubeFile);
 
             mediator.Send(Arg.Any<DownloadLink.Command>(), CancellationToken.None)
                 .Returns(callInfo =>
@@ -160,8 +160,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var result = await mediator.Send(command, CancellationToken.None);
 
             result.Should().Be(youtubeFile);
-            await youtubeService.Received().GetMP4File(Arg.Any<string>());
-            await youtubeService.DidNotReceive().GetMP3File(Arg.Any<string>());
+            await youtubeService.Received().GetMp4File(Arg.Any<string>());
+            await youtubeService.DidNotReceive().GetMp3File(Arg.Any<string>());
         }
     }
 }

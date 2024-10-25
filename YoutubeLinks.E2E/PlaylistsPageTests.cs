@@ -26,13 +26,13 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task CreateUpdateDeletePlaylist()
         {
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
+            const string playlistName = "Test Playlist";
+            const bool playlistIsPublic = false;
 
             await CreateTestPlaylist(playlistName, playlistIsPublic);
 
-            var playlistNameUpdated = "Test Playlist - Updated";
-            var playlistIsPublicUpdated = true;
+            const string playlistNameUpdated = "Test Playlist - Updated";
+            const bool playlistIsPublicUpdated = true;
 
             await UpdateTestPlaylist(playlistName, playlistNameUpdated, playlistIsPublicUpdated);
 
@@ -42,16 +42,16 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task ExportPlaylist()
         {
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
+            const string playlistName = "Test Playlist";
+            const bool playlistIsPublic = false;
 
             await CreateTestPlaylist(playlistName, playlistIsPublic);
 
             await SearchPlaylist(playlistName);
             await ClickElement(PlaylistsPageConst.NavigateToPlaylistLinksButton);
 
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             await GoBackToPlaylistsPageFromLinksPage();
@@ -78,16 +78,16 @@ namespace YoutubeLinks.E2E
         public async Task ImportPlaylist()
         {
             // Export Playlist
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
+            const string playlistName = "Test Playlist";
+            const bool playlistIsPublic = false;
 
             await CreateTestPlaylist(playlistName, playlistIsPublic);
 
             await SearchPlaylist(playlistName);
             await ClickElement(PlaylistsPageConst.NavigateToPlaylistLinksButton);
 
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             await GoBackToPlaylistsPageFromLinksPage();
@@ -99,13 +99,13 @@ namespace YoutubeLinks.E2E
             await DeleteTestPlaylist(playlistName);
 
             // Import Playlist
-            var importedPlaylistName = $"{playlistName} Imported";
+            const string importedPlaylistName = $"{playlistName} Imported";
 
-            await ImportPlaylist(playlistName, PlaylistFileType.JSON, importedPlaylistName);
+            await ImportPlaylist(playlistName, PlaylistFileType.Json, importedPlaylistName);
             await SearchPlaylist(importedPlaylistName);
             await DeleteTestPlaylist(importedPlaylistName);
 
-            await ImportPlaylist(playlistName, PlaylistFileType.TXT, importedPlaylistName);
+            await ImportPlaylist(playlistName, PlaylistFileType.Txt, importedPlaylistName);
             await SearchPlaylist(importedPlaylistName);
             await DeleteTestPlaylist(importedPlaylistName);
         }
@@ -128,29 +128,29 @@ namespace YoutubeLinks.E2E
         }
 
         [Test]
-        public async Task DownloadPlaylistMP3()
+        public async Task DownloadPlaylistMp3()
         {
-            await DownloadPlatlist();
+            await DownloadPlaylist();
         }
 
         [Test]
-        public async Task DownloadPlaylistMP4()
+        public async Task DownloadPlaylistMp4()
         {
-            await DownloadPlatlist(true);
+            await DownloadPlaylist(true);
         }
 
-        private async Task DownloadPlatlist(bool mp4 = false)
+        private async Task DownloadPlaylist(bool mp4 = false)
         {
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
+            const string playlistName = "Test Playlist";
+            const bool playlistIsPublic = false;
 
             await CreateTestPlaylist(playlistName, playlistIsPublic);
 
             await SearchPlaylist(playlistName);
             await ClickElement(PlaylistsPageConst.NavigateToPlaylistLinksButton);
 
-            var title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await CreateLink(title, url);
 
             await GoBackToPlaylistsPageFromLinksPage();
@@ -181,8 +181,8 @@ namespace YoutubeLinks.E2E
         [Test]
         public async Task NavigateToPlaylistLinksView()
         {
-            var playlistName = "Test Playlist";
-            var playlistIsPublic = false;
+            const string playlistName = "Test Playlist";
+            const bool playlistIsPublic = false;
 
             await CreateTestPlaylist(playlistName, playlistIsPublic);
 

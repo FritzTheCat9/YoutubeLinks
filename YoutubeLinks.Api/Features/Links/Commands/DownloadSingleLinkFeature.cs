@@ -8,7 +8,7 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 {
     public static class DownloadSingleLinkFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/links/downloadSingle", async (
                 DownloadSingleLink.Command command,
@@ -28,8 +28,6 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             })
                 .WithTags(Tags.Links)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<DownloadSingleLink.Command, YoutubeFile>

@@ -16,7 +16,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData((YoutubeFileType)5)]
         public void DownloadLinkValidator_YoutubeFileType_ShouldBeInEnum(YoutubeFileType youtubeFileType)
         {
-            var message = string.Format("YoutubeFileType has a range of values which does not include: {0}.", youtubeFileType);
+            var message = $"YoutubeFileType has a range of values which does not include: {youtubeFileType}.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.YoutubeFileTypeIsInEnum), message);

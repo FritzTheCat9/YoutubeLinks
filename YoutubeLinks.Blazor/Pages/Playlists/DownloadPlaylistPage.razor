@@ -32,12 +32,12 @@
                        Disabled=_downloading
                        Variant=Variant.Outlined
                        Class="mb-2"
-                       UserAttributes=@(new() { { TestConst.TestId, DownloadPlaylistPageConst.YoutubeFileTypeSelect } })>
+                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.YoutubeFileTypeSelect } })>
                 @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
                 {
                     <MudSelectItem T="YoutubeFileType"
                                    Value=(YoutubeFileType)youtubeFileType
-                                   UserAttributes=@(new() { { TestConst.TestId, $"download-playlist-page-{(YoutubeFileType)youtubeFileType}" } })>
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, $"download-playlist-page-{(YoutubeFileType)youtubeFileType}" } })>
                         @youtubeFileType.ToString()
                     </MudSelectItem>
                 }
@@ -48,7 +48,7 @@
                                    ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
                                    ButtonText=@Localizer[nameof(AppStrings.Download)]
                                    OnClick=DownloadPlaylistLinks
-                                   UserAttributes=@(new() { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } }) />
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } }) />
 
             @if (_downloading)
             {

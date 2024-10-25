@@ -10,9 +10,9 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
 {
     public static class DeletePlaylistFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("/api/playlists/{id}", async (
+            app.MapDelete("/api/playlists/{id:int}", async (
                 int id,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
@@ -22,8 +22,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
             })
                 .WithTags(Tags.Playlists)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<DeletePlaylist.Command, Unit>

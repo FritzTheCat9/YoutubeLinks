@@ -16,7 +16,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands
         [InlineData("   ")]
         public void UpdatePlaylistCommandValidator_Name_ShouldNotBeEmpty(string name)
         {
-            var message = "Name should not be empty.";
+            const string message = "Name should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.NameNotEmpty), message);
@@ -39,8 +39,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void UpdatePlaylistCommandValidator_Name_ShouldBeShorterThanMaximumStringLength(string name)
         {
-            var message = string.Format("The length of name must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, name.Length);
+            var message =
+                $"The length of name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {name.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.NameMaximumLength), message);

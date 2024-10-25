@@ -6,11 +6,11 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers
     public static class YoutubeHelpers
     {
         [StringSyntax(StringSyntaxAttribute.Regex)]
-        public static readonly string VideoIdRegex = @"(?:\?|&)v=([^&]+)";
+        public const string VideoIdRegex = @"(?:\?|&)v=([^&]+)";
 
-        public static readonly string VideoPathBase = "https://www.youtube.com/watch?v=";
+        public const string VideoPathBase = "https://www.youtube.com/watch?v=";
 
-        public static readonly int MaximumTitleLength = 255;
+        public const int MaximumTitleLength = 255;
 
         public static string GetVideoId(string videoUrl)
         {
@@ -24,7 +24,7 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers
         {
             return youtubeFileType switch
             {
-                YoutubeFileType.MP4 => "mp4",
+                YoutubeFileType.Mp4 => "mp4",
                 _ => "mp3",
             };
         }

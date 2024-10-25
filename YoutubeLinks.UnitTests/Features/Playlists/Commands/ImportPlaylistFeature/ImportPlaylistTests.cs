@@ -17,7 +17,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [InlineData("   ")]
         public void ImportPlaylistCommandValidator_Name_ShouldNotBeEmpty(string name)
         {
-            var message = "Name should not be empty.";
+            const string message = "Name should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.NameNotEmpty), message);
@@ -40,8 +40,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void ImportPlaylistCommandValidator_Name_ShouldBeShorterThanMaximumStringLength(string name)
         {
-            var message = string.Format("The length of name must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, name.Length);
+            var message =
+                $"The length of name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {name.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.NameMaximumLength), message);
@@ -67,7 +67,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [InlineData("   ")]
         public void ImportPlaylistFormModelValidator_Name_ShouldNotBeEmpty(string name)
         {
-            var message = "Name should not be empty.";
+            const string message = "Name should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.NameNotEmpty), message);
@@ -90,8 +90,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [InlineData("0123456789012345678901234567890123456789012345678901")]
         public void ImportPlaylistFormModelValidator_Name_ShouldBeShorterThanMaximumStringLength(string name)
         {
-            var message = string.Format("The length of name must be {0} characters or fewer. You entered {1} characters.",
-                ValidationConsts.MaximumStringLength, name.Length);
+            var message =
+                $"The length of name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {name.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.NameMaximumLength), message);
@@ -112,7 +112,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [Fact]
         public void ImportPlaylistFormModelValidator_File_ShouldNotBeEmpty()
         {
-            var message = "Select file.";
+            const string message = "Select file.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.FileNotEmpty), message);
@@ -134,9 +134,10 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [Fact]
         public void ImportPlaylistFormModelValidator_FileSize_ShouldBeLessThanMaxFileSize()
         {
-            var maxFileSize = 5242880;
+            const int maxFileSize = 5242880;
             var mockedFile = new MockBrowserFile("Test.json", maxFileSize + 1, "application/json");
-            var message = string.Format("The file size must be less than or equal to {0} bytes. The added file have {1} bytes.", maxFileSize, mockedFile.Size);
+            var message =
+                $"The file size must be less than or equal to {maxFileSize} bytes. The added file have {mockedFile.Size} bytes.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.FileMaxFileSize), message);
@@ -162,9 +163,9 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [InlineData("xml", "application/xml")]
         public void ImportPlaylistFormModelValidator_FileContentType_ShouldBeJsonOrTxt(string extension, string type)
         {
-            var maxFileSize = 5242880;
+            const int maxFileSize = 5242880;
             var mockedFile = new MockBrowserFile($"Test.{extension}", maxFileSize, type);
-            var message = "The file should be in .json or .txt format.";
+            const string message = "The file should be in .json or .txt format.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.FileContentTypeShouldBeJsonOrTxt), message);
@@ -186,9 +187,10 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [Fact]
         public void ImportPlaylistFileValidator_Size_ShouldBeLessThanMaxFileSize()
         {
-            var maxFileSize = 5242880;
+            const int maxFileSize = 5242880;
             var mockedFile = new MockBrowserFile("Test.json", maxFileSize + 1, "application/json");
-            var message = string.Format("The file size must be less than or equal to {0} bytes. The added file have {1} bytes.", maxFileSize, mockedFile.Size);
+            var message =
+                $"The file size must be less than or equal to {maxFileSize} bytes. The added file have {mockedFile.Size} bytes.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.FileMaxFileSize), message);
@@ -208,9 +210,9 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
         [InlineData("xml", "application/xml")]
         public void ImportPlaylistFileValidator_ContentType_ShouldBeJsonOrTxt(string extension, string type)
         {
-            var maxFileSize = 5242880;
+            const int maxFileSize = 5242880;
             var mockedFile = new MockBrowserFile($"Test.{extension}", maxFileSize, type);
-            var message = "The file should be in .json or .txt format.";
+            const string message = "The file should be in .json or .txt format.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.FileContentTypeShouldBeJsonOrTxt), message);
@@ -223,7 +225,7 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
                   .WithErrorMessage(message);
         }
 
-        public class MockBrowserFile : IBrowserFile
+        private class MockBrowserFile : IBrowserFile
         {
             public string Name { get; }
             public long Size { get; }

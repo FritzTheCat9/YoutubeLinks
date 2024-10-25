@@ -22,7 +22,7 @@ namespace YoutubeLinks.Blazor.Clients
     public class LinkApiClient : ILinkApiClient
     {
         private readonly IApiClient _apiClient;
-        private readonly string _url = "api/links";
+        private const string _url = "api/links";
 
         public LinkApiClient(IApiClient apiClient)
         {

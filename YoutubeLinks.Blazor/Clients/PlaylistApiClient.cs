@@ -21,7 +21,7 @@ namespace YoutubeLinks.Blazor.Clients
     public class PlaylistApiClient : IPlaylistApiClient
     {
         private readonly IApiClient _apiClient;
-        private readonly string _url = "api/playlists";
+        private const string _url = "api/playlists";
 
         public PlaylistApiClient(IApiClient apiClient)
         {

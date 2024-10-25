@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
 {
     public static class ResendConfirmationEmailFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/users/resendConfirmationEmail", async (
                 ResendConfirmationEmail.Command command,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             })
                 .WithTags(Tags.Users)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<ResendConfirmationEmail.Command, Unit>

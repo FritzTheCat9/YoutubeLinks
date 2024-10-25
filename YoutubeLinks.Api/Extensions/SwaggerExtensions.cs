@@ -8,7 +8,7 @@ namespace YoutubeLinks.Api.Extensions
         {
             services.AddSwaggerGen(setup =>
             {
-                setup.AddSecurityDefinition("Bearer", new()
+                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
@@ -18,7 +18,7 @@ namespace YoutubeLinks.Api.Extensions
                     Scheme = "Bearer",
                 });
 
-                setup.AddSecurityRequirement(new()
+                setup.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme

@@ -11,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
 {
     public static class LinkExtensions
     {
-        public static IEndpointRouteBuilder AddLinksEndpoints(this IEndpointRouteBuilder app)
+        public static void AddLinksEndpoints(this IEndpointRouteBuilder app)
         {
             CreateLinkFeature.Endpoint(app);
             DeleteLinkFeature.Endpoint(app);
@@ -22,13 +22,11 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             GetAllLinksFeature.Endpoint(app);
             GetAllPaginatedLinksFeature.Endpoint(app);
             GetLinkFeature.Endpoint(app);
-
-            return app;
         }
 
         public static LinkDto ToDto(this Link link)
         {
-            return new()
+            return new LinkDto
             {
                 Id = link.Id,
                 Created = link.Created,
@@ -41,9 +39,9 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
             };
         }
 
-        public static LinkInfoDto ToLinkInfoDto(this Link link)
+        private static LinkInfoDto ToLinkInfoDto(this Link link)
         {
-            return new()
+            return new LinkInfoDto
             {
                 Id = link.Id,
                 Url = link.Url,
@@ -62,7 +60,7 @@ namespace YoutubeLinks.Api.Features.Links.Extensions
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 links = links.Where(x =>
-                    x.Title.ToLower().Contains(searchTerm));
+                    x.Title.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
 
             return links;
         }

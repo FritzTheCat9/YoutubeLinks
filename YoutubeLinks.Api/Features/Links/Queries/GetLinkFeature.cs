@@ -11,9 +11,9 @@ namespace YoutubeLinks.Api.Features.Links.Queries
 {
     public static class GetLinkFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/links/{id}", async (
+            app.MapGet("/api/links/{id:int}", async (
                 int id,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Links.Queries
                 .WithName("GetLink")
                 .WithTags(Tags.Links)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<GetLink.Query, LinkDto>

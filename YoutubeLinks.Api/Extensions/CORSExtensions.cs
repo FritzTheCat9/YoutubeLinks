@@ -5,7 +5,7 @@ namespace YoutubeLinks.Api.Extensions
 {
     public static class CORSExtensions
     {
-        private const string _policyName = "MyCorsPolicy";
+        private const string PolicyName = "MyCorsPolicy";
         private const string _sectionName = "Auth";
 
         public static IServiceCollection AddCORS(
@@ -17,7 +17,7 @@ namespace YoutubeLinks.Api.Extensions
 
             services.AddCors(options =>
             {
-                options.AddPolicy(_policyName, policy =>
+                options.AddPolicy(PolicyName, policy =>
                 {
                     policy.WithOrigins(authOptions.FrontendUrl)
                           .AllowAnyHeader()
@@ -31,7 +31,7 @@ namespace YoutubeLinks.Api.Extensions
 
         public static WebApplication UseCORS(this WebApplication app)
         {
-            app.UseCors(_policyName);
+            app.UseCors(PolicyName);
 
             return app;
         }

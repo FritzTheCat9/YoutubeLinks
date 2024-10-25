@@ -8,13 +8,13 @@
         public PlaylistFileType PlaylistFileType { get; set; }
     }
 
-    public class PlaylistJSONModel
+    public class PlaylistJsonModel
     {
         public int LinksCount { get; set; }
-        public IEnumerable<LinkJSONModel> LinkModels { get; set; }
+        public IEnumerable<LinkJsonModel> LinkModels { get; set; }
     }
 
-    public class LinkJSONModel
+    public class LinkJsonModel
     {
         public string Title { get; set; }
         public string Url { get; set; }

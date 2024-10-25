@@ -1,36 +1,36 @@
-﻿<EditForm Model=FormModel
-          OnValidSubmit=HandleValidSubmit
-          @ref=_form>
-    <CustomValidator @ref=_customValidator />
+﻿<EditForm Model="FormModel"
+          OnValidSubmit="HandleValidSubmit"
+          @ref="_form">
+    <CustomValidator @ref="_customValidator" />
     <FluentValidationValidator />
 
-    <MudDialog DefaultFocus=DefaultFocus.LastChild>
+    <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label=@Localizer[nameof(AppStrings.Name)]
-                            @bind-Value=FormModel.Name
+            <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
+                            @bind-Value="FormModel.Name"
                             For="() => FormModel.Name"
-                            UserAttributes=@(new() { { TestConst.TestId, ImportPlaylistDialogConst.NameInput } }) />
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.NameInput } })" />
             <FritzValidationMessage For="() => FormModel.Name" />
 
-            <MudCheckBox T=bool
-                         Label=@Localizer[nameof(AppStrings.Public)]
-                         @bind-Value=FormModel.Public
+            <MudCheckBox T="bool"
+                         Label="@Localizer[nameof(AppStrings.Public)]"
+                         @bind-Value="FormModel.Public"
                          For="() => FormModel.Public"
-                         Color=Color.Primary
-                         UserAttributes=@(new() { { TestConst.TestId, ImportPlaylistDialogConst.PublicCheckbox } }) />
+                         Color="Color.Primary"
+                         UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.PublicCheckbox } })" />
             <FritzValidationMessage For="() => FormModel.Public" />
 
-            <MudFileUpload T=IBrowserFile
-                           @bind-Files=FormModel.File
-                           OnFilesChanged=UploadFile
+            <MudFileUpload T="IBrowserFile"
+                           @bind-Files="FormModel.File"
+                           OnFilesChanged="UploadFile"
                            For="() => FormModel.File"
                            Accept=".json, .txt"
-                           AppendMultipleFiles=false
+                           AppendMultipleFiles="false"
                            Class="mb-3">
                 <ActivatorContent>
-                    <MudButton Variant=Variant.Filled
-                               Color=Color.Primary
-                               StartIcon=@Icons.Material.Filled.FileUpload>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.FileUpload">
                         @Localizer[nameof(AppStrings.AddPlaylistJsonOrTxtFile)]
                     </MudButton>
                 </ActivatorContent>
@@ -44,18 +44,18 @@
             <FritzValidationMessage For="() => FormModel.ExportedLinks" />
             <FritzValidationMessage For="() => FormModel.ExportedLinkUrls" />
 
-            <MudText Typo=Typo.subtitle2
+            <MudText Typo="Typo.subtitle2"
                      Color="Color.Warning">
                 @Localizer[nameof(AppStrings.ImportPlaylistInfo)]
             </MudText>
         </DialogContent>
         <DialogActions>
-            <FritzProcessingButton @ref=_processingButton
-                                   ButtonType=ButtonType.Submit
-                                   Color=Color.Primary
-                                   ProcessingButtonText=@Localizer[nameof(AppStrings.Importing)]
-                                   ButtonText=@Localizer[nameof(AppStrings.Import)]
-                                   UserAttributes=@(new() { { TestConst.TestId, ImportPlaylistDialogConst.ImportPlaylistButton } }) />
+            <FritzProcessingButton @ref="_processingButton"
+                                   ButtonType="ButtonType.Submit"
+                                   Color="Color.Primary"
+                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Importing)]"
+                                   ButtonText="@Localizer[nameof(AppStrings.Import)]"
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.ImportPlaylistButton } })" />
         </DialogActions>
     </MudDialog>
 </EditForm>

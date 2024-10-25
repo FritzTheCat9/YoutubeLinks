@@ -11,9 +11,9 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 {
     public static class SetLinkDownloadedFlagFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("/api/links/{id}/downloaded", async (
+            app.MapPut("/api/links/{id:int}/downloaded", async (
                 int id,
                 SetLinkDownloadedFlag.Command command,
                 IMediator mediator,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             })
                 .WithTags(Tags.Links)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>

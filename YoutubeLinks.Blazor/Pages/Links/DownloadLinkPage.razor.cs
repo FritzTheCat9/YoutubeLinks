@@ -38,7 +38,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
         public DownloadSingleLink.Command Command { get; set; } = new()
         {
             Url = "",
-            YoutubeFileType = YoutubeFileType.MP3
+            YoutubeFileType = YoutubeFileType.Mp3
         };
 
         [Inject] public IExceptionHandler ExceptionHandler { get; set; }
@@ -46,13 +46,13 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
-        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IJSRuntime JsRuntime { get; set; }
 
         protected override void OnParametersSet()
         {
             _items =
             [
-                new(Localizer[nameof(AppStrings.DownloadLink)], href: null, disabled: true),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.DownloadLink)], href: null, disabled: true),
             ];
         }
 
@@ -64,15 +64,15 @@ namespace YoutubeLinks.Blazor.Pages.Links
 
                 var response = await LinkApiClient.DownloadSingleLink(Command);
 
-                using (var stream = await response.Content.ReadAsStreamAsync())
+                await using (var stream = await response.Content.ReadAsStreamAsync())
                 {
                     var streamRef = new DotNetStreamReference(stream);
                     var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
 
-                    await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                    await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
                 }
 
-                _downloadLinkResults.Add(new()
+                _downloadLinkResults.Add(new DownloadLinkResult
                 {
                     Url = Command.Url,
                     Success = true,
@@ -84,7 +84,7 @@ namespace YoutubeLinks.Blazor.Pages.Links
             }
             catch (Exception)
             {
-                _downloadLinkResults.Add(new()
+                _downloadLinkResults.Add(new DownloadLinkResult
                 {
                     Url = Command.Url,
                     Success = false,

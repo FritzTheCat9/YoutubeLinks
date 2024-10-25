@@ -6,7 +6,7 @@
         {
             return playlistFileType switch
             {
-                PlaylistFileType.TXT => "txt",
+                PlaylistFileType.Txt => "txt",
                 _ => "json",
             };
         }

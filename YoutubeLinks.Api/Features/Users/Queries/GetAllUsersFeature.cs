@@ -11,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Users.Queries
 {
     public static class GetAllUsersFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/users/all", async (
                 GetAllUsers.Query query,
@@ -22,8 +22,6 @@ namespace YoutubeLinks.Api.Features.Users.Queries
             })
                 .WithTags(Tags.Users)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<GetAllUsers.Query, PagedList<UserDto>>

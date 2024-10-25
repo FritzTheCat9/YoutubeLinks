@@ -17,7 +17,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("   ")]
         public void DownloadSingleLinkValidator_Url_ShouldNotBeEmpty(string url)
         {
-            var message = "Youtube video url should not be empty.";
+            const string message = "Youtube video url should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
@@ -27,7 +27,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadSingleLink.Command
             {
                 Url = url, 
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
 
             var result = validator.TestValidate(command);
@@ -45,7 +45,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("https://www.youtube.com/watch")]
         public void DownloadSingleLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
         {
-            var message = "This is not a valid link to the YouTube video.";
+            const string message = "This is not a valid link to the YouTube video.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
@@ -55,7 +55,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
             var command = new DownloadSingleLink.Command
             {
                 Url = url,
-                YoutubeFileType = YoutubeFileType.MP3,
+                YoutubeFileType = YoutubeFileType.Mp3,
             };
 
             var result = validator.TestValidate(command);
@@ -71,7 +71,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData((YoutubeFileType)5)]
         public void DownloadSingleLinkValidator_YoutubeFileType_ShouldBeInEnum(YoutubeFileType youtubeFileType)
         {
-            var message = string.Format("YoutubeFileType has a range of values which does not include: {0}.", youtubeFileType);
+            var message = $"YoutubeFileType has a range of values which does not include: {youtubeFileType}.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.YoutubeFileTypeIsInEnum), message);

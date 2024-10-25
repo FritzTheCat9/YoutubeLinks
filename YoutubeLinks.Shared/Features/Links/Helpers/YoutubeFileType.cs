@@ -2,7 +2,7 @@
 {
     public enum YoutubeFileType
     {
-        MP3,
-        MP4,
+        Mp3,
+        Mp4,
     }
 }

@@ -188,7 +188,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
                 Title = string.Empty,
                 Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             };
-            var newTitle = "Rick Astley - Never Gonna Give You Up";
+            const string newTitle = "Rick Astley - Never Gonna Give You Up";
 
             var linkRepository = Substitute.For<ILinkRepository>();
             var authService = Substitute.For<IAuthService>();
@@ -233,7 +233,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
                 Title = "Rick Astley - Never Gonna Give You Up",
                 Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             };
-            var newTitle = "Natasha Bedingfield - Unwritten";
+            const string newTitle = "Natasha Bedingfield - Unwritten";
 
             var linkRepository = Substitute.For<ILinkRepository>();
             var authService = Substitute.For<IAuthService>();
@@ -279,7 +279,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
                 Title = "Rick Astley - Never Gonna Give You Up",
                 Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             };
-            var oldTitle = "Rick Astley - Never Gonna Give You Up";
+            const string oldTitle = "Rick Astley - Never Gonna Give You Up";
 
             var linkRepository = Substitute.For<ILinkRepository>();
             var authService = Substitute.For<IAuthService>();

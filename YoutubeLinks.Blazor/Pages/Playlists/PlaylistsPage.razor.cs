@@ -20,7 +20,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private List<BreadcrumbItem> _items;
         private MudTable<PlaylistDto> _table;
 
-        private bool _isUserPlaylist = false;
+        private bool _isUserPlaylist;
 
         private string _searchString = "";
         private PagedList<PlaylistDto> _playlistPagedList;
@@ -51,15 +51,15 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
 
         [Inject] public IDialogService DialogService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IJSRuntime JsRuntime { get; set; }
 
 
         protected override async Task OnParametersSetAsync()
         {
             _items =
             [
-                new(Localizer[nameof(AppStrings.Users)], href: $"/users"),
-                new(Localizer[nameof(AppStrings.Playlists)], href: null, disabled: true),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], href: $"/users"),
+                new BreadcrumbItem(Localizer[nameof(AppStrings.Playlists)], href: null, disabled: true),
             ];
 
             _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
@@ -84,10 +84,10 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExceptions(ex);
-                return new() { TotalItems = 0, Items = [] };
+                return new TableData<PlaylistDto> { TotalItems = 0, Items = [] };
             }
 
-            return new()
+            return new TableData<PlaylistDto>
             {
                 TotalItems = _playlistPagedList.TotalCount,
                 Items = _playlistPagedList.Items
@@ -121,7 +121,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             {
                 {
                     x => x.Command,
-                    new()
+                    new UpdatePlaylist.Command
                     {
                         Id = playlistDto.Id,
                         Name = playlistDto.Name,
@@ -143,7 +143,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             {
                 {
                     x => x.Command,
-                    new()
+                    new CreatePlaylist.Command
                     {
                         Name = "",
                         Public = true,
@@ -166,7 +166,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                     Id = id,
                     PlaylistFileType = playlistFileType,
                 };
-                string fileExtension = PlaylistHelpers.PlaylistFileTypeToString(playlistFileType);
+                var fileExtension = PlaylistHelpers.PlaylistFileTypeToString(playlistFileType);
 
                 var response = await PlaylistApiClient.ExportPlaylist(command);
 
@@ -174,7 +174,7 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                 var streamRef = new DotNetStreamReference(content);
                 var filename = response.Content.Headers.ContentDisposition.FileNameStar ?? $"default_name.{fileExtension}";
 
-                await JSRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
             }
             catch (Exception ex)
             {
@@ -182,14 +182,14 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             }
         }
 
-        private async Task ImportPlaylistFromJSON()
+        private async Task ImportPlaylistFromJson()
         {
             var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
             var parameters = new DialogParameters<ImportPlaylistDialog>
             {
                 {
                     x => x.FormModel,
-                    new()
+                    new ImportPlaylist.FormModel
                     {
                         Name = "",
                         Public = true,

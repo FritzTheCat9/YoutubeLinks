@@ -3,7 +3,7 @@ using MediatR;
 
 namespace YoutubeLinks.Shared.Features.Links.Queries
 {
-    public class GetAllLinks
+    public static class GetAllLinks
     {
         public class Query : IRequest<IEnumerable<LinkInfoDto>>
         {

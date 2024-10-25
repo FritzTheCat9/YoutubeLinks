@@ -1,5 +1,4 @@
 ﻿using Microsoft.Playwright;
-using NUnit.Framework.Internal;
 using static YoutubeLinks.Blazor.Pages.Links.DownloadLinkPage;
 
 namespace YoutubeLinks.E2E
@@ -14,9 +13,9 @@ namespace YoutubeLinks.E2E
         }
 
         [Test]
-        public async Task DownloadMP3()
+        public async Task DownloadMp3()
         {
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await FillInput(DownloadLinkPageConst.UrlInput, url);
 
             await Page.ClickAsync("div.mud-select-input");
@@ -28,9 +27,9 @@ namespace YoutubeLinks.E2E
         }
 
         [Test]
-        public async Task DownloadMP4()
+        public async Task DownloadMp4()
         {
-            var url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             await FillInput(DownloadLinkPageConst.UrlInput, url);
 
             await Page.ClickAsync("div.mud-select-input");

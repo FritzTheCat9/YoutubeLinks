@@ -5,13 +5,13 @@
         </MudText>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick=Cancel>
+        <MudButton OnClick="Cancel">
             @Localizer[nameof(AppStrings.Cancel)]
         </MudButton>
-        <MudButton Color=Color
-                   Variant=Variant.Filled
-                   OnClick=Submit
-                   UserAttributes=@(new() { { TestConst.TestId, InformationDialogConst.ConfirmButton } })>
+        <MudButton Color="Color"
+                   Variant="Variant.Filled"
+                   OnClick="Submit"
+                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, InformationDialogConst.ConfirmButton } })">
             @ButtonText
         </MudButton>
     </DialogActions>

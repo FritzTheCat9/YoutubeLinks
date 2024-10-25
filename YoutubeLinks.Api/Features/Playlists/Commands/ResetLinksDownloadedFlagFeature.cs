@@ -10,7 +10,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
 {
     public static class ResetLinksDownloadedFlagFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/resetDownloadedFlag", async (
                 ResetLinksDownloadedFlag.Command command,
@@ -21,8 +21,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands
             })
                 .WithTags(Tags.Playlists)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<ResetLinksDownloadedFlag.Command, Unit>

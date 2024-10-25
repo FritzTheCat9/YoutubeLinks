@@ -7,13 +7,13 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Playlists.Commands
 {
-    public class ImportPlaylist
+    public static class ImportPlaylist
     {
         public class Command : IRequest<int>
         {
             public string Name { get; set; }
             public bool Public { get; set; }
-            public List<LinkJSONModel> ExportedLinks { get; set; }
+            public List<LinkJsonModel> ExportedLinks { get; set; }
             public List<string> ExportedLinkUrls { get; set; }
             public PlaylistFileType PlaylistFileType { get; set; }
         }
@@ -54,7 +54,7 @@ namespace YoutubeLinks.Shared.Features.Playlists.Commands
 
         public class FileValidator : AbstractValidator<IBrowserFile>
         {
-            private readonly int _maxFileSize = 5242880;
+            private const int _maxFileSize = 5242880;
             private readonly List<string> _allowedFileTypes = ["application/json", "text/plain"];
 
             public FileValidator(IStringLocalizer<ValidationMessage> localizer)

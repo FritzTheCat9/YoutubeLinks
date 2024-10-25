@@ -6,6 +6,7 @@ using YoutubeLinks.Blazor.Clients;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Shared;
+using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
@@ -39,7 +40,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
             {
                 {
                     x => x.Command,
-                    new()
+                    new Login.Command()
                 }
             };
 
@@ -82,7 +83,7 @@ namespace YoutubeLinks.Blazor.Pages.Users
             {
                 {
                     x => x.Command,
-                    new()
+                    new Register.Command()
                 }
             };
 

@@ -5,35 +5,35 @@
     @Localizer[nameof(AppStrings.Users)]
 </PageTitle>
 
-<FritzBreadcrumbs Items=_items />
+<FritzBreadcrumbs Items="_items" />
 
-<MudTable ServerData=ServerReload
-          Dense=true
-          Hover=true
-          Elevation=3
-          @ref=_table
+<MudTable ServerData="ServerReload"
+          Dense="true"
+          Hover="true"
+          Elevation="3"
+          @ref="_table"
           Context="user">
     <ToolBarContent>
-        <MudText Typo=Typo.h6>
+        <MudText Typo="Typo.h6">
             @Localizer[nameof(AppStrings.Users)]
         </MudText>
         <MudSpacer />
-        <FritzSearchTextField @bind-Value=_searchString
+        <FritzSearchTextField @bind-Value="_searchString"
                               OnSearch="() => _table.ReloadServerData()"
-                              UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.SearchInput } }) />
+                              UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.SearchInput } })" />
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
             <MudTableSortLabel SortLabel="username"
-                               T=UserDto
-                               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.UserNameTableSortLabel } })>
+                               T="UserDto"
+                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.UserNameTableSortLabel } })">
                 @Localizer[nameof(AppStrings.UserName)]
             </MudTableSortLabel>
         </MudTh>
         <MudTh>
             <MudTableSortLabel SortLabel="email"
-                               T=UserDto
-                               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.EmailTableSortLabel } })>
+                               T="UserDto"
+                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.EmailTableSortLabel } })">
                 @Localizer[nameof(AppStrings.Email)]
             </MudTableSortLabel>
         </MudTh>
@@ -45,27 +45,27 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel=@Localizer[nameof(AppStrings.UserName)]
-               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.UserNameTableRowData } })>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.UserName)]"
+               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.UserNameTableRowData } })">
             @user.UserName
         </MudTd>
-        <MudTd DataLabel=@Localizer[nameof(AppStrings.Email)]>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Email)]">
             @user.Email
         </MudTd>
-        <MudTd DataLabel=@Localizer[nameof(AppStrings.Role)]>
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Role)]">
             <MudChip T="Color"
-                     Variant=Variant.Outlined
-                     Color=GetColorBasedOnPolicy(GetUserHighestPolicy(user))>
+                     Variant="Variant.Outlined"
+                     Color="GetColorBasedOnPolicy(GetUserHighestPolicy(user))">
                 @GetUserHighestPolicy(user)
             </MudChip>
         </MudTd>
-        <MudTd DataLabel=@Localizer[nameof(AppStrings.Playlists)]>
-            <FritzTooltip Text=@Localizer[nameof(AppStrings.Playlists)]>
-                <MudIconButton Icon=@Icons.Material.Filled.List
-                               Color=Color.Primary
-                               Size=Size.Small
+        <MudTd DataLabel="@Localizer[nameof(AppStrings.Playlists)]">
+            <FritzTooltip Text="@Localizer[nameof(AppStrings.Playlists)]">
+                <MudIconButton Icon="@Icons.Material.Filled.List"
+                               Color="Color.Primary"
+                               Size="Size.Small"
                                OnClick="() => RedirectToUserPlaylistsPage(user.Id)"
-                               UserAttributes=@(new() { { TestConst.TestId, UsersPageConst.NavigateToUserPlaylistsButton } }) />
+                               UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UsersPageConst.NavigateToUserPlaylistsButton } })" />
             </FritzTooltip>
         </MudTd>
     </RowTemplate>
@@ -80,7 +80,7 @@
         </MudText>
     </LoadingContent>
     <PagerContent>
-        <MudTablePager RowsPerPageString=@Localizer[nameof(AppStrings.RowsPerPage)]
-                       InfoFormat=@Localizer[nameof(AppStrings.PaginationInfoFormat)] />
+        <MudTablePager RowsPerPageString="@Localizer[nameof(AppStrings.RowsPerPage)]"
+                       InfoFormat="@Localizer[nameof(AppStrings.PaginationInfoFormat)]" />
     </PagerContent>
 </MudTable>

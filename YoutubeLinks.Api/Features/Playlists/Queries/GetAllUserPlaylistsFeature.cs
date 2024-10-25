@@ -12,7 +12,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
 {
     public static class GetAllUserPlaylistsFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/all", async (
                 GetAllUserPlaylists.Query query,
@@ -23,8 +23,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
             })
                 .WithTags(Tags.Playlists)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>

@@ -11,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
 
     public static class ExportPlaylistFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/export", async (
                 ExportPlaylist.Command command,
@@ -23,8 +23,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature
             })
                 .WithTags(Tags.Playlists)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<ExportPlaylist.Command, PlaylistFile>

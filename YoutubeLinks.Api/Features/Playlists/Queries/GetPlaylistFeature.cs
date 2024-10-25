@@ -11,9 +11,9 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
 {
     public static class GetPlaylistFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/playlists/{id}", async (
+            app.MapGet("/api/playlists/{id:int}", async (
                 int id,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
                 .WithName("GetPlaylist")
                 .WithTags(Tags.Playlists)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<GetPlaylist.Query, PlaylistDto>

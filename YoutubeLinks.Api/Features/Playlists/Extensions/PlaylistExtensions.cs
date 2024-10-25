@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
 {
     public static class PlaylistExtensions
     {
-        public static IEndpointRouteBuilder AddPlaylistsEndpoints(this IEndpointRouteBuilder app)
+        public static void AddPlaylistsEndpoints(this IEndpointRouteBuilder app)
         {
             CreatePlaylistFeature.Endpoint(app);
             DeletePlaylistFeature.Endpoint(app);
@@ -24,13 +24,11 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             GetAllPublicPlaylistsFeature.Endpoint(app);
             GetAllUserPlaylistsFeature.Endpoint(app);
             GetPlaylistFeature.Endpoint(app);
-
-            return app;
         }
 
         public static PlaylistDto ToDto(this Playlist playlist)
         {
-            return new()
+            return new PlaylistDto
             {
                 Id = playlist.Id,
                 Created = playlist.Created,
@@ -41,16 +39,16 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
             };
         }
 
-        public static PlaylistJSONModel GetPlaylistModel(this Playlist playlist)
+        public static PlaylistJsonModel GetPlaylistModel(this Playlist playlist)
         {
-            var links = playlist.Links.Select(x => new LinkJSONModel()
+            var links = playlist.Links.Select(x => new LinkJsonModel()
             {
                 Title = x.Title,
                 Url = x.Url,
                 VideoId = x.VideoId
             }).OrderBy(x => x.Title);
 
-            var playlistModel = new PlaylistJSONModel()
+            var playlistModel = new PlaylistJsonModel()
             {
                 LinksCount = links.Count(),
                 LinkModels = links,
@@ -69,7 +67,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 playlists = playlists.Where(x =>
-                    x.Name.ToLower().Contains(searchTerm));
+                    x.Name.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
 
             return playlists;
         }
@@ -106,7 +104,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Extensions
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 playlists = playlists.Where(x =>
-                    x.Name.ToLower().Contains(searchTerm));
+                    x.Name.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
 
             return playlists;
         }

@@ -10,7 +10,7 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
 {
     public static class UserExtensions
     {
-        public static IEndpointRouteBuilder AddUserEndpoints(this IEndpointRouteBuilder app)
+        public static void AddUserEndpoints(this IEndpointRouteBuilder app)
         {
             ConfirmEmailFeature.Endpoint(app);
             ForgotPasswordFeature.Endpoint(app);
@@ -22,13 +22,11 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
             UpdateUserThemeFeature.Endpoint(app);
             GetAllUsersFeature.Endpoint(app);
             GetUserFeature.Endpoint(app);
-
-            return app;
         }
 
         public static UserDto ToDto(this User user)
         {
-            return new()
+            return new UserDto
             {
                 Id = user.Id,
                 Created = user.Created,
@@ -49,8 +47,8 @@ namespace YoutubeLinks.Api.Features.Users.Extensions
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 users = users.Where(x =>
-                    x.UserName.ToLower().Contains(searchTerm)
-                    || x.Email.ToLower().Contains(searchTerm));
+                    x.UserName.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase)
+                    || x.Email.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
             }
 
             return users;

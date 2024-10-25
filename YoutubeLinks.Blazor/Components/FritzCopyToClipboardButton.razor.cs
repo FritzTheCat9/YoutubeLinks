@@ -16,7 +16,7 @@ namespace YoutubeLinks.Blazor.Components
         [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
 
         [Inject] public IStringLocalizer<App> Localizer { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IJSRuntime JsRuntime { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -25,6 +25,6 @@ namespace YoutubeLinks.Blazor.Components
         }
 
         private async Task CopyTextToClipboard() 
-            => await JSRuntime.InvokeVoidAsync("copyToClipboard", CopiedText);
+            => await JsRuntime.InvokeVoidAsync("copyToClipboard", CopiedText);
     }
 }

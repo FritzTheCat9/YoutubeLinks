@@ -17,7 +17,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("   ")]
         public void UpdateLinkValidator_Url_ShouldNotBeEmpty(string url)
         {
-            var message = "Youtube video url should not be empty.";
+            const string message = "Youtube video url should not be empty.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.UrlNotEmpty), message);
@@ -46,7 +46,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("https://www.youtube.com/watch")]
         public void UpdateLinkValidator_Url_ShouldMatchYoutubeVideoRegex(string url)
         {
-            var message = "This is not a valid link to the YouTube video.";
+            const string message = "This is not a valid link to the YouTube video.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.VideoUrlMatchesRegex), message);
@@ -78,7 +78,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("Title |")]
         public void UpdateLinkValidator_Title_ShouldHaveValidCharacters(string title)
         {
-            var message = "Title contains invalid characters.";
+            const string message = "Title contains invalid characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.TitleHaveValidCharacters), message);
@@ -102,8 +102,8 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands
         [InlineData("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345")]
         public void UpdateLinkValidator_Title_ShouldHaveLengthShorterThanMaximum(string title)
         {
-            var message = string.Format("The length of name must be {0} characters or fewer. You entered {1} characters.",
-                YoutubeHelpers.MaximumTitleLength, title.Length);
+            var message =
+                $"The length of name must be {YoutubeHelpers.MaximumTitleLength} characters or fewer. You entered {title.Length} characters.";
 
             var localizer = new TestStringLocalizer<ValidationMessage>();
             localizer.AddTranslation(nameof(ValidationMessageString.TitleMaximumLength), message);

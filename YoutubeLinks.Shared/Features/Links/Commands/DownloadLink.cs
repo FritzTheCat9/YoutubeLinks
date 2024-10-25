@@ -6,7 +6,7 @@ using YoutubeLinks.Shared.Localization;
 
 namespace YoutubeLinks.Shared.Features.Links.Commands
 {
-    public class DownloadLink
+    public static class DownloadLink
     {
         public class Command : IRequest<YoutubeFile>
         {

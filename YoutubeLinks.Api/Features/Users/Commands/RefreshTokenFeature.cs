@@ -13,7 +13,7 @@ namespace YoutubeLinks.Api.Features.Users.Commands
 {
     public static class RefreshTokenFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/users/refresh-token", async (
                 RefreshToken.Command command,
@@ -24,8 +24,6 @@ namespace YoutubeLinks.Api.Features.Users.Commands
             })
                 .WithTags(Tags.Users)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<RefreshToken.Command, JwtDto>

@@ -10,9 +10,9 @@ namespace YoutubeLinks.Api.Features.Links.Commands
 {
     public static class DeleteLinkFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("/api/links/{id}", async (
+            app.MapDelete("/api/links/{id:int}", async (
                 int id,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
@@ -22,8 +22,6 @@ namespace YoutubeLinks.Api.Features.Links.Commands
             })
                 .WithTags(Tags.Links)
                 .RequireAuthorization(Policy.User);
-
-            return app;
         }
 
         public class Handler : IRequestHandler<DeleteLink.Command, Unit>

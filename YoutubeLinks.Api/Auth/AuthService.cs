@@ -15,66 +15,50 @@ namespace YoutubeLinks.Api.Auth
 
     public class AuthService : IAuthService
     {
-        private readonly ClaimsPrincipal _user;
-
-        public ClaimsPrincipal User => _user;
+        public ClaimsPrincipal User { get; }
 
         public AuthService(IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor.HttpContext is null)
                 throw new MyServerException();
 
-            _user = httpContextAccessor.HttpContext.User;
+            User = httpContextAccessor.HttpContext.User;
         }
 
         public bool IsInRole(string roleName)
-            => _user.IsInRole(roleName);
+            => User.IsInRole(roleName);
 
-        public bool IsInAnyRole(params string[] roleNames)
-        {
-            foreach (var roleName in roleNames)
-            {
-                if (_user.IsInRole(roleName))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public bool IsInAnyRole(params string[] roleNames) 
+            => roleNames.Any(roleName => User.IsInRole(roleName));
 
         public bool IsLoggedInUser(int userId)
         {
-            var userIdString = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdString == null)
                 return false;
 
-            if (!int.TryParse(userIdString, out int userIdInt))
+            if (!int.TryParse(userIdString, out var userIdInt))
                 return false;
 
-            if (userId != userIdInt)
-                return false;
-
-            return true;
+            return userId == userIdInt;
         }
 
         public int? GetCurrentUserId()
         {
-            if (_user.Identity?.IsAuthenticated ?? false)
-            {
-                var userIdString = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!(User.Identity?.IsAuthenticated ?? false)) 
+                return null;
+            
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (userIdString == null)
-                    return null;
+            if (userIdString == null)
+                return null;
 
-                if (!int.TryParse(userIdString, out int userIdInt))
-                    return null;
+            if (!int.TryParse(userIdString, out var userIdInt))
+                return null;
 
-                return userIdInt;
-            }
+            return userIdInt;
 
-            return null;
         }
     }
 }

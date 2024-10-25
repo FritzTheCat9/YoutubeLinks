@@ -20,7 +20,6 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
         private CustomValidator _customValidator;
         private FritzProcessingButton _processingButton;
 
-
         public class ImportPlaylistDialogConst
         {
             public const string NameInput = "import-playlist-dialog-name-input";
@@ -69,16 +68,14 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
                 return;
 
             var file = e.File;
-            if (file is null)
-                return;
 
             switch (file.ContentType)
             {
                 case "text/plain":
-                    await SetTXTFileVariables(file);
+                    await SetTxtFileVariables(file);
                     break;
                 case "application/json":
-                    await SetJSONFileVariables(file);
+                    await SetJsonFileVariables(file);
                     break;
                 default:
                     return;
@@ -87,19 +84,19 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             _form.EditContext.Validate();
         }
 
-        private async Task SetJSONFileVariables(IBrowserFile file)
+        private async Task SetJsonFileVariables(IBrowserFile file)
         {
             var stream = file.OpenReadStream(5242880);
             var fileContent = await new StreamReader(stream).ReadToEndAsync();
-            var exportedLinks = JsonConvert.DeserializeObject<PlaylistJSONModel>(fileContent);
+            var exportedLinks = JsonConvert.DeserializeObject<PlaylistJsonModel>(fileContent);
 
             FormModel.Name = file.Name.Split('.')[0];
             FormModel.ExportedLinks = exportedLinks.LinkModels.ToList();
             FormModel.ExportedLinkUrls = [];
-            FormModel.PlaylistFileType = PlaylistFileType.JSON;
+            FormModel.PlaylistFileType = PlaylistFileType.Json;
         }
 
-        private async Task SetTXTFileVariables(IBrowserFile file)
+        private async Task SetTxtFileVariables(IBrowserFile file)
         {
             var stream = file.OpenReadStream(5242880);
             var fileContent = await new StreamReader(stream).ReadToEndAsync();
@@ -108,19 +105,14 @@ namespace YoutubeLinks.Blazor.Pages.Playlists
             FormModel.Name = file.Name.Split('.')[0];
             FormModel.ExportedLinks = [];
             FormModel.ExportedLinkUrls = exportedLinkUrls;
-            FormModel.PlaylistFileType = PlaylistFileType.TXT;
+            FormModel.PlaylistFileType = PlaylistFileType.Txt;
         }
 
         private static List<string> ReadUrls(string fileContent)
         {
-            var urls = new List<string>();
             var lines = fileContent.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string line in lines)
-            {
-                urls.Add(line.Trim());
-            }
-
+            var urls =  lines.Select(line => line.Trim()).ToList();
+            
             return urls;
         }
     }

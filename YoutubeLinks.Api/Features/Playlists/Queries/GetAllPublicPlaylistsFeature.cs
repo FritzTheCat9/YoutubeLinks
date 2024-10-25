@@ -11,7 +11,7 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
 {
     public static class GetAllPublicPlaylistsFeature
     {
-        public static IEndpointRouteBuilder Endpoint(this IEndpointRouteBuilder app)
+        public static void Endpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/playlists/allPublic", async (
                 GetAllPublicPlaylists.Query query,
@@ -22,8 +22,6 @@ namespace YoutubeLinks.Api.Features.Playlists.Queries
             })
                 .WithTags(Tags.Playlists)
                 .AllowAnonymous();
-
-            return app;
         }
 
         public class Handler : IRequestHandler<GetAllPublicPlaylists.Query, PagedList<PlaylistDto>>
