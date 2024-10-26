@@ -73,7 +73,7 @@ public static class PlaylistExtensions
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             playlists = playlists.Where(x =>
-                x.Name.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
+                x.Name.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return playlists;
@@ -112,7 +112,7 @@ public static class PlaylistExtensions
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             playlists = playlists.Where(x =>
-                x.Name.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase));
+                x.Name.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return playlists;
