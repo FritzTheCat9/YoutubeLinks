@@ -64,7 +64,7 @@ public partial class LoginDialog(
             await dialogService.ShowAsync<ResendConfirmationEmailDialog>(
                 localizer[nameof(AppStrings.ResendConfirmationEmail)], parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await OpenResendConfirmationEmailSuccessDialog();
         }
@@ -99,7 +99,7 @@ public partial class LoginDialog(
             await dialogService.ShowAsync<ForgotPasswordDialog>(localizer[nameof(AppStrings.ForgotPassword)],
                 parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await OpenForgotPasswordEmailSentSuccessfullyDialog();
         }
@@ -119,7 +119,7 @@ public partial class LoginDialog(
         await dialogService.ShowAsync<SuccessDialog>(localizer[nameof(AppStrings.Success)], parameters, options);
     }
 
-    public class LoginDialogConst
+    public abstract class LoginDialogConst
     {
         public const string EmailInput = "login-dialog-email-input";
         public const string PasswordInput = "login-dialog-password-input";

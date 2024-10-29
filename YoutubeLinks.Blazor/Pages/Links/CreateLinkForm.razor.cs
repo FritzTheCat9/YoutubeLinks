@@ -46,7 +46,7 @@ public partial class CreateLinkForm(
         }
     }
 
-    public class CreateLinkFormConst
+    public abstract class CreateLinkFormConst
     {
         public const string UrlInput = "create-link-form-url-input";
         public const string CreateButton = "create-link-form-create-button";

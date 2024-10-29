@@ -37,7 +37,7 @@ public partial class CreatePlaylistDialog(
         }
     }
 
-    public class CreatePlaylistDialogConst
+    public abstract class CreatePlaylistDialogConst
     {
         public const string NameInput = "create-playlist-dialog-name-input";
         public const string PublicCheckbox = "create-playlist-dialog-public-checkbox";

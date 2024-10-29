@@ -181,7 +181,7 @@ public partial class DownloadPlaylistPage(
         public bool Success { get; init; }
     }
 
-    public class DownloadPlaylistPageConst
+    public abstract class DownloadPlaylistPageConst
     {
         public const string YoutubeFileTypeSelect = "download-playlist-page-youtube-file-type-select";
         public const string DownloadButton = "download-playlist-page-download-button";

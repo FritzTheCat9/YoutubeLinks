@@ -37,15 +37,12 @@ public partial class Auth(
         var dialog =
             await dialogService.ShowAsync<LoginDialog>(localizer[nameof(AppStrings.Login)], parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false, Data: JwtDto token })
         {
-            if (result.Data is JwtDto token)
-            {
-                await authService.Login(token);
+            await authService.Login(token);
 
-                await LoadUserTheme();
-                await UserChanged.InvokeAsync();
-            }
+            await LoadUserTheme();
+            await UserChanged.InvokeAsync();
         }
     }
 
@@ -83,7 +80,7 @@ public partial class Auth(
         var dialog =
             await dialogService.ShowAsync<RegisterDialog>(localizer[nameof(AppStrings.Register)], parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await OpenRegistrationSuccessDialog();
         }
@@ -108,7 +105,7 @@ public partial class Auth(
         await authService.Logout("/");
     }
 
-    public class AuthComponentConst
+    public abstract class AuthComponentConst
     {
         public const string UserNameText = "auth-username-text";
         public const string LogoutButton = "auth-logout-button";

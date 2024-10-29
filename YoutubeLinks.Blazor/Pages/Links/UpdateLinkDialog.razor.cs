@@ -46,7 +46,7 @@ public partial class UpdateLinkDialog(
         }
     }
 
-    public class UpdateLinkDialogConst
+    public abstract class UpdateLinkDialogConst
     {
         public const string UrlInput = "update-link-dialog-url-input";
         public const string TitleInput = "update-link-dialog-title-input";

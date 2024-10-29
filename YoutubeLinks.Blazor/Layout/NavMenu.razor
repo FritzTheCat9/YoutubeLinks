@@ -1,19 +1,19 @@
 ﻿<MudNavMenu Color="Color.Primary"
-            Rounded="true"
-            Margin="Margin.Normal">
+            Margin="Margin.Normal"
+            Rounded="true">
     <MudNavLink Href="/"
-                Match="NavLinkMatch.All"
-                Icon="@Icons.Material.Filled.Home">
+                Icon="@Icons.Material.Filled.Home"
+                Match="NavLinkMatch.All">
         @localizer[nameof(AppStrings.Home)]
     </MudNavLink>
     <MudNavLink Href="/downloadLink"
-                Match="NavLinkMatch.Prefix"
-                Icon="@Icons.Material.Filled.Download">
+                Icon="@Icons.Material.Filled.Download"
+                Match="NavLinkMatch.Prefix">
         @localizer[nameof(AppStrings.DownloadLink)]
     </MudNavLink>
     <MudNavLink Href="/users"
-                Match="NavLinkMatch.Prefix"
-                Icon="@Icons.Material.Filled.SupervisorAccount">
+                Icon="@Icons.Material.Filled.SupervisorAccount"
+                Match="NavLinkMatch.Prefix">
         @localizer[nameof(AppStrings.Users)]
     </MudNavLink>
     <AuthorizeView Policy="@Policy.User">
@@ -21,8 +21,8 @@
             @if (UserId is not null)
             {
                 <MudNavLink Href=@($"/playlists/{UserId.Value}")
-                            Match=NavLinkMatch.Prefix
-                            Icon=@Icons.Material.Filled.VideoLibrary>
+                            Icon=@Icons.Material.Filled.VideoLibrary
+                            Match=NavLinkMatch.Prefix>
                     @localizer[nameof(AppStrings.MyPlaylists)]
                 </MudNavLink>
             }

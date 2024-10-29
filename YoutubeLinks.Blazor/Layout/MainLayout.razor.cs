@@ -64,7 +64,7 @@ public partial class MainLayout(
     private ThemeColor _themeColor = ThemeColor.System;
 
     public int? UserId { get; set; }
-    
+
     public async Task UserChanged()
     {
         UserId = await authService.GetCurrentUserId();

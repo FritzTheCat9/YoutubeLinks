@@ -143,7 +143,7 @@ public partial class LinksPage(
         var dialog = await dialogService.ShowAsync<DeleteDialog>(localizer[nameof(AppStrings.Delete)], options);
 
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             try
             {
@@ -178,7 +178,7 @@ public partial class LinksPage(
             await dialogService.ShowAsync<UpdateLinkDialog>(localizer[nameof(AppStrings.UpdateLink)], parameters,
                 options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await RefreshView();
         }
@@ -239,7 +239,7 @@ public partial class LinksPage(
         var dialog = await dialogService.ShowAsync<InformationDialog>(dialogText, options);
 
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             try
             {
@@ -264,7 +264,7 @@ public partial class LinksPage(
         return url.Replace("/watch?v=", "/embed/");
     }
 
-    public class LinksPageConst
+    public abstract class LinksPageConst
     {
         public const string SetAllPlaylistLinksAsUndownloadedButton =
             "links-page-set-all-playlist-links-as-undownloaded-button";

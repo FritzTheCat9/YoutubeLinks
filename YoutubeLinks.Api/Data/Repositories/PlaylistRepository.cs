@@ -23,7 +23,8 @@ public class PlaylistRepository(AppDbContext dbContext) : IPlaylistRepository
 {
     public IQueryable<Playlist> AsQueryable(int userId, bool loadPrivate = false)
     {
-        var query = dbContext.Playlists.Include(x => x.Links)
+        var query = dbContext.Playlists
+            .Include(x => x.Links)
             .Include(x => x.User)
             .Where(x => x.UserId == userId);
 

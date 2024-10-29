@@ -74,7 +74,7 @@ public partial class UsersPage(
         navigationManager.NavigateTo($"/playlists/{id}");
     }
 
-    public class UsersPageConst
+    public abstract class UsersPageConst
     {
         public const string SearchInput = "users-page-search-input";
         public const string UserNameTableSortLabel = "users-page-username-table-sort-label";

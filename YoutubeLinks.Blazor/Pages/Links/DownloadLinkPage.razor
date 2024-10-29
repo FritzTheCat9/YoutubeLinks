@@ -5,7 +5,7 @@
     @localizer[nameof(AppStrings.DownloadLink)]
 </PageTitle>
 
-<FritzBreadcrumbs Items="_items"/>
+<FritzBreadcrumbs Items="_items" />
 
 <MudPaper Class="pa-4"
           Elevation="3">
@@ -14,52 +14,51 @@
     </MudText>
     <EditForm Model="Command"
               OnValidSubmit="HandleValidSubmit">
-        <CustomValidator @ref="_customValidator"/>
-        <FluentValidationValidator/>
+        <CustomValidator @ref="_customValidator" />
+        <FluentValidationValidator />
 
-        <MudStack Row="true"
+        <MudStack AlignItems="AlignItems.Center"
                   Justify="Justify.Center"
-                  AlignItems="AlignItems.Center">
-            <FritzTextField Label="@localizer[nameof(AppStrings.Url)]"
-                            @bind-Value="Command.Url"
+                  Row="true">
+            <FritzTextField @bind-Value="Command.Url"
                             For="() => Command.Url"
-                            Variant="Variant.Outlined"
+                            Label="@localizer[nameof(AppStrings.Url)]"
                             ShrinkLabel
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.UrlInput } })"/>
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.UrlInput } })"
+                            Variant="Variant.Outlined" />
 
-            <MudSelect T="YoutubeFileType"
-                       Label="@localizer[nameof(AppStrings.FileType)]"
-                       @bind-Value="Command.YoutubeFileType"
+            <MudSelect @bind-Value="Command.YoutubeFileType"
                        For="() => Command.YoutubeFileType"
-                       Variant="Variant.Outlined"
-                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.YoutubeFileTypeSelect } })">
+                       Label="@localizer[nameof(AppStrings.FileType)]"
+                       T="YoutubeFileType"
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.YoutubeFileTypeSelect } })"
+                       Variant="Variant.Outlined">
                 @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
                 {
                     <MudSelectItem T="YoutubeFileType"
-                                   Value=(YoutubeFileType)youtubeFileType
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, $"download-link-page-{(YoutubeFileType)youtubeFileType}" } })>
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, $"download-link-page-{(YoutubeFileType)youtubeFileType}" } })
+                                   Value=(YoutubeFileType)youtubeFileType>
                         @youtubeFileType.ToString()
                     </MudSelectItem>
                 }
             </MudSelect>
 
-            <FritzProcessingButton @ref="_processingButton"
+            <FritzProcessingButton ButtonText="@localizer[nameof(AppStrings.Download)]"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
                                    ProcessingButtonText="@localizer[nameof(AppStrings.Downloading)]"
-                                   ButtonText="@localizer[nameof(AppStrings.Download)]"
-                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.DownloadButton } })"/>
+                                   @ref="_processingButton"
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.DownloadButton } })" />
         </MudStack>
-        <FritzValidationMessage For="() => Command.Url"/>
-        <FritzValidationMessage For="() => Command.YoutubeFileType"/>
+        <FritzValidationMessage For="() => Command.Url" />
+        <FritzValidationMessage For="() => Command.YoutubeFileType" />
     </EditForm>
 </MudPaper>
-
 
 @if (_downloadLinkResults is not null && _downloadLinkResults.Count > 0)
 {
     <MudItem xs=12>
-        <MudPaper Class="pa-4 mt-4"
+        <MudPaper Class="mt-4 pa-4"
                   Elevation=3>
             <MudText Typo=Typo.subtitle2>
                 @localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
@@ -68,7 +67,8 @@
             {
                 @if (result.Success)
                 {
-                    <a href="@result.Url" target="_blank">
+                    <a href="@result.Url"
+                       target="_blank">
                         <MudText Color=@Color.Success>
                             [@localizer[nameof(AppStrings.Success)]] - @result.Url
                         </MudText>
@@ -76,7 +76,8 @@
                 }
                 else
                 {
-                    <a href="@result.Url" target="_blank">
+                    <a href="@result.Url"
+                       target="_blank">
                         <MudText Color=@Color.Error>
                             [@localizer[nameof(AppStrings.Fail)]] - @result.Url
                         </MudText>

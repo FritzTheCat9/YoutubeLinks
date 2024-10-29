@@ -109,7 +109,7 @@ public partial class ImportPlaylistDialog(
         return urls;
     }
 
-    public class ImportPlaylistDialogConst
+    public abstract class ImportPlaylistDialogConst
     {
         public const string NameInput = "import-playlist-dialog-name-input";
         public const string PublicCheckbox = "import-playlist-dialog-public-checkbox";

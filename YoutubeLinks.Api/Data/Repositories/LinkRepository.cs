@@ -19,7 +19,8 @@ public class LinkRepository(AppDbContext dbContext) : ILinkRepository
 {
     public IQueryable<Link> AsQueryable(int playlistId, bool loadPrivate = false)
     {
-        var query = dbContext.Links.Include(x => x.Playlist)
+        var query = dbContext.Links
+            .Include(x => x.Playlist)
             .Where(x => x.PlaylistId == playlistId);
 
         if (!loadPrivate)

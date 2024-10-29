@@ -37,7 +37,7 @@ public partial class DeleteDialog(
         MudDialog.Cancel();
     }
 
-    public class DeleteDialogConst
+    public abstract class DeleteDialogConst
     {
         public const string DeleteButton = "delete-dialog-delete-button";
     }

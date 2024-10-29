@@ -7,6 +7,6 @@ public class Link : Entity
     public string Title { get; set; }
     public bool Downloaded { get; set; }
 
-    public int PlaylistId { get; set; }
+    public int PlaylistId { get; init; }
     public Playlist Playlist { get; set; }
 }

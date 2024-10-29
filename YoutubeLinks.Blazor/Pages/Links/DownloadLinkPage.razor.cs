@@ -4,7 +4,6 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using YoutubeLinks.Blazor.Clients;
 using YoutubeLinks.Blazor.Components;
-using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Pages.Error;
 using YoutubeLinks.Shared.Exceptions;
@@ -87,7 +86,7 @@ public partial class DownloadLinkPage(
         public bool Success { get; init; }
     }
 
-    public class DownloadLinkPageConst
+    public abstract class DownloadLinkPageConst
     {
         public const string UrlInput = "download-link-page-url-input";
         public const string YoutubeFileTypeSelect = "download-link-page-youtube-file-type-select";

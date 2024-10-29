@@ -13,8 +13,7 @@ namespace YoutubeLinks.Blazor.Pages.Users;
 public partial class ForgotPasswordDialog(
     IExceptionHandler exceptionHandler,
     IUserApiClient userApiClient,
-    IStringLocalizer<App> localizer,
-    IDialogService dialogService)
+    IStringLocalizer<App> localizer)
     : ComponentBase
 {
     private CustomValidator _customValidator;

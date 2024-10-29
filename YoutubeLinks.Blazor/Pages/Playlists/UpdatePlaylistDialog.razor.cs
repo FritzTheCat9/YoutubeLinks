@@ -37,7 +37,7 @@ public partial class UpdatePlaylistDialog(
         }
     }
 
-    public class UpdatePlaylistDialogConst
+    public abstract class UpdatePlaylistDialogConst
     {
         public const string NameInput = "update-playlist-dialog-name-input";
         public const string PublicCheckbox = "update-playlist-dialog-public-checkbox";

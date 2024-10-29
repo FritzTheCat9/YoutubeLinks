@@ -1,10 +1,10 @@
-﻿<MudTextField T="string"
-              Value="Value"
-              ValueChanged="OnValueChanged"
-              For="For"
+﻿<MudTextField For="For"
               Label="@Label"
               OnlyValidateIfDirty="true"
-              Variant="Variant"
               ShrinkLabel="ShrinkLabel"
+              style=@(HideField ? "display: none;" : "")
+              T="string"
               UserAttributes="UserAttributes"
-              style=@(HideField ? "display: none;" : "")/>
+              Value="Value"
+              ValueChanged="OnValueChanged"
+              Variant="Variant" />

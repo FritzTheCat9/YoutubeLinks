@@ -79,7 +79,7 @@ public partial class PlaylistsPage(
         var dialog = await dialogService.ShowAsync<DeleteDialog>(localizer[nameof(AppStrings.Delete)], options);
 
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             try
             {
@@ -113,7 +113,7 @@ public partial class PlaylistsPage(
             await dialogService.ShowAsync<UpdatePlaylistDialog>(localizer[nameof(AppStrings.UpdatePlaylist)],
                 parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await _table.ReloadServerData();
         }
@@ -138,7 +138,7 @@ public partial class PlaylistsPage(
             await dialogService.ShowAsync<CreatePlaylistDialog>(localizer[nameof(AppStrings.CreatePlaylist)],
                 parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await _table.ReloadServerData();
         }
@@ -190,7 +190,7 @@ public partial class PlaylistsPage(
             await dialogService.ShowAsync<ImportPlaylistDialog>(localizer[nameof(AppStrings.ImportPlaylist)],
                 parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is { Canceled: false })
         {
             await _table.ReloadServerData();
         }
@@ -206,7 +206,7 @@ public partial class PlaylistsPage(
         navigationManager.NavigateTo($"/downloadPlaylist/{id}");
     }
 
-    public class PlaylistsPageConst
+    public abstract class PlaylistsPageConst
     {
         public const string CreatePlaylistButton = "playlists-page-create-playlist-button";
         public const string UpdatePlaylistButton = "playlists-page-update-playlist-button";

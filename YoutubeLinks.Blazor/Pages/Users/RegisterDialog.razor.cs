@@ -50,7 +50,7 @@ public partial class RegisterDialog(
         }
     }
 
-    public class RegisterDialogConst
+    public abstract class RegisterDialogConst
     {
         public const string EmailInput = "register-dialog-email-input";
         public const string UserNameInput = "register-dialog-username-input";

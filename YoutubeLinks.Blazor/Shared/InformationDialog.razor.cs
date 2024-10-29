@@ -37,7 +37,7 @@ public partial class InformationDialog(
         MudDialog.Cancel();
     }
 
-    public class InformationDialogConst
+    public abstract class InformationDialogConst
     {
         public const string ConfirmButton = "information-dialog-confirm-button";
     }
