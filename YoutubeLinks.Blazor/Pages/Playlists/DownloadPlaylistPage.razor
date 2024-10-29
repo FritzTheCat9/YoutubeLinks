@@ -7,59 +7,59 @@
 
 @if (_playlist is not null && _linkInfoList is not null)
 {
-    <FritzBreadcrumbs Items=_items/>
+    <FritzBreadcrumbs Items=_items />
 
     <MudItem xs=12>
-        <MudPaper Class="pa-4 mt-4"
+        <MudPaper Class="mt-4 pa-4"
                   Elevation=3>
-            <MudText Typo=Typo.subtitle1
-                     Class="mb-2">
+            <MudText Class="mb-2"
+                     Typo=Typo.subtitle1>
                 @localizer[nameof(AppStrings.LoadedLinks), _linkInfoList.Count]
             </MudText>
-            <MudText Typo=Typo.subtitle2
-                     Color="Color.Warning">
+            <MudText Color="Color.Warning"
+                     Typo=Typo.subtitle2>
                 @localizer[nameof(AppStrings.PublicPlaylistDownloadInfo)]
             </MudText>
-            <MudText Typo=Typo.subtitle2
+            <MudText Class="mb-2"
                      Color="Color.Warning"
-                     Class="mb-2">
+                     Typo=Typo.subtitle2>
                 @localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
             </MudText>
 
-            <MudSelect T=YoutubeFileType
-                       Label=@localizer[nameof(AppStrings.FileType)]
-                       @bind-Value=_youtubeFileType
-                       Disabled=_downloading
-                       Variant=Variant.Outlined
+            <MudSelect @bind-Value=_youtubeFileType
                        Class="mb-2"
-                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.YoutubeFileTypeSelect } })>
+                       Disabled=_downloading
+                       Label=@localizer[nameof(AppStrings.FileType)]
+                       T=YoutubeFileType
+                       UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.YoutubeFileTypeSelect } })
+                       Variant=Variant.Outlined>
                 @foreach (var youtubeFileType in Enum.GetValues(typeof(YoutubeFileType)))
                 {
                     <MudSelectItem T="YoutubeFileType"
-                                   Value=(YoutubeFileType)youtubeFileType
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, $"download-playlist-page-{(YoutubeFileType)youtubeFileType}" } })>
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, $"download-playlist-page-{(YoutubeFileType)youtubeFileType}" } })
+                                   Value=(YoutubeFileType)youtubeFileType>
                         @youtubeFileType.ToString()
                     </MudSelectItem>
                 }
             </MudSelect>
 
-            <FritzProcessingButton @ref=_processingButton
+            <FritzProcessingButton ButtonText=@localizer[nameof(AppStrings.Download)]
                                    Color=Color.Primary
-                                   ProcessingButtonText=@localizer[nameof(AppStrings.Downloading)]
-                                   ButtonText=@localizer[nameof(AppStrings.Download)]
                                    OnClick=DownloadPlaylistLinks
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } })/>
+                                   ProcessingButtonText=@localizer[nameof(AppStrings.Downloading)] 
+                                   @ref=_processingButton
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } }) />
 
             @if (_downloading)
             {
-                <MudProgressLinear Color=Color.Primary
-                                   Striped=true
+                <MudProgressLinear Class="my-7"
+                                   Color=Color.Primary
                                    Size=Size.Large
-                                   Value=_downloadPercent
-                                   Class="my-7"
-                                   Style="height: 30px;">
-                    <MudText Typo=Typo.h6
-                             Style="@($"color:{Colors.Gray.Darken4};")">
+                                   Striped=true
+                                   Style="height: 30px;"
+                                   Value=_downloadPercent>
+                    <MudText Style="@($"color:{Colors.Gray.Darken4};")"
+                             Typo=Typo.h6>
                         @((int)_downloadPercent)% - @_downloadingSongTitle
                     </MudText>
                 </MudProgressLinear>
@@ -70,7 +70,7 @@
     @if (_downloadLinkResults is not null)
     {
         <MudItem xs=12>
-            <MudPaper Class="pa-4 mt-4"
+            <MudPaper Class="mt-4 pa-4"
                       Elevation=3>
                 <MudText Typo=Typo.subtitle2>
                     @localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
@@ -79,7 +79,8 @@
                 {
                     @if (result.Success)
                     {
-                        <a href="@result.Link.Url" target="_blank">
+                        <a href="@result.Link.Url"
+                           target="_blank">
                             <MudText Color=@Color.Success>
                                 [@localizer[nameof(AppStrings.Success)]] - @result.Link.Title
                             </MudText>
@@ -87,7 +88,8 @@
                     }
                     else
                     {
-                        <a href="@result.Link.Url" target="_blank">
+                        <a href="@result.Link.Url"
+                           target="_blank">
                             <MudText Color=@Color.Error>
                                 [@localizer[nameof(AppStrings.Fail)]] - @result.Link.Title
                             </MudText>

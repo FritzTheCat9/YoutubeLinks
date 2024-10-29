@@ -1,40 +1,40 @@
 ﻿<EditForm Model="Command"
           OnValidSubmit="HandleValidSubmit">
-    <CustomValidator @ref="_customValidator"/>
-    <FluentValidationValidator/>
+    <CustomValidator @ref="_customValidator" />
+    <FluentValidationValidator />
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label="@localizer[nameof(AppStrings.Email)]"
-                            @bind-Value="Command.Email"
+            <FritzTextField @bind-Value="Command.Email"
                             For="() => Command.Email"
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.EmailInput } })"/>
-            <FritzValidationMessage For="() => Command.Email"/>
+                            Label="@localizer[nameof(AppStrings.Email)]"
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.EmailInput } })" />
+            <FritzValidationMessage For="() => Command.Email" />
 
-            <FritzTextField Label="@localizer[nameof(AppStrings.UserName)]"
-                            @bind-Value="Command.UserName"
+            <FritzTextField @bind-Value="Command.UserName"
                             For="() => Command.UserName"
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.UserNameInput } })"/>
-            <FritzValidationMessage For="() => Command.UserName"/>
+                            Label="@localizer[nameof(AppStrings.UserName)]"
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.UserNameInput } })" />
+            <FritzValidationMessage For="() => Command.UserName" />
 
-            <FritzPasswordField Label="@localizer[nameof(AppStrings.Password)]"
-                                @bind-Value="Command.Password"
+            <FritzPasswordField @bind-Value="Command.Password"
                                 For="() => Command.Password"
-                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.PasswordInput } })"/>
-            <FritzValidationMessage For="() => Command.Password"/>
+                                Label="@localizer[nameof(AppStrings.Password)]"
+                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.PasswordInput } })" />
+            <FritzValidationMessage For="() => Command.Password" />
 
-            <FritzPasswordField Label="@localizer[nameof(AppStrings.RepeatPassword)]"
-                                @bind-Value="Command.RepeatPassword"
+            <FritzPasswordField @bind-Value="Command.RepeatPassword"
                                 For="() => Command.RepeatPassword"
-                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.RepeatPasswordInput } })"/>
-            <FritzValidationMessage For="() => Command.RepeatPassword"/>
+                                Label="@localizer[nameof(AppStrings.RepeatPassword)]"
+                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.RepeatPasswordInput } })" />
+            <FritzValidationMessage For="() => Command.RepeatPassword" />
         </DialogContent>
         <DialogActions>
-            <FritzProcessingButton @ref="_processingButton"
+            <FritzProcessingButton ButtonText="@localizer[nameof(AppStrings.Register)]"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ButtonText="@localizer[nameof(AppStrings.Register)]"
-                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.RegisterButton } })"/>
+                                   @ref="_processingButton"
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.RegisterButton } })" />
         </DialogActions>
     </MudDialog>
 </EditForm>

@@ -25,7 +25,9 @@ public partial class CustomValidator : ComponentBase
     public void DisplayErrors(Dictionary<string, List<string>> errors)
     {
         foreach (var error in errors)
+        {
             _validationMessageStore.Add(new FieldIdentifier(EditContext.Model, error.Key), error.Value);
+        }
 
         EditContext.NotifyValidationStateChanged();
     }

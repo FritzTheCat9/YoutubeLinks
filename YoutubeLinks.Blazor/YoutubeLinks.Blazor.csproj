@@ -8,27 +8,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
-        <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-        <PackageReference Include="FluentValidation" Version="11.10.0" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-rc.2.24474.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-rc.2.24474.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0-rc.2.24474.3" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-rc.2.24473.5" />
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0-rc.2.24474.3" />
-        <PackageReference Include="MudBlazor" Version="7.14.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+        <PackageReference Include="Blazored.FluentValidation" Version="2.2.0"/>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.5.0"/>
+        <PackageReference Include="FluentValidation" Version="11.10.0"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-rc.2.24474.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-rc.2.24474.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0-rc.2.24474.3" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-rc.2.24473.5"/>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0-rc.2.24474.3"/>
+        <PackageReference Include="MudBlazor" Version="7.14.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\YoutubeLinks.Shared\YoutubeLinks.Shared.csproj" />
+        <ProjectReference Include="..\YoutubeLinks.Shared\YoutubeLinks.Shared.csproj"/>
     </ItemGroup>
 
 
     <ItemGroup>
-        <None Include="wwwroot\js\clipboard.js" />
+        <None Include="wwwroot\js\clipboard.js"/>
     </ItemGroup>
 
 </Project>

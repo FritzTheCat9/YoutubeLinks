@@ -1,21 +1,21 @@
 ﻿<EditForm Model="Command"
           OnValidSubmit="HandleValidSubmit">
-    <CustomValidator @ref="_customValidator"/>
-    <FluentValidationValidator/>
+    <CustomValidator @ref="_customValidator" />
+    <FluentValidationValidator />
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label="@localizer[nameof(AppStrings.Email)]"
-                            @bind-Value="Command.Email"
+            <FritzTextField @bind-Value="Command.Email"
                             For="() => Command.Email"
-                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.EmailInput } })"/>
-            <FritzValidationMessage For="() => Command.Email"/>
+                            Label="@localizer[nameof(AppStrings.Email)]"
+                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.EmailInput } })" />
+            <FritzValidationMessage For="() => Command.Email" />
 
-            <FritzPasswordField Label="@localizer[nameof(AppStrings.Password)]"
-                                @bind-Value="Command.Password"
+            <FritzPasswordField @bind-Value="Command.Password"
                                 For="() => Command.Password"
-                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.PasswordInput } })"/>
-            <FritzValidationMessage For="() => Command.Password"/>
+                                Label="@localizer[nameof(AppStrings.Password)]"
+                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.PasswordInput } })" />
+            <FritzValidationMessage For="() => Command.Password" />
         </DialogContent>
         <DialogActions>
             <MudButton Color="Color.Primary"
@@ -24,19 +24,19 @@
                     @localizer[nameof(AppStrings.ResendConfirmationEmail)]
                 </MudText>
             </MudButton>
-            <MudSpacer/>
+            <MudSpacer />
             <MudButton Color="Color.Primary"
                        OnClick="OpenForgotPasswordDialog">
                 <MudText Typo="Typo.subtitle2">
                     @localizer[nameof(AppStrings.ForgotPassword)]
                 </MudText>
             </MudButton>
-            <MudSpacer/>
-            <FritzProcessingButton @ref="_processingButton"
+            <MudSpacer />
+            <FritzProcessingButton ButtonText="@localizer[nameof(AppStrings.Login)]"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ButtonText="@localizer[nameof(AppStrings.Login)]"
-                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.LoginButton } })"/>
+                                   @ref="_processingButton"
+                                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.LoginButton } })" />
         </DialogActions>
     </MudDialog>
 </EditForm>

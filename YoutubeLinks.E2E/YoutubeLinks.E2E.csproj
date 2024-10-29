@@ -14,26 +14,26 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
-        <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.48.0" />
-        <PackageReference Include="NUnit" Version="4.2.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1"/>
+        <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.48.0"/>
+        <PackageReference Include="NUnit" Version="4.2.2"/>
         <PackageReference Include="NUnit.Analyzers" Version="4.3.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.6.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\YoutubeLinks.Blazor\YoutubeLinks.Blazor.csproj" />
+        <ProjectReference Include="..\YoutubeLinks.Blazor\YoutubeLinks.Blazor.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="NUnit.Framework" />
+        <Using Include="NUnit.Framework"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Temp\" />
+        <Folder Include="Temp\"/>
     </ItemGroup>
 
 </Project>

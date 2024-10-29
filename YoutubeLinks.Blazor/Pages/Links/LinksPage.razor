@@ -5,7 +5,7 @@
     @localizer[nameof(AppStrings.Links)]
 </PageTitle>
 
-<FritzBreadcrumbs Items="_items"/>
+<FritzBreadcrumbs Items="_items" />
 
 <MudStack>
 @if (_isUserPlaylist)
@@ -16,16 +16,16 @@
             @localizer[nameof(AppStrings.CreateLink)]
         </MudText>
         <CreateLinkForm Command=_createLinkCommand
-                        ParentReloadFunction=RefreshView/>
+                        ParentReloadFunction=RefreshView />
     </MudPaper>
 }
 @if (_tableView)
 {
-    <MudTable ServerData=ServerReload
-              @ref=_table
-              Dense=true
+    <MudTable Dense=true
+              Elevation=3
               Hover=true
-              Elevation=3>
+              @ref=_table
+              ServerData=ServerReload>
         <ToolBarContent>
             <MudText Typo=Typo.h6>
                 @localizer[nameof(AppStrings.Links)]
@@ -35,33 +35,33 @@
                     @if (_isUserPlaylist)
                     {
                         <FritzTooltip Text=@localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)]>
-                            <MudIconButton Icon=@Icons.Material.Filled.OutlinedFlag
-                                           Color=Color.Info
-                                           Size=Size.Small
+                            <MudIconButton Color=Color.Info
+                                           Icon=@Icons.Material.Filled.OutlinedFlag
                                            OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false))
-                                           UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SetAllPlaylistLinksAsUndownloadedButton } })/>
+                                           Size=Size.Small
+                                           UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SetAllPlaylistLinksAsUndownloadedButton } }) />
                         </FritzTooltip>
                         <FritzTooltip Text=@localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]>
-                            <MudIconButton Icon=@Icons.Material.Filled.Flag
-                                           Color=Color.Info
-                                           Size=Size.Small
+                            <MudIconButton Color=Color.Info
+                                           Icon=@Icons.Material.Filled.Flag
                                            OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true))
-                                           UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SetAllPlaylistLinksAsDownloadedButton } })/>
+                                           Size=Size.Small
+                                           UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SetAllPlaylistLinksAsDownloadedButton } }) />
                         </FritzTooltip>
                     }
                 </Authorized>
             </AuthorizeView>
             <FritzTooltip Text=@localizer[nameof(AppStrings.SwitchViewToGrid)]>
-                <MudIconButton Icon=@Icons.Material.Filled.GridView
-                               Color=Color.Info
-                               Size=Size.Small
+                <MudIconButton Color=Color.Info
+                               Icon=@Icons.Material.Filled.GridView
                                OnClick=SwitchView
-                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SwitchToGridViewButton } })/>
+                               Size=Size.Small
+                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SwitchToGridViewButton } }) />
             </FritzTooltip>
-            <MudSpacer/>
+            <MudSpacer />
             <FritzSearchTextField @bind-Value=_searchString
                                   OnSearch=RefreshView
-                                  UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SearchInput } })/>
+                                  UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SearchInput } }) />
         </ToolBarContent>
         <HeaderContent>
             <MudTh>
@@ -72,8 +72,8 @@
                 </MudTableSortLabel>
             </MudTh>
             <MudTh>
-                <MudTableSortLabel SortLabel="modified"
-                                   InitialDirection=SortDirection.Descending
+                <MudTableSortLabel InitialDirection=SortDirection.Descending
+                                   SortLabel="modified"
                                    T=LinkDto
                                    UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.ModifiedTableSortLabel } })>
                     @localizer[nameof(AppStrings.Modified)]
@@ -96,10 +96,10 @@
         <RowTemplate>
             <MudTd DataLabel=@localizer[nameof(AppStrings.Title)]
                    UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.TitleTableRowData } })>
-                <MudLink Href=@context.Url
-                         Target="_blank"
+                <MudLink Class="my-link"
                          Color=Color.Default
-                         Class="my-link">
+                         Href=@context.Url
+                         Target="_blank">
                     <MudText Typo=Typo.body2>
                         @context.Title
                     </MudText>
@@ -109,8 +109,8 @@
                    UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.ModifiedTableRowData } })>
                 @context.Modified.ToString("dd/MM/yyyy HH:mm:ss")
             </MudTd>
-            <AuthorizeView Policy=@Policy.User
-                           Context="auth">
+            <AuthorizeView Context="auth"
+                           Policy=@Policy.User>
                 <Authorized>
                     @if (_isUserPlaylist)
                     {
@@ -118,15 +118,15 @@
                             @if (context.Downloaded)
                             {
                                 <FritzTooltip Text=@localizer[nameof(AppStrings.Downloaded)]>
-                                    <MudIcon Icon=@Icons.Material.Filled.FileDownloadDone
-                                             Color=Color.Success/>
+                                    <MudIcon Color=Color.Success
+                                             Icon=@Icons.Material.Filled.FileDownloadDone />
                                 </FritzTooltip>
                             }
                             else
                             {
                                 <FritzTooltip Text=@localizer[nameof(AppStrings.NotDownloaded)]>
-                                    <MudIcon Icon=@Icons.Material.Filled.FileDownload
-                                             Color=Color.Error/>
+                                    <MudIcon Color=Color.Error
+                                             Icon=@Icons.Material.Filled.FileDownload />
                                 </FritzTooltip>
                             }
                         </MudTd>
@@ -134,45 +134,45 @@
                 </Authorized>
             </AuthorizeView>
             <MudTd DataLabel=@localizer[nameof(AppStrings.Actions)]>
-                <FritzCopyToClipboardButton TooltipText=@localizer[nameof(AppStrings.CopyUrlToClipboard)]
-                                            Color=Color.Info
-                                            Size=Size.Small
+                <FritzCopyToClipboardButton Color=Color.Info
                                             CopiedText=@context.Url
-                                            UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.CopyToClipboardButton } })/>
+                                            Size=Size.Small
+                                            TooltipText=@localizer[nameof(AppStrings.CopyUrlToClipboard)]
+                                            UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.CopyToClipboardButton } }) />
                 <FritzTooltip Text=@localizer[nameof(AppStrings.DownloadToMp3)]>
-                    <MudIconButton Icon=@Icons.Material.Filled.Download
-                                   Color=Color.Info
-                                   Size=Size.Small
+                    <MudIconButton Color=Color.Info
                                    Disabled=_disableDownloadPlaylistLinkButtons
+                                   Icon=@Icons.Material.Filled.Download
                                    OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.Mp3)"
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.DownloadMp3FileButton } })/>
+                                   Size=Size.Small
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.DownloadMp3FileButton } }) />
                 </FritzTooltip>
                 <FritzTooltip Text=@localizer[nameof(AppStrings.DownloadToMp4)]>
-                    <MudIconButton Icon=@Icons.Material.Filled.VideoLibrary
-                                   Color=Color.Info
-                                   Size=Size.Small
+                    <MudIconButton Color=Color.Info
                                    Disabled=_disableDownloadPlaylistLinkButtons
+                                   Icon=@Icons.Material.Filled.VideoLibrary
                                    OnClick="() => DownloadPlaylistLink(context.Id, YoutubeFileType.Mp4)"
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.DownloadMp4FileButton } })/>
+                                   Size=Size.Small
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.DownloadMp4FileButton } }) />
                 </FritzTooltip>
-                <AuthorizeView Policy=@Policy.User
-                               Context="auth">
+                <AuthorizeView Context="auth"
+                               Policy=@Policy.User>
                     <Authorized>
                         @if (_isUserPlaylist)
                         {
                             <FritzTooltip Text=@localizer[nameof(AppStrings.UpdateLink)]>
-                                <MudIconButton Icon=@Icons.Material.Filled.Edit
-                                               Color=Color.Warning
-                                               Size=Size.Small
+                                <MudIconButton Color=Color.Warning
+                                               Icon=@Icons.Material.Filled.Edit
                                                OnClick="() => UpdatePlaylistLink(context)"
-                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.UpdateLinkButton } })/>
+                                               Size=Size.Small
+                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.UpdateLinkButton } }) />
                             </FritzTooltip>
                             <FritzTooltip Text=@localizer[nameof(AppStrings.DeleteLink)]>
-                                <MudIconButton Icon=@Icons.Material.Filled.Delete
-                                               Color=Color.Warning
-                                               Size=Size.Small
+                                <MudIconButton Color=Color.Warning
+                                               Icon=@Icons.Material.Filled.Delete
                                                OnClick="() => DeletePlaylistLink(context.Id)"
-                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.DeleteLinkButton } })/>
+                                               Size=Size.Small
+                                               UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.DeleteLinkButton } }) />
                             </FritzTooltip>
                         }
                     </Authorized>
@@ -190,8 +190,8 @@
             </MudText>
         </LoadingContent>
         <PagerContent>
-            <MudTablePager RowsPerPageString=@localizer[nameof(AppStrings.RowsPerPage)]
-                           InfoFormat=@localizer[nameof(AppStrings.PaginationInfoFormat)]/>
+            <MudTablePager InfoFormat=@localizer[nameof(AppStrings.PaginationInfoFormat)]
+                           RowsPerPageString=@localizer[nameof(AppStrings.RowsPerPage)] />
         </PagerContent>
     </MudTable>
 }
@@ -210,52 +210,53 @@ else
                         @if (_isUserPlaylist)
                         {
                             <FritzTooltip Text=@localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)]>
-                                <MudIconButton Icon=@Icons.Material.Filled.OutlinedFlag
-                                               Color=Color.Info
-                                               Size=Size.Small
-                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false))/>
+                                <MudIconButton Color=Color.Info
+                                               Icon=@Icons.Material.Filled.OutlinedFlag
+                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(false))
+                                               Size=Size.Small />
                             </FritzTooltip>
                             <FritzTooltip Text=@localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]>
-                                <MudIconButton Icon=@Icons.Material.Filled.Flag
-                                               Color=Color.Info
-                                               Size=Size.Small
-                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true))/>
+                                <MudIconButton Color=Color.Info
+                                               Icon=@Icons.Material.Filled.Flag
+                                               OnClick=@(() => ResetPlaylistLinksDownloadedFlag(true))
+                                               Size=Size.Small />
                             </FritzTooltip>
                         }
                     </Authorized>
                 </AuthorizeView>
                 <FritzTooltip Text=@localizer[nameof(AppStrings.SwitchViewToTable)]>
-                    <MudIconButton Icon=@Icons.Material.Filled.ViewList
-                                   Color=Color.Info
-                                   Size=Size.Small
+                    <MudIconButton Color=Color.Info
+                                   Icon=@Icons.Material.Filled.ViewList
                                    OnClick=SwitchView
-                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SwitchToTableViewButton } })/>
+                                   Size=Size.Small
+                                   UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SwitchToTableViewButton } }) />
                 </FritzTooltip>
-                <MudSpacer/>
+                <MudSpacer />
             </MudStack>
             <FritzSearchTextField @bind-Value=_searchString
                                   OnSearch=RefreshView
-                                  UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SearchInput } })/>
+                                  UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, LinksPageConst.SearchInput } }) />
         </MudPaper>
         <MudGrid Spacing=2>
             @foreach (var link in _linkPagedList.Items)
             {
-                <MudItem xs=12 sm=6>
+                <MudItem sm=6
+                         xs=12>
                     <MudCard Elevation=3>
                         @if (!string.IsNullOrWhiteSpace(link.Url))
                         {
-                            <iframe src=@ConvertToEmbedUrl(link.Url)
-                                    style="height: 300px; margin-top: 20px"
+                            <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen
                                     frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    allowfullscreen>
+                                    src=@ConvertToEmbedUrl(link.Url)
+                                    style="height: 300px; margin-top: 20px">
                             </iframe>
                         }
                         <MudCardContent>
-                            <MudLink Href="@link.Url"
-                                     Target="_blank"
+                            <MudLink Class="my-link"
                                      Color="Color.Default"
-                                     Class="my-link">
+                                     Href="@link.Url"
+                                     Target="_blank">
                                 <MudText Typo="Typo.body2">
                                     @link.Title
                                 </MudText>
@@ -265,56 +266,56 @@ else
                             @if (link.Downloaded)
                             {
                                 <FritzTooltip Text=@localizer[nameof(AppStrings.Downloaded)]>
-                                    <MudIconButton Icon=@Icons.Material.Filled.FileDownloadDone
-                                                   Color=Color.Success
-                                                   Size=Size.Medium/>
+                                    <MudIconButton Color=Color.Success
+                                                   Icon=@Icons.Material.Filled.FileDownloadDone
+                                                   Size=Size.Medium />
                                 </FritzTooltip>
-                                <MudSpacer/>
+                                <MudSpacer />
                             }
                             else
                             {
                                 <FritzTooltip Text=@localizer[nameof(AppStrings.NotDownloaded)]>
-                                    <MudIconButton Icon=@Icons.Material.Filled.FileDownload
-                                                   Color=Color.Error
-                                                   Size=Size.Medium/>
+                                    <MudIconButton Color=Color.Error
+                                                   Icon=@Icons.Material.Filled.FileDownload
+                                                   Size=Size.Medium />
                                 </FritzTooltip>
-                                <MudSpacer/>
+                                <MudSpacer />
                             }
-                            <FritzCopyToClipboardButton TooltipText=@localizer[nameof(AppStrings.CopyUrlToClipboard)]
-                                                        Color=Color.Info
+                            <FritzCopyToClipboardButton Color=Color.Info
                                                         CopiedText=@link.Url
-                                                        Size=Size.Medium/>
+                                                        Size=Size.Medium
+                                                        TooltipText=@localizer[nameof(AppStrings.CopyUrlToClipboard)] />
                             <FritzTooltip Text=@localizer[nameof(AppStrings.DownloadToMp3)]>
-                                <MudIconButton Icon=@Icons.Material.Filled.Download
-                                               Color=Color.Info
-                                               Size=Size.Medium
+                                <MudIconButton Color=Color.Info
                                                Disabled=_disableDownloadPlaylistLinkButtons
-                                               OnClick="() => DownloadPlaylistLink(link.Id, YoutubeFileType.Mp3)"/>
+                                               Icon=@Icons.Material.Filled.Download
+                                               OnClick="() => DownloadPlaylistLink(link.Id, YoutubeFileType.Mp3)"
+                                               Size=Size.Medium />
                             </FritzTooltip>
                             <FritzTooltip Text=@localizer[nameof(AppStrings.DownloadToMp4)]>
-                                <MudIconButton Icon=@Icons.Material.Filled.VideoLibrary
-                                               Color=Color.Info
-                                               Size=Size.Medium
+                                <MudIconButton Color=Color.Info
                                                Disabled=_disableDownloadPlaylistLinkButtons
-                                               OnClick="() => DownloadPlaylistLink(link.Id, YoutubeFileType.Mp4)"/>
+                                               Icon=@Icons.Material.Filled.VideoLibrary
+                                               OnClick="() => DownloadPlaylistLink(link.Id, YoutubeFileType.Mp4)"
+                                               Size=Size.Medium />
                             </FritzTooltip>
-                            <AuthorizeView Policy=@Policy.User
-                                           Context="auth">
+                            <AuthorizeView Context="auth"
+                                           Policy=@Policy.User>
                                 <Authorized>
                                     @if (_isUserPlaylist)
                                     {
-                                        <MudSpacer/>
+                                        <MudSpacer />
                                         <FritzTooltip Text=@localizer[nameof(AppStrings.UpdateLink)]>
-                                            <MudIconButton Icon=@Icons.Material.Filled.Edit
-                                                           Color=Color.Warning
-                                                           Size=Size.Medium
-                                                           OnClick="() => UpdatePlaylistLink(link)"/>
+                                            <MudIconButton Color=Color.Warning
+                                                           Icon=@Icons.Material.Filled.Edit
+                                                           OnClick="() => UpdatePlaylistLink(link)"
+                                                           Size=Size.Medium />
                                         </FritzTooltip>
                                         <FritzTooltip Text=@localizer[nameof(AppStrings.DeleteLink)]>
-                                            <MudIconButton Icon=@Icons.Material.Filled.Delete
-                                                           Color=Color.Warning
-                                                           Size=Size.Medium
-                                                           OnClick="() => DeletePlaylistLink(link.Id)"/>
+                                            <MudIconButton Color=Color.Warning
+                                                           Icon=@Icons.Material.Filled.Delete
+                                                           OnClick="() => DeletePlaylistLink(link.Id)"
+                                                           Size=Size.Medium />
                                         </FritzTooltip>
                                     }
                                 </Authorized>
@@ -325,14 +326,14 @@ else
             }
         </MudGrid>
 
-        <MudPaper Class="pa-4 mb-4"
+        <MudPaper Class="mb-4 pa-4"
                   Elevation="3">
             <MudStack AlignItems=AlignItems.Center>
                 <MudPagination Color=Color.Primary
                                Count=_linkPagedList.PagesCount
                                SelectedChanged=Paginate
                                ShowFirstButton=true
-                               ShowLastButton=true/>
+                               ShowLastButton=true />
             </MudStack>
         </MudPaper>
     }

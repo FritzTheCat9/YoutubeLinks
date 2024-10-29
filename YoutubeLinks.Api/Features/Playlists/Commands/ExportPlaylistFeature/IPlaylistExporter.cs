@@ -50,7 +50,10 @@ public class TxtPlaylistExporter : IPlaylistExporter
     {
         var stringBuilder = new StringBuilder();
         foreach (var link in links)
+        {
             stringBuilder.AppendLine(link.Url);
+        }
+
         var fileText = stringBuilder.ToString();
 
         var fileBytes = Encoding.UTF8.GetBytes(fileText);

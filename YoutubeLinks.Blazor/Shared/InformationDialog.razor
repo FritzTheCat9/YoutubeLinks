@@ -9,9 +9,9 @@
             @localizer[nameof(AppStrings.Cancel)]
         </MudButton>
         <MudButton Color="Color"
-                   Variant="Variant.Filled"
                    OnClick="Submit"
-                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, InformationDialogConst.ConfirmButton } })">
+                   UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, InformationDialogConst.ConfirmButton } })"
+                   Variant="Variant.Filled">
             @ButtonText
         </MudButton>
     </DialogActions>

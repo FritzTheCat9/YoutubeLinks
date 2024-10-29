@@ -1,9 +1,9 @@
-﻿<MudTextField T="string"
-              Value="Value"
-              ValueChanged="OnValueChanged"
-              For="For"
-              Placeholder="@localizer[nameof(AppStrings.Search)]"
-              Adornment="Adornment.Start"
+﻿<MudTextField Adornment="Adornment.Start"
               AdornmentIcon="@Icons.Material.Filled.Search"
+              For="For"
               IconSize="Size.Medium"
-              UserAttributes="UserAttributes"/>
+              Placeholder="@localizer[nameof(AppStrings.Search)]"
+              T="string"
+              UserAttributes="UserAttributes"
+              Value="Value"
+              ValueChanged="OnValueChanged" />

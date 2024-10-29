@@ -1,15 +1,15 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <MudStack Row="true"
-                  Spacing="2"
-                  AlignItems="AlignItems.Center">
+        <MudStack AlignItems="AlignItems.Center"
+                  Row="true"
+                  Spacing="2">
             <MudText UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.UserNameText } })">
                 @context.User.Identity?.Name
             </MudText>
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Secondary"
+            <MudButton Color="Color.Secondary"
                        OnClick="Logout"
-                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.LogoutButton } })">
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.LogoutButton } })"
+                       Variant="Variant.Filled">
                 @localizer[nameof(AppStrings.Logout)]
             </MudButton>
         </MudStack>
@@ -17,16 +17,16 @@
     <NotAuthorized>
         <MudStack Row="true"
                   Spacing="2">
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Secondary"
+            <MudButton Color="Color.Secondary"
                        OnClick="Login"
-                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.LoginButton } })">
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.LoginButton } })"
+                       Variant="Variant.Filled">
                 @localizer[nameof(AppStrings.Login)]
             </MudButton>
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Tertiary"
+            <MudButton Color="Color.Tertiary"
                        OnClick="Register"
-                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.RegisterButton } })">
+                       UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.RegisterButton } })"
+                       Variant="Variant.Filled">
                 @localizer[nameof(AppStrings.Register)]
             </MudButton>
         </MudStack>
