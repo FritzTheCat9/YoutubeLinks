@@ -193,6 +193,7 @@ public abstract class PageTestBase : PageTest
 
     protected async Task SearchPlaylist(string name)
     {
+        await ClickElement(PlaylistsPageConst.SearchInput);
         await FillInput(PlaylistsPageConst.SearchInput, name);
         await ClickEnter(PlaylistsPageConst.SearchInput);
     }

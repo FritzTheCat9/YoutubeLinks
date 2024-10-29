@@ -11,7 +11,7 @@ namespace YoutubeLinks.Blazor.Pages.Users;
 
 public partial class ResetPasswordPage
 {
-    private readonly ResetPassword.Command _command = new();
+    public ResetPassword.Command Command { get; set; } = new();
     private CustomValidator _customValidator;
     private bool _parsingError;
     private FritzProcessingButton _processingButton;
@@ -29,8 +29,8 @@ public partial class ResetPasswordPage
     {
         try
         {
-            _command.Email = Uri.UnescapeDataString(Email);
-            _command.Token = Uri.UnescapeDataString(Token);
+            Command.Email = Uri.UnescapeDataString(Email);
+            Command.Token = Uri.UnescapeDataString(Token);
         }
         catch (Exception)
         {
@@ -44,7 +44,7 @@ public partial class ResetPasswordPage
         {
             _processingButton.SetProcessing(true);
 
-            _success = await UserApiClient.ResetPassword(_command);
+            _success = await UserApiClient.ResetPassword(Command);
         }
         catch (MyValidationException validationException)
         {

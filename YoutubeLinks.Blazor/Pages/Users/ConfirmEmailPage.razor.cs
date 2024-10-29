@@ -11,7 +11,7 @@ namespace YoutubeLinks.Blazor.Pages.Users;
 
 public partial class ConfirmEmailPage : ComponentBase
 {
-    private readonly ConfirmEmail.Command _command = new();
+    public ConfirmEmail.Command Command { get; set; } = new();
     private CustomValidator _customValidator;
     private bool _parsingError;
     private FritzProcessingButton _processingButton;
@@ -29,8 +29,8 @@ public partial class ConfirmEmailPage : ComponentBase
     {
         try
         {
-            _command.Email = Uri.UnescapeDataString(Email);
-            _command.Token = Uri.UnescapeDataString(Token);
+            Command.Email = Uri.UnescapeDataString(Email);
+            Command.Token = Uri.UnescapeDataString(Token);
         }
         catch (Exception)
         {
@@ -44,7 +44,7 @@ public partial class ConfirmEmailPage : ComponentBase
         {
             _processingButton.SetProcessing(true);
 
-            _success = await UserApiClient.ConfirmEmail(_command);
+            _success = await UserApiClient.ConfirmEmail(Command);
         }
         catch (MyValidationException validationException)
         {
