@@ -10,7 +10,7 @@ public static class GetAllUserPlaylists
     public class Query : IRequest<PagedList<PlaylistDto>>, IPagedQuery, ISortedQuery
     {
         public string SearchTerm { get; set; }
-        public int UserId { get; set; }
+        public int UserId { get; init; }
         public int Page { get; set; }
         public int PageSize { get; set; }
         public string SortColumn { get; set; }

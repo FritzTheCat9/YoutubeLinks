@@ -10,8 +10,8 @@ public static class ExportPlaylist
 {
     public class Command : IRequest<PlaylistFile>
     {
-        public int Id { get; set; }
-        public PlaylistFileType PlaylistFileType { get; set; }
+        public int Id { get; init; }
+        public PlaylistFileType PlaylistFileType { get; init; }
     }
 
     public class Validator : AbstractValidator<Command>

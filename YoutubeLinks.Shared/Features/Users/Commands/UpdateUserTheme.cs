@@ -11,7 +11,7 @@ public static class UpdateUserTheme
     public class Command : IRequest<Unit>
     {
         public int Id { get; set; }
-        public ThemeColor ThemeColor { get; set; }
+        public ThemeColor ThemeColor { get; init; }
     }
 
     public class Validator : AbstractValidator<Command>

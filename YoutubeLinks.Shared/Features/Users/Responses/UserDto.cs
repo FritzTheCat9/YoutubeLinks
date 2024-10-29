@@ -4,7 +4,7 @@ namespace YoutubeLinks.Shared.Features.Users.Responses;
 
 public class UserDto
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
     public DateTime Created { get; set; }
     public DateTime Modified { get; set; }
 

@@ -10,7 +10,6 @@ public static class GetAllPaginatedLinks
     public class Query : IRequest<PagedList<LinkDto>>, IPagedQuery, ISortedQuery
     {
         public string SearchTerm { get; set; }
-
         public int PlaylistId { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }

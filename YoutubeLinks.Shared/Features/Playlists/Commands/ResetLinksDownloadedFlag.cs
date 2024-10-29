@@ -7,8 +7,8 @@ public static class ResetLinksDownloadedFlag
 {
     public class Command : IRequest<Unit>
     {
-        public int Id { get; set; }
-        public bool IsDownloaded { get; set; }
+        public int Id { get; init; }
+        public bool IsDownloaded { get; init; }
     }
 
     public class Validator : AbstractValidator<Command> { }

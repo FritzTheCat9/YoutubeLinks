@@ -8,7 +8,7 @@ public static class GetUser
 {
     public class Query : IRequest<UserDto>
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
     }
 
     public class Validator : AbstractValidator<Query> { }

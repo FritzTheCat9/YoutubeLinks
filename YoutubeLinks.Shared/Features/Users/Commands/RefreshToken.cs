@@ -8,7 +8,7 @@ public static class RefreshToken
 {
     public class Command : IRequest<JwtDto>
     {
-        public string RefreshToken { get; set; }
+        public string RefreshToken { get; init; }
     }
 
     public class Validator : AbstractValidator<Command> { }

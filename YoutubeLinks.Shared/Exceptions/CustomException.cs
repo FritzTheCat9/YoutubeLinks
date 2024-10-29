@@ -2,7 +2,7 @@
 
 public abstract class CustomException(string message) : Exception(message)
 {
-    public ExceptionType Type { get; set; }
+    public ExceptionType Type { get; protected init; }
 }
 
 public class MyValidationException : CustomException

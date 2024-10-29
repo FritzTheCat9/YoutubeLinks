@@ -7,7 +7,7 @@ public static class DeletePlaylist
 {
     public class Command : IRequest<Unit>
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
     }
 
     public class Validator : AbstractValidator<Command> { }

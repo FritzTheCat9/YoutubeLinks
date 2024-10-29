@@ -6,7 +6,7 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers;
 public static class YoutubeHelpers
 {
     [StringSyntax(StringSyntaxAttribute.Regex)]
-    public const string VideoIdRegex = @"(?:\?|&)v=([^&]+)";
+    private const string VideoIdRegex = @"(?:\?|&)v=([^&]+)";
 
     public const string VideoPathBase = "https://www.youtube.com/watch?v=";
 

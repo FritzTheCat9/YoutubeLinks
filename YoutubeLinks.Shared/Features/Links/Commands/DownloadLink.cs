@@ -10,8 +10,8 @@ public static class DownloadLink
 {
     public class Command : IRequest<YoutubeFile>
     {
-        public int Id { get; set; }
-        public YoutubeFileType YoutubeFileType { get; set; }
+        public int Id { get; init; }
+        public YoutubeFileType YoutubeFileType { get; init; }
     }
 
     public class Validator : AbstractValidator<Command>

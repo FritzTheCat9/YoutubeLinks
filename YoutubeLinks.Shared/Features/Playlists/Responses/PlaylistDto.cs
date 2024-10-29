@@ -2,7 +2,7 @@
 
 public class PlaylistDto
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
     public DateTime Created { get; set; }
     public DateTime Modified { get; set; }
 

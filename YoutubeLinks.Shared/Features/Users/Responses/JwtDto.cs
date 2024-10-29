@@ -2,8 +2,8 @@
 
 public class JwtDto
 {
-    public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
+    public string AccessToken { get; init; }
+    public string RefreshToken { get; init; }
 }
 
 public static class Jwt
