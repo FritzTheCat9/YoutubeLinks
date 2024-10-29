@@ -5,13 +5,13 @@
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Email)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.Email)]"
                             @bind-Value="Command.Email"
                             For="() => Command.Email"
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.EmailInput } })"/>
             <FritzValidationMessage For="() => Command.Email"/>
 
-            <FritzPasswordField Label="@Localizer[nameof(AppStrings.Password)]"
+            <FritzPasswordField Label="@localizer[nameof(AppStrings.Password)]"
                                 @bind-Value="Command.Password"
                                 For="() => Command.Password"
                                 UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.PasswordInput } })"/>
@@ -21,21 +21,21 @@
             <MudButton Color="Color.Primary"
                        OnClick="OpenResendConfirmationEmailDialog">
                 <MudText Typo="Typo.subtitle2">
-                    @Localizer[nameof(AppStrings.ResendConfirmationEmail)]
+                    @localizer[nameof(AppStrings.ResendConfirmationEmail)]
                 </MudText>
             </MudButton>
             <MudSpacer/>
             <MudButton Color="Color.Primary"
                        OnClick="OpenForgotPasswordDialog">
                 <MudText Typo="Typo.subtitle2">
-                    @Localizer[nameof(AppStrings.ForgotPassword)]
+                    @localizer[nameof(AppStrings.ForgotPassword)]
                 </MudText>
             </MudButton>
             <MudSpacer/>
             <FritzProcessingButton @ref="_processingButton"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ButtonText="@Localizer[nameof(AppStrings.Login)]"
+                                   ButtonText="@localizer[nameof(AppStrings.Login)]"
                                    UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, LoginDialogConst.LoginButton } })"/>
         </DialogActions>
     </MudDialog>

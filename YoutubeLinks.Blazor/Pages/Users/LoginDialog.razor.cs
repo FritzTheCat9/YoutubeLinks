@@ -12,7 +12,12 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Users;
 
-public partial class LoginDialog : ComponentBase
+public partial class LoginDialog(
+    IExceptionHandler exceptionHandler,
+    IUserApiClient userApiClient,
+    IStringLocalizer<App> localizer,
+    IDialogService dialogService)
+    : ComponentBase
 {
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
@@ -20,20 +25,13 @@ public partial class LoginDialog : ComponentBase
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
     [Parameter] public Login.Command Command { get; set; } = new();
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IUserApiClient UserApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
-
     private async Task HandleValidSubmit()
     {
         try
         {
             _processingButton.SetProcessing(true);
 
-            var token = await UserApiClient.Login(Command);
+            var token = await userApiClient.Login(Command);
 
             MudDialog.Close(DialogResult.Ok(token));
         }
@@ -43,7 +41,7 @@ public partial class LoginDialog : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {
@@ -63,8 +61,8 @@ public partial class LoginDialog : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<ResendConfirmationEmailDialog>(
-                Localizer[nameof(AppStrings.ResendConfirmationEmail)], parameters, options);
+            await dialogService.ShowAsync<ResendConfirmationEmailDialog>(
+                localizer[nameof(AppStrings.ResendConfirmationEmail)], parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
         {
@@ -79,11 +77,11 @@ public partial class LoginDialog : ComponentBase
         {
             {
                 x => x.ContentText,
-                Localizer[nameof(AppStrings.ResendConfirmationEmailSent)]
+                localizer[nameof(AppStrings.ResendConfirmationEmailSent)]
             }
         };
 
-        await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
+        await dialogService.ShowAsync<SuccessDialog>(localizer[nameof(AppStrings.Success)], parameters, options);
     }
 
     private async Task OpenForgotPasswordDialog()
@@ -98,7 +96,7 @@ public partial class LoginDialog : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<ForgotPasswordDialog>(Localizer[nameof(AppStrings.ForgotPassword)],
+            await dialogService.ShowAsync<ForgotPasswordDialog>(localizer[nameof(AppStrings.ForgotPassword)],
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
@@ -114,11 +112,11 @@ public partial class LoginDialog : ComponentBase
         {
             {
                 x => x.ContentText,
-                Localizer[nameof(AppStrings.ForgotPasswordEmailSent)]
+                localizer[nameof(AppStrings.ForgotPasswordEmailSent)]
             }
         };
 
-        await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
+        await dialogService.ShowAsync<SuccessDialog>(localizer[nameof(AppStrings.Success)], parameters, options);
     }
 
     public class LoginDialogConst

@@ -5,26 +5,25 @@ using YoutubeLinks.Blazor.Localization;
 
 namespace YoutubeLinks.Blazor.Shared;
 
-public partial class DeleteDialog : ComponentBase
+public partial class DeleteDialog(
+    IStringLocalizer<App> localizer)
+    : ComponentBase
 {
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public string ContentText { get; set; }
     [Parameter] public string ButtonText { get; set; }
     [Parameter] public Color Color { get; set; } = Color.Error;
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(ContentText))
         {
-            ContentText = Localizer[nameof(AppStrings.DeleteConfirmInfo)];
+            ContentText = localizer[nameof(AppStrings.DeleteConfirmInfo)];
         }
 
         if (string.IsNullOrWhiteSpace(ButtonText))
         {
-            ButtonText = Localizer[nameof(AppStrings.Delete)];
+            ButtonText = localizer[nameof(AppStrings.Delete)];
         }
     }
 

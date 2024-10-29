@@ -3,7 +3,6 @@ using Microsoft.Extensions.Localization;
 
 namespace YoutubeLinks.Blazor.Pages.Error;
 
-public partial class NotFoundErrorPage : ComponentBase
-{
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-}
+public partial class NotFoundErrorPage(
+    IStringLocalizer<App> localizer)
+    : ComponentBase { }

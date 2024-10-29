@@ -2,7 +2,7 @@
 @attribute [AllowAnonymous]
 
 <PageTitle>
-    @Localizer[nameof(AppStrings.DownloadLink)]
+    @localizer[nameof(AppStrings.DownloadLink)]
 </PageTitle>
 
 <FritzBreadcrumbs Items="_items"/>
@@ -10,7 +10,7 @@
 <MudPaper Class="pa-4"
           Elevation="3">
     <MudText Class="mb-3">
-        @Localizer[nameof(AppStrings.DownloadLink)]
+        @localizer[nameof(AppStrings.DownloadLink)]
     </MudText>
     <EditForm Model="Command"
               OnValidSubmit="HandleValidSubmit">
@@ -20,7 +20,7 @@
         <MudStack Row="true"
                   Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Url)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.Url)]"
                             @bind-Value="Command.Url"
                             For="() => Command.Url"
                             Variant="Variant.Outlined"
@@ -28,7 +28,7 @@
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.UrlInput } })"/>
 
             <MudSelect T="YoutubeFileType"
-                       Label="@Localizer[nameof(AppStrings.FileType)]"
+                       Label="@localizer[nameof(AppStrings.FileType)]"
                        @bind-Value="Command.YoutubeFileType"
                        For="() => Command.YoutubeFileType"
                        Variant="Variant.Outlined"
@@ -46,8 +46,8 @@
             <FritzProcessingButton @ref="_processingButton"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Downloading)]"
-                                   ButtonText="@Localizer[nameof(AppStrings.Download)]"
+                                   ProcessingButtonText="@localizer[nameof(AppStrings.Downloading)]"
+                                   ButtonText="@localizer[nameof(AppStrings.Download)]"
                                    UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, DownloadLinkPageConst.DownloadButton } })"/>
         </MudStack>
         <FritzValidationMessage For="() => Command.Url"/>
@@ -62,7 +62,7 @@
         <MudPaper Class="pa-4 mt-4"
                   Elevation=3>
             <MudText Typo=Typo.subtitle2>
-                @Localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
+                @localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
             </MudText>
             @foreach (var result in _downloadLinkResults)
             {
@@ -70,7 +70,7 @@
                 {
                     <a href="@result.Url" target="_blank">
                         <MudText Color=@Color.Success>
-                            [@Localizer[nameof(AppStrings.Success)]] - @result.Url
+                            [@localizer[nameof(AppStrings.Success)]] - @result.Url
                         </MudText>
                     </a>
                 }
@@ -78,7 +78,7 @@
                 {
                     <a href="@result.Url" target="_blank">
                         <MudText Color=@Color.Error>
-                            [@Localizer[nameof(AppStrings.Fail)]] - @result.Url
+                            [@localizer[nameof(AppStrings.Fail)]] - @result.Url
                         </MudText>
                     </a>
                 }

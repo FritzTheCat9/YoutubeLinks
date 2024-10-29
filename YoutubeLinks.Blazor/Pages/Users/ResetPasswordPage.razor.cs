@@ -9,7 +9,10 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Users;
 
-public partial class ResetPasswordPage
+public partial class ResetPasswordPage(
+    IExceptionHandler exceptionHandler,
+    IUserApiClient userApiClient,
+    IStringLocalizer<App> localizer)
 {
     public ResetPassword.Command Command { get; set; } = new();
     private CustomValidator _customValidator;
@@ -19,11 +22,6 @@ public partial class ResetPasswordPage
 
     [SupplyParameterFromQuery] public string Email { get; set; }
     [SupplyParameterFromQuery] public string Token { get; set; }
-
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IUserApiClient UserApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
     protected override void OnParametersSet()
     {
@@ -44,7 +42,7 @@ public partial class ResetPasswordPage
         {
             _processingButton.SetProcessing(true);
 
-            _success = await UserApiClient.ResetPassword(Command);
+            _success = await userApiClient.ResetPassword(Command);
         }
         catch (MyValidationException validationException)
         {
@@ -52,7 +50,7 @@ public partial class ResetPasswordPage
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {

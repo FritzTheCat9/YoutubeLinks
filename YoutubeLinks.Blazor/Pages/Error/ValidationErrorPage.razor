@@ -2,20 +2,20 @@
 @attribute [AllowAnonymous]
 
 <PageTitle>
-    @Localizer[nameof(AppStrings.ValidationError)]
+    @localizer[nameof(AppStrings.ValidationError)]
 </PageTitle>
 
 <h1>
-    @Localizer[nameof(AppStrings.ValidationError)]
+    @localizer[nameof(AppStrings.ValidationError)]
 </h1>
 
-@foreach (var propName in ValidationErrors.Errors.Keys)
+@foreach (var propName in validationErrors.Errors.Keys)
 {
     <p>
         @propName:
     </p>
 
-    @foreach (var error in ValidationErrors.Errors[propName])
+    @foreach (var error in validationErrors.Errors[propName])
     {
         <li>
             @error

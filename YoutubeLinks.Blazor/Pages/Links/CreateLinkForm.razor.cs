@@ -9,7 +9,11 @@ using YoutubeLinks.Shared.Features.Links.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Links;
 
-public partial class CreateLinkForm : ComponentBase
+public partial class CreateLinkForm(
+    IExceptionHandler exceptionHandler,
+    ILinkApiClient linkApiClient,
+    IStringLocalizer<App> localizer)
+    : ComponentBase
 {
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
@@ -17,17 +21,13 @@ public partial class CreateLinkForm : ComponentBase
     [Parameter] public CreateLink.Command Command { get; set; } = new();
     [Parameter] public EventCallback ParentReloadFunction { get; set; }
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public ILinkApiClient LinkApiClient { get; set; }
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
     private async Task HandleValidSubmit()
     {
         try
         {
             _processingButton.SetProcessing(true);
 
-            await LinkApiClient.CreateLink(Command);
+            await linkApiClient.CreateLink(Command);
 
             Command.Url = "";
             await ParentReloadFunction.InvokeAsync();
@@ -38,7 +38,7 @@ public partial class CreateLinkForm : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {

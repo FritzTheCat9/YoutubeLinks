@@ -10,7 +10,12 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Users;
 
-public partial class ForgotPasswordDialog : ComponentBase
+public partial class ForgotPasswordDialog(
+    IExceptionHandler exceptionHandler,
+    IUserApiClient userApiClient,
+    IStringLocalizer<App> localizer,
+    IDialogService dialogService)
+    : ComponentBase
 {
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
@@ -18,20 +23,13 @@ public partial class ForgotPasswordDialog : ComponentBase
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
     [Parameter] public ForgotPassword.Command Command { get; set; } = new();
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IUserApiClient UserApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
-
     private async Task HandleValidSubmit()
     {
         try
         {
             _processingButton.SetProcessing(true);
 
-            await UserApiClient.ForgotPassword(Command);
+            await userApiClient.ForgotPassword(Command);
 
             MudDialog.Close(DialogResult.Ok(true));
         }
@@ -41,7 +39,7 @@ public partial class ForgotPasswordDialog : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {

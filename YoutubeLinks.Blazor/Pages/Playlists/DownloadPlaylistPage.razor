@@ -2,7 +2,7 @@
 @attribute [AllowAnonymous]
 
 <PageTitle>
-    @Localizer[nameof(AppStrings.DownloadPlaylist)]
+    @localizer[nameof(AppStrings.DownloadPlaylist)]
 </PageTitle>
 
 @if (_playlist is not null && _linkInfoList is not null)
@@ -14,20 +14,20 @@
                   Elevation=3>
             <MudText Typo=Typo.subtitle1
                      Class="mb-2">
-                @Localizer[nameof(AppStrings.LoadedLinks), _linkInfoList.Count]
+                @localizer[nameof(AppStrings.LoadedLinks), _linkInfoList.Count]
             </MudText>
             <MudText Typo=Typo.subtitle2
                      Color="Color.Warning">
-                @Localizer[nameof(AppStrings.PublicPlaylistDownloadInfo)]
+                @localizer[nameof(AppStrings.PublicPlaylistDownloadInfo)]
             </MudText>
             <MudText Typo=Typo.subtitle2
                      Color="Color.Warning"
                      Class="mb-2">
-                @Localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
+                @localizer[nameof(AppStrings.PrivatePlaylistDownloadInfo)]
             </MudText>
 
             <MudSelect T=YoutubeFileType
-                       Label=@Localizer[nameof(AppStrings.FileType)]
+                       Label=@localizer[nameof(AppStrings.FileType)]
                        @bind-Value=_youtubeFileType
                        Disabled=_downloading
                        Variant=Variant.Outlined
@@ -45,8 +45,8 @@
 
             <FritzProcessingButton @ref=_processingButton
                                    Color=Color.Primary
-                                   ProcessingButtonText=@Localizer[nameof(AppStrings.Downloading)]
-                                   ButtonText=@Localizer[nameof(AppStrings.Download)]
+                                   ProcessingButtonText=@localizer[nameof(AppStrings.Downloading)]
+                                   ButtonText=@localizer[nameof(AppStrings.Download)]
                                    OnClick=DownloadPlaylistLinks
                                    UserAttributes=@(new Dictionary<string, object> { { TestConst.TestId, DownloadPlaylistPageConst.DownloadButton } })/>
 
@@ -73,7 +73,7 @@
             <MudPaper Class="pa-4 mt-4"
                       Elevation=3>
                 <MudText Typo=Typo.subtitle2>
-                    @Localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
+                    @localizer[nameof(AppStrings.DownloadedLinksCountResults), _downloadLinkResults.Count]
                 </MudText>
                 @foreach (var result in _downloadLinkResults)
                 {
@@ -81,7 +81,7 @@
                     {
                         <a href="@result.Link.Url" target="_blank">
                             <MudText Color=@Color.Success>
-                                [@Localizer[nameof(AppStrings.Success)]] - @result.Link.Title
+                                [@localizer[nameof(AppStrings.Success)]] - @result.Link.Title
                             </MudText>
                         </a>
                     }
@@ -89,7 +89,7 @@
                     {
                         <a href="@result.Link.Url" target="_blank">
                             <MudText Color=@Color.Error>
-                                [@Localizer[nameof(AppStrings.Fail)]] - @result.Link.Title
+                                [@localizer[nameof(AppStrings.Fail)]] - @result.Link.Title
                             </MudText>
                         </a>
                     }

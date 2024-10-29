@@ -6,14 +6,14 @@
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Name)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.Name)]"
                             @bind-Value="FormModel.Name"
                             For="() => FormModel.Name"
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.NameInput } })"/>
             <FritzValidationMessage For="() => FormModel.Name"/>
 
             <MudCheckBox T="bool"
-                         Label="@Localizer[nameof(AppStrings.Public)]"
+                         Label="@localizer[nameof(AppStrings.Public)]"
                          @bind-Value="FormModel.Public"
                          For="() => FormModel.Public"
                          Color="Color.Primary"
@@ -31,7 +31,7 @@
                     <MudButton Variant="Variant.Filled"
                                Color="Color.Primary"
                                StartIcon="@Icons.Material.Filled.FileUpload">
-                        @Localizer[nameof(AppStrings.AddPlaylistJsonOrTxtFile)]
+                        @localizer[nameof(AppStrings.AddPlaylistJsonOrTxtFile)]
                     </MudButton>
                 </ActivatorContent>
             </MudFileUpload>
@@ -46,15 +46,15 @@
 
             <MudText Typo="Typo.subtitle2"
                      Color="Color.Warning">
-                @Localizer[nameof(AppStrings.ImportPlaylistInfo)]
+                @localizer[nameof(AppStrings.ImportPlaylistInfo)]
             </MudText>
         </DialogContent>
         <DialogActions>
             <FritzProcessingButton @ref="_processingButton"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Importing)]"
-                                   ButtonText="@Localizer[nameof(AppStrings.Import)]"
+                                   ProcessingButtonText="@localizer[nameof(AppStrings.Importing)]"
+                                   ButtonText="@localizer[nameof(AppStrings.Import)]"
                                    UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, ImportPlaylistDialogConst.ImportPlaylistButton } })"/>
         </DialogActions>
     </MudDialog>

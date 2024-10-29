@@ -9,7 +9,6 @@ public partial class FritzTextField : ComponentBase
     [Parameter] public string Value { get; set; }
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public Expression<Func<string>> For { get; set; }
-
     [Parameter] public string Label { get; set; }
     [Parameter] public bool HideField { get; set; }
     [Parameter] public Variant Variant { get; set; }

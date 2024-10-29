@@ -10,7 +10,7 @@
                        Color="Color.Secondary"
                        OnClick="Logout"
                        UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.LogoutButton } })">
-                @Localizer[nameof(AppStrings.Logout)]
+                @localizer[nameof(AppStrings.Logout)]
             </MudButton>
         </MudStack>
     </Authorized>
@@ -21,13 +21,13 @@
                        Color="Color.Secondary"
                        OnClick="Login"
                        UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.LoginButton } })">
-                @Localizer[nameof(AppStrings.Login)]
+                @localizer[nameof(AppStrings.Login)]
             </MudButton>
             <MudButton Variant="Variant.Filled"
                        Color="Color.Tertiary"
                        OnClick="Register"
                        UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, AuthComponentConst.RegisterButton } })">
-                @Localizer[nameof(AppStrings.Register)]
+                @localizer[nameof(AppStrings.Register)]
             </MudButton>
         </MudStack>
     </NotAuthorized>

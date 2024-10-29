@@ -10,18 +10,17 @@ using YoutubeLinks.Shared.Features.Links.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Links;
 
-public partial class UpdateLinkDialog : ComponentBase
+public partial class UpdateLinkDialog(
+    IExceptionHandler exceptionHandler,
+    ILinkApiClient linkApiClient,
+    IStringLocalizer<App> localizer)
+    : ComponentBase
 {
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
 
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public UpdateLink.Command Command { get; set; } = new();
-
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public ILinkApiClient LinkApiClient { get; set; }
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
     private async Task HandleValidSubmit()
     {
@@ -29,7 +28,7 @@ public partial class UpdateLinkDialog : ComponentBase
         {
             _processingButton.SetProcessing(true);
 
-            await LinkApiClient.UpdateLink(Command);
+            await linkApiClient.UpdateLink(Command);
 
             MudDialog.Close(DialogResult.Ok(true));
         }
@@ -39,7 +38,7 @@ public partial class UpdateLinkDialog : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {

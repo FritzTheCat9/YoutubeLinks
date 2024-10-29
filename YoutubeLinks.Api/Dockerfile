@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 
 # Install python3 and ffmpeg as root to use yt-dlp on linux container
 USER root
@@ -17,7 +17,7 @@ RUN mkdir -p /app
 RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /app/yt-dlp
 RUN chmod a+rx /app/yt-dlp
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["YoutubeLinks.Api/YoutubeLinks.Api.csproj", "YoutubeLinks.Api/"]

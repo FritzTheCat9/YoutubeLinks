@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /app
 COPY ["YoutubeLinks.Blazor/YoutubeLinks.Blazor.csproj", "YoutubeLinks.Blazor/"]

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Localization;
 
 namespace YoutubeLinks.Blazor.Pages;
 
-public partial class HomePage : ComponentBase
-{
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-}
+public partial class HomePage(
+    IStringLocalizer<App> localizer)
+    : ComponentBase { }

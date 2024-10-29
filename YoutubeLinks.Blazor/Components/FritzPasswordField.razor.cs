@@ -13,7 +13,6 @@ public partial class FritzPasswordField : ComponentBase
     [Parameter] public string Value { get; set; }
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public Expression<Func<string>> For { get; set; }
-
     [Parameter] public string Label { get; set; }
     [Parameter] public bool OnlyValidateIfDirty { get; set; } = true;
     [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }

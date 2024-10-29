@@ -15,7 +15,15 @@ using YoutubeLinks.Shared.Features.Playlists.Responses;
 
 namespace YoutubeLinks.Blazor.Pages.Playlists;
 
-public partial class PlaylistsPage : ComponentBase
+public partial class PlaylistsPage(
+    IExceptionHandler exceptionHandler,
+    IPlaylistApiClient playlistApiClient,
+    IAuthService authService,
+    IStringLocalizer<App> localizer,
+    IDialogService dialogService,
+    NavigationManager navigationManager,
+    IJSRuntime jsRuntime)
+    : ComponentBase
 {
     private bool _isUserPlaylist;
     private List<BreadcrumbItem> _items;
@@ -25,26 +33,15 @@ public partial class PlaylistsPage : ComponentBase
 
     [Parameter] public int UserId { get; set; }
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IPlaylistApiClient PlaylistApiClient { get; set; }
-
-    [Inject] public IAuthService AuthService { get; set; }
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
-    [Inject] public NavigationManager NavigationManager { get; set; }
-    [Inject] public IJSRuntime JsRuntime { get; set; }
-
-
     protected override async Task OnParametersSetAsync()
     {
         _items =
         [
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], "/users"),
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Playlists)], null, true)
+            new BreadcrumbItem(localizer[nameof(AppStrings.Users)], "/users"),
+            new BreadcrumbItem(localizer[nameof(AppStrings.Playlists)], null, true)
         ];
 
-        _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
+        _isUserPlaylist = await authService.IsLoggedInUser(UserId);
     }
 
     private async Task<TableData<PlaylistDto>> ServerReload(TableState state, CancellationToken token)
@@ -61,11 +58,11 @@ public partial class PlaylistsPage : ComponentBase
 
         try
         {
-            _playlistPagedList = await PlaylistApiClient.GetAllUserPlaylists(query);
+            _playlistPagedList = await playlistApiClient.GetAllUserPlaylists(query);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
             return new TableData<PlaylistDto> { TotalItems = 0, Items = [] };
         }
 
@@ -79,19 +76,19 @@ public partial class PlaylistsPage : ComponentBase
     private async Task DeleteUserPlaylist(int id)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
-        var dialog = await DialogService.ShowAsync<DeleteDialog>(Localizer[nameof(AppStrings.Delete)], options);
+        var dialog = await dialogService.ShowAsync<DeleteDialog>(localizer[nameof(AppStrings.Delete)], options);
 
         var result = await dialog.Result;
         if (!result.Canceled)
         {
             try
             {
-                await PlaylistApiClient.DeletePlaylist(id);
+                await playlistApiClient.DeletePlaylist(id);
                 await _table.ReloadServerData();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExceptions(ex);
+                exceptionHandler.HandleExceptions(ex);
             }
         }
     }
@@ -113,7 +110,7 @@ public partial class PlaylistsPage : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<UpdatePlaylistDialog>(Localizer[nameof(AppStrings.UpdatePlaylist)],
+            await dialogService.ShowAsync<UpdatePlaylistDialog>(localizer[nameof(AppStrings.UpdatePlaylist)],
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
@@ -138,7 +135,7 @@ public partial class PlaylistsPage : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<CreatePlaylistDialog>(Localizer[nameof(AppStrings.CreatePlaylist)],
+            await dialogService.ShowAsync<CreatePlaylistDialog>(localizer[nameof(AppStrings.CreatePlaylist)],
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
@@ -158,17 +155,17 @@ public partial class PlaylistsPage : ComponentBase
             };
             var fileExtension = PlaylistHelpers.PlaylistFileTypeToString(playlistFileType);
 
-            var response = await PlaylistApiClient.ExportPlaylist(command);
+            var response = await playlistApiClient.ExportPlaylist(command);
 
             var content = await response.Content.ReadAsStreamAsync();
             var streamRef = new DotNetStreamReference(content);
             var filename = response.Content.Headers.ContentDisposition?.FileNameStar ?? $"default_name.{fileExtension}";
 
-            await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+            await jsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
     }
 
@@ -190,7 +187,7 @@ public partial class PlaylistsPage : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<ImportPlaylistDialog>(Localizer[nameof(AppStrings.ImportPlaylist)],
+            await dialogService.ShowAsync<ImportPlaylistDialog>(localizer[nameof(AppStrings.ImportPlaylist)],
                 parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
@@ -201,12 +198,12 @@ public partial class PlaylistsPage : ComponentBase
 
     private void RedirectToLinksPage(int id)
     {
-        NavigationManager.NavigateTo($"/links/{UserId}/{id}");
+        navigationManager.NavigateTo($"/links/{UserId}/{id}");
     }
 
     private void RedirectToDownloadPlaylistPage(int id)
     {
-        NavigationManager.NavigateTo($"/downloadPlaylist/{id}");
+        navigationManager.NavigateTo($"/downloadPlaylist/{id}");
     }
 
     public class PlaylistsPageConst

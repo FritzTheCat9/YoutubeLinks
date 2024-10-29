@@ -29,7 +29,7 @@
                        Edge="Edge.Start"
                        OnClick="DrawerToggle"
                        UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, MainLayoutConst.ToggleNavMenuButton } })"/>
-        @Localizer[nameof(AppStrings.AppName)]
+        @localizer[nameof(AppStrings.AppName)]
         <MudSpacer/>
         <FritzTooltip Text="@_text">
             <MudIconButton Icon="@_icon"
@@ -38,7 +38,7 @@
                            Style="margin-right: 5px;"
                            UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, MainLayoutConst.ChangeThemeButton } })"/>
         </FritzTooltip>
-        <FritzTooltip Text="@Localizer[nameof(AppStrings.CheckProjectOnGithubText)]">
+        <FritzTooltip Text="@localizer[nameof(AppStrings.CheckProjectOnGithubText)]">
             <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
                            Color="Color.Inherit"
                            Href="https://github.com/FritzTheCat9/YoutubeLinks"
@@ -65,7 +65,7 @@
         <MudPaper Class="pa-4 mb-4"
                   Elevation="3">
             <MudText Typo="Typo.body1">
-                @Localizer[nameof(AppStrings.CreatedByText)]
+                @localizer[nameof(AppStrings.CreatedByText)]
             </MudText>
         </MudPaper>
     </MudAppBar>

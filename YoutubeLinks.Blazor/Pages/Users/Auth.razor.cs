@@ -12,18 +12,16 @@ using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Pages.Users;
 
-public partial class Auth : ComponentBase
+public partial class Auth(
+    IExceptionHandler exceptionHandler,
+    IUserApiClient userApiClient,
+    IAuthService authService,
+    IStringLocalizer<App> localizer,
+    IDialogService dialogService)
+    : ComponentBase
 {
     [Parameter] public EventCallback<ThemeColor> ChangeThemeColor { get; set; }
     [Parameter] public EventCallback UserChanged { get; set; }
-
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IUserApiClient UserApiClient { get; set; }
-    [Inject] public IAuthService AuthService { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
 
     private async Task Login()
     {
@@ -37,13 +35,13 @@ public partial class Auth : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<LoginDialog>(Localizer[nameof(AppStrings.Login)], parameters, options);
+            await dialogService.ShowAsync<LoginDialog>(localizer[nameof(AppStrings.Login)], parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
         {
             if (result.Data is JwtDto token)
             {
-                await AuthService.Login(token);
+                await authService.Login(token);
 
                 await LoadUserTheme();
                 await UserChanged.InvokeAsync();
@@ -53,7 +51,7 @@ public partial class Auth : ComponentBase
 
     private async Task LoadUserTheme()
     {
-        var userId = await AuthService.GetCurrentUserId();
+        var userId = await authService.GetCurrentUserId();
         if (userId is null)
         {
             return;
@@ -61,13 +59,13 @@ public partial class Auth : ComponentBase
 
         try
         {
-            var user = await UserApiClient.GetUser(userId.Value);
+            var user = await userApiClient.GetUser(userId.Value);
 
             await ChangeThemeColor.InvokeAsync(user.ThemeColor);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
     }
 
@@ -83,7 +81,7 @@ public partial class Auth : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<RegisterDialog>(Localizer[nameof(AppStrings.Register)], parameters, options);
+            await dialogService.ShowAsync<RegisterDialog>(localizer[nameof(AppStrings.Register)], parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled)
         {
@@ -98,16 +96,16 @@ public partial class Auth : ComponentBase
         {
             {
                 x => x.ContentText,
-                Localizer[nameof(AppStrings.AccountCreated)]
+                localizer[nameof(AppStrings.AccountCreated)]
             }
         };
 
-        await DialogService.ShowAsync<SuccessDialog>(Localizer[nameof(AppStrings.Success)], parameters, options);
+        await dialogService.ShowAsync<SuccessDialog>(localizer[nameof(AppStrings.Success)], parameters, options);
     }
 
     private async Task Logout()
     {
-        await AuthService.Logout("/");
+        await authService.Logout("/");
     }
 
     public class AuthComponentConst

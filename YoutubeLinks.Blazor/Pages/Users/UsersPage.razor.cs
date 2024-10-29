@@ -11,26 +11,23 @@ using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Pages.Users;
 
-public partial class UsersPage : ComponentBase
+public partial class UsersPage(
+    IExceptionHandler exceptionHandler,
+    IUserApiClient userApiClient,
+    IStringLocalizer<App> localizer,
+    NavigationManager navigationManager)
+    : ComponentBase
 {
     private List<BreadcrumbItem> _items;
     private PagedList<UserDto> _myUsers;
     private string _searchString = "";
     private MudTable<UserDto> _table;
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IUserApiClient UserApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
-    [Inject] public NavigationManager NavigationManager { get; set; }
-
     protected override void OnParametersSet()
     {
         _items =
         [
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], null, true)
+            new BreadcrumbItem(localizer[nameof(AppStrings.Users)], null, true)
         ];
     }
 
@@ -47,11 +44,11 @@ public partial class UsersPage : ComponentBase
 
         try
         {
-            _myUsers = await UserApiClient.GetAllUsers(query);
+            _myUsers = await userApiClient.GetAllUsers(query);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
             return new TableData<UserDto> { TotalItems = 0, Items = [] };
         }
 
@@ -74,7 +71,7 @@ public partial class UsersPage : ComponentBase
 
     private void RedirectToUserPlaylistsPage(int id)
     {
-        NavigationManager.NavigateTo($"/playlists/{id}");
+        navigationManager.NavigateTo($"/playlists/{id}");
     }
 
     public class UsersPageConst

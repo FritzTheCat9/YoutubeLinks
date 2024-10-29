@@ -5,26 +5,25 @@ using YoutubeLinks.Blazor.Localization;
 
 namespace YoutubeLinks.Blazor.Shared;
 
-public partial class InformationDialog : ComponentBase
+public partial class InformationDialog(
+    IStringLocalizer<App> localizer)
+    : ComponentBase
 {
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public string ContentText { get; set; }
     [Parameter] public string ButtonText { get; set; }
     [Parameter] public Color Color { get; set; } = Color.Primary;
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(ContentText))
         {
-            ContentText = Localizer[nameof(AppStrings.InformationConfirmInfo)];
+            ContentText = localizer[nameof(AppStrings.InformationConfirmInfo)];
         }
 
         if (string.IsNullOrWhiteSpace(ButtonText))
         {
-            ButtonText = Localizer[nameof(AppStrings.Yes)];
+            ButtonText = localizer[nameof(AppStrings.Yes)];
         }
     }
 

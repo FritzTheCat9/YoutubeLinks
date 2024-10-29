@@ -6,7 +6,7 @@
     @if (!_success)
     {
         <MudText>
-            @Localizer[nameof(AppStrings.ConfirmEmailInfo)]
+            @localizer[nameof(AppStrings.ConfirmEmailInfo)]
         </MudText>
 
         <EditForm Model="Command"
@@ -24,7 +24,7 @@
                             HideField=true />
             <FritzValidationMessage For="() => Command.Token" />
 
-            <FritzProcessingButton ButtonText="@Localizer[nameof(AppStrings.ConfirmEmail)]"
+            <FritzProcessingButton ButtonText="@localizer[nameof(AppStrings.ConfirmEmail)]"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
                                    @ref="_processingButton" />
@@ -33,14 +33,14 @@
     else
     {
         <MudText Color=Color.Success>
-            @Localizer[nameof(AppStrings.SuccessfulEmailConfirmation)]
+            @localizer[nameof(AppStrings.SuccessfulEmailConfirmation)]
         </MudText>
     }
 
     @if (_parsingError)
     {
         <MudText Color=Color.Error>
-            @Localizer[nameof(AppStrings.InvalidEmailOrToken)]
+            @localizer[nameof(AppStrings.InvalidEmailOrToken)]
         </MudText>
     }
 </MudPaper>

@@ -14,21 +14,19 @@ using YoutubeLinks.Shared.Features.Playlists.Helpers;
 
 namespace YoutubeLinks.Blazor.Pages.Playlists;
 
-public partial class ImportPlaylistDialog : ComponentBase
+public partial class ImportPlaylistDialog(
+    IExceptionHandler exceptionHandler,
+    IPlaylistApiClient playlistApiClient,
+    IStringLocalizer<App> localizer,
+    IStringLocalizer<ValidationMessage> sharedLocalizer)
+    : ComponentBase
 {
     private CustomValidator _customValidator;
     private EditForm _form;
     private FritzProcessingButton _processingButton;
 
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public ImportPlaylist.FormModel FormModel { get; set; } = new();
-
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IPlaylistApiClient PlaylistApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-    [Inject] public IStringLocalizer<ValidationMessage> SharedLocalizer { get; set; }
 
     private async Task HandleValidSubmit()
     {
@@ -36,7 +34,7 @@ public partial class ImportPlaylistDialog : ComponentBase
         {
             _processingButton.SetProcessing(true);
 
-            await PlaylistApiClient.ImportPlaylistFromJson(FormModel);
+            await playlistApiClient.ImportPlaylistFromJson(FormModel);
             MudDialog.Close(DialogResult.Ok(true));
         }
         catch (MyValidationException validationException)
@@ -45,7 +43,7 @@ public partial class ImportPlaylistDialog : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {
@@ -55,7 +53,7 @@ public partial class ImportPlaylistDialog : ComponentBase
 
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
-        var fileValidator = new ImportPlaylist.FileValidator(SharedLocalizer);
+        var fileValidator = new ImportPlaylist.FileValidator(sharedLocalizer);
         var validationResult = await fileValidator.ValidateAsync(FormModel.File);
         if (!validationResult.IsValid)
         {

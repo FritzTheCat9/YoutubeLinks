@@ -13,7 +13,11 @@ using YoutubeLinks.Shared.Features.Links.Helpers;
 
 namespace YoutubeLinks.Blazor.Pages.Links;
 
-public partial class DownloadLinkPage : ComponentBase
+public partial class DownloadLinkPage(
+    ILinkApiClient linkApiClient,
+    IStringLocalizer<App> localizer,
+    IJSRuntime jsRuntime)
+    : ComponentBase
 {
     private readonly List<DownloadLinkResult> _downloadLinkResults = [];
     private CustomValidator _customValidator;
@@ -27,18 +31,11 @@ public partial class DownloadLinkPage : ComponentBase
         YoutubeFileType = YoutubeFileType.Mp3
     };
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public ILinkApiClient LinkApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IJSRuntime JsRuntime { get; set; }
-
     protected override void OnParametersSet()
     {
         _items =
         [
-            new BreadcrumbItem(Localizer[nameof(AppStrings.DownloadLink)], null, true)
+            new BreadcrumbItem(localizer[nameof(AppStrings.DownloadLink)], null, true)
         ];
     }
 
@@ -48,7 +45,7 @@ public partial class DownloadLinkPage : ComponentBase
         {
             _processingButton.SetProcessing(true);
 
-            var response = await LinkApiClient.DownloadSingleLink(Command);
+            var response = await linkApiClient.DownloadSingleLink(Command);
 
             await using (var stream = await response.Content.ReadAsStreamAsync())
             {
@@ -56,7 +53,7 @@ public partial class DownloadLinkPage : ComponentBase
                 var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??
                                $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}";
 
-                await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                await jsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
             }
 
             _downloadLinkResults.Add(new DownloadLinkResult

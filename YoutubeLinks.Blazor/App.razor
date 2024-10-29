@@ -8,7 +8,7 @@
                 </NotAuthorized>
                 <Authorizing>
                     <h1>
-                        @Localizer[nameof(AppStrings.AuthenticationInProgress)]
+                        @localizer[nameof(AppStrings.AuthenticationInProgress)]
                     </h1>
                 </Authorizing>
             </AuthorizeRouteView>
@@ -17,11 +17,11 @@
         </Found>
         <NotFound>
             <PageTitle>
-                @Localizer[nameof(AppStrings.NotFound)]
+                @localizer[nameof(AppStrings.NotFound)]
             </PageTitle>
             <LayoutView Layout="typeof(MainLayout)">
                 <p role="alert">
-                    @Localizer[nameof(AppStrings.InvalidRoute)]
+                    @localizer[nameof(AppStrings.InvalidRoute)]
                 </p>
             </LayoutView>
         </NotFound>

@@ -5,20 +5,20 @@
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Url)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.Url)]"
                             @bind-Value="Command.Url"
                             For="() => Command.Url"
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.UrlInput } })"/>
             <FritzValidationMessage For="() => Command.Url"/>
 
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Title)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.Title)]"
                             @bind-Value="Command.Title"
                             For="() => Command.Title"
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.TitleInput } })"/>
             <FritzValidationMessage For="() => Command.Title"/>
 
             <MudCheckBox T="bool"
-                         Label="@Localizer[nameof(AppStrings.Downloaded)]"
+                         Label="@localizer[nameof(AppStrings.Downloaded)]"
                          @bind-Value="Command.Downloaded"
                          For="() => Command.Downloaded"
                          Color="Color.Primary"
@@ -29,8 +29,8 @@
             <FritzProcessingButton @ref="_processingButton"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ProcessingButtonText="@Localizer[nameof(AppStrings.Updating)]"
-                                   ButtonText="@Localizer[nameof(AppStrings.Update)]"
+                                   ProcessingButtonText="@localizer[nameof(AppStrings.Updating)]"
+                                   ButtonText="@localizer[nameof(AppStrings.Update)]"
                                    UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, UpdateLinkDialogConst.UpdateButton } })"/>
         </DialogActions>
     </MudDialog>

@@ -14,7 +14,15 @@ using YoutubeLinks.Shared.Features.Playlists.Responses;
 
 namespace YoutubeLinks.Blazor.Pages.Playlists;
 
-public partial class DownloadPlaylistPage : ComponentBase
+public partial class DownloadPlaylistPage(
+    IExceptionHandler exceptionHandler,
+    ILinkApiClient linkApiClient,
+    IPlaylistApiClient playlistApiClient,
+    IAuthService authService,
+    IStringLocalizer<App> localizer,
+    NavigationManager navigationManager,
+    IJSRuntime jsRuntime)
+    : ComponentBase
 {
     private int _allSongsNumber;
     private int _downloadedSongsNumber;
@@ -31,40 +39,29 @@ public partial class DownloadPlaylistPage : ComponentBase
 
     [Parameter] public int PlaylistId { get; set; }
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public ILinkApiClient LinkApiClient { get; set; }
-    [Inject] public IPlaylistApiClient PlaylistApiClient { get; set; }
-
-    [Inject] public IAuthService AuthService { get; set; }
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
-    [Inject] public NavigationManager NavigationManager { get; set; }
-    [Inject] public IJSRuntime JsRuntime { get; set; }
-
     protected override async Task OnParametersSetAsync()
     {
         try
         {
-            _playlist = await PlaylistApiClient.GetPlaylist(PlaylistId);
+            _playlist = await playlistApiClient.GetPlaylist(PlaylistId);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
 
         _items =
         [
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], "/users"),
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Playlists)], $"/playlists/{_playlist.UserId}"),
-            new BreadcrumbItem(Localizer[nameof(AppStrings.DownloadPlaylist)], null, true)
+            new BreadcrumbItem(localizer[nameof(AppStrings.Users)], "/users"),
+            new BreadcrumbItem(localizer[nameof(AppStrings.Playlists)], $"/playlists/{_playlist.UserId}"),
+            new BreadcrumbItem(localizer[nameof(AppStrings.DownloadPlaylist)], null, true)
         ];
 
-        _isUserPlaylist = await AuthService.IsLoggedInUser(_playlist.UserId);
+        _isUserPlaylist = await authService.IsLoggedInUser(_playlist.UserId);
 
         if (!_playlist.Public && !_isUserPlaylist)
         {
-            NavigationManager.NavigateTo("/error/forbidden-error");
+            navigationManager.NavigateTo("/error/forbidden-error");
         }
 
         await LoadLinkInformation();
@@ -80,11 +77,11 @@ public partial class DownloadPlaylistPage : ComponentBase
                 Downloaded = false
             };
 
-            _linkInfoList = (await LinkApiClient.GetAllLinks(query)).ToList();
+            _linkInfoList = (await linkApiClient.GetAllLinks(query)).ToList();
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
     }
 
@@ -114,7 +111,7 @@ public partial class DownloadPlaylistPage : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {
@@ -133,7 +130,7 @@ public partial class DownloadPlaylistPage : ComponentBase
                 YoutubeFileType = youtubeFileType
             };
 
-            var response = await LinkApiClient.DownloadLink(command);
+            var response = await linkApiClient.DownloadLink(command);
 
             await using (var stream = await response.Content.ReadAsStreamAsync())
             {
@@ -141,7 +138,7 @@ public partial class DownloadPlaylistPage : ComponentBase
                 var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??
                                $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-                await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+                await jsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
             }
 
             await SetLinkAsDownloaded(link.Id);
@@ -175,7 +172,7 @@ public partial class DownloadPlaylistPage : ComponentBase
             Downloaded = true
         };
 
-        await LinkApiClient.SetLinkDownloadedFlag(command);
+        await linkApiClient.SetLinkDownloadedFlag(command);
     }
 
     private class DownloadLinkResult

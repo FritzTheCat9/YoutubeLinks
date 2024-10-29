@@ -5,25 +5,25 @@
 
     <MudDialog DefaultFocus="DefaultFocus.LastChild">
         <DialogContent>
-            <FritzTextField Label="@Localizer[nameof(AppStrings.Email)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.Email)]"
                             @bind-Value="Command.Email"
                             For="() => Command.Email"
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.EmailInput } })"/>
             <FritzValidationMessage For="() => Command.Email"/>
 
-            <FritzTextField Label="@Localizer[nameof(AppStrings.UserName)]"
+            <FritzTextField Label="@localizer[nameof(AppStrings.UserName)]"
                             @bind-Value="Command.UserName"
                             For="() => Command.UserName"
                             UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.UserNameInput } })"/>
             <FritzValidationMessage For="() => Command.UserName"/>
 
-            <FritzPasswordField Label="@Localizer[nameof(AppStrings.Password)]"
+            <FritzPasswordField Label="@localizer[nameof(AppStrings.Password)]"
                                 @bind-Value="Command.Password"
                                 For="() => Command.Password"
                                 UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.PasswordInput } })"/>
             <FritzValidationMessage For="() => Command.Password"/>
 
-            <FritzPasswordField Label="@Localizer[nameof(AppStrings.RepeatPassword)]"
+            <FritzPasswordField Label="@localizer[nameof(AppStrings.RepeatPassword)]"
                                 @bind-Value="Command.RepeatPassword"
                                 For="() => Command.RepeatPassword"
                                 UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.RepeatPasswordInput } })"/>
@@ -33,7 +33,7 @@
             <FritzProcessingButton @ref="_processingButton"
                                    ButtonType="ButtonType.Submit"
                                    Color="Color.Primary"
-                                   ButtonText="@Localizer[nameof(AppStrings.Register)]"
+                                   ButtonText="@localizer[nameof(AppStrings.Register)]"
                                    UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, RegisterDialogConst.RegisterButton } })"/>
         </DialogActions>
     </MudDialog>

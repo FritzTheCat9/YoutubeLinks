@@ -9,23 +9,22 @@ using YoutubeLinks.Shared.Features.Playlists.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Playlists;
 
-public partial class CreatePlaylistDialog : ComponentBase
+public partial class CreatePlaylistDialog(
+    IExceptionHandler exceptionHandler,
+    IPlaylistApiClient playlistApiClient,
+    IStringLocalizer<App> localizer)
+    : ComponentBase
 {
     private CustomValidator _customValidator;
 
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public CreatePlaylist.Command Command { get; set; } = new();
-
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IPlaylistApiClient PlaylistApiClient { get; set; }
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
 
     private async Task HandleValidSubmit()
     {
         try
         {
-            await PlaylistApiClient.CreatePlaylist(Command);
+            await playlistApiClient.CreatePlaylist(Command);
             MudDialog.Close(DialogResult.Ok(true));
         }
         catch (MyValidationException validationException)
@@ -34,7 +33,7 @@ public partial class CreatePlaylistDialog : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
     }
 

@@ -10,7 +10,10 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Users;
 
-public partial class ResendConfirmationEmailDialog
+public partial class ResendConfirmationEmailDialog(
+    IExceptionHandler exceptionHandler,
+    IUserApiClient userApiClient,
+    IStringLocalizer<App> localizer)
 {
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
@@ -18,18 +21,13 @@ public partial class ResendConfirmationEmailDialog
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
     [Parameter] public ResendConfirmationEmail.Command Command { get; set; } = new();
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public IUserApiClient UserApiClient { get; set; }
-
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
     private async Task HandleValidSubmit()
     {
         try
         {
             _processingButton.SetProcessing(true);
 
-            await UserApiClient.ResendConfirmationEmail(Command);
+            await userApiClient.ResendConfirmationEmail(Command);
 
             MudDialog.Close(DialogResult.Ok(true));
         }
@@ -39,7 +37,7 @@ public partial class ResendConfirmationEmailDialog
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {

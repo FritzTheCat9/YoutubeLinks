@@ -17,7 +17,16 @@ using YoutubeLinks.Shared.Features.Playlists.Commands;
 
 namespace YoutubeLinks.Blazor.Pages.Links;
 
-public partial class LinksPage : ComponentBase
+public partial class LinksPage(
+    IExceptionHandler exceptionHandler,
+    ILinkApiClient linkApiClient,
+    IPlaylistApiClient playlistApiClient,
+    IAuthService authService,
+    ITableViewProvider tableViewProvider,
+    IStringLocalizer<App> localizer,
+    IDialogService dialogService,
+    IJSRuntime jsRuntime)
+    : ComponentBase
 {
     private readonly CreateLink.Command _createLinkCommand = new()
     {
@@ -44,31 +53,20 @@ public partial class LinksPage : ComponentBase
     [Parameter] public int UserId { get; set; }
     [Parameter] public int PlaylistId { get; set; }
 
-    [Inject] public IExceptionHandler ExceptionHandler { get; set; }
-    [Inject] public ILinkApiClient LinkApiClient { get; set; }
-    [Inject] public IPlaylistApiClient PlaylistApiClient { get; set; }
-
-    [Inject] public IAuthService AuthService { get; set; }
-    [Inject] public ITableViewProvider TableViewProvider { get; set; }
-    [Inject] public IStringLocalizer<App> Localizer { get; set; }
-
-    [Inject] public IDialogService DialogService { get; set; }
-    [Inject] public IJSRuntime JsRuntime { get; set; }
-
     protected override async Task OnParametersSetAsync()
     {
         _items =
         [
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Users)], "/users"),
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Playlists)], $"/playlists/{UserId}"),
-            new BreadcrumbItem(Localizer[nameof(AppStrings.Links)], null, true)
+            new BreadcrumbItem(localizer[nameof(AppStrings.Users)], "/users"),
+            new BreadcrumbItem(localizer[nameof(AppStrings.Playlists)], $"/playlists/{UserId}"),
+            new BreadcrumbItem(localizer[nameof(AppStrings.Links)], null, true)
         ];
 
         _createLinkCommand.PlaylistId = PlaylistId;
         _query.PlaylistId = PlaylistId;
 
-        _tableView = await TableViewProvider.GetTableView();
-        _isUserPlaylist = await AuthService.IsLoggedInUser(UserId);
+        _tableView = await tableViewProvider.GetTableView();
+        _isUserPlaylist = await authService.IsLoggedInUser(UserId);
 
         await RefreshView();
     }
@@ -95,11 +93,11 @@ public partial class LinksPage : ComponentBase
             _query.SortOrder = (SortOrder)state.SortDirection;
             _query.SearchTerm = _searchString;
 
-            _linkPagedList = await LinkApiClient.GetAllPaginatedLinks(_query);
+            _linkPagedList = await linkApiClient.GetAllPaginatedLinks(_query);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
             return new TableData<LinkDto> { TotalItems = 0, Items = [] };
         }
 
@@ -116,11 +114,11 @@ public partial class LinksPage : ComponentBase
         {
             _query.SearchTerm = _searchString;
 
-            _linkPagedList = await LinkApiClient.GetAllPaginatedLinks(_query);
+            _linkPagedList = await linkApiClient.GetAllPaginatedLinks(_query);
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
     }
 
@@ -133,7 +131,7 @@ public partial class LinksPage : ComponentBase
     private async Task SwitchView()
     {
         _tableView = !_tableView;
-        await TableViewProvider.SetTableView(_tableView);
+        await tableViewProvider.SetTableView(_tableView);
 
         _query.Page = 1;
         await RefreshView();
@@ -142,19 +140,19 @@ public partial class LinksPage : ComponentBase
     private async Task DeletePlaylistLink(int id)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
-        var dialog = await DialogService.ShowAsync<DeleteDialog>(Localizer[nameof(AppStrings.Delete)], options);
+        var dialog = await dialogService.ShowAsync<DeleteDialog>(localizer[nameof(AppStrings.Delete)], options);
 
         var result = await dialog.Result;
         if (!result.Canceled)
         {
             try
             {
-                await LinkApiClient.DeleteLink(id);
+                await linkApiClient.DeleteLink(id);
                 await RefreshView();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExceptions(ex);
+                exceptionHandler.HandleExceptions(ex);
             }
         }
     }
@@ -177,7 +175,7 @@ public partial class LinksPage : ComponentBase
         };
 
         var dialog =
-            await DialogService.ShowAsync<UpdateLinkDialog>(Localizer[nameof(AppStrings.UpdateLink)], parameters,
+            await dialogService.ShowAsync<UpdateLinkDialog>(localizer[nameof(AppStrings.UpdateLink)], parameters,
                 options);
         var result = await dialog.Result;
         if (!result.Canceled)
@@ -198,13 +196,13 @@ public partial class LinksPage : ComponentBase
                 YoutubeFileType = youtubeFileType
             };
 
-            var response = await LinkApiClient.DownloadLink(command);
+            var response = await linkApiClient.DownloadLink(command);
             var content = await response.Content.ReadAsStreamAsync();
             var streamRef = new DotNetStreamReference(content);
             var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??
                            $"default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}";
 
-            await JsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
+            await jsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
             await SetLinkAsDownloaded(id);
 
@@ -212,7 +210,7 @@ public partial class LinksPage : ComponentBase
         }
         catch (Exception ex)
         {
-            ExceptionHandler.HandleExceptions(ex);
+            exceptionHandler.HandleExceptions(ex);
         }
         finally
         {
@@ -228,17 +226,17 @@ public partial class LinksPage : ComponentBase
             Downloaded = true
         };
 
-        await LinkApiClient.SetLinkDownloadedFlag(command);
+        await linkApiClient.SetLinkDownloadedFlag(command);
     }
 
     private async Task ResetPlaylistLinksDownloadedFlag(bool flag)
     {
         var dialogText = flag
-            ? Localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]
-            : Localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)];
+            ? localizer[nameof(AppStrings.SetAllPlaylistLinksAsDownloaded)]
+            : localizer[nameof(AppStrings.SetAllPlaylistLinksAsUndownloaded)];
 
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
-        var dialog = await DialogService.ShowAsync<InformationDialog>(dialogText, options);
+        var dialog = await dialogService.ShowAsync<InformationDialog>(dialogText, options);
 
         var result = await dialog.Result;
         if (!result.Canceled)
@@ -251,12 +249,12 @@ public partial class LinksPage : ComponentBase
                     IsDownloaded = flag
                 };
 
-                await PlaylistApiClient.ResetLinksDownloadedFlag(command);
+                await playlistApiClient.ResetLinksDownloadedFlag(command);
                 await RefreshView();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExceptions(ex);
+                exceptionHandler.HandleExceptions(ex);
             }
         }
     }

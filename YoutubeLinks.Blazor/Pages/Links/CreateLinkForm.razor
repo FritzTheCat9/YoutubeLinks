@@ -6,7 +6,7 @@
     <MudStack Row="true"
               Justify="Justify.Center"
               AlignItems="AlignItems.Center">
-        <FritzTextField Label="@Localizer[nameof(AppStrings.Url)]"
+        <FritzTextField Label="@localizer[nameof(AppStrings.Url)]"
                         @bind-Value="Command.Url"
                         For="() => Command.Url"
                         Variant="Variant.Outlined"
@@ -16,8 +16,8 @@
         <FritzProcessingButton @ref="_processingButton"
                                ButtonType="ButtonType.Submit"
                                Color="Color.Primary"
-                               ProcessingButtonText="@Localizer[nameof(AppStrings.Creating)]"
-                               ButtonText="@Localizer[nameof(AppStrings.Create)]"
+                               ProcessingButtonText="@localizer[nameof(AppStrings.Creating)]"
+                               ButtonText="@localizer[nameof(AppStrings.Create)]"
                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreateLinkFormConst.CreateButton } })"/>
     </MudStack>
     <FritzValidationMessage For="() => Command.Url"/>
