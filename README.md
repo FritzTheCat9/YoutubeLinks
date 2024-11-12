@@ -102,7 +102,7 @@ Download playlist view:
 ## Technologies
 
 - C# 12
-- .NET 8.0
+- .NET 9.0
 - Blazor WebAssembly
 - Vue 3.4.21
 
