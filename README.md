@@ -1,8 +1,10 @@
 # YoutubeLinks
 
-The YoutubeLinks application allow users to save YouTube links as playlists.\
-Users are able to download mp3/mp4 files from the playlists they create.\
-Downloading playlist links as mp3/mp4 files tested on more than 3000 links.
+I achieved 8th place in the "100 Commits" competition organized by DevMentors. Over 100 days, I developed the "
+YoutubeLinks" application, which allows users to create playlists from YouTube links and download those playlists as MP3
+and MP4 files.
+
+Downloading playlists as MP3 and MP4 files, tested successfully on over 3000 links.
 
 ## Youtube video presentation:
 
@@ -76,7 +78,7 @@ User:
 - Password: Asd123!
 ```
 
-If You have any problems check issue below or ask me in github issues:
+If You have any problems check issue below or ask me in GitHub issues:
 https://github.com/FritzTheCat9/YoutubeLinks/issues/52
 
 ## Presentation
@@ -127,13 +129,13 @@ Nuget packages and libraries used in projects.
     - [MediatR](https://www.nuget.org/packages/MediatR/) - CQRS, Vertical Slices (code separated by Features)
     - [FluentValidation](https://www.nuget.org/packages/FluentValidation) - Commands, Queries and server side logic
       validation
-    - [FluentEmail](https://www.nuget.org/packages/FluentEmail.Razor) - Sending registation confirmation email and
-      registration successed email
+    - [FluentEmail](https://www.nuget.org/packages/FluentEmail.Razor) - Sending registration confirmation email and
+      registration succeeded email
     - [Serilog](https://www.nuget.org/packages/Serilog/3.1.2-dev-02097) - Logging to console and file
     - [JwtBearer](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer) - Jwt Token
       Authentication
     - [Swagger](https://www.nuget.org/packages/Swashbuckle.AspNetCore) - Manual Api testing
-    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get youtube videos titles, download videos as .mp3
+    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get YouTube videos titles, download videos as .mp3
       and .mp4 files
 - Blazor
     - [MudBlazor](https://www.nuget.org/packages/MudBlazor) - Blazor UI library
