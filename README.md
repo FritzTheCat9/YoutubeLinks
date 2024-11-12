@@ -1,7 +1,8 @@
 # YoutubeLinks
 
-I achieved 8th place in the "100 Commits" competition organized by DevMentors. Over 100 days, I developed the "
-YoutubeLinks" application, which allows users to create playlists from YouTube links and download those playlists as MP3
+I achieved 8th place in the "100 Commits" competition organized by DevMentors. Over 100 days, I developed the 
+"YoutubeLinks" application, which allows users to create playlists from YouTube links and download those playlists as
+MP3
 and MP4 files.
 
 Downloading playlists as MP3 and MP4 files, tested successfully on over 3000 links.
