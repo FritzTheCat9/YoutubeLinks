@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoutubeLinks.UnitTests", "Y
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeLinks.E2E", "YoutubeLinks.E2E\YoutubeLinks.E2E.csproj", "{383405F0-35D6-4279-8146-DE22A7D4DA1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeLinks.IntegrationTests", "YoutubeLinks.IntegrationTests\YoutubeLinks.IntegrationTests.csproj", "{A920B41B-F7F0-40BF-BBE0-27C323601EFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{383405F0-35D6-4279-8146-DE22A7D4DA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{383405F0-35D6-4279-8146-DE22A7D4DA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{383405F0-35D6-4279-8146-DE22A7D4DA1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A920B41B-F7F0-40BF-BBE0-27C323601EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A920B41B-F7F0-40BF-BBE0-27C323601EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A920B41B-F7F0-40BF-BBE0-27C323601EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A920B41B-F7F0-40BF-BBE0-27C323601EFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

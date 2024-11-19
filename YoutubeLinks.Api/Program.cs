@@ -42,3 +42,5 @@ app.UseMyLocalization()
     .UseAuth();
 
 app.Run();
+
+public partial class Program { }
