@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using YoutubeLinks.Blazor;
 using YoutubeLinks.Blazor.Auth;
-using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Shared.Clients;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Extensions;
 using YoutubeLinks.Blazor.Localization;

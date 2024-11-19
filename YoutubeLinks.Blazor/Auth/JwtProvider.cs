@@ -1,14 +1,8 @@
 ﻿using Blazored.LocalStorage;
+using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Auth;
-
-public interface IJwtProvider
-{
-    Task<JwtDto> GetJwtDto();
-    Task SetJwtDto(JwtDto token);
-    Task RemoveJwtDto();
-}
 
 public class JwtProvider(ILocalStorageService localStorageService) : IJwtProvider
 {

@@ -37,4 +37,18 @@ public class LoginFeatureTests(IntegrationTestWebAppFactory factory)
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
+    
+    [Fact]
+    public async Task Login_ShouldReturnJwtToken()
+    {
+        var command = new Login.Command
+        {
+            Email = "ytlinksapp@gmail.com", Password = "Asd123!"
+        };
+
+        var result = await UserApiClient.Login(command);
+
+        Assert.NotNull(result);
+        Assert.False(string.IsNullOrEmpty(result.AccessToken));
+    }
 }

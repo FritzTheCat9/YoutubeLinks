@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using Newtonsoft.Json;
-using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Shared.Clients;
 using YoutubeLinks.Blazor.Components;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Pages.Error;

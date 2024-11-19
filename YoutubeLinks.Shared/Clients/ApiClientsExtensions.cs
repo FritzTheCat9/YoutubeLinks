@@ -1,6 +1,8 @@
-﻿using YoutubeLinks.Shared.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using YoutubeLinks.Shared.Extensions;
 
-namespace YoutubeLinks.Blazor.Clients;
+namespace YoutubeLinks.Shared.Clients;
 
 public static class ApiClientsExtensions
 {

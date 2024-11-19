@@ -4,7 +4,7 @@ using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
 using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
 
-namespace YoutubeLinks.Blazor.Clients;
+namespace YoutubeLinks.Shared.Clients;
 
 public interface ILinkApiClient
 {

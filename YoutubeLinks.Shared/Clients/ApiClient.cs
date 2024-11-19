@@ -3,10 +3,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using Newtonsoft.Json;
-using YoutubeLinks.Blazor.Auth;
+using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Exceptions;
 
-namespace YoutubeLinks.Blazor.Clients;
+namespace YoutubeLinks.Shared.Clients;
 
 public interface IApiClient
 {

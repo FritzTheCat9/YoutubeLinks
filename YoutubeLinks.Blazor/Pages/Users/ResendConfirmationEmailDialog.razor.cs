@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
-using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Shared.Clients;
 using YoutubeLinks.Blazor.Components;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Pages.Error;

@@ -1,4 +1,4 @@
-﻿namespace YoutubeLinks.Blazor.Clients;
+﻿namespace YoutubeLinks.Shared.Clients;
 
 public class ApiOptions
 {

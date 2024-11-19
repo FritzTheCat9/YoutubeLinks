@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
+using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.Blazor.Auth;

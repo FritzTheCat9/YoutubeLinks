@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
+using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
 namespace YoutubeLinks.Blazor.Auth;

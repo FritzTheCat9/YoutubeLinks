@@ -3,7 +3,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor;
 using YoutubeLinks.Blazor.Auth;
-using YoutubeLinks.Blazor.Clients;
+using YoutubeLinks.Shared.Clients;
 using YoutubeLinks.Blazor.Exceptions;
 using YoutubeLinks.Blazor.Localization;
 using YoutubeLinks.Blazor.Services;

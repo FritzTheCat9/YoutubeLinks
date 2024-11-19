@@ -3,7 +3,7 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Queries;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
-namespace YoutubeLinks.Blazor.Clients;
+namespace YoutubeLinks.Shared.Clients;
 
 public interface IUserApiClient
 {
