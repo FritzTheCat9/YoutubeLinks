@@ -14,7 +14,7 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
     {
         var user = await LoginAsAdmin();
         
-        var playlist = new Playlist() { Name = "TestPlaylist", Public = true, UserId = user.UserId };
+        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
         
@@ -40,7 +40,7 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
     {
         var user = await LoginAsAdmin();
         
-        var playlist = new Playlist() { Name = "TestPlaylist", Public = true, UserId = user.UserId };
+        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
 
@@ -52,13 +52,7 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
             PlaylistId = playlist.Id,
         };
         
-        try
-        {
-            await LinkApiClient.CreateLink(command);
-        }
-        catch (Exception e)
-        {
-            e.Should().BeOfType<MyUnauthorizedException>();
-        }
+        await FluentActions.Invoking(() => LinkApiClient.CreateLink(command))
+            .Should().ThrowAsync<MyUnauthorizedException>();
     }
 }

@@ -81,9 +81,9 @@ public abstract class BaseIntegrationTest
     protected class UserInfo
     {
         public int UserId { get; init; }
-        public string UserName { get; init; }
-        public string Email { get; init; }
-        public List<string> Roles { get; init; }
+        public required string UserName { get; init; }
+        public required string Email { get; init; }
+        public required List<string> Roles { get; init; }
     }
 
     private async Task<UserInfo> GetUserInfo()
