@@ -23,7 +23,7 @@ public static class RegisterFeature
                 CancellationToken cancellationToken) =>
             {
                 var userId = await mediator.Send(command, cancellationToken);
-                return Results.CreatedAtRoute("GetUser", new { id = userId });
+                return Results.CreatedAtRoute("GetUser", new { id = userId }, userId);
             })
             .WithTags(Tags.Users)
             .AllowAnonymous();

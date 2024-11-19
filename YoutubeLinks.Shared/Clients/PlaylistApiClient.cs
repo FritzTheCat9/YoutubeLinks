@@ -10,7 +10,7 @@ public interface IPlaylistApiClient
     Task<PagedList<PlaylistDto>> GetAllUserPlaylists(GetAllUserPlaylists.Query query);
     Task<PagedList<PlaylistDto>> GetAllPublicPlaylists(GetAllPublicPlaylists.Query query);
     Task<PlaylistDto> GetPlaylist(int id);
-    Task CreatePlaylist(CreatePlaylist.Command command);
+    Task<int> CreatePlaylist(CreatePlaylist.Command command);
     Task UpdatePlaylist(UpdatePlaylist.Command command);
     Task DeletePlaylist(int id);
     Task<HttpResponseMessage> ExportPlaylist(ExportPlaylist.Command command);
@@ -37,9 +37,9 @@ public class PlaylistApiClient(IApiClient apiClient) : IPlaylistApiClient
         return await apiClient.Get<PlaylistDto>($"{Url}/{id}");
     }
 
-    public async Task CreatePlaylist(CreatePlaylist.Command command)
+    public async Task<int> CreatePlaylist(CreatePlaylist.Command command)
     {
-        await apiClient.Post(Url, command);
+        return await apiClient.Post<CreatePlaylist.Command, int>(Url, command);
     }
 
     public async Task UpdatePlaylist(UpdatePlaylist.Command command)

@@ -11,7 +11,7 @@ public interface ILinkApiClient
     Task<PagedList<LinkDto>> GetAllPaginatedLinks(GetAllPaginatedLinks.Query query);
     Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query);
     Task<LinkDto> GetLink(int id);
-    Task CreateLink(CreateLink.Command command);
+    Task<int> CreateLink(CreateLink.Command command);
     Task UpdateLink(UpdateLink.Command command);
     Task SetLinkDownloadedFlag(SetLinkDownloadedFlag.Command command);
     Task DeleteLink(int id);
@@ -38,9 +38,9 @@ public class LinkApiClient(IApiClient apiClient) : ILinkApiClient
         return await apiClient.Get<LinkDto>($"{Url}/{id}");
     }
 
-    public async Task CreateLink(CreateLink.Command command)
+    public async Task<int> CreateLink(CreateLink.Command command)
     {
-        await apiClient.Post(Url, command);
+        return await apiClient.Post<CreateLink.Command, int>(Url, command);
     }
 
     public async Task UpdateLink(UpdateLink.Command command)

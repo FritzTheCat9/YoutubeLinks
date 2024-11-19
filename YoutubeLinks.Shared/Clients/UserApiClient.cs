@@ -11,7 +11,7 @@ public interface IUserApiClient
     Task ForgotPassword(ForgotPassword.Command command);
     Task<JwtDto> Login(Login.Command command);
     Task<JwtDto> RefreshToken(RefreshToken.Command command);
-    Task Register(Register.Command command);
+    Task<int> Register(Register.Command command);
     Task ResendConfirmationEmail(ResendConfirmationEmail.Command command);
     Task<bool> ResetPassword(ResetPassword.Command command);
     Task UpdateUserTheme(UpdateUserTheme.Command command);
@@ -43,9 +43,9 @@ public class UserApiClient(IApiClient apiClient) : IUserApiClient
         return await apiClient.Post<RefreshToken.Command, JwtDto>($"{Url}/refresh-token", command);
     }
 
-    public async Task Register(Register.Command command)
+    public async Task<int> Register(Register.Command command)
     {
-        await apiClient.Post($"{Url}/register", command);
+        return await apiClient.Post<Register.Command, int>($"{Url}/register", command);
     }
 
     public async Task ResendConfirmationEmail(ResendConfirmationEmail.Command command)

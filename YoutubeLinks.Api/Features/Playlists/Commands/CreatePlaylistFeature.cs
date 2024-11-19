@@ -20,7 +20,7 @@ public static class CreatePlaylistFeature
                 CancellationToken cancellationToken) =>
             {
                 var playlistId = await mediator.Send(command, cancellationToken);
-                return Results.CreatedAtRoute("GetPlaylist", new { id = playlistId });
+                return Results.CreatedAtRoute("GetPlaylist", new { id = playlistId }, playlistId);
             })
             .WithTags(Tags.Playlists)
             .RequireAuthorization(Policy.User);

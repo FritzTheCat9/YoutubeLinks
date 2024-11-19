@@ -23,8 +23,8 @@ public static class CreateLinkFeature
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var playlistId = await mediator.Send(command, cancellationToken);
-                return Results.CreatedAtRoute("GetLink", new { id = playlistId });
+                var linkId = await mediator.Send(command, cancellationToken);
+                return Results.CreatedAtRoute("GetLink", new { id = linkId }, linkId);
             })
             .WithTags(Tags.Links)
             .RequireAuthorization(Policy.User);
