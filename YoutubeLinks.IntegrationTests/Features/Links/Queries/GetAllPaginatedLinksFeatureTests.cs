@@ -67,13 +67,13 @@ public class GetAllPaginatedLinksFeatureTests(IntegrationTestWebAppFactory facto
         paginatedLinks.PagesCount.Should().Be(2);
         paginatedLinks.HasNextPage.Should().Be(true);
         paginatedLinks.HasPreviousPage.Should().Be(false);
-        
+
         foreach (var returnedLink in paginatedLinks.Items)
         {
             var matchingLink = links.FirstOrDefault(x => x.Id == returnedLink.Id);
+            
             matchingLink.Should().NotBeNull();
-
-            matchingLink!.Should().Match<Link>(x =>
+            matchingLink.Should().Match<Link>(x =>
                 x.Id == returnedLink.Id &&
                 x.Url == returnedLink.Url &&
                 x.VideoId == returnedLink.VideoId &&

@@ -50,11 +50,13 @@ public class GetAllLinksFeatureTests(IntegrationTestWebAppFactory factory)
         foreach (var returnedLink in playlistLinks)
         {
             var matchingLink = links.FirstOrDefault(x => x.Id == returnedLink.Id);
+            
             matchingLink.Should().NotBeNull();
-            matchingLink?.Id.Should().Be(returnedLink.Id);
-            matchingLink?.Url.Should().Be(returnedLink.Url);
-            matchingLink?.VideoId.Should().Be(returnedLink.VideoId);
-            matchingLink?.Title.Should().Be(returnedLink.Title);
+            matchingLink.Should().Match<Link>(x =>
+                x.Id == returnedLink.Id &&
+                x.Url == returnedLink.Url &&
+                x.VideoId == returnedLink.VideoId &&
+                x.Title == returnedLink.Title);
         }
     }
 }
