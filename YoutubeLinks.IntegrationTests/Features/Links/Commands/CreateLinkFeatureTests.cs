@@ -29,10 +29,11 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
         var link = await Context.Links.AsNoTracking().FirstOrDefaultAsync(x => x.Id == linkId);
         
         link.Should().NotBeNull();
-        link!.Url.Should().Be(command.Url);
-        link.PlaylistId.Should().Be(command.PlaylistId);
-        link.Downloaded.Should().BeFalse();
-        link.VideoId.Should().Be("dQw4w9WgXcQ");
+        link?.Id.Should().Be(linkId);
+        link?.Url.Should().Be(command.Url);
+        link?.PlaylistId.Should().Be(command.PlaylistId);
+        link?.Downloaded.Should().BeFalse();
+        link?.VideoId.Should().Be("dQw4w9WgXcQ");
     }
     
     [Fact]
