@@ -26,7 +26,7 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
 
         var linkId = await LinkApiClient.CreateLink(command);
         
-        var link = await Context.Links.FirstOrDefaultAsync(x => x.Id == linkId);
+        var link = await Context.Links.AsNoTracking().FirstOrDefaultAsync(x => x.Id == linkId);
         
         link.Should().NotBeNull();
         link!.Url.Should().Be(command.Url);
