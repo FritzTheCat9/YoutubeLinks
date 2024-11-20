@@ -45,7 +45,7 @@ public class GetAllLinksFeatureTests(IntegrationTestWebAppFactory factory)
         var playlistLinks = (await LinkApiClient.GetAllLinks(command)).ToList();
 
         playlistLinks.Should().NotBeNull();
-        playlistLinks.Count().Should().Be(2);
+        playlistLinks.Should().HaveCount(2);
 
         foreach (var returnedLink in playlistLinks)
         {
