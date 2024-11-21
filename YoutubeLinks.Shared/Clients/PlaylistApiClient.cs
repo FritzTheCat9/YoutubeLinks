@@ -14,7 +14,7 @@ public interface IPlaylistApiClient
     Task UpdatePlaylist(UpdatePlaylist.Command command);
     Task DeletePlaylist(int id);
     Task<HttpResponseMessage> ExportPlaylist(ExportPlaylist.Command command);
-    Task ImportPlaylistFromJson(ImportPlaylist.Command command);
+    Task ImportPlaylist(ImportPlaylist.Command command);
     Task ResetLinksDownloadedFlag(ResetLinksDownloadedFlag.Command command);
 }
 
@@ -57,7 +57,7 @@ public class PlaylistApiClient(IApiClient apiClient) : IPlaylistApiClient
         return await apiClient.PostReturnHttpResponseMessage($"{Url}/export", command);
     }
 
-    public async Task ImportPlaylistFromJson(ImportPlaylist.Command command)
+    public async Task ImportPlaylist(ImportPlaylist.Command command)
     {
         await apiClient.Post($"{Url}/import", command);
     }

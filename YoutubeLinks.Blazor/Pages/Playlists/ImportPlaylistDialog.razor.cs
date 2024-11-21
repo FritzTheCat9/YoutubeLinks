@@ -34,7 +34,7 @@ public partial class ImportPlaylistDialog(
         {
             _processingButton.SetProcessing(true);
 
-            await playlistApiClient.ImportPlaylistFromJson(FormModel);
+            await playlistApiClient.ImportPlaylist(FormModel);
             MudDialog.Close(DialogResult.Ok(true));
         }
         catch (MyValidationException validationException)
