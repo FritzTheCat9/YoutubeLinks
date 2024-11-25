@@ -72,6 +72,25 @@ public abstract class BaseIntegrationTest
         var userInfo = await GetUserInfo();
         return userInfo;
     }
+    
+    protected async Task<UserInfo> LoginAsUser(string email, string password)
+    {
+        var command = new Login.Command
+        {
+            Email = email, Password = password
+        };
+
+        var jwt = await UserApiClient.Login(command);
+
+        await JwtProvider.SetJwtDto(jwt);
+
+        jwt.Should().NotBeNull();
+        jwt.AccessToken.Should().NotBeNull();
+        jwt.RefreshToken.Should().NotBeNull();
+
+        var userInfo = await GetUserInfo();
+        return userInfo;
+    }
 
     protected async Task Logout()
     {
