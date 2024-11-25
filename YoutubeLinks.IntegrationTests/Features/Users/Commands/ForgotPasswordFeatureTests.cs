@@ -5,37 +5,33 @@ using YoutubeLinks.Shared.Features.Users.Commands;
 
 namespace YoutubeLinks.IntegrationTests.Features.Users.Commands;
 
-public class ConfirmEmailFeatureTests(IntegrationTestWebAppFactory factory)
+public class ForgotPasswordFeatureTests(IntegrationTestWebAppFactory factory)
     : BaseIntegrationTest(factory)
 {
     [Fact]
-    public async Task ConfirmEmail_ShouldSucceed_WhenDataIsValid()
+    public async Task ForgotPassword_ShouldSucceed_WhenDataIsValid()
     {
         var user = new User
         {
             Email = "testuser@gmail.com",
             UserName = "TestUser",
             Password = "Asd123!",
-            EmailConfirmed = false,
-            EmailConfirmationToken = "TEST_TOKEN",
+            EmailConfirmed = true,
         };
 
         await Context.Users.AddAsync(user);
         await Context.SaveChangesAsync();
-        
-        var command = new ConfirmEmail.Command()
+
+        var command = new ForgotPassword.Command()
         {
             Email = user.Email,
-            Token = user.EmailConfirmationToken,
         };
 
-        var isEmailConfirmed = await UserApiClient.ConfirmEmail(command);
-        isEmailConfirmed.Should().BeTrue();
+        await UserApiClient.ForgotPassword(command);
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
         modifiedUser.Should().NotBeNull();
-        modifiedUser?.EmailConfirmed.Should().BeTrue();
-        modifiedUser?.EmailConfirmationToken.Should().BeNull();
+        modifiedUser?.ForgotPasswordToken.Should().NotBeNull();
     }
 }
