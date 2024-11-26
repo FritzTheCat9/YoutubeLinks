@@ -27,7 +27,7 @@ public class LoginFeatureTests(IntegrationTestWebAppFactory factory)
         {
             Email = "testuser@gmail.com",
             UserName = "TestUser",
-            Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+            Password = PasswordService.Hash("Asd123!"),
             EmailConfirmed = true,
             IsAdmin = false,
         };
