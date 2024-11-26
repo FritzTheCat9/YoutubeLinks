@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Clients;
@@ -22,6 +23,7 @@ public abstract class BaseIntegrationTest
     protected readonly IPlaylistApiClient PlaylistApiClient;
     protected readonly ILinkApiClient LinkApiClient;
     protected readonly IJwtProvider JwtProvider;
+    protected readonly IPasswordService PasswordService;
 
     protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
@@ -33,6 +35,7 @@ public abstract class BaseIntegrationTest
         PlaylistApiClient = _scope.ServiceProvider.GetRequiredService<IPlaylistApiClient>();
         LinkApiClient = _scope.ServiceProvider.GetRequiredService<ILinkApiClient>();
         JwtProvider = _scope.ServiceProvider.GetRequiredService<IJwtProvider>();
+        PasswordService = _scope.ServiceProvider.GetRequiredService<IPasswordService>();
     }
 
     protected async Task<UserInfo> LoginAsAdmin()
@@ -103,6 +106,7 @@ public abstract class BaseIntegrationTest
         public required string UserName { get; init; }
         public required string Email { get; init; }
         public required List<string> Roles { get; init; }
+        public required string RefreshToken { get; init; }
     }
 
     private async Task<UserInfo> GetUserInfo()
@@ -151,7 +155,8 @@ public abstract class BaseIntegrationTest
             UserId = userId,
             UserName = userName,
             Email = email,
-            Roles = roles
+            Roles = roles,
+            RefreshToken = jwt.RefreshToken,
         };
     }
 
