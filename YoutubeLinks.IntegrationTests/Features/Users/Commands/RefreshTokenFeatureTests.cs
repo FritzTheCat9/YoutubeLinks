@@ -14,8 +14,8 @@ public class RefreshTokenFeatureTests(IntegrationTestWebAppFactory factory)
     {
         var user = new User
         {
-            Email = "testuser@gmail.com",
-            UserName = "TestUser",
+            Email = "testuser1@gmail.com",
+            UserName = "TestUser1",
             Password = PasswordService.Hash("Asd123!"),
             EmailConfirmed = true,
             IsAdmin = false,

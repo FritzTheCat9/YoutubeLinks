@@ -15,7 +15,7 @@ public class ForgotPasswordFeatureTests(IntegrationTestWebAppFactory factory)
         {
             Email = "testuser@gmail.com",
             UserName = "TestUser",
-            Password = "Asd123!",
+            Password = PasswordService.Hash("Asd123!"),
             EmailConfirmed = true,
         };
 

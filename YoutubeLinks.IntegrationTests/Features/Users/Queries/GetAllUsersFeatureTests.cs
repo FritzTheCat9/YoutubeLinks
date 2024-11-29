@@ -17,21 +17,21 @@ public class GetAllUsersFeatureTests(IntegrationTestWebAppFactory factory)
             {
                 Email = "testuser1@gmail.com",
                 UserName = "TestUser1",
-                Password = "Asd123!",
+                Password = PasswordService.Hash("Asd123!"),
                 EmailConfirmed = true,
             },
             new()
             {
                 Email = "testuser2@gmail.com",
                 UserName = "TestUser2",
-                Password = "Asd123!",
+                Password = PasswordService.Hash("Asd123!"),
                 EmailConfirmed = true,
             },
             new()
             {
                 Email = "testuser3@gmail.com",
                 UserName = "TestUser3",
-                Password = "Asd123!",
+                Password = PasswordService.Hash("Asd123!"),
                 EmailConfirmed = true,
             },
         };
