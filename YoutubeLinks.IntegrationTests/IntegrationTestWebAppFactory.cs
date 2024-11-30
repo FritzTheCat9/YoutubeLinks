@@ -25,6 +25,8 @@ public class IntegrationTestWebAppFactory
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("test");
+
         builder.ConfigureTestServices(services =>
         {
             AddTestDatabase(services);
@@ -36,10 +38,8 @@ public class IntegrationTestWebAppFactory
     {
         services.AddScoped<IJwtProvider, TestJwtProvider>();
             
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.test.json", optional: false)
-            .Build();
-            
+        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+
         services.AddApiClients(configuration);
             
         services.RemoveAll<HttpClient>();
