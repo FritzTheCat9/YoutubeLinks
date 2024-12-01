@@ -10,8 +10,8 @@
     <ItemGroup>
         <PackageReference Include="Blazored.FluentValidation" Version="2.2.0"/>
         <PackageReference Include="Blazored.LocalStorage" Version="4.5.0"/>
-        <PackageReference Include="FluentValidation" Version="11.10.0"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0"/>
+        <PackageReference Include="FluentValidation" Version="11.11.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
@@ -19,7 +19,7 @@
         <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0" />
         <PackageReference Include="MudBlazor" Version="7.15.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
     </ItemGroup>
 
     <ItemGroup>

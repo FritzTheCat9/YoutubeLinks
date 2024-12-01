@@ -14,8 +14,8 @@
     <ItemGroup>
         <PackageReference Include="FluentEmail.Razor" Version="3.0.2"/>
         <PackageReference Include="FluentEmail.Smtp" Version="3.0.2"/>
-        <PackageReference Include="FluentValidation" Version="11.10.0"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0"/>
+        <PackageReference Include="FluentValidation" Version="11.11.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
         <PackageReference Include="MediatR" Version="12.4.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
@@ -33,7 +33,7 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0"/>
         <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
         <PackageReference Include="YoutubeDLSharp" Version="1.1.1"/>
     </ItemGroup>
 
