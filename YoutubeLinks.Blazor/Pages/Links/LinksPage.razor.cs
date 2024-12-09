@@ -204,7 +204,7 @@ public partial class LinksPage(
 
             await jsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
 
-            await SetLinkAsDownloaded(id);
+            await SetLinkAsDownloaded(id, _isUserPlaylist);
 
             await RefreshView();
         }
@@ -218,8 +218,11 @@ public partial class LinksPage(
         }
     }
 
-    private async Task SetLinkAsDownloaded(int id)
+    private async Task SetLinkAsDownloaded(int id, bool isUserPlaylist)
     {
+        if (!isUserPlaylist)
+            return;
+        
         var command = new SetLinkDownloadedFlag.Command
         {
             Id = id,

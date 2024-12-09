@@ -141,7 +141,7 @@ public partial class DownloadPlaylistPage(
                 await jsRuntime.InvokeVoidAsync("downloadFile", filename, streamRef);
             }
 
-            await SetLinkAsDownloaded(link.Id);
+            await SetLinkAsDownloaded(link.Id, _isUserPlaylist);
 
             _downloadLinkResults.Insert(0, new DownloadLinkResult
             {
@@ -164,8 +164,11 @@ public partial class DownloadPlaylistPage(
         StateHasChanged();
     }
 
-    private async Task SetLinkAsDownloaded(int id)
+    private async Task SetLinkAsDownloaded(int id, bool isUserPlaylist)
     {
+        if (!isUserPlaylist)
+            return;
+        
         var command = new SetLinkDownloadedFlag.Command
         {
             Id = id,
