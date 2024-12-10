@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /app
 COPY ["YoutubeLinks.Blazor/YoutubeLinks.Blazor.csproj", "YoutubeLinks.Blazor/"]
+COPY ["YoutubeLinks.Sdk/YoutubeLinks.Sdk.csproj", "YoutubeLinks.Sdk/"]
 COPY ["YoutubeLinks.Shared/YoutubeLinks.Shared.csproj", "YoutubeLinks.Shared/"]
 RUN dotnet restore "./YoutubeLinks.Blazor/YoutubeLinks.Blazor.csproj"
 COPY . .

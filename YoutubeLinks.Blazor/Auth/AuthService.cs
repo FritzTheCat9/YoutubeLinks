@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using YoutubeLinks.Shared.Clients;
+using YoutubeLinks.Sdk.Clients;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Responses;

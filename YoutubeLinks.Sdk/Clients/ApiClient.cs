@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Exceptions;
 
-namespace YoutubeLinks.Shared.Clients;
+namespace YoutubeLinks.Sdk.Clients;
 
 public interface IApiClient
 {

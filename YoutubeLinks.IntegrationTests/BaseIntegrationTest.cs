@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Shared.Abstractions;
-using YoutubeLinks.Shared.Clients;
+using YoutubeLinks.Sdk.Clients;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
 

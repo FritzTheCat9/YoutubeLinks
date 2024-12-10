@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\YoutubeLinks.Api\YoutubeLinks.Api.csproj"/>
+		<ProjectReference Include="..\YoutubeLinks.Sdk\YoutubeLinks.Sdk.csproj"/>
 	</ItemGroup>
 
 </Project>

@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\YoutubeLinks.Shared\YoutubeLinks.Shared.csproj"/>
+        <ProjectReference Include="..\YoutubeLinks.Sdk\YoutubeLinks.Sdk.csproj"/>
     </ItemGroup>
 
 

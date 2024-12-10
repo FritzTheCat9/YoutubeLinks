@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.MsSql;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Shared.Abstractions;
-using YoutubeLinks.Shared.Clients;
+using YoutubeLinks.Sdk.Clients;
 
 namespace YoutubeLinks.IntegrationTests;
 

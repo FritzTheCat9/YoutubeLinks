@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using YoutubeLinks.Shared.Extensions;
 
-namespace YoutubeLinks.Shared.Clients;
+namespace YoutubeLinks.Sdk.Clients;
 
 public static class ApiClientsExtensions
 {

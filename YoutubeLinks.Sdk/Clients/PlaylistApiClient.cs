@@ -3,7 +3,7 @@ using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
 
-namespace YoutubeLinks.Shared.Clients;
+namespace YoutubeLinks.Sdk.Clients;
 
 public interface IPlaylistApiClient
 {

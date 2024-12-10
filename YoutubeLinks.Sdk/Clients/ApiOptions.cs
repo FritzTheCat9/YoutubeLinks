@@ -1,4 +1,4 @@
-﻿namespace YoutubeLinks.Shared.Clients;
+﻿namespace YoutubeLinks.Sdk.Clients;
 
 public class ApiOptions
 {

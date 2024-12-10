@@ -2,14 +2,13 @@
 using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
-using static YoutubeLinks.Shared.Features.Links.Queries.GetAllLinks;
 
-namespace YoutubeLinks.Shared.Clients;
+namespace YoutubeLinks.Sdk.Clients;
 
 public interface ILinkApiClient
 {
     Task<PagedList<LinkDto>> GetAllPaginatedLinks(GetAllPaginatedLinks.Query query);
-    Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query);
+    Task<IEnumerable<GetAllLinks.LinkInfoDto>> GetAllLinks(GetAllLinks.Query query);
     Task<LinkDto> GetLink(int id);
     Task<int> CreateLink(CreateLink.Command command);
     Task UpdateLink(UpdateLink.Command command);
@@ -28,9 +27,9 @@ public class LinkApiClient(IApiClient apiClient) : ILinkApiClient
         return await apiClient.Post<GetAllPaginatedLinks.Query, PagedList<LinkDto>>($"{Url}/allPaginated", query);
     }
 
-    public async Task<IEnumerable<LinkInfoDto>> GetAllLinks(Query query)
+    public async Task<IEnumerable<GetAllLinks.LinkInfoDto>> GetAllLinks(GetAllLinks.Query query)
     {
-        return await apiClient.Post<Query, IEnumerable<LinkInfoDto>>($"{Url}/all", query);
+        return await apiClient.Post<GetAllLinks.Query, IEnumerable<GetAllLinks.LinkInfoDto>>($"{Url}/all", query);
     }
 
     public async Task<LinkDto> GetLink(int id)
