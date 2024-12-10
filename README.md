@@ -1,6 +1,6 @@
 # YoutubeLinks
 
-I achieved 8th place in the "100 Commits" competition organized by DevMentors. Over 100 days, I developed the 
+I achieved 8th place in the "100 Commits" competition organized by DevMentors. Over 100 days, I developed the
 "YoutubeLinks" application, which allows users to create playlists from YouTube links and download those playlists as
 MP3
 and MP4 files.
@@ -17,7 +17,7 @@ Larger files not tested or can not work correctly.
 
 ## Table of contents
 
-* [Youtube video](#youtube-video-presentation)
+* [YouTube video](#youtube-video-presentation)
 * [Launch](#launch)
 * [Presentation](#presentation)
 * [Technologies](#technologies)
@@ -101,7 +101,7 @@ Download playlist view:
 
 ## Technologies
 
-- C# 12
+- C# 13
 - .NET 9.0
 - Blazor WebAssembly
 - Vue 3.4.21
@@ -116,7 +116,9 @@ Vertical Slices. Code separated by feature.
 - YoutubeLinks.Api - ASP .NET Core Web API (Backend)
 - YoutubeLinks.Blazor - Blazor WebAssembly Standalone App (Frontend)
 - YoutubeLinks.Shared - Class Library (Backend and Frontend shared code)
+- YoutubeLinks.Sdk - Class Library (clients for connecting to Api from Blazor or Integration Tests)
 - YoutubeLinks.UnitTests - xUnit Test Project (Unit Tests)
+- YoutubeLinks.IntegrationTests - xUnit Test Project (Integration Tests)
 - YoutubeLinks.E2E - NUnit Test Project (E2E Tests)
 - youtube-links - Vue Project (Frontend 2)
 
@@ -128,21 +130,33 @@ Nuget packages and libraries used in projects.
     - [EntityFrameworkCore](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer) - ORM for connecting
       to the database
     - [MediatR](https://www.nuget.org/packages/MediatR/) - CQRS, Vertical Slices (code separated by Features)
-    - [FluentValidation](https://www.nuget.org/packages/FluentValidation) - Commands, Queries and server side logic
-      validation
-    - [FluentEmail](https://www.nuget.org/packages/FluentEmail.Razor) - Sending registration confirmation email and
-      registration succeeded email
+    - [FluentValidation](https://www.nuget.org/packages/FluentValidation) - client and server validation
+    - [FluentEmail](https://www.nuget.org/packages/FluentEmail.Razor) - Sending emails
     - [Serilog](https://www.nuget.org/packages/Serilog/3.1.2-dev-02097) - Logging to console and file
     - [JwtBearer](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer) - Jwt Token
       Authentication
     - [Swagger](https://www.nuget.org/packages/Swashbuckle.AspNetCore) - Manual Api testing
-    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get YouTube videos titles, download videos as .mp3
-      and .mp4 files
+    - [YoutubeDLSharp](https://github.com/Bluegrams/YoutubeDLSharp) - Get YouTube videos titles, download videos as
+      .mp3 and .mp4 files
 - Blazor
     - [MudBlazor](https://www.nuget.org/packages/MudBlazor) - Blazor UI library
     - [Blazored.FluentValidation](https://www.nuget.org/packages/Blazored.FluentValidation) - Frontend validation +
       Backend validation
-    - [Blazored.LocalStorage](https://www.nuget.org/packages/Blazored.LocalStorage) - store Jwt Token in local storage
+    - [Blazored.LocalStorage](https://www.nuget.org/packages/Blazored.LocalStorage) - store information in local
+      storage (Jwt Token, selected theme)
+- Unit Tests
+    - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions) - better assertions in tests
+    - [NSubstitute](https://www.nuget.org/packages/NSubstitute) - mocking library
+    - [xUnit](https://www.nuget.org/packages/xunit) - unit testing framework
+- Integration Tests
+    - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions) - better assertions in tests
+    - [Testcontainers.MsSql](https://www.nuget.org/packages/Testcontainers) - lightweight, throwaway containers for
+      testing with real MSSQL databases
+    - [xUnit](https://www.nuget.org/packages/xunit) - unit testing framework
+- E2E Tests
+    - [Microsoft.Playwright.NUnit](https://www.nuget.org/packages/Microsoft.Playwright.NUnit) - Playwright integration
+      for running browser-based end-to-end tests using NUnit
+    - [NUnit](https://www.nuget.org/packages/NUnit) - unit testing framework
 
 ## Features
 
