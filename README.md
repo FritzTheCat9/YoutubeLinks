@@ -7,9 +7,9 @@ and MP4 files.
 
 Downloading playlists as MP3 and MP4 files, tested successfully on over 3000 links.
 
-## Youtube video presentation:
+## YouTube video presentation:
 
-[![Youtube Video](https://img.youtube.com/vi/G1gY-jynpu0/0.jpg)](https://www.youtube.com/watch?v=G1gY-jynpu0)
+[![YouTube video](https://img.youtube.com/vi/G1gY-jynpu0/0.jpg)](https://www.youtube.com/watch?v=G1gY-jynpu0)
 
 Max downloaded mp3 file: length - 03:31:45, size - 391 MB\
 Max downloaded mp4 file: length - 25:44, size - 973 MB\
