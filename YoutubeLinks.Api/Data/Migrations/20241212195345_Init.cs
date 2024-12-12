@@ -3,14 +3,39 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace YoutubeLinks.Api.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class PlaylistsAndLinks : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    EmailConfirmationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ForgotPasswordToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    ThemeColor = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Playlists",
                 columns: table => new
@@ -41,6 +66,8 @@ namespace YoutubeLinks.Api.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VideoId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Downloaded = table.Column<bool>(type: "bit", nullable: false),
                     PlaylistId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -57,19 +84,14 @@ namespace YoutubeLinks.Api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Users",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "Created", "Modified" },
-                values: new object[] { new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846), new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846) });
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "Created", "Modified" },
-                values: new object[] { new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846), new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846) });
+                columns: new[] { "Id", "Created", "Email", "EmailConfirmationToken", "EmailConfirmed", "ForgotPasswordToken", "IsAdmin", "Modified", "Password", "RefreshToken", "ThemeColor", "UserName" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "ytlinksapp@gmail.com", null, true, null, true, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", null, 0, "Admin" },
+                    { 2, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "ytlinksapp1@gmail.com", null, true, null, false, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", null, 0, "User" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Links_PlaylistId",
@@ -80,6 +102,20 @@ namespace YoutubeLinks.Api.Data.Migrations
                 name: "IX_Playlists_UserId",
                 table: "Playlists",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserName",
+                table: "Users",
+                column: "UserName",
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -91,19 +127,8 @@ namespace YoutubeLinks.Api.Data.Migrations
             migrationBuilder.DropTable(
                 name: "Playlists");
 
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "Created", "Modified" },
-                values: new object[] { new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885), new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885) });
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "Created", "Modified" },
-                values: new object[] { new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885), new DateTime(2024, 3, 3, 16, 39, 48, 257, DateTimeKind.Utc).AddTicks(6885) });
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

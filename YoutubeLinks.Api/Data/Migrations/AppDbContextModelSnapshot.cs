@@ -17,7 +17,7 @@ namespace YoutubeLinks.Api.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -145,11 +145,11 @@ namespace YoutubeLinks.Api.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2024, 5, 12, 19, 26, 48, 403, DateTimeKind.Utc).AddTicks(1639),
+                            Created = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ytlinksapp@gmail.com",
                             EmailConfirmed = true,
                             IsAdmin = true,
-                            Modified = new DateTime(2024, 5, 12, 19, 26, 48, 403, DateTimeKind.Utc).AddTicks(1639),
+                            Modified = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
                             ThemeColor = 0,
                             UserName = "Admin"
@@ -157,11 +157,11 @@ namespace YoutubeLinks.Api.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2024, 5, 12, 19, 26, 48, 403, DateTimeKind.Utc).AddTicks(1639),
+                            Created = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ytlinksapp1@gmail.com",
                             EmailConfirmed = true,
                             IsAdmin = false,
-                            Modified = new DateTime(2024, 5, 12, 19, 26, 48, 403, DateTimeKind.Utc).AddTicks(1639),
+                            Modified = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
                             ThemeColor = 0,
                             UserName = "User"

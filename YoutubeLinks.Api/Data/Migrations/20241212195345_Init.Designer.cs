@@ -12,15 +12,15 @@ using YoutubeLinks.Api.Data.Database;
 namespace YoutubeLinks.Api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304103245_PlaylistsAndLinks")]
-    partial class PlaylistsAndLinks
+    [Migration("20241212195345_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -45,7 +45,13 @@ namespace YoutubeLinks.Api.Data.Migrations
                     b.Property<int>("PlaylistId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VideoId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -105,6 +111,9 @@ namespace YoutubeLinks.Api.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ForgotPasswordToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
@@ -113,6 +122,12 @@ namespace YoutubeLinks.Api.Data.Migrations
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ThemeColor")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
@@ -133,23 +148,25 @@ namespace YoutubeLinks.Api.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846),
-                            Email = "freakfightsfan@gmail.com",
+                            Created = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "ytlinksapp@gmail.com",
                             EmailConfirmed = true,
                             IsAdmin = true,
-                            Modified = new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846),
+                            Modified = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+                            ThemeColor = 0,
                             UserName = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846),
-                            Email = "freakfightsfan1@gmail.com",
+                            Created = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "ytlinksapp1@gmail.com",
                             EmailConfirmed = true,
                             IsAdmin = false,
-                            Modified = new DateTime(2024, 3, 4, 10, 32, 45, 583, DateTimeKind.Utc).AddTicks(8846),
+                            Modified = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
+                            ThemeColor = 0,
                             UserName = "User"
                         });
                 });
