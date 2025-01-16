@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using YoutubeLinks.Api.Auth;
+using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Playlists.Extensions;
@@ -35,16 +36,11 @@ public static class GetAllUserPlaylistsFeature
             CancellationToken cancellationToken)
         {
             var isUserPlaylist = authService.IsLoggedInUser(query.UserId);
-            var playlistQuery = playlistRepository.AsQueryable(query.UserId, isUserPlaylist);
+            var playlistPageList = playlistRepository.GetAllUserPlaylistsPaginated(query, query.UserId, isUserPlaylist);
 
-            playlistQuery = playlistQuery.FilterPlaylists(query);
-            playlistQuery = playlistQuery.SortPlaylists(query);
+            var playlistsDtoPageList = PageListExtensions<User>.Convert(playlistPageList, PlaylistExtensions.ToDto);
 
-            var playlistsPagedList = PageListExtensions<PlaylistDto>.Create(playlistQuery.Select(x => x.ToDto()),
-                query.Page,
-                query.PageSize);
-
-            return Task.FromResult(playlistsPagedList);
+            return Task.FromResult(playlistsDtoPageList);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Localization;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
-using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Helpers;
 using YoutubeLinks.Api.Localization;
@@ -31,11 +29,9 @@ public static class CreateLinkFeature
     }
 
     public class Handler(
-        ILinkRepository linkRepository,
         IPlaylistRepository playlistRepository,
         IAuthService authService,
         IYoutubeService youtubeService,
-        IClock clock,
         IStringLocalizer<ApiValidationMessage> localizer)
         : IRequestHandler<CreateLink.Command, int>
     {
@@ -53,25 +49,6 @@ public static class CreateLinkFeature
             command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
             var videoTitle = await youtubeService.GetVideoTitle(videoId);
 
-            await ValidateCommand(command, localizer);
-
-            var link = new Link
-            {
-                Id = 0,
-                Created = clock.Current(),
-                Modified = clock.Current(),
-                Url = command.Url,
-                VideoId = videoId,
-                Title = videoTitle,
-                Downloaded = false,
-                PlaylistId = command.PlaylistId
-            };
-
-            return await linkRepository.Create(link);
-        }
-
-        private async Task ValidateCommand(CreateLink.Command command, IStringLocalizer<ApiValidationMessage> localizer)
-        {
             var playlist = await playlistRepository.Get(command.PlaylistId) ?? throw new MyNotFoundException();
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
@@ -80,12 +57,17 @@ public static class CreateLinkFeature
                 throw new MyForbiddenException();
             }
 
-            var urlExists = await playlistRepository.LinkUrlExists(command.Url, playlist.Id);
+            var urlExists = playlist.LinkUrlExists(command.Url);
             if (urlExists)
             {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
             }
+
+            var link = playlist.AddLink(command.Url, videoId, videoTitle);
+
+            await playlistRepository.Update(playlist);
+            return link.Id;
         }
     }
 }

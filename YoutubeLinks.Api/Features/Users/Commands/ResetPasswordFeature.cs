@@ -50,14 +50,14 @@ public static class ResetPasswordFeature
                     validationLocalizer[nameof(ApiValidationMessageString.TokenIsNotAssignedToThisUser)]);
             }
 
-            if (passwordService.Validate(command.NewPassword, user.Password))
+            if (user.VerifyPassword(command.NewPassword, passwordService))
             {
                 throw new MyValidationException(nameof(ResetPassword.Command.NewPassword),
                     validationLocalizer[nameof(ApiValidationMessageString.NewPasswordShouldNotBeEqualToOldPassword)]);
             }
 
-            user.Password = passwordService.Hash(command.NewPassword);
-            user.ForgotPasswordToken = null;
+            user.SetPassword(command.NewPassword, passwordService);
+            user.SetForgotPasswordToken(null);
 
             await userRepository.Update(user);
 

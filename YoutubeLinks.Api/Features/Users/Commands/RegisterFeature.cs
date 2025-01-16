@@ -30,11 +30,10 @@ public static class RegisterFeature
     }
 
     public class Handler(
-        IClock clock,
         IPasswordService passwordService,
         IUserRepository userRepository,
         IEmailService emailService,
-        IEmailConfirmationService emailConfirmationService,
+        ITokenService tokenService,
         IStringLocalizer<ApiValidationMessage> validationLocalizer)
         : IRequestHandler<Register.Command, int>
     {
@@ -44,26 +43,16 @@ public static class RegisterFeature
         {
             await ValidateCommand(command);
 
-            var user = new User
-            {
-                Id = 0,
-                Created = clock.Current(),
-                Modified = clock.Current(),
-                Email = command.Email,
-                UserName = command.UserName,
-                Password = passwordService.Hash(command.Password),
-                EmailConfirmed = false,
-                EmailConfirmationToken = emailConfirmationService.GenerateEmailConfirmationToken(command.Email),
-                IsAdmin = false,
-                ThemeColor = command.ThemeColor
-            };
-
+            var user = User.Create(command.Email, command.UserName, command.ThemeColor, false);
+            user.SetPassword(command.Password, passwordService);
+            user.SetEmailConfirmationToken(tokenService.GenerateToken(command.Email));
+            
             var userId = await userRepository.Create(user);
 
             await emailService.SendEmail(user.Email, new EmailConfirmationTemplateModel
             {
                 UserName = command.UserName,
-                Link = emailConfirmationService.GenerateConfirmationLink(user.Email, user.EmailConfirmationToken)
+                Link = tokenService.GenerateLink(user.Email, user.EmailConfirmationToken, LinkType.ConfirmEmail)
             });
 
             return userId;

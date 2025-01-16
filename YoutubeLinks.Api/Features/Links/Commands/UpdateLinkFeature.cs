@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Localization;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Helpers;
@@ -32,10 +31,8 @@ public static class UpdateLinkFeature
 
     public class Handler(
         IPlaylistRepository playlistRepository,
-        ILinkRepository linkRepository,
         IAuthService authService,
         IYoutubeService youtubeService,
-        IClock clock,
         IStringLocalizer<ApiValidationMessage> localizer)
         : IRequestHandler<UpdateLink.Command, Unit>
     {
@@ -43,9 +40,10 @@ public static class UpdateLinkFeature
             UpdateLink.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.FindPlaylistContainingLink(command.Id) ??
+                           throw new MyNotFoundException();
 
-            if (!authService.IsLoggedInUser(link.Playlist.UserId))
+            if (!authService.IsLoggedInUser(playlist.UserId))
             {
                 throw new MyForbiddenException();
             }
@@ -59,29 +57,29 @@ public static class UpdateLinkFeature
 
             command.Url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
 
-            var urlExists =
-                await playlistRepository.LinkUrlExistsInOtherLinksThan(command.Url, link.PlaylistId, command.Id);
+            var urlExists = playlist.LinkUrlExistsInOtherLinksThan(command.Url, command.Id);
             if (urlExists)
             {
                 throw new MyValidationException(nameof(CreateLink.Command.Url),
                     localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
             }
 
+            var link = playlist.GetLink(command.Id);
+            
             if (string.IsNullOrWhiteSpace(link.Title) || command.Url != link.Url)
             {
-                link.Title = await youtubeService.GetVideoTitle(videoId);
+                link.SetTitle(await youtubeService.GetVideoTitle(videoId));
             }
             else
             {
-                link.Title = YoutubeHelpers.NormalizeVideoTitle(command.Title);
+                link.SetTitle(YoutubeHelpers.NormalizeVideoTitle(command.Title));
             }
 
-            link.Modified = clock.Current();
-            link.Url = command.Url;
-            link.VideoId = videoId;
-            link.Downloaded = command.Downloaded;
+            link.SetUrl(command.Url);
+            link.SetVideoId(videoId);
+            link.SetDownloaded(command.Downloaded);
 
-            await linkRepository.Update(link);
+            await playlistRepository.Update(playlist);
             return Unit.Value;
         }
     }

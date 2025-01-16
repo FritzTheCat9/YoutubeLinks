@@ -44,7 +44,7 @@ public static class LoginFeature
                     localizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
             }
 
-            if (!passwordService.Validate(command.Password, user.Password))
+            if (!user.VerifyPassword(command.Password, passwordService))
             {
                 throw new MyValidationException(nameof(Login.Command.Password),
                     localizer[nameof(ApiValidationMessageString.PasswordIsIncorrect)]);
@@ -52,7 +52,7 @@ public static class LoginFeature
 
             var jwt = authenticator.CreateTokens(user);
 
-            user.RefreshToken = jwt.RefreshToken;
+            user.SetRefreshToken(jwt.RefreshToken);
             await userRepository.Update(user);
 
             return jwt;

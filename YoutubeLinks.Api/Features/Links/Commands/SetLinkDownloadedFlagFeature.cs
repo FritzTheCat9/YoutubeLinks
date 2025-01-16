@@ -27,26 +27,25 @@ public static class SetLinkDownloadedFlagFeature
     }
 
     public class Handler(
-        ILinkRepository linkRepository,
-        IAuthService authService,
-        IClock clock)
+        IPlaylistRepository playlistRepository,
+        IAuthService authService)
         : IRequestHandler<SetLinkDownloadedFlag.Command, Unit>
     {
         public async Task<Unit> Handle(
             SetLinkDownloadedFlag.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.FindPlaylistContainingLink(command.Id) ??
+                           throw new MyNotFoundException();
 
-            if (!authService.IsLoggedInUser(link.Playlist.UserId))
+            if (!authService.IsLoggedInUser(playlist.UserId))
             {
                 throw new MyForbiddenException();
             }
 
-            link.Modified = clock.Current();
-            link.Downloaded = command.Downloaded;
+            playlist.SetLinkDownloadedFlag(command.Id, command.Downloaded);
 
-            await linkRepository.Update(link);
+            await playlistRepository.Update(playlist);
             return Unit.Value;
         }
     }

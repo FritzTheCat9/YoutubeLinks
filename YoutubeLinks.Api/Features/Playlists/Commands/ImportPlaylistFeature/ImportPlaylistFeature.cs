@@ -30,9 +30,9 @@ public static class ImportPlaylistFeature
 
     public class Handler(
         IPlaylistRepository playlistRepository,
+        IUserRepository userRepository,
         IAuthService authService,
         IYoutubeService youtubeService,
-        IClock clock,
         IStringLocalizer<ApiValidationMessage> localizer)
         : IRequestHandler<ImportPlaylist.Command, int>
     {
@@ -41,22 +41,13 @@ public static class ImportPlaylistFeature
             CancellationToken cancellationToken)
         {
             var currentUserId = authService.GetCurrentUserId() ?? throw new MyForbiddenException();
-
-            var playlist = new Playlist
-            {
-                Id = 0,
-                Created = clock.Current(),
-                Modified = clock.Current(),
-                Name = command.Name,
-                Public = command.Public,
-                UserId = currentUserId
-            };
+            var user = await userRepository.Get(currentUserId) ?? throw new MyForbiddenException();
+            
+            var playlist = Playlist.Create(command.Name, command.Public, user);
 
             var importer = PlaylistImporterHelpers.GetImporter(command.PlaylistFileType);
 
-            var links = (await importer.Import(youtubeService, clock, localizer, command)).ToList();
-
-            playlist.Links.AddRange(links);
+            await importer.Import(youtubeService, localizer, command, playlist);
 
             return await playlistRepository.Create(playlist);
         }

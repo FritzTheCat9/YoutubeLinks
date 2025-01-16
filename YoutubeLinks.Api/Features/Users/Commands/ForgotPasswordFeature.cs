@@ -29,7 +29,7 @@ public static class ForgotPasswordFeature
     public class Handler(
         IUserRepository userRepository,
         IEmailService emailService,
-        IForgotPasswordService forgotPasswordService,
+        ITokenService tokenService,
         IStringLocalizer<ApiValidationMessage> validationLocalizer)
         : IRequestHandler<ForgotPassword.Command, Unit>
     {
@@ -48,13 +48,13 @@ public static class ForgotPasswordFeature
                     validationLocalizer[nameof(ApiValidationMessageString.EmailIsNotConfirmed)]);
             }
 
-            user.ForgotPasswordToken = forgotPasswordService.GenerateForgotPasswordToken(command.Email);
+            user.SetForgotPasswordToken(tokenService.GenerateToken(command.Email));
             await userRepository.Update(user);
 
             await emailService.SendEmail(user.Email, new ForgotPasswordTemplateModel
             {
                 UserName = user.UserName,
-                Link = forgotPasswordService.GenerateForgotPasswordLink(user.Email, user.ForgotPasswordToken)
+                Link = tokenService.GenerateLink(user.Email, user.ForgotPasswordToken, LinkType.ForgotPassword)
             });
 
             return Unit.Value;

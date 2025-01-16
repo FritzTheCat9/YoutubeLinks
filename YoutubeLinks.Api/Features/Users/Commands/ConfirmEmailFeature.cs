@@ -54,8 +54,8 @@ public static class ConfirmEmailFeature
                     validationLocalizer[nameof(ApiValidationMessageString.TokenIsNotAssignedToThisUser)]);
             }
 
-            user.EmailConfirmed = true;
-            user.EmailConfirmationToken = null;
+            user.SetEmailConfirmed(true);
+            user.SetEmailConfirmationToken(null);
 
             await userRepository.Update(user);
 

@@ -47,8 +47,7 @@ public static class AuthExtensions
         services.AddSingleton<IAuthenticator, Authenticator>();
 
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
-        services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
+        services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }

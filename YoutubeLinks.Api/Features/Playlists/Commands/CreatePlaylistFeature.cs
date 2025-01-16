@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
@@ -27,9 +26,9 @@ public static class CreatePlaylistFeature
     }
 
     public class Handler(
+        IUserRepository userRepository,
         IPlaylistRepository playlistRepository,
-        IAuthService authService,
-        IClock clock)
+        IAuthService authService)
         : IRequestHandler<CreatePlaylist.Command, int>
     {
         public async Task<int> Handle(
@@ -37,16 +36,9 @@ public static class CreatePlaylistFeature
             CancellationToken cancellationToken)
         {
             var currentUserId = authService.GetCurrentUserId() ?? throw new MyForbiddenException();
+            var user = await userRepository.Get(currentUserId) ?? throw new MyNotFoundException();
 
-            var playlist = new Playlist
-            {
-                Id = 0,
-                Created = clock.Current(),
-                Modified = clock.Current(),
-                Name = command.Name,
-                Public = command.Public,
-                UserId = currentUserId
-            };
+            var playlist = Playlist.Create(command.Name, command.Public, user);
 
             return await playlistRepository.Create(playlist);
         }

@@ -28,8 +28,7 @@ public static class UpdateUserThemeFeature
 
     public class Handler(
         IUserRepository userRepository,
-        IAuthService authService,
-        IClock clock)
+        IAuthService authService)
         : IRequestHandler<UpdateUserTheme.Command, Unit>
     {
         public async Task<Unit> Handle(
@@ -44,8 +43,7 @@ public static class UpdateUserThemeFeature
 
             var user = await userRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
-            user.ThemeColor = command.ThemeColor;
-            user.Modified = clock.Current();
+            user.SetThemeColor(command.ThemeColor);
 
             await userRepository.Update(user);
             return Unit.Value;

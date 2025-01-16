@@ -26,22 +26,24 @@ public static class DeleteLinkFeature
 
     public class Handler(
         IAuthService authService,
-        ILinkRepository linkRepository)
+        IPlaylistRepository playlistRepository)
         : IRequestHandler<DeleteLink.Command, Unit>
     {
         public async Task<Unit> Handle(
             DeleteLink.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.FindPlaylistContainingLink(command.Id) ??
+                           throw new MyNotFoundException();
 
-            var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
             if (!isUserPlaylist)
             {
                 throw new MyForbiddenException();
             }
 
-            await linkRepository.Delete(link);
+            playlist.RemoveLink(command.Id);
+            await playlistRepository.Update(playlist);
             return Unit.Value;
         }
     }

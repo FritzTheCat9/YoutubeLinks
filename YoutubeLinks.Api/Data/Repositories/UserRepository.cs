@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Api.Data.Entities;
+using YoutubeLinks.Shared.Abstractions;
 
 namespace YoutubeLinks.Api.Data.Repositories;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<User>
 {
-    IQueryable<User> AsQueryable();
+    PagedList<User> GetAllPaginated(QueryParameters query);
     Task<IEnumerable<User>> GetAll();
     Task<User> Get(int id);
     Task<User> GetByEmail(string email);
@@ -20,31 +22,113 @@ public interface IUserRepository
     Task Delete(User user);
 }
 
-public class UserRepository(AppDbContext dbContext) : IUserRepository
+public class UserRepository(
+    AppDbContext dbContext
+) : IUserRepository
 {
-    public IQueryable<User> AsQueryable()
+    private IQueryable<User> LoadUsers()
     {
-        return dbContext.Users.AsQueryable();
+        return dbContext.Users
+            .Include(x => x.Playlists)
+            .AsQueryable();
+    }
+
+    private IQueryable<User> Filter(
+        IQueryable<User> users,
+        QueryParameters query)
+    {
+        var searchTerm = query.SearchTerm?.ToLower()?.Trim();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            users = users.Where(x =>
+                x.UserName.ToLower().Contains(searchTerm.ToLower())
+                || x.Email.ToLower().Contains(searchTerm.ToLower()));
+        }
+
+        return users;
+    }
+
+    private IQueryable<User> Sort(
+        IQueryable<User> users,
+        QueryParameters query)
+    {
+        return query.SortOrder switch
+        {
+            SortOrder.Ascending => users.OrderBy(GetUserSortProperty(query)),
+            SortOrder.Descending => users.OrderByDescending(GetUserSortProperty(query)),
+            SortOrder.None => users.OrderBy(x => x.UserName),
+            _ => users.OrderBy(x => x.UserName)
+        };
+    }
+
+    private Expression<Func<User, object>> GetUserSortProperty(QueryParameters query)
+    {
+        return query.SortColumn.ToLowerInvariant() switch
+        {
+            "username" => user => user.UserName,
+            "email" => user => user.Email,
+            _ => user => user.UserName
+        };
+    }
+
+    private (IQueryable<User> query, int totalCount) Paginate(
+        IQueryable<User> users,
+        QueryParameters query)
+    {
+        var totalCount = users.Count();
+
+        users = users
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize);
+
+        return (users, totalCount);
+    }
+
+    public PagedList<User> GetAllPaginated(QueryParameters query)
+    {
+        var usersQuery = LoadUsers();
+        
+        usersQuery = Filter(usersQuery, query);
+        usersQuery = Sort(usersQuery, query);
+        (usersQuery, var totalCount) = Paginate(usersQuery, query);
+
+        var users = usersQuery
+            .ToList();
+
+        return new PagedList<User>(users, query.Page, query.PageSize, totalCount);
     }
 
     public async Task<IEnumerable<User>> GetAll()
     {
-        return await dbContext.Users.ToListAsync();
+        var users = await LoadUsers()
+            .ToListAsync();
+
+        return users;
     }
 
     public async Task<User> Get(int id)
     {
-        return await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var user = await LoadUsers()
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return user;
     }
 
     public async Task<User> GetByEmail(string email)
     {
-        return await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+        var user = await LoadUsers()
+            .FirstOrDefaultAsync(x => x.Email == email);
+
+        return user;
     }
 
     public async Task<User> GetByUserName(string userName)
     {
-        return await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+        var user = await LoadUsers()
+            .FirstOrDefaultAsync(x => x.UserName == userName);
+
+        return user;
     }
 
     public async Task<bool> EmailExists(string email)
@@ -63,13 +147,11 @@ public class UserRepository(AppDbContext dbContext) : IUserRepository
                                                    && x.EmailConfirmationToken == token);
     }
 
-
     public async Task<bool> IsForgotPasswordTokenAssignedToUser(string email, string token)
     {
         return await dbContext.Users.AnyAsync(x => x.Email == email
                                                    && x.ForgotPasswordToken == token);
     }
-
 
     public async Task<int> Create(User user)
     {

@@ -29,7 +29,7 @@ public static class ResendConfirmationEmailFeature
     public class Handler(
         IUserRepository userRepository,
         IEmailService emailService,
-        IEmailConfirmationService emailConfirmationService,
+        ITokenService tokenService,
         IStringLocalizer<ApiValidationMessage> validationLocalizer)
         : IRequestHandler<ResendConfirmationEmail.Command, Unit>
     {
@@ -48,13 +48,13 @@ public static class ResendConfirmationEmailFeature
                     validationLocalizer[nameof(ApiValidationMessageString.EmailAlreadyConfirmed)]);
             }
 
-            user.EmailConfirmationToken = emailConfirmationService.GenerateEmailConfirmationToken(command.Email);
+            user.SetEmailConfirmationToken(tokenService.GenerateToken(command.Email));
             await userRepository.Update(user);
 
             await emailService.SendEmail(user.Email, new EmailConfirmationTemplateModel
             {
                 UserName = user.UserName,
-                Link = emailConfirmationService.GenerateConfirmationLink(user.Email, user.EmailConfirmationToken)
+                Link = tokenService.GenerateLink(user.Email, user.EmailConfirmationToken, LinkType.ConfirmEmail)
             });
 
             return Unit.Value;

@@ -54,7 +54,7 @@ public static class RefreshTokenFeature
 
             var jwt = authenticator.CreateTokens(user);
 
-            user.RefreshToken = jwt.RefreshToken;
+            user.SetRefreshToken(jwt.RefreshToken);
             await userRepository.Update(user);
 
             return jwt;

@@ -13,7 +13,7 @@ public partial class FritzTextField : ComponentBase
     [Parameter] public bool HideField { get; set; }
     [Parameter] public Variant Variant { get; set; }
     [Parameter] public bool ShrinkLabel { get; set; }
-    [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
+    [Parameter] public Dictionary<string, object> UserAttributes { get; set; }
 
     private async Task OnValueChanged(string newValue)
     {

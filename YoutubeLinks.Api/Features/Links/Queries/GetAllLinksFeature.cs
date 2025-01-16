@@ -24,7 +24,6 @@ public static class GetAllLinksFeature
     }
 
     public class Handler(
-        ILinkRepository linkRepository,
         IPlaylistRepository playlistRepository,
         IAuthService authService)
         : IRequestHandler<Query, IEnumerable<LinkInfoDto>>
@@ -36,7 +35,7 @@ public static class GetAllLinksFeature
             var playlist = await playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
-            var linkQuery = linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
+            var linkQuery = playlistRepository.GetPlaylistLinksAsQueryable(query.PlaylistId, isUserPlaylist);
 
             if (isUserPlaylist)
             {

@@ -15,7 +15,7 @@ public partial class FritzProcessingButton(
     [Parameter] public string ButtonText { get; set; }
     [Parameter] public ButtonType ButtonType { get; set; }
     [Parameter] public Color Color { get; set; }
-    [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
+    [Parameter] public Dictionary<string, object> UserAttributes { get; set; }
     [Parameter] public EventCallback OnClick { get; set; }
 
     protected override void OnParametersSet()

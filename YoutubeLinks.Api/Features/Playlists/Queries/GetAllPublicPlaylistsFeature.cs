@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Playlists.Extensions;
@@ -31,16 +32,12 @@ public static class GetAllPublicPlaylistsFeature
             GetAllPublicPlaylists.Query query,
             CancellationToken cancellationToken)
         {
-            var playlistQuery = playlistRepository.AsQueryablePublic();
 
-            playlistQuery = playlistQuery.FilterPlaylists(query);
-            playlistQuery = playlistQuery.SortPlaylists(query);
+            var playlistPageList = playlistRepository.GetAllPublicPlaylistsPaginated(query);
 
-            var playlistsPagedList = PageListExtensions<PlaylistDto>.Create(playlistQuery.Select(x => x.ToDto()),
-                query.Page,
-                query.PageSize);
+            var playlistsDtoPageList = PageListExtensions<PlaylistDto>.Convert(playlistPageList, PlaylistExtensions.ToDto);
 
-            return Task.FromResult(playlistsPagedList);
+            return Task.FromResult(playlistsDtoPageList);
         }
     }
 }

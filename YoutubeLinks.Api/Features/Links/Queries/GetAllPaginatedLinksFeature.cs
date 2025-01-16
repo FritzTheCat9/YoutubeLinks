@@ -27,7 +27,6 @@ public static class GetAllPaginatedLinksFeature
     }
 
     public class Handler(
-        ILinkRepository linkRepository,
         IPlaylistRepository playlistRepository,
         IAuthService authService)
         : IRequestHandler<GetAllPaginatedLinks.Query, PagedList<LinkDto>>
@@ -39,7 +38,7 @@ public static class GetAllPaginatedLinksFeature
             var playlist = await playlistRepository.Get(query.PlaylistId) ?? throw new MyNotFoundException();
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
-            var linkQuery = linkRepository.AsQueryable(query.PlaylistId, isUserPlaylist);
+            var linkQuery = playlistRepository.GetPlaylistLinksAsQueryable(query.PlaylistId, isUserPlaylist);
 
             linkQuery = linkQuery.FilterLinks(query);
             linkQuery = linkQuery.SortLinks(query);

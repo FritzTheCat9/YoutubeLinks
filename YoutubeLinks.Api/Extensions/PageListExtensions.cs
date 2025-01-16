@@ -24,6 +24,30 @@ public static class PageListExtensions<T>
         return new PagedList<T>(items, page, pageSize, totalCount);
     }
 
+    // TODO: refactor this code 
+    public static PagedList<TResult> Convert<TSource, TResult>(
+        PagedList<TSource> source,
+        Func<TSource, TResult> mapFunc)
+    {
+        if (source == null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        if (mapFunc == null)
+        {
+            throw new ArgumentNullException(nameof(mapFunc));
+        }
+
+        var mappedItems = source.Items.Select(mapFunc).ToList();
+
+        return new PagedList<TResult>(
+            mappedItems,
+            source.Page,
+            source.PageSize,
+            source.TotalCount);
+    }
+
     public static PagedList<T> CreateEmpty(
         int page,
         int pageSize)
@@ -33,6 +57,7 @@ public static class PageListExtensions<T>
         return new PagedList<T>([], page, pageSize, 0);
     }
 
+    // TODO: Move this validations to Query model
     private static void Validate(int page, int pageSize)
     {
         if (page <= MinPage)

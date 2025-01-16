@@ -15,7 +15,7 @@ public partial class FritzCopyToClipboardButton(
     [Parameter] public string CopiedText { get; set; }
     [Parameter] public Color Color { get; set; }
     [Parameter] public Size Size { get; set; }
-    [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
+    [Parameter] public Dictionary<string, object> UserAttributes { get; set; }
 
     protected override void OnParametersSet()
     {

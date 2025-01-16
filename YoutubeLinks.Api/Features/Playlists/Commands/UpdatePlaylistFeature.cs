@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Helpers;
@@ -28,8 +27,7 @@ public static class UpdatePlaylistFeature
 
     public class Handler(
         IPlaylistRepository playlistRepository,
-        IAuthService authService,
-        IClock clock)
+        IAuthService authService)
         : IRequestHandler<UpdatePlaylist.Command, Unit>
     {
         public async Task<Unit> Handle(
@@ -44,9 +42,8 @@ public static class UpdatePlaylistFeature
                 throw new MyForbiddenException();
             }
 
-            playlist.Name = command.Name;
-            playlist.Public = command.Public;
-            playlist.Modified = clock.Current();
+            playlist.SetName(command.Name);
+            playlist.SetPublic(command.Public);
 
             await playlistRepository.Update(playlist);
             return Unit.Value;

@@ -35,7 +35,7 @@ public static class DownloadLinkFeature
 
     public class Handler(
         IAuthService authService,
-        ILinkRepository linkRepository,
+        IPlaylistRepository playlistRepository,
         IYoutubeService youtubeService)
         : IRequestHandler<DownloadLink.Command, YoutubeFile>
     {
@@ -43,15 +43,18 @@ public static class DownloadLinkFeature
             DownloadLink.Command command,
             CancellationToken cancellationToken)
         {
-            var link = await linkRepository.Get(command.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.FindPlaylistContainingLink(command.Id) ??
+                           throw new MyNotFoundException();
 
-            var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
-            var isPublicPlaylist = link.Playlist.Public;
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
+            var isPublicPlaylist = playlist.Public;
 
             if (!isUserPlaylist && !isPublicPlaylist)
             {
                 throw new MyForbiddenException();
             }
+
+            var link = playlist.GetLink(command.Id);
 
             var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, youtubeService);
             var youtubeFile = await downloader.Download(link.VideoId, link.Title);

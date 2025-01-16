@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Extensions;
 using YoutubeLinks.Api.Features.Users.Extensions;
@@ -30,16 +31,11 @@ public static class GetAllUsersFeature
             GetAllUsers.Query query,
             CancellationToken cancellationToken)
         {
-            var usersQuery = userRepository.AsQueryable();
+            var usersPageList = userRepository.GetAllPaginated(query);
 
-            usersQuery = usersQuery.FilterMyUsers(query);
-            usersQuery = usersQuery.SortMyUsers(query);
+            var usersDtoPageList = PageListExtensions<User>.Convert(usersPageList, UserExtensions.ToDto);
 
-            var usersPagedList = PageListExtensions<UserDto>.Create(usersQuery.Select(x => x.ToDto()),
-                query.Page,
-                query.PageSize);
-
-            return await Task.FromResult(usersPagedList);
+            return await Task.FromResult(usersDtoPageList);
         }
     }
 }

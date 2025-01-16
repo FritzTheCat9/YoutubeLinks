@@ -26,7 +26,6 @@ public static class DatabaseExtensions
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPlaylistRepository, PlaylistRepository>();
-        services.AddScoped<ILinkRepository, LinkRepository>();
 
         services.AddHostedService<DatabaseInitializer>();
 

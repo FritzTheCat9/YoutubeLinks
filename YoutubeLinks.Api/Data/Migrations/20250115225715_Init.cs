@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace YoutubeLinks.Api.Data.Migrations
 {
     /// <inheritdoc />
@@ -21,13 +19,13 @@ namespace YoutubeLinks.Api.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    ThemeColor = table.Column<int>(type: "int", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailConfirmationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ForgotPasswordToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    ThemeColor = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -42,9 +40,9 @@ namespace YoutubeLinks.Api.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Public = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -65,11 +63,11 @@ namespace YoutubeLinks.Api.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    PlaylistId = table.Column<int>(type: "int", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VideoId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Downloaded = table.Column<bool>(type: "bit", nullable: false),
-                    PlaylistId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -82,15 +80,6 @@ namespace YoutubeLinks.Api.Data.Migrations
                         principalTable: "Playlists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Created", "Email", "EmailConfirmationToken", "EmailConfirmed", "ForgotPasswordToken", "IsAdmin", "Modified", "Password", "RefreshToken", "ThemeColor", "UserName" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "ytlinksapp@gmail.com", null, true, null, true, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", null, 0, "Admin" },
-                    { 2, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "ytlinksapp1@gmail.com", null, true, null, false, new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==", null, 0, "User" }
                 });
 
             migrationBuilder.CreateIndex(

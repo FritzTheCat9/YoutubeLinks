@@ -12,7 +12,7 @@ public partial class FritzSearchTextField(
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public Expression<Func<string>> For { get; set; }
     [Parameter] public EventCallback<string> OnSearch { get; set; }
-    [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
+    [Parameter] public Dictionary<string, object> UserAttributes { get; set; }
 
     private async Task OnValueChanged(string newValue)
     {

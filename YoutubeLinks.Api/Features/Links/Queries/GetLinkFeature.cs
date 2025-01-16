@@ -27,7 +27,7 @@ public static class GetLinkFeature
     }
 
     public class Handler(
-        ILinkRepository linkRepository,
+        IPlaylistRepository playlistRepository,
         IAuthService authService)
         : IRequestHandler<GetLink.Query, LinkDto>
     {
@@ -35,14 +35,17 @@ public static class GetLinkFeature
             GetLink.Query query,
             CancellationToken cancellationToken)
         {
-            var link = await linkRepository.Get(query.Id) ?? throw new MyNotFoundException();
+            var playlist = await playlistRepository.FindPlaylistContainingLink(query.Id) ??
+                           throw new MyNotFoundException();
 
-            var isUserPlaylist = authService.IsLoggedInUser(link.Playlist.UserId);
-            if (!link.Playlist.Public
+            var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
+            if (!playlist.Public
                 && !isUserPlaylist)
             {
                 throw new MyForbiddenException();
             }
+
+            var link = playlist.GetLink(query.Id);
 
             return link.ToDto();
         }

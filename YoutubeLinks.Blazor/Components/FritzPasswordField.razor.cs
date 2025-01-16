@@ -15,7 +15,7 @@ public partial class FritzPasswordField : ComponentBase
     [Parameter] public Expression<Func<string>> For { get; set; }
     [Parameter] public string Label { get; set; }
     [Parameter] public bool OnlyValidateIfDirty { get; set; } = true;
-    [Parameter] public Dictionary<string, object?> UserAttributes { get; set; }
+    [Parameter] public Dictionary<string, object> UserAttributes { get; set; }
 
     private async Task OnValueChanged(string newValue)
     {

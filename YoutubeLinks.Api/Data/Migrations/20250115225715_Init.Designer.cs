@@ -12,7 +12,7 @@ using YoutubeLinks.Api.Data.Database;
 namespace YoutubeLinks.Api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241212195345_Init")]
+    [Migration("20250115225715_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -120,7 +120,7 @@ namespace YoutubeLinks.Api.Data.Migrations
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RefreshToken")
@@ -143,32 +143,6 @@ namespace YoutubeLinks.Api.Data.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Created = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ytlinksapp@gmail.com",
-                            EmailConfirmed = true,
-                            IsAdmin = true,
-                            Modified = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
-                            ThemeColor = 0,
-                            UserName = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Created = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ytlinksapp1@gmail.com",
-                            EmailConfirmed = true,
-                            IsAdmin = false,
-                            Modified = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Password = "AQAAAAIAAYagAAAAECWFTp9uY78qPzaRu0d3uaJNo3WOlRpwCuCyDLH+yg/TowsjzlMGxMurTnvyZaYSxA==",
-                            ThemeColor = 0,
-                            UserName = "User"
-                        });
                 });
 
             modelBuilder.Entity("YoutubeLinks.Api.Data.Entities.Link", b =>
