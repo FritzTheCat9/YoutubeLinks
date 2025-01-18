@@ -36,8 +36,6 @@ COPY --from=build /src/Emails/Templates /app/Emails/Templates
 COPY --from=build /src/ffmpeg.zip /app/ffmpeg.zip
 # Create Tmp folder (helper folder to download mp3 and mp4 files)
 RUN mkdir /app/Tmp/
-# Download the latest yt-dlp
-RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /app/yt-dlp && \
-    chmod a+rx /app/yt-dlp
 
-ENTRYPOINT ["dotnet", "YoutubeLinks.Api.dll"]
+# Ensure fresh download of yt-dlp on container startup
+ENTRYPOINT ["/bin/bash", "-c", "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /app/yt-dlp && chmod a+rx /app/yt-dlp && dotnet YoutubeLinks.Api.dll"]
