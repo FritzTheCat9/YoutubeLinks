@@ -11,41 +11,25 @@ public class GetAllPaginatedLinksFeatureTests(IntegrationTestWebAppFactory facto
     [Fact]
     public async Task GetAllPaginatedLinks_ShouldReturnPaginatedLinks()
     {
-        var user = await LoginAsAdmin();
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
+        var link1 = playlist.AddLink("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up (Official Music Video)");
+        var link2 = playlist.AddLink("https://www.youtube.com/watch?v=GtUVQei3nX4", "GtUVQei3nX4", "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams");
+        var link3 = playlist.AddLink("https://www.youtube.com/watch?v=u15tEo0wsQI", "u15tEo0wsQI", "Dawid Podsiadło, P.T. Adamczyk — Phantom Liberty (Official Cyberpunk 2077 Music Video)");
 
-        var links = new List<Link>
+        var links = new List<Link>()
         {
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                VideoId = "dQw4w9WgXcQ",
-                Title = "Rick Astley - Never Gonna Give You Up (Official Music Video)",
-                Downloaded = false,
-            },
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=GtUVQei3nX4",
-                VideoId = "GtUVQei3nX4",
-                Title = "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams",
-                Downloaded = false,
-            },
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=u15tEo0wsQI",
-                VideoId = "u15tEo0wsQI",
-                Title = "Dawid Podsiadło, P.T. Adamczyk — Phantom Liberty (Official Cyberpunk 2077 Music Video)",
-                Downloaded = false,
-            }
+            link1,
+            link2,
+            link3
         };
-
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
-        playlist.Links.AddRange(links);
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
 
         await Logout();
-        
+
         var command = new GetAllPaginatedLinks.Query
         {
             SearchTerm = "",
@@ -71,7 +55,7 @@ public class GetAllPaginatedLinksFeatureTests(IntegrationTestWebAppFactory facto
         foreach (var returnedLink in paginatedLinks.Items)
         {
             var matchingLink = links.FirstOrDefault(x => x.Id == returnedLink.Id);
-            
+
             matchingLink.Should().NotBeNull();
             matchingLink.Should().Match<Link>(x =>
                 x.Id == returnedLink.Id &&

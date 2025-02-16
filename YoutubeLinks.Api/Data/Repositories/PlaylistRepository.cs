@@ -198,6 +198,7 @@ public class PlaylistRepository(
     public Task Update(Playlist playlist)
     {
         dbContext.Update(playlist);
+        dbContext.SaveChanges();
         return Task.CompletedTask;
     }
 
@@ -206,6 +207,7 @@ public class PlaylistRepository(
         playlist.SetLinksDownloadedFlag(flag);
 
         dbContext.Update(playlist);
+        dbContext.SaveChanges();
         return Task.CompletedTask;
     }
 

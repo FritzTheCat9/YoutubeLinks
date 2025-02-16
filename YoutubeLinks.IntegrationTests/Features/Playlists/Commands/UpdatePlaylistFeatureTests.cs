@@ -12,9 +12,9 @@ public class UpdatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task UpdatePlaylist_ShouldSucceed_WhenDataIsValid()
     {
-        var user = await LoginAsAdmin();
-
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
@@ -31,7 +31,7 @@ public class UpdatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
         var updatedPlaylist = await Context.Playlists
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == playlist.Id);
-        
+
         updatedPlaylist.Should().NotBeNull();
         updatedPlaylist?.Name.Should().Be(command.Name);
         updatedPlaylist?.Public.Should().Be(command.Public);
@@ -40,9 +40,9 @@ public class UpdatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task UpdatePlaylist_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
     {
-        var user = await LoginAsAdmin();
-
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();

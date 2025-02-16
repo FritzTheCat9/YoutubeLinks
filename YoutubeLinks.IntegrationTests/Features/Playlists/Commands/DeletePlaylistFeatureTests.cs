@@ -12,9 +12,10 @@ public class DeletePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task DeletePlaylist_ShouldSucceed_WhenDataIsValid()
     {
-        var user = await LoginAsAdmin();
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
 
@@ -32,9 +33,10 @@ public class DeletePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task DeletePlaylist_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
     {
-        var user = await LoginAsAdmin();
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
 

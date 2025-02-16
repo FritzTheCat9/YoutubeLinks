@@ -11,27 +11,27 @@ public class GetAllPublicPlaylistsFeatureTests(IntegrationTestWebAppFactory fact
     [Fact]
     public async Task GetAllPublicPlaylists_ShouldReturnPaginatedPublicPlaylists()
     {
-        var admin = await LoginAsAdmin();
+        var adminInfo = await LoginAsAdmin();
+        var admin = await GetUser(adminInfo.UserId);
+        var adminPlaylist1 = Playlist.Create("Test Admin Playlist 1", false, admin);
+        var adminPlaylist2 = Playlist.Create("Test Admin Playlist 2", true, admin);
+        var adminPlaylist3 = Playlist.Create("Test Admin Playlist 3", false, admin);
 
-        var adminPlaylists = new List<Playlist>()
+        var userInfo = await LoginAsUser();
+        var user = await GetUser(userInfo.UserId);
+        var userPlaylist1 = Playlist.Create("Test User Playlist 1", true, user);
+        var userPlaylist2 = Playlist.Create("Test User Playlist 2", false, user);
+        var userPlaylist3 = Playlist.Create("Test User Playlist 3", true, user);
+
+        var playlists = new List<Playlist>()
         {
-            new() { Name = "Test Admin Playlist 1", Public = false, UserId = admin.UserId },
-            new() { Name = "Test Admin Playlist 2", Public = true, UserId = admin.UserId },
-            new() { Name = "Test Admin Playlist 3", Public = false, UserId = admin.UserId }
+            adminPlaylist1,
+            adminPlaylist2,
+            adminPlaylist3,
+            userPlaylist1,
+            userPlaylist2,
+            userPlaylist3,
         };
-
-        var user = await LoginAsUser();
-
-        var userPlaylists = new List<Playlist>()
-        {
-            new() { Name = "Test User Playlist 1", Public = true, UserId = user.UserId },
-            new() { Name = "Test User Playlist 2", Public = false, UserId = user.UserId },
-            new() { Name = "Test User Playlist 3", Public = true, UserId = user.UserId }
-        };
-
-        var playlists = new List<Playlist>();
-        playlists.AddRange(adminPlaylists);
-        playlists.AddRange(userPlaylists);
 
         await Context.Playlists.AddRangeAsync(playlists);
         await Context.SaveChangesAsync();

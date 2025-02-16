@@ -30,7 +30,7 @@ public class RegisterFeatureTests(IntegrationTestWebAppFactory factory)
             x.Id == userId &&
             x.Email == command.Email &&
             x.UserName == command.UserName &&
-            PasswordService.Validate(command.Password, x.Password) &&
+            PasswordService.Validate(command.Password, x.PasswordHash) &&
             x.ThemeColor == command.ThemeColor);
     }
 }

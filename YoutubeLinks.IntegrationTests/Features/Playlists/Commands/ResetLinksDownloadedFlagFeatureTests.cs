@@ -12,28 +12,17 @@ public class ResetLinksDownloadedFlagFeatureTests(IntegrationTestWebAppFactory f
     [Fact]
     public async Task ResetLinksDownloadedFlag_ShouldSucceed_WhenDataIsValid()
     {
-        var user = await LoginAsAdmin();
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
+        var link1 = playlist.AddLink("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up (Official Music Video)");
+        var link2 = playlist.AddLink("https://www.youtube.com/watch?v=GtUVQei3nX4", "GtUVQei3nX4", "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams");
 
-        var links = new List<Link>
+        var links = new List<Link>()
         {
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                VideoId = "dQw4w9WgXcQ",
-                Title = "Rick Astley - Never Gonna Give You Up (Official Music Video)",
-                Downloaded = false,
-            },
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=GtUVQei3nX4",
-                VideoId = "GtUVQei3nX4",
-                Title = "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams",
-                Downloaded = false,
-            }
+            link1,
+            link2,
         };
-
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
-        playlist.Links.AddRange(links);
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
@@ -59,28 +48,17 @@ public class ResetLinksDownloadedFlagFeatureTests(IntegrationTestWebAppFactory f
     [Fact]
     public async Task ResetLinksDownloadedFlag_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
     {
-        var user = await LoginAsAdmin();
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
+        var link1 = playlist.AddLink("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up (Official Music Video)");
+        var link2 = playlist.AddLink("https://www.youtube.com/watch?v=GtUVQei3nX4", "GtUVQei3nX4", "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams");
 
-        var links = new List<Link>
+        var links = new List<Link>()
         {
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                VideoId = "dQw4w9WgXcQ",
-                Title = "Rick Astley - Never Gonna Give You Up (Official Music Video)",
-                Downloaded = false,
-            },
-            new()
-            {
-                Url = "https://www.youtube.com/watch?v=GtUVQei3nX4",
-                VideoId = "GtUVQei3nX4",
-                Title = "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams",
-                Downloaded = false,
-            }
+            link1,
+            link2,
         };
-
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
-        playlist.Links.AddRange(links);
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();

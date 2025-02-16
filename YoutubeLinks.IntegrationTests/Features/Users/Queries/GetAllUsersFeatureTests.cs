@@ -1,6 +1,7 @@
 using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Abstractions;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Queries;
 
 namespace YoutubeLinks.IntegrationTests.Features.Users.Queries;
@@ -11,29 +12,18 @@ public class GetAllUsersFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task GetAllUsers_ShouldReturnPaginatedUsers()
     {
-        var users = new List<User>()
+        var user1 = User.Create("testuser1@gmail.com", "TestUser1", ThemeColor.Light, false, true);
+        user1.SetPassword("Asd123!", PasswordService);
+        var user2 = User.Create("testuser2@gmail.com", "TestUser2", ThemeColor.Light, false, true);
+        user2.SetPassword("Asd123!", PasswordService);
+        var user3 = User.Create("testuser3@gmail.com", "TestUser3", ThemeColor.Light, false, true);
+        user3.SetPassword("Asd123!", PasswordService);
+
+        var users = new List<User>
         {
-            new()
-            {
-                Email = "testuser1@gmail.com",
-                UserName = "TestUser1",
-                Password = PasswordService.Hash("Asd123!"),
-                EmailConfirmed = true,
-            },
-            new()
-            {
-                Email = "testuser2@gmail.com",
-                UserName = "TestUser2",
-                Password = PasswordService.Hash("Asd123!"),
-                EmailConfirmed = true,
-            },
-            new()
-            {
-                Email = "testuser3@gmail.com",
-                UserName = "TestUser3",
-                Password = PasswordService.Hash("Asd123!"),
-                EmailConfirmed = true,
-            },
+            user1,
+            user2,
+            user3
         };
 
         await Context.Users.AddRangeAsync(users);

@@ -12,9 +12,10 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task CreateLink_ShouldSucceed_WhenDataIsValid()
     {
-        var user = await LoginAsAdmin();
-        
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
+
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
         
@@ -39,9 +40,10 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task CreateLink_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
     {
-        var user = await LoginAsAdmin();
-        
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
+
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
 

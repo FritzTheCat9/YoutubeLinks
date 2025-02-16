@@ -25,7 +25,6 @@ public class User : Entity, IAggregateRoot
     {
         return new User
         {
-            Id = 0,
             Email = email,
             UserName = userName,
             ThemeColor = themeColor,

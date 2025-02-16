@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Commands;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.IntegrationTests.Features.Users.Commands;
 
@@ -11,15 +12,9 @@ public class ResetPasswordFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task ResetPassword_ShouldSucceed_WhenDataIsValid()
     {
-        var user = new User
-        {
-            Email = "testuser@gmail.com",
-            UserName = "TestUser",
-            Password = PasswordService.Hash("Asd123!"),
-            EmailConfirmed = false,
-            ForgotPasswordToken = "Token",
-            IsAdmin = false,
-        };
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, false, false);
+        user.SetPassword("Asd123!", PasswordService);
+        user.SetForgotPasswordToken("Token");
 
         await Context.Users.AddAsync(user);
         await Context.SaveChangesAsync();
@@ -38,8 +33,8 @@ public class ResetPasswordFeatureTests(IntegrationTestWebAppFactory factory)
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
         modifiedUser.Should().NotBeNull();
-        modifiedUser?.Password.Should().NotBeNull();
-        PasswordService.Validate(command.NewPassword, modifiedUser?.Password);
+        modifiedUser?.PasswordHash.Should().NotBeNull();
+        PasswordService.Validate(command.NewPassword, modifiedUser?.PasswordHash);
         modifiedUser?.ForgotPasswordToken.Should().BeNull();
     }
 }

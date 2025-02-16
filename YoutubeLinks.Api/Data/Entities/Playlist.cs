@@ -19,7 +19,6 @@ public class Playlist : Entity, IAggregateRoot
     {
         return new Playlist
         {
-            Id = 0,
             Name = name,
             Public = isPublic,
             User = user

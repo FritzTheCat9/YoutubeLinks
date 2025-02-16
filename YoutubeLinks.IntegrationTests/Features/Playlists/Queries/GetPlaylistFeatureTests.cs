@@ -10,9 +10,10 @@ public class GetPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task GetPlaylist_ShouldReturnPlaylist()
     {
-        var user = await LoginAsAdmin();
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
 

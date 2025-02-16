@@ -1,5 +1,6 @@
 using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Queries;
 
 namespace YoutubeLinks.IntegrationTests.Features.Users.Queries;
@@ -10,13 +11,8 @@ public class GetUserFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task GetUser_ShouldReturnUser()
     {
-        var user = new User
-        {
-            Email = "testuser@gmail.com",
-            UserName = "TestUser",
-            Password = PasswordService.Hash("Asd123!"),
-            EmailConfirmed = true,
-        };
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, false, true);
+        user.SetPassword("Asd123!", PasswordService);
 
         await Context.Users.AddAsync(user);
         await Context.SaveChangesAsync();

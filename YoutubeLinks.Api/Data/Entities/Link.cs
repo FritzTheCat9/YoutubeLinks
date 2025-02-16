@@ -16,7 +16,6 @@ public class Link : Entity
     {
         return new Link
         {
-            Id = 0,
             Url = url,
             VideoId = videoId,
             Title = title,

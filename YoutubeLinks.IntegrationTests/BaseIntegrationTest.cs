@@ -8,6 +8,8 @@ using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Sdk.Clients;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
+using YoutubeLinks.Api.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace YoutubeLinks.IntegrationTests;
 
@@ -38,11 +40,17 @@ public abstract class BaseIntegrationTest
         PasswordService = _scope.ServiceProvider.GetRequiredService<IPasswordService>();
     }
 
+    protected async Task<User> GetUser(int id)
+    {
+        return await Context.Users.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     protected async Task<UserInfo> LoginAsAdmin()
     {
         var command = new Login.Command
         {
-            Email = "ytlinksapp@gmail.com", Password = "Asd123!"
+            Email = "ytlinksapp@gmail.com",
+            Password = "Asd123!"
         };
 
         var jwt = await UserApiClient.Login(command);
@@ -61,7 +69,8 @@ public abstract class BaseIntegrationTest
     {
         var command = new Login.Command
         {
-            Email = "ytlinksapp1@gmail.com", Password = "Asd123!"
+            Email = "ytlinksapp1@gmail.com",
+            Password = "Asd123!"
         };
 
         var jwt = await UserApiClient.Login(command);
@@ -75,12 +84,13 @@ public abstract class BaseIntegrationTest
         var userInfo = await GetUserInfo();
         return userInfo;
     }
-    
+
     protected async Task<UserInfo> LoginAsUser(string email, string password)
     {
         var command = new Login.Command
         {
-            Email = email, Password = password
+            Email = email,
+            Password = password
         };
 
         var jwt = await UserApiClient.Login(command);

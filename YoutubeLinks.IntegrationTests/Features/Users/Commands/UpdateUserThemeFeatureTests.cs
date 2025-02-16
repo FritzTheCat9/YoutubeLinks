@@ -13,15 +13,9 @@ public class UpdateUserThemeFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task UpdateUserTheme_ShouldSucceed_WhenDataIsValid()
     {
-        var user = new User
-        {
-            Email = "testuser1@gmail.com",
-            UserName = "TestUser1",
-            Password = PasswordService.Hash("Asd123!"),
-            EmailConfirmed = true,
-            IsAdmin = false,
-            ThemeColor = ThemeColor.Light,
-        };
+        var user = User.Create("testuser1@gmail.com", "TestUser1", ThemeColor.Light, false, true);
+        user.SetPassword("Asd123!", PasswordService);
+        user.SetForgotPasswordToken("Token");
 
         await Context.Users.AddAsync(user);
         await Context.SaveChangesAsync();
@@ -33,7 +27,7 @@ public class UpdateUserThemeFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         await LoginAsUser(user.Email, "Asd123!");
-        
+
         await UserApiClient.UpdateUserTheme(command);
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
@@ -41,20 +35,14 @@ public class UpdateUserThemeFeatureTests(IntegrationTestWebAppFactory factory)
         modifiedUser.Should().NotBeNull();
         modifiedUser?.ThemeColor.Should().Be(ThemeColor.Dark);
     }
-    
-    
+
+
     [Fact]
     public async Task UpdateUserTheme_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
     {
-        var user = new User
-        {
-            Email = "testuser2@gmail.com",
-            UserName = "TestUser2",
-            Password = PasswordService.Hash("Asd123!"),
-            EmailConfirmed = true,
-            IsAdmin = false,
-            ThemeColor = ThemeColor.Light,
-        };
+        var user = User.Create("testuser2@gmail.com", "TestUser2", ThemeColor.Light, false, true);
+        user.SetPassword("Asd123!", PasswordService);
+        user.SetForgotPasswordToken("Token");
 
         await Context.Users.AddAsync(user);
         await Context.SaveChangesAsync();

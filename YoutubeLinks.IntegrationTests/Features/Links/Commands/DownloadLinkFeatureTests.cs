@@ -11,18 +11,10 @@ public class DownloadLinkFeatureTests(IntegrationTestWebAppFactory factory)
     [Fact]
     public async Task DownloadLink_ShouldSucceed_WhenDataIsValid()
     {
-        var user = await LoginAsAdmin();
-
-        var link = new Link
-        {
-            Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            VideoId = "dQw4w9WgXcQ",
-            Title = "Rick Astley - Never Gonna Give You Up",
-            Downloaded = false,
-        };
-
-        var playlist = new Playlist { Name = "TestPlaylist", Public = true, UserId = user.UserId };
-        playlist.Links.Add(link);
+        var userInfo = await LoginAsAdmin();
+        var user = await GetUser(userInfo.UserId);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
+        var link = playlist.AddLink("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up (Official Music Video)");
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();

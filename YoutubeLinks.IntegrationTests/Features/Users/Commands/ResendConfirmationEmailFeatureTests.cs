@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Commands;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.IntegrationTests.Features.Users.Commands;
 
@@ -11,18 +12,12 @@ public class ResendConfirmationEmailFeatureTests(IntegrationTestWebAppFactory fa
     [Fact]
     public async Task ResendConfirmationEmail_ShouldSucceed_WhenDataIsValid()
     {
-        var user = new User
-        {
-            Email = "testuser@gmail.com",
-            UserName = "TestUser",
-            Password = PasswordService.Hash("Asd123!"),
-            EmailConfirmed = false,
-            IsAdmin = false,
-        };
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, false, false);
+        user.SetPassword("Asd123!", PasswordService);
 
         await Context.Users.AddAsync(user);
         await Context.SaveChangesAsync();
-        
+
         var command = new ResendConfirmationEmail.Command()
         {
             Email = "testuser@gmail.com",
