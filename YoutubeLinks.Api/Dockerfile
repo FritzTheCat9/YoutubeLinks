@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 
 # Install python3, ffmpeg and curl as root to use yt-dlp on linux container
 USER root
@@ -9,15 +9,17 @@ WORKDIR /app
 EXPOSE 5000
 EXPOSE 5001
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["YoutubeLinks.Api/YoutubeLinks.Api.csproj", "YoutubeLinks.Api/"]
+# Copy central package versions file first
+COPY Directory.Packages.props ./
+COPY ["YoutubeLinks.Api/", "YoutubeLinks.Api/"]
 # Copy email templates
 COPY ["YoutubeLinks.Api/Emails/Templates/", "/src/Emails/Templates/"]
 # Copy ffmpeg.zip
 COPY ["YoutubeLinks.Api/ffmpeg.zip", "/src/ffmpeg.zip"]
-COPY ["YoutubeLinks.Shared/YoutubeLinks.Shared.csproj", "YoutubeLinks.Shared/"]
+COPY ["YoutubeLinks.Shared/", "YoutubeLinks.Shared/"]
 RUN dotnet restore "./YoutubeLinks.Api/YoutubeLinks.Api.csproj"
 COPY . .
 WORKDIR "/src/YoutubeLinks.Api"
