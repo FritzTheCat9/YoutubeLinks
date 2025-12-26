@@ -101,8 +101,8 @@ Download playlist view:
 
 ## Technologies
 
-- C# 13
-- .NET 9.0
+- C# 14
+- .NET 10
 - Blazor WebAssembly
 - Vue 3.4.21
 
