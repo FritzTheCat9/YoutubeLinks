@@ -20,5 +20,5 @@
                                @ref="_processingButton"
                                UserAttributes="@(new Dictionary<string, object> { { TestConst.TestId, CreateLinkFormConst.CreateButton } })" />
     </MudStack>
-    <FritzValidationMessage For="() => Command.Url" />
+    <FritzValidationMessage T="string" For="() => Command.Url" />
 </EditForm>
