@@ -88,7 +88,7 @@ public partial class MainLayout(
 
             await RefreshThemeColor();
 
-            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
         }
     }
 
@@ -201,7 +201,7 @@ public partial class MainLayout(
         await themeColorProvider.SetThemeColor(ThemeColor.System);
 
         _themeColor = ThemeColor.System;
-        _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+        _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
         _icon = Icons.Material.Rounded.LightMode;
         _text = localizer[nameof(AppStrings.SwitchToLightTheme)];
 

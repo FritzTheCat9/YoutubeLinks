@@ -18,7 +18,7 @@ public partial class ResendConfirmationEmailDialog(
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
 
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public ResendConfirmationEmail.Command Command { get; set; } = new();
 
     private async Task HandleValidSubmit()

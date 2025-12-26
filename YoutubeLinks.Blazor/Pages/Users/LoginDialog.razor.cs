@@ -22,7 +22,7 @@ public partial class LoginDialog(
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
 
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public Login.Command Command { get; set; } = new();
 
     private async Task HandleValidSubmit()

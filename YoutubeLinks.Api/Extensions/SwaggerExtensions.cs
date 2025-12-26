@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 
 namespace YoutubeLinks.Api.Extensions;
 
@@ -20,19 +20,9 @@ public static class SwaggerExtensions
                 Scheme = bearer
             });
 
-            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+            setup.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = bearer
-                        }
-                    },
-                    []
-                }
+                [new OpenApiSecuritySchemeReference(bearer, hostDocument: document)] = []
             });
 
             // Fix for swagger bug for endpoints with name containing '+': (https://github.com/swagger-api/swagger-ui/issues/7911)

@@ -17,7 +17,7 @@ public partial class UpdatePlaylistDialog(
 {
     private CustomValidator _customValidator;
 
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public UpdatePlaylist.Command Command { get; set; } = new();
 
     private async Task HandleValidSubmit()

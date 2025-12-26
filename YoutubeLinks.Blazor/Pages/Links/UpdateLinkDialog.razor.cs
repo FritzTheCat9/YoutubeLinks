@@ -19,7 +19,7 @@ public partial class UpdateLinkDialog(
     private CustomValidator _customValidator;
     private FritzProcessingButton _processingButton;
 
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public UpdateLink.Command Command { get; set; } = new();
 
     private async Task HandleValidSubmit()

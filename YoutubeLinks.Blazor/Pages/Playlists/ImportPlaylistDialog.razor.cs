@@ -25,7 +25,7 @@ public partial class ImportPlaylistDialog(
     private EditForm _form;
     private FritzProcessingButton _processingButton;
 
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public ImportPlaylist.FormModel FormModel { get; set; } = new();
 
     private async Task HandleValidSubmit()

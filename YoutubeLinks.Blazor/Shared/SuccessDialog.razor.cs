@@ -9,7 +9,7 @@ public partial class SuccessDialog(
     IStringLocalizer<App> localizer)
     : ComponentBase
 {
-    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public string ContentText { get; set; }
     [Parameter] public string ButtonText { get; set; }
     [Parameter] public Color Color { get; set; } = Color.Success;
