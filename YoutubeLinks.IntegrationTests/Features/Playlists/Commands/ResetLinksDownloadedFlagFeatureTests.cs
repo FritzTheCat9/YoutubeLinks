@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -39,10 +38,10 @@ public class ResetLinksDownloadedFlagFeatureTests(IntegrationTestWebAppFactory f
             .AsNoTracking()
             .Include(x => x.Links)
             .FirstOrDefaultAsync(x => x.Id == playlist.Id);
-        
-        updatedPlaylist.Should().NotBeNull();
-        updatedPlaylist?.Links.Should().HaveCount(2);
-        updatedPlaylist?.Links.Should().OnlyContain(link => link.Downloaded == true);
+
+        Assert.NotNull(updatedPlaylist);
+        Assert.Equal(2, updatedPlaylist.Links.Count);
+        Assert.All(updatedPlaylist.Links, link => Assert.True(link.Downloaded));
     }
 
     [Fact]
@@ -71,7 +70,9 @@ public class ResetLinksDownloadedFlagFeatureTests(IntegrationTestWebAppFactory f
 
         await Logout();
 
-        await FluentActions.Invoking(() => PlaylistApiClient.ResetLinksDownloadedFlag(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await PlaylistApiClient.ResetLinksDownloadedFlag(command);
+        });
     }
 }

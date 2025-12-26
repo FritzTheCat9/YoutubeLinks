@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -34,18 +33,17 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
             .Include(playlist => playlist.Links)
             .FirstOrDefaultAsync(x => x.Name == command.Name);
 
-        importedPlaylist.Should().NotBeNull();
-        importedPlaylist?.Name.Should().Be(command.Name);
-        importedPlaylist?.Public.Should().Be(command.Public);
-        importedPlaylist?.Links.Should().HaveCount(command.ExportedLinkUrls.Count);
-        importedPlaylist?.UserId.Should().Be(user.UserId);
+        Assert.NotNull(importedPlaylist);
+        Assert.Equal(command.Name, importedPlaylist.Name);
+        Assert.Equal(command.Public, importedPlaylist.Public);
+        Assert.Equal(command.ExportedLinkUrls.Count, importedPlaylist.Links.Count);
+        Assert.Equal(user.UserId, importedPlaylist.UserId);
 
         foreach (var url in command.ExportedLinkUrls)
         {
             var matchingUrl = importedPlaylist?.Links.FirstOrDefault(x => x.Url == url);
-
-            matchingUrl.Should().NotBeNull();
-            matchingUrl.Should().Match<Link>(x => x.Url == url);
+            Assert.NotNull(matchingUrl);
+            Assert.Equal(url, matchingUrl.Url);
         }
     }
 
@@ -88,22 +86,21 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
             .Include(playlist => playlist.Links)
             .FirstOrDefaultAsync(x => x.Name == command.Name);
 
-        importedPlaylist.Should().NotBeNull();
-        importedPlaylist?.Name.Should().Be(command.Name);
-        importedPlaylist?.Public.Should().Be(command.Public);
-        importedPlaylist?.Links.Should().HaveCount(command.ExportedLinks.Count);
-        importedPlaylist?.UserId.Should().Be(user.UserId);
+        Assert.NotNull(importedPlaylist);
+        Assert.Equal(command.Name, importedPlaylist.Name);
+        Assert.Equal(command.Public, importedPlaylist.Public);
+        Assert.Equal(command.ExportedLinks.Count, importedPlaylist.Links.Count);
+        Assert.Equal(user.UserId, importedPlaylist.UserId);
 
         foreach (var link in command.ExportedLinks)
         {
             var matchingLink = importedPlaylist?.Links.FirstOrDefault(x => x.Url == link.Url);
 
-            matchingLink.Should().NotBeNull();
-            matchingLink.Should().Match<Link>(x =>
-                x.Url == link.Url &&
-                x.VideoId == link.VideoId &&
-                x.Title == link.Title &&
-                x.Downloaded == false);
+            Assert.NotNull(matchingLink);
+            Assert.Equal(link.Url, matchingLink.Url);
+            Assert.Equal(link.VideoId, matchingLink.VideoId);
+            Assert.Equal(link.Title, matchingLink.Title);
+            Assert.False(matchingLink.Downloaded);
         }
     }
 
@@ -126,7 +123,9 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
             PlaylistFileType = PlaylistFileType.Json,
         };
 
-        await FluentActions.Invoking(() => PlaylistApiClient.ImportPlaylist(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await PlaylistApiClient.ImportPlaylist(command);
+        });
     }
 }

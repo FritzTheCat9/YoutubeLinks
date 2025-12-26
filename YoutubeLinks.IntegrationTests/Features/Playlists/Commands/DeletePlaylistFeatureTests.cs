@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -27,7 +26,7 @@ public class DeletePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
         await PlaylistApiClient.DeletePlaylist(command.Id);
 
         var deletedPlaylist = await Context.Playlists.AsNoTracking().FirstOrDefaultAsync(x => x.Id == playlist.Id);
-        deletedPlaylist.Should().BeNull();
+        Assert.Null(deletedPlaylist);
     }
 
     [Fact]
@@ -47,7 +46,9 @@ public class DeletePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         await Logout();
 
-        await FluentActions.Invoking(() => PlaylistApiClient.DeletePlaylist(command.Id))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await PlaylistApiClient.DeletePlaylist(command.Id);
+        });
     }
 }

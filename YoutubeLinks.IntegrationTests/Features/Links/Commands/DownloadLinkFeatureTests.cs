@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Links.Helpers;
@@ -28,17 +27,17 @@ public class DownloadLinkFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         var response = await LinkApiClient.DownloadLink(command);
-        response.IsSuccessStatusCode.Should().BeTrue();
+        Assert.True(response.IsSuccessStatusCode);
 
         await using (var stream = await response.Content.ReadAsStreamAsync())
         {
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
-            memoryStream.Length.Should().BeGreaterThan(0);
+            Assert.True(memoryStream.Length > 0);
         }
 
         var filename = response.Content.Headers.ContentDisposition?.FileNameStar;
         var linkTitleWithExtension = $"{link.Title}.{YoutubeHelpers.YoutubeFileTypeToString(YoutubeFileType.Mp3)}";
-        filename.Should().Be(linkTitleWithExtension);
+        Assert.Equal(linkTitleWithExtension, filename);
     }
 }

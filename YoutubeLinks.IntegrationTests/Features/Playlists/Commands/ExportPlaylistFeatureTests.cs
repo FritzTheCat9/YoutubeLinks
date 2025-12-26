@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Helpers;
@@ -28,19 +27,21 @@ public class ExportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         var response = await PlaylistApiClient.ExportPlaylist(command);
 
-        response.IsSuccessStatusCode.Should().BeTrue();
-        response.Content.Headers.ContentType?.MediaType.Should().Be("application/json");
-        
+        Assert.True(response.IsSuccessStatusCode);
+        Assert.NotNull(response.Content.Headers.ContentType);
+        Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
+
         await using (var stream = await response.Content.ReadAsStreamAsync())
         {
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
-            memoryStream.Length.Should().BeGreaterThan(0);
+            Assert.True(memoryStream.Length > 0);
         }
 
         var filename = response.Content.Headers.ContentDisposition?.FileNameStar;
         var playlistNameWithExtension =
             $"{playlist.Name}.{PlaylistHelpers.PlaylistFileTypeToString(PlaylistFileType.Json)}";
-        filename.Should().Be(playlistNameWithExtension);
+
+        Assert.Equal(playlistNameWithExtension, filename);
     }
 }

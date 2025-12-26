@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -32,9 +31,9 @@ public class UpdatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == playlist.Id);
 
-        updatedPlaylist.Should().NotBeNull();
-        updatedPlaylist?.Name.Should().Be(command.Name);
-        updatedPlaylist?.Public.Should().Be(command.Public);
+        Assert.NotNull(updatedPlaylist);
+        Assert.Equal(command.Name, updatedPlaylist.Name);
+        Assert.Equal(command.Public, updatedPlaylist.Public);
     }
 
     [Fact]
@@ -56,7 +55,9 @@ public class UpdatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         await Logout();
 
-        await FluentActions.Invoking(() => PlaylistApiClient.UpdatePlaylist(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await PlaylistApiClient.UpdatePlaylist(command);
+        });
     }
 }

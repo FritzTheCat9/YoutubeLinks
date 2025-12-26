@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Database;
@@ -57,9 +56,9 @@ public abstract class BaseIntegrationTest
 
         await JwtProvider.SetJwtDto(jwt);
 
-        jwt.Should().NotBeNull();
-        jwt.AccessToken.Should().NotBeNull();
-        jwt.RefreshToken.Should().NotBeNull();
+        Assert.NotNull(jwt);
+        Assert.NotNull(jwt.AccessToken);
+        Assert.NotNull(jwt.RefreshToken);
 
         var userInfo = await GetUserInfo();
         return userInfo;
@@ -77,9 +76,9 @@ public abstract class BaseIntegrationTest
 
         await JwtProvider.SetJwtDto(jwt);
 
-        jwt.Should().NotBeNull();
-        jwt.AccessToken.Should().NotBeNull();
-        jwt.RefreshToken.Should().NotBeNull();
+        Assert.NotNull(jwt);
+        Assert.NotNull(jwt.AccessToken);
+        Assert.NotNull(jwt.RefreshToken);
 
         var userInfo = await GetUserInfo();
         return userInfo;
@@ -97,9 +96,9 @@ public abstract class BaseIntegrationTest
 
         await JwtProvider.SetJwtDto(jwt);
 
-        jwt.Should().NotBeNull();
-        jwt.AccessToken.Should().NotBeNull();
-        jwt.RefreshToken.Should().NotBeNull();
+        Assert.NotNull(jwt);
+        Assert.NotNull(jwt.AccessToken);
+        Assert.NotNull(jwt.RefreshToken);
 
         var userInfo = await GetUserInfo();
         return userInfo;

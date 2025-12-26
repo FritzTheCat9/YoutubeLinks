@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -29,7 +28,8 @@ public class SetLinkDownloadedFlagFeatureTests(IntegrationTestWebAppFactory fact
         await LinkApiClient.SetLinkDownloadedFlag(command);
 
         var updatedLink = await Context.Links.AsNoTracking().FirstOrDefaultAsync(x => x.Id == link.Id);
-        updatedLink?.Downloaded.Should().Be(command.Downloaded);
+        Assert.NotNull(updatedLink);
+        Assert.Equal(command.Downloaded, updatedLink.Downloaded);
     }
 
     [Fact]
@@ -51,7 +51,9 @@ public class SetLinkDownloadedFlagFeatureTests(IntegrationTestWebAppFactory fact
             Downloaded = true,
         };
 
-        await FluentActions.Invoking(() => LinkApiClient.SetLinkDownloadedFlag(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await LinkApiClient.SetLinkDownloadedFlag(command);
+        });
     }
 }

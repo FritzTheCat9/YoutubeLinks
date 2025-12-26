@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Shared.Features.Links.Commands;
 using YoutubeLinks.Shared.Features.Links.Helpers;
 
@@ -17,19 +16,19 @@ public class DownloadSingleLinkFeatureTests(IntegrationTestWebAppFactory factory
         };
 
         const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
-        
+
         var response = await LinkApiClient.DownloadSingleLink(command);
-        response.IsSuccessStatusCode.Should().BeTrue();
+        Assert.True(response.IsSuccessStatusCode);
 
         await using (var stream = await response.Content.ReadAsStreamAsync())
         {
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
-            memoryStream.Length.Should().BeGreaterThan(0);
+            Assert.True(memoryStream.Length > 0);
         }
 
         var filename = response.Content.Headers.ContentDisposition?.FileNameStar;
         var linkTitleWithExtension = $"{title}.{YoutubeHelpers.YoutubeFileTypeToString(YoutubeFileType.Mp3)}";
-        filename.Should().Be(linkTitleWithExtension);
+        Assert.Equal(linkTitleWithExtension, filename);
     }
 }

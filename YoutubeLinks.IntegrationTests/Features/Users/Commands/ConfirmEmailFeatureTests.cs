@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Commands;
@@ -26,12 +25,12 @@ public class ConfirmEmailFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         var isEmailConfirmed = await UserApiClient.ConfirmEmail(command);
-        isEmailConfirmed.Should().BeTrue();
+        Assert.True(isEmailConfirmed);
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-        modifiedUser.Should().NotBeNull();
-        modifiedUser?.EmailConfirmed.Should().BeTrue();
-        modifiedUser?.EmailConfirmationToken.Should().BeNull();
+        Assert.NotNull(modifiedUser);
+        Assert.True(modifiedUser.EmailConfirmed);
+        Assert.Null(modifiedUser.EmailConfirmationToken);
     }
 }

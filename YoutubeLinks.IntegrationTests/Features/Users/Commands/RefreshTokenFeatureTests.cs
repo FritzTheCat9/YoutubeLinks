@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -27,14 +26,15 @@ public class RefreshTokenFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         var jwt = await UserApiClient.RefreshToken(command);
-        jwt.AccessToken.Should().NotBeNull();
-        jwt.RefreshToken.Should().NotBeNull();
+        Assert.NotNull(jwt);
+        Assert.NotNull(jwt.AccessToken);
+        Assert.NotNull(jwt.RefreshToken);
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-        modifiedUser.Should().NotBeNull();
-        modifiedUser?.RefreshToken.Should().NotBeNull();
-        modifiedUser?.RefreshToken.Should().Be(jwt.RefreshToken);
+        Assert.NotNull(modifiedUser);
+        Assert.NotNull(modifiedUser.RefreshToken);
+        Assert.Equal(jwt.RefreshToken, modifiedUser.RefreshToken);
     }
 
     [Fact]
@@ -55,7 +55,9 @@ public class RefreshTokenFeatureTests(IntegrationTestWebAppFactory factory)
 
         await Logout();
 
-        await FluentActions.Invoking(() => UserApiClient.RefreshToken(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await UserApiClient.RefreshToken(command);
+        });
     }
 }

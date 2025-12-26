@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -18,7 +17,7 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
 
         await Context.Playlists.AddAsync(playlist);
         await Context.SaveChangesAsync();
-        
+
         var command = new CreateLink.Command()
         {
             Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -26,17 +25,17 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         var linkId = await LinkApiClient.CreateLink(command);
-        
+
         var link = await Context.Links.AsNoTracking().FirstOrDefaultAsync(x => x.Id == linkId);
-        
-        link.Should().NotBeNull();
-        link?.Id.Should().Be(linkId);
-        link?.Url.Should().Be(command.Url);
-        link?.PlaylistId.Should().Be(command.PlaylistId);
-        link?.Downloaded.Should().BeFalse();
-        link?.VideoId.Should().Be("dQw4w9WgXcQ");
+
+        Assert.NotNull(link);
+        Assert.Equal(linkId, link.Id);
+        Assert.Equal(command.Url, link.Url);
+        Assert.Equal(command.PlaylistId, link.PlaylistId);
+        Assert.False(link.Downloaded);
+        Assert.Equal("dQw4w9WgXcQ", link.VideoId);
     }
-    
+
     [Fact]
     public async Task CreateLink_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
     {
@@ -48,14 +47,16 @@ public class CreateLinkFeatureTests(IntegrationTestWebAppFactory factory)
         await Context.SaveChangesAsync();
 
         await Logout();
-        
+
         var command = new CreateLink.Command()
         {
             Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             PlaylistId = playlist.Id,
         };
-        
-        await FluentActions.Invoking(() => LinkApiClient.CreateLink(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await LinkApiClient.CreateLink(command);
+        });
     }
 }

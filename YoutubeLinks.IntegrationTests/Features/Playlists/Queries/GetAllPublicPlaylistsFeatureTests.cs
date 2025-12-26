@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
@@ -49,26 +48,26 @@ public class GetAllPublicPlaylistsFeatureTests(IntegrationTestWebAppFactory fact
 
         var paginatedPublicPlaylists = await PlaylistApiClient.GetAllPublicPlaylists(command);
 
-        paginatedPublicPlaylists.Should().NotBeNull();
-        paginatedPublicPlaylists.Items.Should().HaveCount(2);
-        paginatedPublicPlaylists.Items.Should().BeInAscendingOrder(x => x.Name);
-        paginatedPublicPlaylists.Page.Should().Be(command.Page);
-        paginatedPublicPlaylists.PageSize.Should().Be(command.PageSize);
-        paginatedPublicPlaylists.TotalCount.Should().Be(3);
-        paginatedPublicPlaylists.PagesCount.Should().Be(2);
-        paginatedPublicPlaylists.HasNextPage.Should().Be(true);
-        paginatedPublicPlaylists.HasPreviousPage.Should().Be(false);
+        Assert.NotNull(paginatedPublicPlaylists);
+        Assert.Equal(2, paginatedPublicPlaylists.Items.Count);
+        var sorted = paginatedPublicPlaylists.Items.OrderBy(x => x.Name).ToList();
+        Assert.Equal(sorted, paginatedPublicPlaylists.Items);
+        Assert.Equal(command.Page, paginatedPublicPlaylists.Page);
+        Assert.Equal(command.PageSize, paginatedPublicPlaylists.PageSize);
+        Assert.Equal(3, paginatedPublicPlaylists.TotalCount);
+        Assert.Equal(2, paginatedPublicPlaylists.PagesCount);
+        Assert.True(paginatedPublicPlaylists.HasNextPage);
+        Assert.False(paginatedPublicPlaylists.HasPreviousPage);
 
         foreach (var returnedPlaylist in paginatedPublicPlaylists.Items)
         {
             var matchingPlaylist = playlists.FirstOrDefault(x => x.Id == returnedPlaylist.Id);
 
-            matchingPlaylist.Should().NotBeNull();
-            matchingPlaylist.Should().Match<Playlist>(x =>
-                x.Id == returnedPlaylist.Id &&
-                x.Name == returnedPlaylist.Name &&
-                x.Public == returnedPlaylist.Public &&
-                x.UserId == returnedPlaylist.UserId);
+            Assert.NotNull(matchingPlaylist);
+            Assert.Equal(returnedPlaylist.Id, matchingPlaylist.Id);
+            Assert.Equal(returnedPlaylist.Name, matchingPlaylist.Name);
+            Assert.Equal(returnedPlaylist.Public, matchingPlaylist.Public);
+            Assert.Equal(returnedPlaylist.UserId, matchingPlaylist.UserId);
         }
     }
 }

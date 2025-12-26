@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -28,7 +27,7 @@ public class DeleteLinkFeatureTests(IntegrationTestWebAppFactory factory)
         await LinkApiClient.DeleteLink(command.Id);
 
         var deletedLink = await Context.Links.AsNoTracking().FirstOrDefaultAsync(x => x.Id == link.Id);
-        deletedLink.Should().BeNull();
+        Assert.Null(deletedLink);
     }
 
     [Fact]
@@ -49,7 +48,9 @@ public class DeleteLinkFeatureTests(IntegrationTestWebAppFactory factory)
             Id = link.Id,
         };
 
-        await FluentActions.Invoking(() => LinkApiClient.DeleteLink(command.Id))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await LinkApiClient.DeleteLink(command.Id);
+        });
     }
 }

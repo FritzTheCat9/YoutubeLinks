@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Commands;
@@ -28,13 +27,13 @@ public class ResetPasswordFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         var isPasswordReset = await UserApiClient.ResetPassword(command);
-        isPasswordReset.Should().BeTrue();
+        Assert.True(isPasswordReset);
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-        modifiedUser.Should().NotBeNull();
-        modifiedUser?.PasswordHash.Should().NotBeNull();
-        PasswordService.Validate(command.NewPassword, modifiedUser?.PasswordHash);
-        modifiedUser?.ForgotPasswordToken.Should().BeNull();
+        Assert.NotNull(modifiedUser);
+        Assert.NotNull(modifiedUser.PasswordHash);
+        Assert.True(PasswordService.Validate(command.NewPassword, modifiedUser.PasswordHash));
+        Assert.Null(modifiedUser.ForgotPasswordToken);
     }
 }

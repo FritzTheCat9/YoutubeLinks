@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Queries;
@@ -26,9 +25,9 @@ public class GetUserFeatureTests(IntegrationTestWebAppFactory factory)
 
         var userDto = await UserApiClient.GetUser(command.Id);
 
-        userDto.Should().NotBeNull();
-        userDto.Id.Should().Be(user.Id);
-        userDto.Email.Should().Be(user.Email);
-        userDto.UserName.Should().Be(user.UserName);
+        Assert.NotNull(userDto);
+        Assert.Equal(user.Id, userDto.Id);
+        Assert.Equal(user.Email, userDto.Email);
+        Assert.Equal(user.UserName, userDto.UserName);
     }
 }

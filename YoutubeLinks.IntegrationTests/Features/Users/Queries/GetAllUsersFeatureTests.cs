@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Users.Helpers;
@@ -42,25 +41,25 @@ public class GetAllUsersFeatureTests(IntegrationTestWebAppFactory factory)
 
         var paginatedUsers = await UserApiClient.GetAllUsers(command);
 
-        paginatedUsers.Should().NotBeNull();
-        paginatedUsers.Items.Should().HaveCount(2);
-        paginatedUsers.Items.Should().BeInAscendingOrder(x => x.Email);
-        paginatedUsers.Page.Should().Be(command.Page);
-        paginatedUsers.PageSize.Should().Be(command.PageSize);
-        paginatedUsers.TotalCount.Should().Be(5);
-        paginatedUsers.PagesCount.Should().Be(3);
-        paginatedUsers.HasNextPage.Should().Be(true);
-        paginatedUsers.HasPreviousPage.Should().Be(false);
+        Assert.NotNull(paginatedUsers);
+        Assert.Equal(2, paginatedUsers.Items.Count);
+        var sorted = paginatedUsers.Items.OrderBy(x => x.Email).ToList();
+        Assert.Equal(sorted, paginatedUsers.Items);
+        Assert.Equal(command.Page, paginatedUsers.Page);
+        Assert.Equal(command.PageSize, paginatedUsers.PageSize);
+        Assert.Equal(5, paginatedUsers.TotalCount);
+        Assert.Equal(3, paginatedUsers.PagesCount);
+        Assert.True(paginatedUsers.HasNextPage);
+        Assert.False(paginatedUsers.HasPreviousPage);
 
         foreach (var returnedUser in paginatedUsers.Items)
         {
             var matchingUser = users.FirstOrDefault(x => x.Id == returnedUser.Id);
 
-            matchingUser.Should().NotBeNull();
-            matchingUser.Should().Match<User>(x =>
-                x.Id == returnedUser.Id &&
-                x.Email == returnedUser.Email &&
-                x.UserName == returnedUser.UserName);
+            Assert.NotNull(matchingUser);
+            Assert.Equal(returnedUser.Id, matchingUser.Id);
+            Assert.Equal(returnedUser.Email, matchingUser.Email);
+            Assert.Equal(returnedUser.UserName, matchingUser.UserName);
         }
     }
 }

@@ -145,11 +145,9 @@ Nuget packages and libraries used in projects.
     - [Blazored.LocalStorage](https://www.nuget.org/packages/Blazored.LocalStorage) - store information in local
       storage (Jwt Token, selected theme)
 - Unit Tests
-    - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions) - better assertions in tests
     - [NSubstitute](https://www.nuget.org/packages/NSubstitute) - mocking library
     - [xUnit](https://www.nuget.org/packages/xunit) - unit testing framework
 - Integration Tests
-    - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions) - better assertions in tests
     - [Testcontainers.MsSql](https://www.nuget.org/packages/Testcontainers) - lightweight, throwaway containers for
       testing with real MSSQL databases
     - [xUnit](https://www.nuget.org/packages/xunit) - unit testing framework

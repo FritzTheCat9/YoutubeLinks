@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Commands;
@@ -37,13 +36,14 @@ public class LoginFeatureTests(IntegrationTestWebAppFactory factory)
         };
 
         var jwt = await UserApiClient.Login(command);
-        jwt.AccessToken.Should().NotBeNull();
-        jwt.RefreshToken.Should().NotBeNull();
+        Assert.NotNull(jwt);
+        Assert.NotNull(jwt.AccessToken);
+        Assert.NotNull(jwt.RefreshToken);
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-        modifiedUser.Should().NotBeNull();
-        modifiedUser?.RefreshToken.Should().NotBeNull();
-        modifiedUser?.RefreshToken.Should().Be(jwt.RefreshToken);
+        Assert.NotNull(modifiedUser);
+        Assert.NotNull(modifiedUser.RefreshToken);
+        Assert.Equal(jwt.RefreshToken, modifiedUser.RefreshToken);
     }
 }

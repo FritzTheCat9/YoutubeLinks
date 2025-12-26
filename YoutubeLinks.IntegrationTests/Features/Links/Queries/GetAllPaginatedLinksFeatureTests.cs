@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Links.Queries;
@@ -42,28 +41,28 @@ public class GetAllPaginatedLinksFeatureTests(IntegrationTestWebAppFactory facto
 
         var paginatedLinks = await LinkApiClient.GetAllPaginatedLinks(command);
 
-        paginatedLinks.Should().NotBeNull();
-        paginatedLinks.Items.Should().HaveCount(2);
-        paginatedLinks.Items.Should().BeInAscendingOrder(x => x.Title);
-        paginatedLinks.Page.Should().Be(command.Page);
-        paginatedLinks.PageSize.Should().Be(command.PageSize);
-        paginatedLinks.TotalCount.Should().Be(3);
-        paginatedLinks.PagesCount.Should().Be(2);
-        paginatedLinks.HasNextPage.Should().Be(true);
-        paginatedLinks.HasPreviousPage.Should().Be(false);
+        Assert.NotNull(paginatedLinks);
+        Assert.Equal(2, paginatedLinks.Items.Count);
+        var sorted = paginatedLinks.Items.OrderBy(x => x.Title).ToList();
+        Assert.Equal(sorted, paginatedLinks.Items);
+        Assert.Equal(command.Page, paginatedLinks.Page);
+        Assert.Equal(command.PageSize, paginatedLinks.PageSize);
+        Assert.Equal(3, paginatedLinks.TotalCount);
+        Assert.Equal(2, paginatedLinks.PagesCount);
+        Assert.True(paginatedLinks.HasNextPage);
+        Assert.False(paginatedLinks.HasPreviousPage);
 
         foreach (var returnedLink in paginatedLinks.Items)
         {
             var matchingLink = links.FirstOrDefault(x => x.Id == returnedLink.Id);
 
-            matchingLink.Should().NotBeNull();
-            matchingLink.Should().Match<Link>(x =>
-                x.Id == returnedLink.Id &&
-                x.Url == returnedLink.Url &&
-                x.VideoId == returnedLink.VideoId &&
-                x.Title == returnedLink.Title &&
-                x.Downloaded == returnedLink.Downloaded &&
-                x.PlaylistId == returnedLink.PlaylistId);
+            Assert.NotNull(matchingLink);
+            Assert.Equal(returnedLink.Id, matchingLink.Id);
+            Assert.Equal(returnedLink.Url, matchingLink.Url);
+            Assert.Equal(returnedLink.VideoId, matchingLink.VideoId);
+            Assert.Equal(returnedLink.Title, matchingLink.Title);
+            Assert.Equal(returnedLink.Downloaded, matchingLink.Downloaded);
+            Assert.Equal(returnedLink.PlaylistId, matchingLink.PlaylistId);
         }
     }
 }

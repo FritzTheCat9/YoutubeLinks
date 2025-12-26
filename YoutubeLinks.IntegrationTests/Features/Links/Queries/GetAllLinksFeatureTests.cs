@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Links.Queries;
 
@@ -33,19 +32,18 @@ public class GetAllLinksFeatureTests(IntegrationTestWebAppFactory factory)
 
         var playlistLinks = (await LinkApiClient.GetAllLinks(command)).ToList();
 
-        playlistLinks.Should().NotBeNull();
-        playlistLinks.Should().HaveCount(2);
+        Assert.NotNull(playlistLinks);
+        Assert.Equal(2, playlistLinks.Count);
 
         foreach (var returnedLink in playlistLinks)
         {
             var matchingLink = links.FirstOrDefault(x => x.Id == returnedLink.Id);
-            
-            matchingLink.Should().NotBeNull();
-            matchingLink.Should().Match<Link>(x =>
-                x.Id == returnedLink.Id &&
-                x.Url == returnedLink.Url &&
-                x.VideoId == returnedLink.VideoId &&
-                x.Title == returnedLink.Title);
+
+            Assert.NotNull(matchingLink);
+            Assert.Equal(returnedLink.Id, matchingLink.Id);
+            Assert.Equal(returnedLink.Url, matchingLink.Url);
+            Assert.Equal(returnedLink.VideoId, matchingLink.VideoId);
+            Assert.Equal(returnedLink.Title, matchingLink.Title);
         }
     }
 }

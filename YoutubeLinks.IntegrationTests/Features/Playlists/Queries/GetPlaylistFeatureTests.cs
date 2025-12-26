@@ -1,4 +1,3 @@
-using FluentAssertions;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 
@@ -24,10 +23,10 @@ public class GetPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         var playlistDto = await PlaylistApiClient.GetPlaylist(command.Id);
 
-        playlistDto.Should().NotBeNull();
-        playlistDto.Id.Should().Be(playlist.Id);
-        playlistDto.Name.Should().Be(playlist.Name);
-        playlistDto.Public.Should().Be(playlist.Public);
-        playlistDto.UserId.Should().Be(playlist.UserId);
+        Assert.NotNull(playlistDto);
+        Assert.Equal(playlist.Id, playlistDto.Id);
+        Assert.Equal(playlist.Name, playlistDto.Name);
+        Assert.Equal(playlist.Public, playlistDto.Public);
+        Assert.Equal(playlist.UserId, playlistDto.UserId);
     }
 }

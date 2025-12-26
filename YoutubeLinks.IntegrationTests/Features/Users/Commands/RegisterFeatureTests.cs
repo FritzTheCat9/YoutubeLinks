@@ -1,6 +1,4 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Features.Users.Commands;
 using YoutubeLinks.Shared.Features.Users.Helpers;
 
@@ -25,12 +23,11 @@ public class RegisterFeatureTests(IntegrationTestWebAppFactory factory)
 
         var createdUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId);
 
-        createdUser.Should().NotBeNull();
-        createdUser.Should().Match<User>(x =>
-            x.Id == userId &&
-            x.Email == command.Email &&
-            x.UserName == command.UserName &&
-            PasswordService.Validate(command.Password, x.PasswordHash) &&
-            x.ThemeColor == command.ThemeColor);
+        Assert.NotNull(createdUser);
+        Assert.Equal(userId, createdUser.Id);
+        Assert.Equal(command.Email, createdUser.Email);
+        Assert.Equal(command.UserName, createdUser.UserName);
+        Assert.True(PasswordService.Validate(command.Password, createdUser.PasswordHash));
+        Assert.Equal(command.ThemeColor, createdUser.ThemeColor);
     }
 }

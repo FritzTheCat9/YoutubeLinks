@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Shared.Exceptions;
@@ -32,10 +31,9 @@ public class UpdateUserThemeFeatureTests(IntegrationTestWebAppFactory factory)
 
         var modifiedUser = await Context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-        modifiedUser.Should().NotBeNull();
-        modifiedUser?.ThemeColor.Should().Be(ThemeColor.Dark);
+        Assert.NotNull(modifiedUser);
+        Assert.Equal(ThemeColor.Dark, modifiedUser.ThemeColor);
     }
-
 
     [Fact]
     public async Task UpdateUserTheme_ShouldThrowUnauthorizedException_WhenUserIsNotLoggedIn()
@@ -55,7 +53,9 @@ public class UpdateUserThemeFeatureTests(IntegrationTestWebAppFactory factory)
 
         await Logout();
 
-        await FluentActions.Invoking(() => UserApiClient.UpdateUserTheme(command))
-            .Should().ThrowAsync<MyUnauthorizedException>();
+        await Assert.ThrowsAsync<MyUnauthorizedException>(async () =>
+        {
+            await UserApiClient.UpdateUserTheme(command);
+        });
     }
 }
