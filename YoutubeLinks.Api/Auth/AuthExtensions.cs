@@ -12,14 +12,14 @@ namespace YoutubeLinks.Api.Auth;
 
 public static class AuthExtensions
 {
-    private const string SectionName = "Auth";
+    private const string _sectionName = "Auth";
 
     public static IServiceCollection AddAuth(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<AuthOptions>(configuration.GetRequiredSection(SectionName));
-        var authOptions = configuration.GetOptions<AuthOptions>(SectionName);
+        services.Configure<AuthOptions>(configuration.GetRequiredSection(_sectionName));
+        var authOptions = configuration.GetOptions<AuthOptions>(_sectionName);
 
         services
             .AddAuthentication(x =>

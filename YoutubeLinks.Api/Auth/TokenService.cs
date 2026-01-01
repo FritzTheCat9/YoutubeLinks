@@ -49,7 +49,7 @@ public class TokenService : ITokenService
             LinkType.ConfirmEmail => "confirmEmail",
             LinkType.ForgotPassword => "resetPassword",
             _ => throw new ArgumentOutOfRangeException(nameof(linkType),
-                "Unsupported link type.") // TODO: custom exception
+                "Unsupported link type.") //TODO: custom exception
         };
 
         return $"{_baseUrl}/{path}?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";

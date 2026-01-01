@@ -20,50 +20,50 @@ public interface IPlaylistApiClient
 
 public class PlaylistApiClient(IApiClient apiClient) : IPlaylistApiClient
 {
-    private const string Url = "api/playlists";
+    private const string _url = "api/playlists";
 
     public async Task<PagedList<PlaylistDto>> GetAllUserPlaylists(GetAllUserPlaylists.Query query)
     {
-        return await apiClient.Post<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>($"{Url}/all", query);
+        return await apiClient.Post<GetAllUserPlaylists.Query, PagedList<PlaylistDto>>($"{_url}/all", query);
     }
 
     public async Task<PagedList<PlaylistDto>> GetAllPublicPlaylists(GetAllPublicPlaylists.Query query)
     {
-        return await apiClient.Post<GetAllPublicPlaylists.Query, PagedList<PlaylistDto>>($"{Url}/allPublic", query);
+        return await apiClient.Post<GetAllPublicPlaylists.Query, PagedList<PlaylistDto>>($"{_url}/allPublic", query);
     }
 
     public async Task<PlaylistDto> GetPlaylist(int id)
     {
-        return await apiClient.Get<PlaylistDto>($"{Url}/{id}");
+        return await apiClient.Get<PlaylistDto>($"{_url}/{id}");
     }
 
     public async Task<int> CreatePlaylist(CreatePlaylist.Command command)
     {
-        return await apiClient.Post<CreatePlaylist.Command, int>(Url, command);
+        return await apiClient.Post<CreatePlaylist.Command, int>(_url, command);
     }
 
     public async Task UpdatePlaylist(UpdatePlaylist.Command command)
     {
-        await apiClient.Put($"{Url}/{command.Id}", command);
+        await apiClient.Put($"{_url}/{command.Id}", command);
     }
 
     public async Task DeletePlaylist(int id)
     {
-        await apiClient.Delete($"{Url}/{id}");
+        await apiClient.Delete($"{_url}/{id}");
     }
 
     public async Task<HttpResponseMessage> ExportPlaylist(ExportPlaylist.Command command)
     {
-        return await apiClient.PostReturnHttpResponseMessage($"{Url}/export", command);
+        return await apiClient.PostReturnHttpResponseMessage($"{_url}/export", command);
     }
 
     public async Task ImportPlaylist(ImportPlaylist.Command command)
     {
-        await apiClient.Post($"{Url}/import", command);
+        await apiClient.Post($"{_url}/import", command);
     }
 
     public async Task ResetLinksDownloadedFlag(ResetLinksDownloadedFlag.Command command)
     {
-        await apiClient.Post($"{Url}/resetDownloadedFlag", command);
+        await apiClient.Post($"{_url}/resetDownloadedFlag", command);
     }
 }

@@ -29,9 +29,15 @@ public class GetAllPublicPlaylistsFeatureTests
             .Public(true)
             .Build();
 
-        var playlists = new List<Playlist> { publicPlaylist }.AsQueryable();
+        var playlists = new List<Playlist> { publicPlaylist };
+        var pagedPlaylists = new PagedList<Playlist>(
+            items: playlists,
+            page: query.Page,
+            pageSize: query.PageSize,
+            totalCount: playlists.Count
+        );
 
-        _playlistRepository.GetAllPublic().Returns(playlists);
+        _playlistRepository.GetAllPublicPlaylistsPaginated(query).Returns(pagedPlaylists);
 
         var handler = new GetAllPublicPlaylistsFeature.Handler(_playlistRepository);
 
@@ -39,9 +45,8 @@ public class GetAllPublicPlaylistsFeatureTests
 
         Assert.NotNull(result);
         Assert.IsType<PagedList<PlaylistDto>>(result);
-        Assert.Equal(1, result.TotalCount);
+        Assert.Equal(pagedPlaylists.TotalCount, result.TotalCount);
         Assert.Single(result.Items);
-
-        Assert.Equal(1, result.Items.First().Id);
+        Assert.Equal(publicPlaylist.Id, result.Items.First().Id);
     }
 }

@@ -53,7 +53,9 @@ public class ConfirmEmailFeatureTests
         var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _localizer);
 
         var ex = await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal("User with this email does not exist.", ex.Message);
+
+        Assert.True(ex.Errors.ContainsKey(nameof(command.Email)));
+        Assert.Contains("User with this email does not exist.", ex.Errors[nameof(command.Email)]);
     }
 
     [Fact]
@@ -70,7 +72,9 @@ public class ConfirmEmailFeatureTests
         var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _localizer);
 
         var ex = await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal("Email is already confirmed.", ex.Message);
+
+        Assert.True(ex.Errors.ContainsKey(nameof(command.Email)));
+        Assert.Contains("Email is already confirmed.", ex.Errors[nameof(command.Email)]);
     }
 
     [Fact]
@@ -88,7 +92,9 @@ public class ConfirmEmailFeatureTests
         var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _localizer);
 
         var ex = await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal("Token is not assigned to this user.", ex.Message);
+        
+        Assert.True(ex.Errors.ContainsKey(nameof(command.Token)));
+        Assert.Contains("Token is not assigned to this user.", ex.Errors[nameof(command.Token)]);
     }
 
     [Fact]

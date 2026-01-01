@@ -57,8 +57,10 @@ public class GetLinkFeatureTests
         var playlist = PlaylistBuilder.Create()
             .WithUser(user)
             .Public(true)
-            .WithLink("https://youtu.be/public", "public", "Public Video")
             .Build();
+
+        var link = playlist.AddLink("https://youtu.be/public", "public", "Public Video");
+        typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
@@ -80,8 +82,10 @@ public class GetLinkFeatureTests
         var playlist = PlaylistBuilder.Create()
             .WithUser(user)
             .Public(false)
-            .WithLink("https://youtu.be/owned", "owned", "Owned Video")
             .Build();
+
+        var link = playlist.AddLink("https://youtu.be/owned", "owned", "Owned Video");
+        typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);

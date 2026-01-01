@@ -9,7 +9,6 @@ public class UnitOfWorkBehavior<TRequest, TResponse>(
     : IPipelineBehavior<TRequest, TResponse>
 {
     private static bool IsNotCommand => !typeof(TRequest).Name.EndsWith("Command");
-
     private static bool IsDownloadLinkCommand => typeof(TRequest).Name.EndsWith("DownloadLinkCommand");
 
     public async Task<TResponse> Handle(

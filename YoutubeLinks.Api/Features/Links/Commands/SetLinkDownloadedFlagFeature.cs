@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Helpers;

@@ -27,7 +27,7 @@ public class Playlist : Entity, IAggregateRoot
 
     public Link AddLink(string url, string videoId, string title)
     {
-        // validate data
+        //TODO: validate data
         // check LinkUrlExists
 
         var link = Link.Create(url, videoId, title, this);

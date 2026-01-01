@@ -24,8 +24,8 @@ public class ApiClient(
     HttpClient client,
     IJwtProvider jwtProvider) : IApiClient
 {
-    private const string AuthScheme = "Bearer";
-    private const string LanguageHeader = "Accept-Language";
+    private const string _authScheme = "Bearer";
+    private const string _languageHeader = "Accept-Language";
     private readonly string _baseUrl = client.BaseAddress?.ToString();
 
     public async Task<HttpResponseMessage> Get(string url)
@@ -136,10 +136,10 @@ public class ApiClient(
     {
         var token = await jwtProvider.GetJwtDto();
         client.DefaultRequestHeaders.Authorization =
-            token is not null ? new AuthenticationHeaderValue(AuthScheme, token.AccessToken) : null;
+            token is not null ? new AuthenticationHeaderValue(_authScheme, token.AccessToken) : null;
 
         var currentCultureName = CultureInfo.CurrentCulture.Name;
-        client.DefaultRequestHeaders.Add(LanguageHeader, currentCultureName);
+        client.DefaultRequestHeaders.Add(_languageHeader, currentCultureName);
     }
 
     private static async Task HandleErrors(HttpResponseMessage response)

@@ -10,15 +10,15 @@ public interface ITableViewProvider
 
 public class TableViewProvider(ILocalStorageService localStorageService) : ITableViewProvider
 {
-    private const string TableView = "TableView";
+    private const string _tableView = "TableView";
 
     public async Task<bool> GetTableView()
     {
-        return await localStorageService.GetItemAsync<bool?>(TableView) ?? true;
+        return await localStorageService.GetItemAsync<bool?>(_tableView) ?? true;
     }
 
     public async Task SetTableView(bool value)
     {
-        await localStorageService.SetItemAsync(TableView, value);
+        await localStorageService.SetItemAsync(_tableView, value);
     }
 }
