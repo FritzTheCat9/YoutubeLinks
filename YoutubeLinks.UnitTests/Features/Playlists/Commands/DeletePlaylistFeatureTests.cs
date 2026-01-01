@@ -6,7 +6,7 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
-using YoutubeLinks.Shared.Features.Users.Helpers;
+using YoutubeLinks.UnitTests.Builders;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
@@ -16,12 +16,9 @@ public class DeletePlaylistFeatureTests
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
-    public async Task DeletePlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
+    public async Task Handler_ThrowsNotFoundException_WhenPlaylistNotFound()
     {
-        var command = new DeletePlaylist.Command
-        {
-            Id = 1
-        };
+        var command = new DeletePlaylist.Command { Id = 1 };
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
@@ -32,15 +29,15 @@ public class DeletePlaylistFeatureTests
     }
 
     [Fact]
-    public async Task DeletePlaylistHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUser()
+    public async Task Handler_ThrowsForbiddenException_WhenUserIsNotOwner()
     {
-        var command = new DeletePlaylist.Command
-        {
-            Id = 1
-        };
+        var command = new DeletePlaylist.Command { Id = 1 };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var playlist = PlaylistBuilder.Create()
+            .WithName("TestPlaylist")
+            .Public(false)
+            .WithUser(UserBuilder.Create().WithEmail("testuser@gmail.com").Build())
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
@@ -51,17 +48,16 @@ public class DeletePlaylistFeatureTests
         await _playlistRepository.DidNotReceive().Delete(Arg.Any<Playlist>());
     }
 
-
     [Fact]
-    public async Task DeletePlaylistHandler_DeletesPlaylist()
+    public async Task Handler_DeletesPlaylist_WhenUserIsOwner()
     {
-        var command = new DeletePlaylist.Command
-        {
-            Id = 1
-        };
+        var command = new DeletePlaylist.Command { Id = 1 };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var playlist = PlaylistBuilder.Create()
+            .WithName("TestPlaylist")
+            .Public(false)
+            .WithUser(UserBuilder.Create().WithEmail("testuser@gmail.com").Build())
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);

@@ -5,7 +5,7 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Helpers;
-using YoutubeLinks.Shared.Features.Users.Helpers;
+using YoutubeLinks.UnitTests.Builders;
 using ApiFeature = YoutubeLinks.Api.Features.Playlists.Commands.ExportPlaylistFeature.ExportPlaylistFeature;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ExportPlaylistFeature;
@@ -40,8 +40,11 @@ public class ExportPlaylistFeatureTests
             PlaylistFileType = PlaylistFileType.Json
         };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var user = UserBuilder.Create().WithEmail("testuser@gmail.com").Build();
+        var playlist = PlaylistBuilder.Create()
+            .WithUser(user)
+            .Public(false)
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
@@ -60,8 +63,12 @@ public class ExportPlaylistFeatureTests
             PlaylistFileType = PlaylistFileType.Json
         };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("Name", true, user);
+        var user = UserBuilder.Create().Build();
+        var playlist = PlaylistBuilder.Create()
+            .WithUser(user)
+            .Public(true)
+            .WithName("Name")
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
@@ -85,8 +92,12 @@ public class ExportPlaylistFeatureTests
             PlaylistFileType = PlaylistFileType.Txt
         };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("Name", false, user);
+        var user = UserBuilder.Create().Build();
+        var playlist = PlaylistBuilder.Create()
+            .WithUser(user)
+            .Public(false)
+            .WithName("Name")
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);

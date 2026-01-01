@@ -8,6 +8,7 @@ using YoutubeLinks.Api.Services;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Features.Playlists.Helpers;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 using ApiFeature = YoutubeLinks.Api.Features.Playlists.Commands.ImportPlaylistFeature.ImportPlaylistFeature;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeature;
@@ -15,10 +16,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
 public class ImportPlaylistFeatureTests
 {
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
-
     private readonly IStringLocalizer<ApiValidationMessage> _localizer =
         Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
     private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
@@ -35,7 +34,13 @@ public class ImportPlaylistFeatureTests
 
         _authService.GetCurrentUserId().Returns((int?)null);
 
-        var handler = new ApiFeature.Handler(_playlistRepository, _userRepository, _authService, _youtubeService, _localizer);
+        var handler = new ApiFeature.Handler(
+            _playlistRepository,
+            _userRepository,
+            _authService,
+            _youtubeService,
+            _localizer
+        );
 
         await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(command, CancellationToken.None));
     }
@@ -48,21 +53,31 @@ public class ImportPlaylistFeatureTests
             Name = "Name",
             Public = true,
             PlaylistFileType = PlaylistFileType.Json,
-            ExportedLinks =
-            [
+            ExportedLinks = new List<LinkJsonModel>
+            {
                 new LinkJsonModel
                 {
                     Title = "Rick Astley - Never Gonna Give You Up",
                     Url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                     VideoId = "dQw4w9WgXcQ"
                 }
-            ]
+            }
         };
 
+        var mockedUser = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+
         _authService.GetCurrentUserId().Returns(123);
+        _userRepository.Get(123).Returns(mockedUser);
         _playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
 
-        var handler = new ApiFeature.Handler(_playlistRepository, _userRepository, _authService, _youtubeService, _localizer);
+        var handler = new ApiFeature.Handler(
+            _playlistRepository,
+            _userRepository,
+            _authService,
+            _youtubeService,
+            _localizer
+        );
+
         var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.Equal(1, result);
@@ -77,18 +92,28 @@ public class ImportPlaylistFeatureTests
             Name = "Name",
             Public = true,
             PlaylistFileType = PlaylistFileType.Txt,
-            ExportedLinkUrls =
-            [
+            ExportedLinkUrls = new List<string>
+            {
                 "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            ]
+            }
         };
 
+        var mockedUser = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+
         _authService.GetCurrentUserId().Returns(123);
+        _userRepository.Get(123).Returns(mockedUser);
         _playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
-        _youtubeService.GetVideoTitle(Arg.Any<string>()).Returns("Rick Astley - Never Gonna Give You Up");
+        _youtubeService.GetVideoTitle(Arg.Any<string>())
+            .Returns("Rick Astley - Never Gonna Give You Up");
 
+        var handler = new ApiFeature.Handler(
+            _playlistRepository,
+            _userRepository,
+            _authService,
+            _youtubeService,
+            _localizer
+        );
 
-        var handler = new ApiFeature.Handler(_playlistRepository, _userRepository, _authService, _youtubeService, _localizer);
         var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.Equal(1, result);

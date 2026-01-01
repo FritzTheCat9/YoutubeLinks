@@ -22,7 +22,6 @@ public class UpdateUserThemeFeatureTests
             Id = 1,
             ThemeColor = ThemeColor.Light
         };
-
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
         var handler = new UpdateUserThemeFeature.Handler(_userRepository, _authService);
@@ -38,7 +37,6 @@ public class UpdateUserThemeFeatureTests
             Id = 1,
             ThemeColor = ThemeColor.Light
         };
-
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
         _userRepository.Get(Arg.Any<int>()).Returns((User)null);
 
@@ -53,17 +51,18 @@ public class UpdateUserThemeFeatureTests
         var command = new UpdateUserTheme.Command
         {
             Id = 1,
-            ThemeColor = ThemeColor.Light
+            ThemeColor = ThemeColor.Dark
         };
-
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
 
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
         _userRepository.Get(Arg.Any<int>()).Returns(user);
 
         var handler = new UpdateUserThemeFeature.Handler(_userRepository, _authService);
+
         await handler.Handle(command, CancellationToken.None);
 
-        await _userRepository.Received().Update(Arg.Any<User>());
+        await _userRepository.Received(1).Update(Arg.Is<User>(u => u.ThemeColor == ThemeColor.Dark));
+        Assert.Equal(ThemeColor.Dark, user.ThemeColor); // Ensures the user aggregate updated
     }
 }

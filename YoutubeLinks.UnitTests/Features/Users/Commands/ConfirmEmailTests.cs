@@ -12,7 +12,6 @@ public class ConfirmEmailTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    [InlineData("    ")]
     [InlineData("   ")]
     public void ConfirmEmailCommandValidator_Email_ShouldNotBeEmpty(string email)
     {
@@ -87,7 +86,6 @@ public class ConfirmEmailTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    [InlineData("    ")]
     [InlineData("   ")]
     public void ConfirmEmailCommandValidator_Token_ShouldNotBeEmpty(string token)
     {

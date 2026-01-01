@@ -6,6 +6,7 @@ using YoutubeLinks.Api.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
+using YoutubeLinks.UnitTests.Builders;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
 
@@ -27,23 +28,33 @@ public class GetAllUserPlaylistsFeatureTests
             UserId = 1
         };
 
-        var list = new List<Playlist>
-        {
-            new()
-            {
-                Id = 1
-            }
-        };
+        var playlist = new PlaylistBuilder().WithName("Playlist 1").Build();
+        var playlists = new List<Playlist> { playlist };
+
+        var pagedList = new PagedList<Playlist>(
+            playlists,
+            query.Page,
+            query.PageSize,
+            playlists.Count
+        );
 
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-        _playlistRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
+
+        _playlistRepository
+            .GetAllUserPlaylistsPaginated(
+                Arg.Any<GetAllUserPlaylists.Query>(),
+                Arg.Any<int>(),
+                Arg.Any<bool>()
+            )
+            .Returns(pagedList);
 
         var handler = new GetAllUserPlaylistsFeature.Handler(_playlistRepository, _authService);
         var result = await handler.Handle(query, CancellationToken.None);
 
         Assert.NotNull(result);
         Assert.IsType<PagedList<PlaylistDto>>(result);
-        Assert.Equal(1, result.TotalCount);
+        Assert.Equal(pagedList.TotalCount, result.TotalCount);
         Assert.Single(result.Items);
+        Assert.Equal("Playlist 1", result.Items.First().Name);
     }
 }

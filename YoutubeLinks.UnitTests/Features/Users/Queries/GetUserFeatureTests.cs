@@ -16,11 +16,7 @@ public class GetUserFeatureTests
     [Fact]
     public async Task GetUserHandler_ThrowsNotFoundException_IfUserIsNotFound()
     {
-        var query = new GetUser.Query
-        {
-            Id = 1
-        };
-
+        var query = new GetUser.Query { Id = 1 };
         _userRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<User>(null));
 
         var handler = new GetUserFeature.Handler(_userRepository);
@@ -31,19 +27,18 @@ public class GetUserFeatureTests
     [Fact]
     public async Task GetUserHandler_ReturnsUserDto()
     {
-        var query = new GetUser.Query
-        {
-            Id = 1
-        };
-
+        var query = new GetUser.Query { Id = 1 };
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
 
         _userRepository.Get(Arg.Any<int>()).Returns(user);
 
         var handler = new GetUserFeature.Handler(_userRepository);
+
         var result = await handler.Handle(query, CancellationToken.None);
 
         Assert.NotNull(result);
         Assert.IsType<UserDto>(result);
+        Assert.Equal(user.Email, result.Email);
+        Assert.Equal(user.UserName, result.UserName);
     }
 }

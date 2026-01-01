@@ -5,6 +5,7 @@ using YoutubeLinks.Api.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Abstractions;
 using YoutubeLinks.Shared.Features.Playlists.Queries;
 using YoutubeLinks.Shared.Features.Playlists.Responses;
+using YoutubeLinks.UnitTests.Builders;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
 
@@ -24,22 +25,23 @@ public class GetAllPublicPlaylistsFeatureTests
             SearchTerm = ""
         };
 
-        var list = new List<Playlist>
-        {
-            new()
-            {
-                Id = 1
-            }
-        };
+        var publicPlaylist = PlaylistBuilder.Create()
+            .Public(true)
+            .Build();
 
-        _playlistRepository.GetAllPublic().Returns(list.AsQueryable());
+        var playlists = new List<Playlist> { publicPlaylist }.AsQueryable();
+
+        _playlistRepository.GetAllPublic().Returns(playlists);
 
         var handler = new GetAllPublicPlaylistsFeature.Handler(_playlistRepository);
+
         var result = await handler.Handle(query, CancellationToken.None);
 
         Assert.NotNull(result);
         Assert.IsType<PagedList<PlaylistDto>>(result);
         Assert.Equal(1, result.TotalCount);
         Assert.Single(result.Items);
+
+        Assert.Equal(1, result.Items.First().Id);
     }
 }

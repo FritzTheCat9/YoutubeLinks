@@ -13,7 +13,7 @@ public class UpdateUserThemeTests
     [InlineData((ThemeColor)3)]
     [InlineData((ThemeColor)4)]
     [InlineData((ThemeColor)5)]
-    public void UpdateUserThemeValidator_YoutubeFileType_ShouldBeInEnum(ThemeColor themeColor)
+    public void UpdateUserThemeValidator_ThemeColor_ShouldBeInEnum(ThemeColor themeColor)
     {
         var message = $"ThemeColor has a range of values which does not include: {themeColor}.";
 

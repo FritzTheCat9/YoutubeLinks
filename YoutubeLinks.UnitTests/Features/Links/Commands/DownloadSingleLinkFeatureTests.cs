@@ -8,7 +8,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
 public class DownloadSingleLinkFeatureTests
 {
-    private readonly IYoutubeService youtubeService = Substitute.For<IYoutubeService>();
+    private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 
     [Fact]
     public async Task DownloadSingleLinkHandler_ReturnsYoutubeFile()
@@ -20,13 +20,14 @@ public class DownloadSingleLinkFeatureTests
         };
         var youtubeFile = new YoutubeFile();
 
-        youtubeService.GetMp3File(Arg.Any<string>()).Returns(youtubeFile);
+        _youtubeService.GetMp3File(Arg.Any<string>()).Returns(youtubeFile);
 
-        var handler = new DownloadSingleLinkFeature.Handler(youtubeService);
+        var handler = new DownloadSingleLinkFeature.Handler(_youtubeService);
+
         var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.Equal(youtubeFile, result);
-        await youtubeService.Received().GetMp3File(Arg.Any<string>());
-        await youtubeService.DidNotReceive().GetMp4File(Arg.Any<string>());
+        await _youtubeService.Received().GetMp3File(Arg.Any<string>());
+        await _youtubeService.DidNotReceive().GetMp4File(Arg.Any<string>());
     }
 }

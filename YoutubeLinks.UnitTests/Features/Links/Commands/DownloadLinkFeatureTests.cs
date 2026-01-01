@@ -26,7 +26,8 @@ public class DownloadLinkFeatureTests
             YoutubeFileType = YoutubeFileType.Mp3
         };
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
+        _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>())
+            .Returns(Task.FromResult<Playlist>(null));
 
         var handler = new DownloadLinkFeature.Handler(_authService, _playlistRepository, _youtubeService);
 
@@ -34,8 +35,7 @@ public class DownloadLinkFeatureTests
     }
 
     [Fact]
-    public async Task
-        DownloadLinkHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUserOrPlaylistIsNotPublic()
+    public async Task DownloadLinkHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByUserAndNotPublic()
     {
         var command = new DownloadLink.Command
         {
@@ -46,8 +46,11 @@ public class DownloadLinkFeatureTests
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", false, user);
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
-        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        var link = playlist.AddLink("https://youtu.be/test", "test", "Test Video");
+        typeof(Link).GetProperty("Id")!.SetValue(link, 1);
+
+        _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
+        _authService.IsLoggedInUser(user.Id).Returns(false);
 
         var handler = new DownloadLinkFeature.Handler(_authService, _playlistRepository, _youtubeService);
 
@@ -66,9 +69,12 @@ public class DownloadLinkFeatureTests
 
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", false, user);
+        var link = playlist.AddLink("https://youtu.be/test", "test", "Test Video");
+        typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
-        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
+        _authService.IsLoggedInUser(user.Id).Returns(true);
+
         _youtubeService.GetMp3File(Arg.Any<string>()).Returns(youtubeFile);
 
         var handler = new DownloadLinkFeature.Handler(_authService, _playlistRepository, _youtubeService);
@@ -91,9 +97,12 @@ public class DownloadLinkFeatureTests
 
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", true, user);
+        var link = playlist.AddLink("https://youtu.be/test", "test", "Test Video");
+        typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
-        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
+        _authService.IsLoggedInUser(user.Id).Returns(false);
+
         _youtubeService.GetMp4File(Arg.Any<string>()).Returns(youtubeFile);
 
         var handler = new DownloadLinkFeature.Handler(_authService, _playlistRepository, _youtubeService);

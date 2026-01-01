@@ -6,7 +6,7 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
-using YoutubeLinks.Shared.Features.Users.Helpers;
+using YoutubeLinks.UnitTests.Builders;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
@@ -16,13 +16,9 @@ public class ResetLinksDownloadedFlagFeatureTests
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
-    public async Task ResetLinksDownloadedFlagHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
+    public async Task Handler_ThrowsNotFoundException_WhenPlaylistNotFound()
     {
-        var command = new ResetLinksDownloadedFlag.Command
-        {
-            Id = 1,
-            IsDownloaded = false
-        };
+        var command = new ResetLinksDownloadedFlag.Command { Id = 1, IsDownloaded = false };
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
@@ -33,16 +29,15 @@ public class ResetLinksDownloadedFlagFeatureTests
     }
 
     [Fact]
-    public async Task ResetLinksDownloadedFlagHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUser()
+    public async Task Handler_ThrowsForbiddenException_WhenUserIsNotOwner()
     {
-        var command = new ResetLinksDownloadedFlag.Command
-        {
-            Id = 1,
-            IsDownloaded = false
-        };
+        var command = new ResetLinksDownloadedFlag.Command { Id = 1, IsDownloaded = false };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var playlist = PlaylistBuilder.Create()
+            .WithName("TestPlaylist")
+            .Public(false)
+            .WithUser(UserBuilder.Create().WithEmail("testuser@gmail.com").Build())
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
@@ -54,17 +49,15 @@ public class ResetLinksDownloadedFlagFeatureTests
     }
 
     [Fact]
-    public async Task ResetLinksDownloadedFlagHandler_SetPlaylistLinksDownloadedFlag()
+    public async Task Handler_SetsPlaylistLinksDownloadedFlag_WhenUserIsOwner()
     {
-        var command = new ResetLinksDownloadedFlag.Command
-        {
-            Id = 1,
-            IsDownloaded = false
-        };
+        var command = new ResetLinksDownloadedFlag.Command { Id = 1, IsDownloaded = false };
 
-
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var playlist = PlaylistBuilder.Create()
+            .WithName("TestPlaylist")
+            .Public(false)
+            .WithUser(UserBuilder.Create().WithEmail("testuser@gmail.com").Build())
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);

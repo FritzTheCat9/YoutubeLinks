@@ -32,6 +32,6 @@ public class DownloadLinkTests
         var result = validator.TestValidate(command);
 
         result.ShouldHaveValidationErrorFor(x => x.YoutubeFileType)
-            .WithErrorMessage(message);
+              .WithErrorMessage(message);
     }
 }

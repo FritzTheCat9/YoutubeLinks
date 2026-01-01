@@ -38,7 +38,7 @@ public static class GetAllUserPlaylistsFeature
             var isUserPlaylist = authService.IsLoggedInUser(query.UserId);
             var playlistPageList = playlistRepository.GetAllUserPlaylistsPaginated(query, query.UserId, isUserPlaylist);
 
-            var playlistsDtoPageList = PageListExtensions<User>.Convert(playlistPageList, PlaylistExtensions.ToDto);
+            var playlistsDtoPageList = PageListExtensions<Playlist>.Convert(playlistPageList, PlaylistExtensions.ToDto);
 
             return Task.FromResult(playlistsDtoPageList);
         }

@@ -7,7 +7,7 @@ using YoutubeLinks.UnitTests.Localization;
 
 namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
-public class UpdateLinkTestsTests
+public class UpdateLinkTests
 {
     [Theory]
     [InlineData(null)]

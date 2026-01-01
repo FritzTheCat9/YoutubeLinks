@@ -74,12 +74,12 @@ public class ImportPlaylistTests
 
         var validator = new ImportPlaylist.FormModelValidator(localizer);
 
-        var command = new ImportPlaylist.FormModel
+        var formModel = new ImportPlaylist.FormModel
         {
             Name = name
         };
 
-        var result = validator.TestValidate(command);
+        var result = validator.TestValidate(formModel);
 
         result.ShouldHaveValidationErrorFor(x => x.Name)
             .WithErrorMessage(message);
@@ -98,12 +98,12 @@ public class ImportPlaylistTests
 
         var validator = new ImportPlaylist.FormModelValidator(localizer);
 
-        var command = new ImportPlaylist.FormModel
+        var formModel = new ImportPlaylist.FormModel
         {
             Name = name
         };
 
-        var result = validator.TestValidate(command);
+        var result = validator.TestValidate(formModel);
 
         result.ShouldHaveValidationErrorFor(x => x.Name)
             .WithErrorMessage(message);
@@ -119,13 +119,13 @@ public class ImportPlaylistTests
 
         var validator = new ImportPlaylist.FormModelValidator(localizer);
 
-        var command = new ImportPlaylist.FormModel
+        var formModel = new ImportPlaylist.FormModel
         {
             Name = "Test Playlist",
             File = null
         };
 
-        var result = validator.TestValidate(command);
+        var result = validator.TestValidate(formModel);
 
         result.ShouldHaveValidationErrorFor(x => x.File)
             .WithErrorMessage(message);
@@ -144,13 +144,13 @@ public class ImportPlaylistTests
 
         var validator = new ImportPlaylist.FormModelValidator(localizer);
 
-        var command = new ImportPlaylist.FormModel
+        var formModel = new ImportPlaylist.FormModel
         {
             Name = "Test Playlist",
             File = mockedFile
         };
 
-        var result = validator.TestValidate(command);
+        var result = validator.TestValidate(formModel);
 
         result.ShouldHaveValidationErrorFor(x => x.File.Size)
             .WithErrorMessage(message);
@@ -172,13 +172,13 @@ public class ImportPlaylistTests
 
         var validator = new ImportPlaylist.FormModelValidator(localizer);
 
-        var command = new ImportPlaylist.FormModel
+        var formModel = new ImportPlaylist.FormModel
         {
             Name = "Test Playlist",
             File = mockedFile
         };
 
-        var result = validator.TestValidate(command);
+        var result = validator.TestValidate(formModel);
 
         result.ShouldHaveValidationErrorFor(x => x.File.ContentType)
             .WithErrorMessage(message);
@@ -225,11 +225,18 @@ public class ImportPlaylistTests
             .WithErrorMessage(message);
     }
 
-    private class MockBrowserFile(string name, long size, string contentType) : IBrowserFile
+    private class MockBrowserFile : IBrowserFile
     {
-        public string Name { get; } = name;
-        public long Size { get; } = size;
-        public string ContentType { get; } = contentType;
+        public MockBrowserFile(string name, long size, string contentType)
+        {
+            Name = name;
+            Size = size;
+            ContentType = contentType;
+        }
+
+        public string Name { get; }
+        public long Size { get; }
+        public string ContentType { get; }
         public DateTimeOffset LastModified { get; }
 
         public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)

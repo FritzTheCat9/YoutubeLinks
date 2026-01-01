@@ -5,7 +5,7 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Links.Queries;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Queries;
-using YoutubeLinks.Shared.Features.Users.Helpers;
+using YoutubeLinks.UnitTests.Builders;
 
 namespace YoutubeLinks.UnitTests.Features.Links.Queries;
 
@@ -17,80 +17,63 @@ public class GetAllLinksFeatureTests
     [Fact]
     public async Task GetAllLinksHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
     {
-        var query = new GetAllLinks.Query
-        {
-            PlaylistId = 1,
-            Downloaded = false
-        };
+        var query = new GetAllLinks.Query { PlaylistId = 1, Downloaded = false };
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
+        _playlistRepository.Get(1).Returns((Playlist)null);
 
         var handler = new GetAllLinksFeature.Handler(_playlistRepository, _authService);
 
-        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(query, CancellationToken.None));
+        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(query, default));
     }
 
     [Fact]
-    public async Task GetAllLinksHandler_ReturnsLinkInfoDtos_IfPlaylistIsOwnedByUser()
+    public async Task GetAllLinksHandler_ReturnsLinks_ForOwnersPlaylist()
     {
-        var query = new GetAllLinks.Query
-        {
-            PlaylistId = 1,
-            Downloaded = false
-        };
+        var query = new GetAllLinks.Query { PlaylistId = 1, Downloaded = false };
 
-        var links = new List<Link>
-        {
-            new()
-            {
-                Id = 1
-            }
-        };
+        var user = UserBuilder.Create().WithEmail("mail@mail.com").Build();
+        var playlist = PlaylistBuilder.Create()
+            .WithUser(user)
+            .WithLink("https://youtu.be/abc", "abc", "Test Video")
+            .Build();
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
-        {
-            UserId = 1
-        });
-        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-        _playlistRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(links.AsQueryable());
+        var linksQueryable = playlist.Links.AsQueryable();
+
+        _playlistRepository.Get(1).Returns(playlist);
+        _authService.IsLoggedInUser(playlist.UserId).Returns(true);
+        _playlistRepository.GetPlaylistLinksAsQueryable(1, true).Returns(linksQueryable);
 
         var handler = new GetAllLinksFeature.Handler(_playlistRepository, _authService);
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = (await handler.Handle(query, default)).ToList();
 
         Assert.NotNull(result);
-        Assert.IsType<List<GetAllLinks.LinkInfoDto>>(result);
         Assert.Single(result);
+        Assert.IsType<GetAllLinks.LinkInfoDto>(result.First());
     }
 
     [Fact]
-    public async Task GetAllLinksHandler_ReturnsLinkInfoDtos_IfPlaylistIsNotOwnedByUser()
+    public async Task GetAllLinksHandler_ReturnsLinks_ForPublicPlaylist_WhenUserNotOwner()
     {
-        var query = new GetAllLinks.Query
-        {
-            PlaylistId = 1,
-            Downloaded = false
-        };
+        var query = new GetAllLinks.Query { PlaylistId = 1, Downloaded = false };
 
-        var links = new List<Link>
-        {
-            new()
-            {
-                Id = 1
-            }
-        };
+        var user = UserBuilder.Create().WithEmail("owner@mail.com").Build();
+        var playlist = PlaylistBuilder.Create()
+            .WithUser(user)
+            .Public(true)
+            .WithLink("https://youtu.be/xyz", "xyz", "Public Video")
+            .Build();
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", true, user);
+        var linksQueryable = playlist.Links.AsQueryable();
 
-        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
-        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
-        _playlistRepository.GetPlaylistLinksAsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(links.AsQueryable());
+        _playlistRepository.Get(1).Returns(playlist);
+        _authService.IsLoggedInUser(playlist.UserId).Returns(false);
+        _playlistRepository.GetPlaylistLinksAsQueryable(1, false).Returns(linksQueryable);
 
         var handler = new GetAllLinksFeature.Handler(_playlistRepository, _authService);
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = (await handler.Handle(query, default)).ToList();
 
         Assert.NotNull(result);
-        Assert.IsType<List<GetAllLinks.LinkInfoDto>>(result);
         Assert.Single(result);
+        Assert.IsType<GetAllLinks.LinkInfoDto>(result.First());
     }
 }

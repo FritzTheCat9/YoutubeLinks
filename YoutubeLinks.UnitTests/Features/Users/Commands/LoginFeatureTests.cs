@@ -16,11 +16,9 @@ public class LoginFeatureTests
 {
     private readonly IAuthenticator _authenticator = Substitute.For<IAuthenticator>();
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
-
+    private readonly IPasswordService _passwordService = Substitute.For<IPasswordService>();
     private readonly IStringLocalizer<ApiValidationMessage> _localizer =
         Substitute.For<IStringLocalizer<ApiValidationMessage>>();
-
-    private readonly IPasswordService _passwordService = Substitute.For<IPasswordService>();
 
     [Fact]
     public async Task LoginHandler_ThrowsValidationException_IfUserWithGivenEmailDoesNotExist()
@@ -62,7 +60,7 @@ public class LoginFeatureTests
         var command = new Login.Command
         {
             Email = "test@test.com",
-            Password = "password"
+            Password = "wrongpassword"
         };
 
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
@@ -88,16 +86,23 @@ public class LoginFeatureTests
 
         _userRepository.GetByEmail(Arg.Any<string>()).Returns(user);
         _passwordService.Validate(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-        _authenticator.CreateTokens(Arg.Any<User>()).Returns(new JwtDto
+
+        var jwtDto = new JwtDto
         {
-            AccessToken = "AccessToken"
-        });
+            AccessToken = "AccessToken",
+            RefreshToken = "RefreshToken"
+        };
+        _authenticator.CreateTokens(Arg.Any<User>()).Returns(jwtDto);
 
         var handler = new LoginFeature.Handler(_passwordService, _userRepository, _authenticator, _localizer);
         var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.NotNull(result);
         Assert.IsType<JwtDto>(result);
+        Assert.Equal("AccessToken", result.AccessToken);
+        Assert.Equal("RefreshToken", result.RefreshToken);
+
         _authenticator.Received().CreateTokens(Arg.Any<User>());
+        await _userRepository.Received().Update(Arg.Any<User>());
     }
 }

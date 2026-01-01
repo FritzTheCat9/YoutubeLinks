@@ -7,7 +7,7 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
-using YoutubeLinks.Shared.Features.Users.Helpers;
+using YoutubeLinks.UnitTests.Builders;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
@@ -15,17 +15,11 @@ public class UpdatePlaylistFeatureTests
 {
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
-    private readonly IClock _clock = Substitute.For<IClock>();
 
     [Fact]
-    public async Task UpdatePlaylistHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
+    public async Task Handler_ThrowsNotFoundException_WhenPlaylistNotFound()
     {
-        var command = new UpdatePlaylist.Command
-        {
-            Id = 1,
-            Name = "Test",
-            Public = true
-        };
+        var command = new UpdatePlaylist.Command { Id = 1, Name = "Test", Public = true };
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
@@ -36,17 +30,15 @@ public class UpdatePlaylistFeatureTests
     }
 
     [Fact]
-    public async Task UpdatePlaylistHandler_ThrowsForbiddenException_IfPlaylistIsNotOwnedByLoggedInUser()
+    public async Task Handler_ThrowsForbiddenException_WhenUserIsNotOwner()
     {
-        var command = new UpdatePlaylist.Command
-        {
-            Id = 1,
-            Name = "Test",
-            Public = true
-        };
+        var command = new UpdatePlaylist.Command { Id = 1, Name = "Test", Public = true };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var playlist = PlaylistBuilder.Create()
+            .WithName("TestPlaylist")
+            .Public(false)
+            .WithUser(UserBuilder.Create().WithEmail("testuser@gmail.com").Build())
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
@@ -58,17 +50,15 @@ public class UpdatePlaylistFeatureTests
     }
 
     [Fact]
-    public async Task UpdatePlaylistHandler_UpdatesPlaylist()
+    public async Task Handler_UpdatesPlaylist_WhenUserIsOwner()
     {
-        var command = new UpdatePlaylist.Command
-        {
-            Id = 1,
-            Name = "Test",
-            Public = true
-        };
+        var command = new UpdatePlaylist.Command { Id = 1, Name = "Test", Public = true };
 
-        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
-        var playlist = Playlist.Create("TestPlaylist", false, user);
+        var playlist = PlaylistBuilder.Create()
+            .WithName("TestPlaylist")
+            .Public(false)
+            .WithUser(UserBuilder.Create().WithEmail("testuser@gmail.com").Build())
+            .Build();
 
         _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
         _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);

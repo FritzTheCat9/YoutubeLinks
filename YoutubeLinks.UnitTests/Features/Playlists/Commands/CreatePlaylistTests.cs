@@ -14,7 +14,7 @@ public class CreatePlaylistTests
     [InlineData(" ")]
     [InlineData("    ")]
     [InlineData("   ")]
-    public void CreatePlaylistCommandValidator_Name_ShouldNotBeEmpty(string name)
+    public void Validator_Name_ShouldNotBeEmpty(string name)
     {
         const string message = "Name should not be empty.";
 
@@ -37,7 +37,7 @@ public class CreatePlaylistTests
     [Theory]
     [InlineData("012345678901234567890123456789012345678901234567890")]
     [InlineData("0123456789012345678901234567890123456789012345678901")]
-    public void CreatePlaylistCommandValidator_Name_ShouldBeShorterThanMaximumStringLength(string name)
+    public void Validator_Name_ShouldBeShorterThanMaximumLength(string name)
     {
         var message =
             $"The length of name must be {ValidationConsts.MaximumStringLength} characters or fewer. You entered {name.Length} characters.";
