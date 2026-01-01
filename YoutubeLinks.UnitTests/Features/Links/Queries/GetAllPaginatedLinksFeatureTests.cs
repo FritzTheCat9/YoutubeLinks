@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using NSubstitute;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
@@ -15,7 +14,7 @@ namespace YoutubeLinks.UnitTests.Features.Links.Queries;
 public class GetAllPaginatedLinksFeatureTests
 {
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
-    private readonly ILinkRepository _linkRepository = Substitute.For<ILinkRepository>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
     public async Task GetAllPaginatedLinksHandler_ThrowsNotFoundException_IfPlaylistIsNotFound()
@@ -30,22 +29,13 @@ public class GetAllPaginatedLinksFeatureTests
             PlaylistId = 1
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
         var mediator = Substitute.For<IMediator>();
 
-        playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
+        _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
-        mediator.Send(Arg.Any<GetAllPaginatedLinks.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler =
-                    new GetAllPaginatedLinksFeature.Handler(_linkRepository, playlistRepository, _authService);
-                return handler.Handle(callInfo.Arg<GetAllPaginatedLinks.Query>(), CancellationToken.None);
-            });
+        var handler = new GetAllPaginatedLinksFeature.Handler(_playlistRepository, _authService);
 
-        var action = async () => await mediator.Send(query, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyNotFoundException>(action);
+        await Assert.ThrowsAsync<MyNotFoundException>(() => mediator.Send(query, CancellationToken.None));
     }
 
     [Fact]
@@ -69,30 +59,19 @@ public class GetAllPaginatedLinksFeatureTests
             }
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var mediator = Substitute.For<IMediator>();
-
-        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
+        _playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
         {
             UserId = 1
         });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-        linkRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _playlistRepository.GetPlaylistLinksAsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
 
-        mediator.Send(Arg.Any<GetAllPaginatedLinks.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetAllPaginatedLinksFeature.Handler(linkRepository, playlistRepository, authService);
-                return handler.Handle(callInfo.Arg<GetAllPaginatedLinks.Query>(), CancellationToken.None);
-            });
+        var handler = new GetAllPaginatedLinksFeature.Handler(_playlistRepository, _authService);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        var result = await mediator.Send(query, CancellationToken.None);
-
-        result.Should().NotBeNull();
-        result.Should().BeOfType<PagedList<LinkDto>>();
-        result.TotalCount.Should().Be(1);
-        result.Items.Count.Should().Be(1);
+        Assert.NotNull(result);
+        Assert.IsType<PagedList<LinkDto>>(result);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Items);
     }
 }

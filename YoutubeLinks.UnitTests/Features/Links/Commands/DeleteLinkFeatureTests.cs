@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using NSubstitute;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
@@ -7,12 +6,14 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Links.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Commands;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.UnitTests.Features.Links.Commands;
 
 public class DeleteLinkFeatureTests
 {
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
     public async Task DeleteLinkHandler_ThrowsNotFoundException_IfLinkIsNotFound()
@@ -22,22 +23,13 @@ public class DeleteLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>())
+            .Returns(Task.FromResult<Playlist>(null));
 
-        linkRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Link>(null));
+        var handler = new DeleteLinkFeature.Handler(_authService, _playlistRepository);
 
-        mediator.Send(Arg.Any<DeleteLink.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new DeleteLinkFeature.Handler(_authService, linkRepository);
-                return handler.Handle(callInfo.Arg<DeleteLink.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyNotFoundException>(action);
-        await linkRepository.DidNotReceive().Delete(Arg.Any<Link>());
+        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        await _playlistRepository.DidNotReceive().Update(Arg.Any<Playlist>());
     }
 
     [Fact]
@@ -48,30 +40,18 @@ public class DeleteLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        linkRepository.Get(Arg.Any<int>()).Returns(new Link
-        {
-            Playlist = new Playlist
-            {
-                UserId = 1
-            }
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>())
+            .Returns(Task.FromResult(playlist));
 
-        mediator.Send(Arg.Any<DeleteLink.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new DeleteLinkFeature.Handler(authService, linkRepository);
-                return handler.Handle(callInfo.Arg<DeleteLink.Command>(), CancellationToken.None);
-            });
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-        var action = async () => await mediator.Send(command, CancellationToken.None);
+        var handler = new DeleteLinkFeature.Handler(_authService, _playlistRepository);
 
-        await Assert.ThrowsAsync<MyForbiddenException>(action);
-        await linkRepository.DidNotReceive().Delete(Arg.Any<Link>());
+        await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(command, CancellationToken.None));
+        await _playlistRepository.DidNotReceive().Update(Arg.Any<Playlist>());
     }
 
     [Fact]
@@ -82,29 +62,18 @@ public class DeleteLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        linkRepository.Get(Arg.Any<int>()).Returns(new Link
-        {
-            Playlist = new Playlist
-            {
-                UserId = 1
-            }
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>())
+            .Returns(Task.FromResult(playlist));
 
-        mediator.Send(Arg.Any<DeleteLink.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new DeleteLinkFeature.Handler(authService, linkRepository);
-                return handler.Handle(callInfo.Arg<DeleteLink.Command>(), CancellationToken.None);
-            });
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
 
-        var result = await mediator.Send(command, CancellationToken.None);
+        var handler = new DeleteLinkFeature.Handler(_authService, _playlistRepository);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        result.Should().Be(Unit.Value);
-        await linkRepository.Received().Delete(Arg.Any<Link>());
+        Assert.Equal(Unit.Value,result);
+        await _playlistRepository.Received().Update(Arg.Any<Playlist>());
     }
 }

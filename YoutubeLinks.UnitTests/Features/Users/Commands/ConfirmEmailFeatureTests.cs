@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using NSubstitute;
 using YoutubeLinks.Api;
 using YoutubeLinks.Api.Data.Entities;
@@ -10,12 +8,14 @@ using YoutubeLinks.Api.Emails.Models;
 using YoutubeLinks.Api.Features.Users.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Users.Commands;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class ConfirmEmailFeatureTests
 {
     private readonly IEmailService _emailService = Substitute.For<IEmailService>();
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
 
     private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer =
         Substitute.For<IStringLocalizer<ApiValidationMessage>>();
@@ -29,21 +29,11 @@ public class ConfirmEmailFeatureTests
             Token = "token"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _userRepository.GetByEmail(Arg.Any<string>()).Returns(Task.FromResult<User>(null));
 
-        userRepository.GetByEmail(Arg.Any<string>()).Returns(Task.FromResult<User>(null));
+        var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _validationLocalizer);
 
-        mediator.Send(Arg.Any<ConfirmEmail.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new ConfirmEmailFeature.Handler(userRepository, _emailService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<ConfirmEmail.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyValidationException>(action);
+        await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -55,24 +45,13 @@ public class ConfirmEmailFeatureTests
             Token = "token"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
 
-        userRepository.GetByEmail(Arg.Any<string>()).Returns(new User
-        {
-            EmailConfirmed = true
-        });
+        _userRepository.GetByEmail(Arg.Any<string>()).Returns(user);
 
-        mediator.Send(Arg.Any<ConfirmEmail.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new ConfirmEmailFeature.Handler(userRepository, _emailService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<ConfirmEmail.Command>(), CancellationToken.None);
-            });
+        var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _validationLocalizer);
 
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyValidationException>(action);
+        await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -84,25 +63,14 @@ public class ConfirmEmailFeatureTests
             Token = "token"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, false);
 
-        userRepository.GetByEmail(Arg.Any<string>()).Returns(new User
-        {
-            EmailConfirmed = false
-        });
-        userRepository.IsEmailConfirmationTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+        _userRepository.GetByEmail(Arg.Any<string>()).Returns(user);
+        _userRepository.IsEmailConfirmationTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
-        mediator.Send(Arg.Any<ConfirmEmail.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new ConfirmEmailFeature.Handler(userRepository, _emailService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<ConfirmEmail.Command>(), CancellationToken.None);
-            });
+        var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _validationLocalizer);
 
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyValidationException>(action);
+        await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -114,27 +82,17 @@ public class ConfirmEmailFeatureTests
             Token = "token"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, false);
 
-        userRepository.GetByEmail(Arg.Any<string>()).Returns(new User
-        {
-            EmailConfirmed = false
-        });
-        userRepository.IsEmailConfirmationTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+        _userRepository.GetByEmail(Arg.Any<string>()).Returns(user);
+        _userRepository.IsEmailConfirmationTokenAssignedToUser(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
-        mediator.Send(Arg.Any<ConfirmEmail.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new ConfirmEmailFeature.Handler(userRepository, _emailService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<ConfirmEmail.Command>(), CancellationToken.None);
-            });
+        var handler = new ConfirmEmailFeature.Handler(_userRepository, _emailService, _validationLocalizer);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        var result = await mediator.Send(command, CancellationToken.None);
-
-        await userRepository.Received().Update(Arg.Any<User>());
+        await _userRepository.Received().Update(Arg.Any<User>());
         await _emailService.Received()
             .SendEmail(Arg.Any<string>(), Arg.Any<EmailConfirmationSuccessfulTemplateModel>());
-        result.Should().BeTrue();
+        Assert.True(result);
     }
 }

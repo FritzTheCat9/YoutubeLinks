@@ -1,6 +1,4 @@
-﻿using MediatR;
-using NSubstitute;
-using YoutubeLinks.Api.Abstractions;
+﻿using NSubstitute;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
@@ -13,8 +11,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class UpdateUserThemeFeatureTests
 {
-    private readonly IClock _clock = Substitute.For<IClock>();
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     [Fact]
     public async Task UpdateUserThemeHandler_ThrowsForbiddenException_IfCommandUserIdIsNotEqualToCurrentLoggedUserId()
@@ -25,21 +23,11 @@ public class UpdateUserThemeFeatureTests
             ThemeColor = ThemeColor.Light
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        var handler = new UpdateUserThemeFeature.Handler(_userRepository, _authService);
 
-        mediator.Send(Arg.Any<UpdateUserTheme.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new UpdateUserThemeFeature.Handler(_userRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<UpdateUserTheme.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyForbiddenException>(action);
+        await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -51,23 +39,12 @@ public class UpdateUserThemeFeatureTests
             ThemeColor = ThemeColor.Light
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _userRepository.Get(Arg.Any<int>()).Returns((User)null);
 
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-        userRepository.Get(Arg.Any<int>()).Returns((User)null);
+        var handler = new UpdateUserThemeFeature.Handler(_userRepository, _authService);
 
-        mediator.Send(Arg.Any<UpdateUserTheme.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new UpdateUserThemeFeature.Handler(userRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<UpdateUserTheme.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyNotFoundException>(action);
+        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -79,22 +56,14 @@ public class UpdateUserThemeFeatureTests
             ThemeColor = ThemeColor.Light
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
 
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-        userRepository.Get(Arg.Any<int>()).Returns(new User());
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _userRepository.Get(Arg.Any<int>()).Returns(user);
 
-        mediator.Send(Arg.Any<UpdateUserTheme.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new UpdateUserThemeFeature.Handler(userRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<UpdateUserTheme.Command>(), CancellationToken.None);
-            });
+        var handler = new UpdateUserThemeFeature.Handler(_userRepository, _authService);
+        await handler.Handle(command, CancellationToken.None);
 
-        await mediator.Send(command, CancellationToken.None);
-
-        await userRepository.Received().Update(Arg.Any<User>());
+        await _userRepository.Received().Update(Arg.Any<User>());
     }
 }

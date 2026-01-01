@@ -1,10 +1,9 @@
-﻿using FluentAssertions;
-using MediatR;
-using NSubstitute;
+﻿using NSubstitute;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Users.Queries;
 using YoutubeLinks.Shared.Exceptions;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 using YoutubeLinks.Shared.Features.Users.Queries;
 using YoutubeLinks.Shared.Features.Users.Responses;
 
@@ -12,6 +11,8 @@ namespace YoutubeLinks.UnitTests.Features.Users.Queries;
 
 public class GetUserFeatureTests
 {
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
+
     [Fact]
     public async Task GetUserHandler_ThrowsNotFoundException_IfUserIsNotFound()
     {
@@ -20,21 +21,11 @@ public class GetUserFeatureTests
             Id = 1
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _userRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<User>(null));
 
-        userRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<User>(null));
+        var handler = new GetUserFeature.Handler(_userRepository);
 
-        mediator.Send(Arg.Any<GetUser.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetUserFeature.Handler(userRepository);
-                return handler.Handle(callInfo.Arg<GetUser.Query>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(query, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyNotFoundException>(action);
+        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(query, CancellationToken.None));
     }
 
     [Fact]
@@ -45,21 +36,14 @@ public class GetUserFeatureTests
             Id = 1
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
 
-        userRepository.Get(Arg.Any<int>()).Returns(new User());
+        _userRepository.Get(Arg.Any<int>()).Returns(user);
 
-        mediator.Send(Arg.Any<GetUser.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetUserFeature.Handler(userRepository);
-                return handler.Handle(callInfo.Arg<GetUser.Query>(), CancellationToken.None);
-            });
+        var handler = new GetUserFeature.Handler(_userRepository);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        var result = await mediator.Send(query, CancellationToken.None);
-
-        result.Should().NotBeNull();
-        result.Should().BeOfType<UserDto>();
+        Assert.NotNull(result);
+        Assert.IsType<UserDto>(result);
     }
 }

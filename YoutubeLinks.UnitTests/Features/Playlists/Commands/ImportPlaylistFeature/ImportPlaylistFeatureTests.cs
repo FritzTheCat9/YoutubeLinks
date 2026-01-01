@@ -1,9 +1,6 @@
-﻿using FluentAssertions;
-using MediatR;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using NSubstitute;
 using YoutubeLinks.Api;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
@@ -17,12 +14,13 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Commands.ImportPlaylistFeatu
 
 public class ImportPlaylistFeatureTests
 {
-    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
 
     private readonly IStringLocalizer<ApiValidationMessage> _localizer =
         Substitute.For<IStringLocalizer<ApiValidationMessage>>();
 
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
     private readonly IYoutubeService _youtubeService = Substitute.For<IYoutubeService>();
 
     [Fact]
@@ -35,22 +33,11 @@ public class ImportPlaylistFeatureTests
             PlaylistFileType = PlaylistFileType.Json
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.GetCurrentUserId().Returns((int?)null);
 
-        authService.GetCurrentUserId().Returns((int?)null);
+        var handler = new ApiFeature.Handler(_playlistRepository, _userRepository, _authService, _youtubeService, _localizer);
 
-        mediator.Send(Arg.Any<ImportPlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new ApiFeature.Handler(_playlistRepository, authService, _youtubeService, _clock,
-                    _localizer);
-                return handler.Handle(callInfo.Arg<ImportPlaylist.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyForbiddenException>(action);
+        await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -72,24 +59,14 @@ public class ImportPlaylistFeatureTests
             ]
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.GetCurrentUserId().Returns(123);
+        _playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
 
-        authService.GetCurrentUserId().Returns(123);
-        playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
+        var handler = new ApiFeature.Handler(_playlistRepository, _userRepository, _authService, _youtubeService, _localizer);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        mediator.Send(Arg.Any<ImportPlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new ApiFeature.Handler(playlistRepository, authService, _youtubeService, _clock,
-                    _localizer);
-                return handler.Handle(callInfo.Arg<ImportPlaylist.Command>(), CancellationToken.None);
-            });
-
-        var result = await mediator.Send(command, CancellationToken.None);
-        result.Should().Be(1);
-        await playlistRepository.Received().Create(Arg.Any<Playlist>());
+        Assert.Equal(1, result);
+        await _playlistRepository.Received().Create(Arg.Any<Playlist>());
     }
 
     [Fact]
@@ -106,25 +83,15 @@ public class ImportPlaylistFeatureTests
             ]
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var youtubeService = Substitute.For<IYoutubeService>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.GetCurrentUserId().Returns(123);
+        _playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
+        _youtubeService.GetVideoTitle(Arg.Any<string>()).Returns("Rick Astley - Never Gonna Give You Up");
 
-        authService.GetCurrentUserId().Returns(123);
-        playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
-        youtubeService.GetVideoTitle(Arg.Any<string>()).Returns("Rick Astley - Never Gonna Give You Up");
 
-        mediator.Send(Arg.Any<ImportPlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler =
-                    new ApiFeature.Handler(playlistRepository, authService, youtubeService, _clock, _localizer);
-                return handler.Handle(callInfo.Arg<ImportPlaylist.Command>(), CancellationToken.None);
-            });
+        var handler = new ApiFeature.Handler(_playlistRepository, _userRepository, _authService, _youtubeService, _localizer);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        var result = await mediator.Send(command, CancellationToken.None);
-        result.Should().Be(1);
-        await playlistRepository.Received().Create(Arg.Any<Playlist>());
+        Assert.Equal(1, result);
+        await _playlistRepository.Received().Create(Arg.Any<Playlist>());
     }
 }

@@ -1,19 +1,18 @@
-﻿using FluentAssertions;
-using MediatR;
-using NSubstitute;
-using YoutubeLinks.Api.Abstractions;
+﻿using NSubstitute;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
 public class CreatePlaylistFeatureTests
 {
-    private readonly IClock _clock = Substitute.For<IClock>();
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
+    private readonly IAuthService _authService = Substitute.For<IAuthService>();
     private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
@@ -25,21 +24,11 @@ public class CreatePlaylistFeatureTests
             Public = true
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.GetCurrentUserId().Returns((int?)null);
 
-        authService.GetCurrentUserId().Returns((int?)null);
+        var handler = new CreatePlaylistFeature.Handler(_userRepository, _playlistRepository, _authService);
 
-        mediator.Send(Arg.Any<CreatePlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new CreatePlaylistFeature.Handler(_playlistRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<CreatePlaylist.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyForbiddenException>(action);
+        await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -51,23 +40,16 @@ public class CreatePlaylistFeatureTests
             Public = true
         };
 
-        var authService = Substitute.For<IAuthService>();
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
 
-        authService.GetCurrentUserId().Returns(123);
-        playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
+        _authService.GetCurrentUserId().Returns(123);
+        _playlistRepository.Create(Arg.Any<Playlist>()).Returns(1);
+        _userRepository.Get(Arg.Any<int>()).Returns(user);
 
-        mediator.Send(Arg.Any<CreatePlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new CreatePlaylistFeature.Handler(playlistRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<CreatePlaylist.Command>(), CancellationToken.None);
-            });
+        var handler = new CreatePlaylistFeature.Handler(_userRepository, _playlistRepository, _authService);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        var result = await mediator.Send(command, CancellationToken.None);
-
-        result.Should().Be(1);
-        await playlistRepository.Received().Create(Arg.Any<Playlist>());
+        Assert.Equal(1, result);
+        await _playlistRepository.Received().Create(Arg.Any<Playlist>());
     }
 }

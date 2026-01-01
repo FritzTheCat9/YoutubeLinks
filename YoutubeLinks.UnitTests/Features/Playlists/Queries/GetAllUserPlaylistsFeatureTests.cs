@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
-using NSubstitute;
+﻿using NSubstitute;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
@@ -37,25 +35,15 @@ public class GetAllUserPlaylistsFeatureTests
             }
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _playlistRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
 
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
-        playlistRepository.AsQueryable(Arg.Any<int>(), Arg.Any<bool>()).Returns(list.AsQueryable());
+        var handler = new GetAllUserPlaylistsFeature.Handler(_playlistRepository, _authService);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        mediator.Send(Arg.Any<GetAllUserPlaylists.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetAllUserPlaylistsFeature.Handler(playlistRepository, authService);
-                return handler.Handle(callInfo.Arg<GetAllUserPlaylists.Query>(), CancellationToken.None);
-            });
-
-        var result = await mediator.Send(query, CancellationToken.None);
-
-        result.Should().NotBeNull();
-        result.Should().BeOfType<PagedList<PlaylistDto>>();
-        result.TotalCount.Should().Be(1);
-        result.Items.Count.Should().Be(1);
+        Assert.NotNull(result);
+        Assert.IsType<PagedList<PlaylistDto>>(result);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Items);
     }
 }

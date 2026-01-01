@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using NSubstitute;
 using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
@@ -8,12 +7,14 @@ using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Playlists.Commands;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Playlists.Commands;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.UnitTests.Features.Playlists.Commands;
 
 public class UpdatePlaylistFeatureTests
 {
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
     private readonly IClock _clock = Substitute.For<IClock>();
 
     [Fact]
@@ -26,22 +27,12 @@ public class UpdatePlaylistFeatureTests
             Public = true
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
-        playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
+        var handler = new UpdatePlaylistFeature.Handler(_playlistRepository, _authService);
 
-        mediator.Send(Arg.Any<UpdatePlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new UpdatePlaylistFeature.Handler(playlistRepository, _authService, _clock);
-                return handler.Handle(callInfo.Arg<UpdatePlaylist.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyNotFoundException>(action);
-        await playlistRepository.DidNotReceive().Update(Arg.Any<Playlist>());
+        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        await _playlistRepository.DidNotReceive().Update(Arg.Any<Playlist>());
     }
 
     [Fact]
@@ -54,27 +45,16 @@ public class UpdatePlaylistFeatureTests
             Public = true
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", false, user);
 
-        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
-        {
-            UserId = 1
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-        mediator.Send(Arg.Any<UpdatePlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new UpdatePlaylistFeature.Handler(playlistRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<UpdatePlaylist.Command>(), CancellationToken.None);
-            });
+        var handler = new UpdatePlaylistFeature.Handler(_playlistRepository, _authService);
 
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyForbiddenException>(action);
-        await playlistRepository.DidNotReceive().Update(Arg.Any<Playlist>());
+        await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(command, CancellationToken.None));
+        await _playlistRepository.DidNotReceive().Update(Arg.Any<Playlist>());
     }
 
     [Fact]
@@ -87,26 +67,16 @@ public class UpdatePlaylistFeatureTests
             Public = true
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", false, user);
 
-        playlistRepository.Get(Arg.Any<int>()).Returns(new Playlist
-        {
-            UserId = 1
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
 
-        mediator.Send(Arg.Any<UpdatePlaylist.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new UpdatePlaylistFeature.Handler(playlistRepository, authService, _clock);
-                return handler.Handle(callInfo.Arg<UpdatePlaylist.Command>(), CancellationToken.None);
-            });
+        var handler = new UpdatePlaylistFeature.Handler(_playlistRepository, _authService);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        var result = await mediator.Send(command, CancellationToken.None);
-
-        result.Should().Be(Unit.Value);
-        await playlistRepository.Received().Update(Arg.Any<Playlist>());
+        Assert.Equal(Unit.Value, result);
+        await _playlistRepository.Received().Update(Arg.Any<Playlist>());
     }
 }

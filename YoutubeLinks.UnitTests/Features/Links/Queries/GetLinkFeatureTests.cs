@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
-using NSubstitute;
+﻿using NSubstitute;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
@@ -8,12 +6,14 @@ using YoutubeLinks.Api.Features.Links.Queries;
 using YoutubeLinks.Shared.Exceptions;
 using YoutubeLinks.Shared.Features.Links.Queries;
 using YoutubeLinks.Shared.Features.Links.Responses;
+using YoutubeLinks.Shared.Features.Users.Helpers;
 
 namespace YoutubeLinks.UnitTests.Features.Links.Queries;
 
 public class GetLinkFeatureTests
 {
     private readonly IAuthService _authService = Substitute.For<IAuthService>();
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
 
     [Fact]
     public async Task GetLinkHandler_ThrowsNotFoundException_IfLinkIsNotFound()
@@ -23,21 +23,11 @@ public class GetLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _playlistRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Playlist>(null));
 
-        linkRepository.Get(Arg.Any<int>()).Returns(Task.FromResult<Link>(null));
+        var handler = new GetLinkFeature.Handler(_playlistRepository, _authService);
 
-        mediator.Send(Arg.Any<GetLink.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetLinkFeature.Handler(linkRepository, _authService);
-                return handler.Handle(callInfo.Arg<GetLink.Query>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(query, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyNotFoundException>(action);
+        await Assert.ThrowsAsync<MyNotFoundException>(() => handler.Handle(query, CancellationToken.None));
     }
 
     [Fact]
@@ -48,30 +38,15 @@ public class GetLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", false, user);
 
-        linkRepository.Get(Arg.Any<int>()).Returns(new Link
-        {
-            Playlist = new Playlist
-            {
-                UserId = 1,
-                Public = false
-            }
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-        mediator.Send(Arg.Any<GetLink.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetLinkFeature.Handler(linkRepository, authService);
-                return handler.Handle(callInfo.Arg<GetLink.Query>(), CancellationToken.None);
-            });
+        var handler = new GetLinkFeature.Handler(_playlistRepository, _authService);
 
-        var action = async () => await mediator.Send(query, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyForbiddenException>(action);
+        await Assert.ThrowsAsync<MyForbiddenException>(() => handler.Handle(query, CancellationToken.None));
     }
 
     [Fact]
@@ -82,31 +57,17 @@ public class GetLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        linkRepository.Get(Arg.Any<int>()).Returns(new Link
-        {
-            Playlist = new Playlist
-            {
-                UserId = 1,
-                Public = true
-            }
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
+        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(false);
 
-        mediator.Send(Arg.Any<GetLink.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetLinkFeature.Handler(linkRepository, authService);
-                return handler.Handle(callInfo.Arg<GetLink.Query>(), CancellationToken.None);
-            });
+        var handler = new GetLinkFeature.Handler(_playlistRepository, _authService);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        var result = await mediator.Send(query, CancellationToken.None);
-
-        result.Should().BeOfType<LinkDto>();
-        result.Should().NotBeNull();
+        Assert.IsType<LinkDto>(result);
+        Assert.NotNull(result);
     }
 
     [Fact]
@@ -117,30 +78,16 @@ public class GetLinkFeatureTests
             Id = 1
         };
 
-        var linkRepository = Substitute.For<ILinkRepository>();
-        var authService = Substitute.For<IAuthService>();
-        var mediator = Substitute.For<IMediator>();
+        var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
+        var playlist = Playlist.Create("TestPlaylist", false, user);
 
-        linkRepository.Get(Arg.Any<int>()).Returns(new Link
-        {
-            Playlist = new Playlist
-            {
-                UserId = 1,
-                Public = false
-            }
-        });
-        authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
+        _playlistRepository.Get(Arg.Any<int>()).Returns(playlist);
+        _authService.IsLoggedInUser(Arg.Any<int>()).Returns(true);
 
-        mediator.Send(Arg.Any<GetLink.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetLinkFeature.Handler(linkRepository, authService);
-                return handler.Handle(callInfo.Arg<GetLink.Query>(), CancellationToken.None);
-            });
+        var handler = new GetLinkFeature.Handler(_playlistRepository, _authService);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        var result = await mediator.Send(query, CancellationToken.None);
-
-        result.Should().BeOfType<LinkDto>();
-        result.Should().NotBeNull();
+        Assert.IsType<LinkDto>(result);
+        Assert.NotNull(result);
     }
 }

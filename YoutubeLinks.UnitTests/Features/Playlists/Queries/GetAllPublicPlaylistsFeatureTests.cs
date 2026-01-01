@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using MediatR;
-using NSubstitute;
+﻿using NSubstitute;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
 using YoutubeLinks.Api.Features.Playlists.Queries;
@@ -12,6 +10,8 @@ namespace YoutubeLinks.UnitTests.Features.Playlists.Queries;
 
 public class GetAllPublicPlaylistsFeatureTests
 {
+    private readonly IPlaylistRepository _playlistRepository = Substitute.For<IPlaylistRepository>();
+
     [Fact]
     public async Task GetAllPublicPlaylistsHandler_ReturnsPlaylistsPagedList()
     {
@@ -32,23 +32,14 @@ public class GetAllPublicPlaylistsFeatureTests
             }
         };
 
-        var playlistRepository = Substitute.For<IPlaylistRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _playlistRepository.GetAllPublic().Returns(list.AsQueryable());
 
-        playlistRepository.AsQueryablePublic().Returns(list.AsQueryable());
+        var handler = new GetAllPublicPlaylistsFeature.Handler(_playlistRepository);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        mediator.Send(Arg.Any<GetAllPublicPlaylists.Query>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new GetAllPublicPlaylistsFeature.Handler(playlistRepository);
-                return handler.Handle(callInfo.Arg<GetAllPublicPlaylists.Query>(), CancellationToken.None);
-            });
-
-        var result = await mediator.Send(query, CancellationToken.None);
-
-        result.Should().NotBeNull();
-        result.Should().BeOfType<PagedList<PlaylistDto>>();
-        result.TotalCount.Should().Be(1);
-        result.Items.Count.Should().Be(1);
+        Assert.NotNull(result);
+        Assert.IsType<PagedList<PlaylistDto>>(result);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Items);
     }
 }

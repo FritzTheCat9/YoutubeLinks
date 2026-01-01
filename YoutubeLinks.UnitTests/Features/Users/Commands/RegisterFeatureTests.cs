@@ -1,9 +1,6 @@
-﻿using FluentAssertions;
-using MediatR;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using NSubstitute;
 using YoutubeLinks.Api;
-using YoutubeLinks.Api.Abstractions;
 using YoutubeLinks.Api.Auth;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Repositories;
@@ -17,10 +14,10 @@ namespace YoutubeLinks.UnitTests.Features.Users.Commands;
 
 public class RegisterFeatureTests
 {
-    private readonly IClock _clock = Substitute.For<IClock>();
-    private readonly IEmailConfirmationService _emailConfirmationService = Substitute.For<IEmailConfirmationService>();
+    private readonly ITokenService _tokenService = Substitute.For<ITokenService>();
     private readonly IEmailService _emailService = Substitute.For<IEmailService>();
     private readonly IPasswordService _passwordService = Substitute.For<IPasswordService>();
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
 
     private readonly IStringLocalizer<ApiValidationMessage> _validationLocalizer =
         Substitute.For<IStringLocalizer<ApiValidationMessage>>();
@@ -36,22 +33,12 @@ public class RegisterFeatureTests
             RepeatPassword = "password"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _userRepository.EmailExists(Arg.Any<string>()).Returns(true);
 
-        userRepository.EmailExists(Arg.Any<string>()).Returns(true);
+        var handler = new RegisterFeature.Handler(_passwordService, _userRepository, _emailService,
+            _tokenService, _validationLocalizer);
 
-        mediator.Send(Arg.Any<Register.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new RegisterFeature.Handler(_clock, _passwordService, userRepository, _emailService,
-                    _emailConfirmationService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<Register.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyValidationException>(action);
+        await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -65,23 +52,13 @@ public class RegisterFeatureTests
             RepeatPassword = "password"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _userRepository.EmailExists(Arg.Any<string>()).Returns(false);
+        _userRepository.UserNameExists(Arg.Any<string>()).Returns(true);
 
-        userRepository.EmailExists(Arg.Any<string>()).Returns(false);
-        userRepository.UserNameExists(Arg.Any<string>()).Returns(true);
+        var handler = new RegisterFeature.Handler(_passwordService, _userRepository, _emailService,
+            _tokenService, _validationLocalizer);
 
-        mediator.Send(Arg.Any<Register.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new RegisterFeature.Handler(_clock, _passwordService, userRepository, _emailService,
-                    _emailConfirmationService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<Register.Command>(), CancellationToken.None);
-            });
-
-        var action = async () => await mediator.Send(command, CancellationToken.None);
-
-        await Assert.ThrowsAsync<MyValidationException>(action);
+        await Assert.ThrowsAsync<MyValidationException>(() => handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -95,26 +72,17 @@ public class RegisterFeatureTests
             RepeatPassword = "password"
         };
 
-        var userRepository = Substitute.For<IUserRepository>();
-        var mediator = Substitute.For<IMediator>();
+        _userRepository.EmailExists(Arg.Any<string>()).Returns(false);
+        _userRepository.UserNameExists(Arg.Any<string>()).Returns(false);
+        _userRepository.Create(Arg.Any<User>()).Returns(1);
 
-        userRepository.EmailExists(Arg.Any<string>()).Returns(false);
-        userRepository.UserNameExists(Arg.Any<string>()).Returns(false);
-        userRepository.Create(Arg.Any<User>()).Returns(1);
+        var handler = new RegisterFeature.Handler(_passwordService, _userRepository, _emailService,
+                    _tokenService, _validationLocalizer);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        mediator.Send(Arg.Any<Register.Command>(), CancellationToken.None)
-            .Returns(callInfo =>
-            {
-                var handler = new RegisterFeature.Handler(_clock, _passwordService, userRepository, _emailService,
-                    _emailConfirmationService, _validationLocalizer);
-                return handler.Handle(callInfo.Arg<Register.Command>(), CancellationToken.None);
-            });
-
-        var result = await mediator.Send(command, CancellationToken.None);
-
-        await userRepository.Received().Create(Arg.Any<User>());
+        await _userRepository.Received().Create(Arg.Any<User>());
         await _emailService.Received().SendEmail(Arg.Any<string>(), Arg.Any<EmailConfirmationTemplateModel>());
-        _emailConfirmationService.Received().GenerateConfirmationLink(Arg.Any<string>(), Arg.Any<string>());
-        result.Should().Be(1);
+        _tokenService.Received().GenerateLink(Arg.Any<string>(), Arg.Any<string>(), LinkType.ConfirmEmail);
+        Assert.Equal(1, result);
     }
 }
