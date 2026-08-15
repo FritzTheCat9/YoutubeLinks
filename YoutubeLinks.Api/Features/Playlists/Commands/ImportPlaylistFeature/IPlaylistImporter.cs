@@ -29,7 +29,7 @@ public class JsonPlaylistImporter : IPlaylistImporter
     {
         foreach (var link in command.ExportedLinks)
         {
-            playlist.AddLink(link.Url, link.VideoId, link.Title);
+            playlist.AddLink(link.Url, link.Title);
         }
 
         return Task.CompletedTask;
@@ -55,7 +55,7 @@ public class TxtPlaylistImporter : IPlaylistImporter
             var url = $"{YoutubeHelpers.VideoPathBase}{videoId}";
             var videoTitle = await youtubeService.GetVideoTitle(videoId);
 
-            playlist.AddLink(url, videoId, videoTitle);
+            playlist.AddLink(url, videoTitle);
         }
     }
 }

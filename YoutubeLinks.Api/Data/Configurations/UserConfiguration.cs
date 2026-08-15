@@ -8,17 +8,33 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(e => e.Id);
+        builder.ToTable("Users");
+        builder.HasKey(u => u.Id);
 
-        builder.HasIndex(e => e.Email)
-            .IsUnique();
+        // Value Objects
+        builder.OwnsOne(u => u.Email, e =>
+        {
+            e.Property(p => p.Value)
+             .HasColumnName("Email")
+             .HasMaxLength(200)
+             .IsRequired();
+        });
 
-        builder.HasIndex(e => e.UserName)
-            .IsUnique();
+        builder.OwnsOne(u => u.UserName, un =>
+        {
+            un.Property(p => p.Value)
+              .HasColumnName("UserName")
+              .HasMaxLength(50)
+              .IsRequired();
+        });
 
+        builder.HasIndex("Email").IsUnique();
+        builder.HasIndex("UserName").IsUnique();
+
+        // Relations
         builder.HasMany(u => u.Playlists)
-            .WithOne(p => p.User)
-            .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+               .WithOne(p => p.User)
+               .HasForeignKey(p => p.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

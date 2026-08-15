@@ -43,7 +43,7 @@ public class PlaylistRepository(
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             playlists = playlists.Where(x =>
-                x.Name.ToLower().Contains(searchTerm.ToLower()));
+                x.Name.Value.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return playlists;
@@ -105,7 +105,7 @@ public class PlaylistRepository(
 
         if (!loadPrivate)
         {
-            playlistsQuery = playlistsQuery.Where(x => x.Public);
+            playlistsQuery = playlistsQuery.Where(x => x.IsPublic);
         }
 
         playlistsQuery = Filter(playlistsQuery, query);
@@ -121,7 +121,7 @@ public class PlaylistRepository(
     public PagedList<Playlist> GetAllPublicPlaylistsPaginated(QueryParameters query)
     {
         var playlistsQuery = LoadPlaylists()
-            .Where(x => x.Public);
+            .Where(x => x.IsPublic);
 
         playlistsQuery = Filter(playlistsQuery, query);
         playlistsQuery = Sort(playlistsQuery, query);
@@ -141,7 +141,7 @@ public class PlaylistRepository(
 
         if (!loadPrivate)
         {
-            query = query.Where(x => x.Playlist.Public);
+            query = query.Where(x => x.Playlist.IsPublic);
         }
 
         return query
@@ -170,7 +170,7 @@ public class PlaylistRepository(
     public async Task<IEnumerable<Playlist>> GetAllPublic()
     {
         var playlists = await LoadPlaylists()
-            .Where(x => x.Public)
+            .Where(x => x.IsPublic)
             .AsSplitQuery()
             .ToListAsync();
 

@@ -36,7 +36,7 @@ public static class PlaylistExtensions
             Created = playlist.Created,
             Modified = playlist.Modified,
             Name = playlist.Name,
-            Public = playlist.Public,
+            Public = playlist.IsPublic,
             UserId = playlist.UserId
         };
     }
@@ -47,8 +47,8 @@ public static class PlaylistExtensions
             .Select(x => new LinkJsonModel
             {
                 Title = x.Title,
-                Url = x.Url,
-                VideoId = x.VideoId
+                Url = x.Url.Url,
+                VideoId = x.Url.VideoId
             })
             .OrderBy(x => x.Title)
             .ToList();
@@ -73,7 +73,7 @@ public static class PlaylistExtensions
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             playlists = playlists.Where(x =>
-                x.Name.ToLower().Contains(searchTerm.ToLower()));
+                x.Name.Value.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return playlists;
@@ -112,7 +112,7 @@ public static class PlaylistExtensions
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             playlists = playlists.Where(x =>
-                x.Name.ToLower().Contains(searchTerm.ToLower()));
+                x.Name.Value.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return playlists;

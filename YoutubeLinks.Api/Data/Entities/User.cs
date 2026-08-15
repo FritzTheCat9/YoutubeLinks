@@ -9,8 +9,8 @@ public class User : Entity, IAggregateRoot
     private readonly List<Playlist> _playlists = [];
     public IReadOnlyCollection<Playlist> Playlists => _playlists.AsReadOnly();
 
-    public string Email { get; private set; }
-    public string UserName { get; private set; }
+    public ValueObjects.Email Email { get; private set; }
+    public ValueObjects.Username UserName { get; private set; }
     public bool EmailConfirmed { get; private set; }
     public ThemeColor ThemeColor { get; private set; }
     public bool IsAdmin { get; private set; }
@@ -25,8 +25,8 @@ public class User : Entity, IAggregateRoot
     {
         return new User
         {
-            Email = email,
-            UserName = userName,
+            Email = new ValueObjects.Email(email),
+            UserName = new ValueObjects.Username(userName),
             ThemeColor = themeColor,
             IsAdmin = isAdmin,
             EmailConfirmed = emailConfirmed,

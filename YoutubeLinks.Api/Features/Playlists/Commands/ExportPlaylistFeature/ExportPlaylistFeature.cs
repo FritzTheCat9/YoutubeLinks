@@ -36,7 +36,7 @@ public static class ExportPlaylistFeature
             var playlist = await playlistRepository.Get(command.Id) ?? throw new MyNotFoundException();
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
-            if (!playlist.Public
+            if (!playlist.IsPublic
                 && !isUserPlaylist)
             {
                 throw new MyForbiddenException();

@@ -33,7 +33,7 @@ public class UpdatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         Assert.NotNull(updatedPlaylist);
         Assert.Equal(command.Name, updatedPlaylist.Name);
-        Assert.Equal(command.Public, updatedPlaylist.Public);
+        Assert.Equal(command.Public, updatedPlaylist.IsPublic);
     }
 
     [Fact]

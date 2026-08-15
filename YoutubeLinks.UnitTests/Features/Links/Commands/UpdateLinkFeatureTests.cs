@@ -36,7 +36,7 @@ public class UpdateLinkFeatureTests
     {
         var user = User.Create("u@u.com", "user", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("Test", false, user);
-        playlist.AddLink("https://youtu.be/test", "test", "title");
+        playlist.AddLink("https://youtu.be/test", "title");
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(false);
@@ -51,7 +51,7 @@ public class UpdateLinkFeatureTests
     {
         var user = User.Create("u@u.com", "usr", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("p", false, user);
-        playlist.AddLink("https://youtu.be/test", "test", "title");
+        playlist.AddLink("https://youtu.be/test", "title");
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
@@ -67,7 +67,7 @@ public class UpdateLinkFeatureTests
     {
         var user = User.Create("u@u.com", "usr", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("p", false, user);
-        playlist.AddLink("https://youtu.be/test", "test", "title");
+        playlist.AddLink("https://youtu.be/test", "title");
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
@@ -84,7 +84,7 @@ public class UpdateLinkFeatureTests
     {
         var user = User.Create("u@u.com", "usr", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("p", false, user);
-        var link = playlist.AddLink("https://youtu.be/test", "test", "");
+        var link = playlist.AddLink("https://youtu.be/test", "");
 
         _playlistRepository.FindPlaylistContainingLink(link.Id).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
@@ -103,7 +103,7 @@ public class UpdateLinkFeatureTests
     {
         var user = User.Create("u@u.com", "usr", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("p", false, user);
-        var link = playlist.AddLink("https://youtu.be/old", "old", "Title");
+        var link = playlist.AddLink("https://youtu.be/old", "Title");
 
         _playlistRepository.FindPlaylistContainingLink(link.Id).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
@@ -123,7 +123,7 @@ public class UpdateLinkFeatureTests
     {
         var user = User.Create("u@u.com", "usr", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("p", false, user);
-        var link = playlist.AddLink("https://youtu.be/test", "test", "Existing Title");
+        var link = playlist.AddLink("https://youtu.be/test", "Existing Title");
 
         _playlistRepository.FindPlaylistContainingLink(link.Id).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);

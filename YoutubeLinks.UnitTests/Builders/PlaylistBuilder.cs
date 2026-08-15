@@ -23,7 +23,7 @@ public class PlaylistBuilder
     {
         var playlist = Playlist.Create(_name, _isPublic, _user);
         foreach (var l in _links)
-            playlist.AddLink(l.url, l.id, l.title);
+            playlist.AddLink(l.url, l.title);
 
         return playlist;
     }

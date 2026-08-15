@@ -35,7 +35,7 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         Assert.NotNull(importedPlaylist);
         Assert.Equal(command.Name, importedPlaylist.Name);
-        Assert.Equal(command.Public, importedPlaylist.Public);
+        Assert.Equal(command.Public, importedPlaylist.IsPublic);
         Assert.Equal(command.ExportedLinkUrls.Count, importedPlaylist.Links.Count);
         Assert.Equal(user.UserId, importedPlaylist.UserId);
 
@@ -88,7 +88,7 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         Assert.NotNull(importedPlaylist);
         Assert.Equal(command.Name, importedPlaylist.Name);
-        Assert.Equal(command.Public, importedPlaylist.Public);
+        Assert.Equal(command.Public, importedPlaylist.IsPublic);
         Assert.Equal(command.ExportedLinks.Count, importedPlaylist.Links.Count);
         Assert.Equal(user.UserId, importedPlaylist.UserId);
 

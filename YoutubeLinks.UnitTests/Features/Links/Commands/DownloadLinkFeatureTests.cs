@@ -46,7 +46,7 @@ public class DownloadLinkFeatureTests
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", false, user);
 
-        var link = playlist.AddLink("https://youtu.be/test", "test", "Test Video");
+        var link = playlist.AddLink("https://youtu.be/test", "Test Video");
         typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
@@ -69,7 +69,7 @@ public class DownloadLinkFeatureTests
 
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", false, user);
-        var link = playlist.AddLink("https://youtu.be/test", "test", "Test Video");
+        var link = playlist.AddLink("https://youtu.be/test", "Test Video");
         typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
@@ -97,7 +97,7 @@ public class DownloadLinkFeatureTests
 
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", true, user);
-        var link = playlist.AddLink("https://youtu.be/test", "test", "Test Video");
+        var link = playlist.AddLink("https://youtu.be/test", "Test Video");
         typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);

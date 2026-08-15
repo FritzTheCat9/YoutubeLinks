@@ -58,7 +58,7 @@ public class DeleteLinkFeatureTests
         var user = User.Create("testuser@gmail.com", "TestUser", ThemeColor.Light, true, true);
         var playlist = Playlist.Create("TestPlaylist", true, user);
 
-        var link = Link.Create("https://youtu.be/test", "test", "Test Video", playlist);
+        var link = Link.Create("https://youtu.be/test", "Test Video", playlist);
 
         typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 

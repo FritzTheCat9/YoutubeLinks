@@ -66,7 +66,7 @@ public class GetAllPublicPlaylistsFeatureTests(IntegrationTestWebAppFactory fact
             Assert.NotNull(matchingPlaylist);
             Assert.Equal(returnedPlaylist.Id, matchingPlaylist.Id);
             Assert.Equal(returnedPlaylist.Name, matchingPlaylist.Name);
-            Assert.Equal(returnedPlaylist.Public, matchingPlaylist.Public);
+            Assert.Equal(returnedPlaylist.Public, matchingPlaylist.IsPublic);
             Assert.Equal(returnedPlaylist.UserId, matchingPlaylist.UserId);
         }
     }

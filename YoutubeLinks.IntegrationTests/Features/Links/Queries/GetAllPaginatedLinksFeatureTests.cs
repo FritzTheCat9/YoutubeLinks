@@ -13,9 +13,9 @@ public class GetAllPaginatedLinksFeatureTests(IntegrationTestWebAppFactory facto
         var userInfo = await LoginAsAdmin();
         var user = await GetUser(userInfo.UserId);
         var playlist = Playlist.Create("TestPlaylist", true, user);
-        var link1 = playlist.AddLink("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up (Official Music Video)");
-        var link2 = playlist.AddLink("https://www.youtube.com/watch?v=GtUVQei3nX4", "GtUVQei3nX4", "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams");
-        var link3 = playlist.AddLink("https://www.youtube.com/watch?v=u15tEo0wsQI", "u15tEo0wsQI", "Dawid Podsiadło, P.T. Adamczyk — Phantom Liberty (Official Cyberpunk 2077 Music Video)");
+        var link1 = playlist.AddLink("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up (Official Music Video)");
+        var link2 = playlist.AddLink("https://www.youtube.com/watch?v=GtUVQei3nX4", "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams");
+        var link3 = playlist.AddLink("https://www.youtube.com/watch?v=u15tEo0wsQI", "Dawid Podsiadło, P.T. Adamczyk — Phantom Liberty (Official Cyberpunk 2077 Music Video)");
 
         var links = new List<Link>()
         {

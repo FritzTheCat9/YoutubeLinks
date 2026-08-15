@@ -64,10 +64,34 @@ public static class CreateLinkFeature
                     localizer[nameof(ApiValidationMessageString.UrlMustBeUnique)]);
             }
 
-            var link = playlist.AddLink(command.Url, videoId, videoTitle);
+            var link = playlist.AddLink(command.Url, videoTitle);
 
             await playlistRepository.Update(playlist);
             return link.Id;
         }
     }
+
+    //public class CreateLinkHandler(
+    //    IPlaylistWriteRepository playlistRepo,
+    //    IUnitOfWork uow,
+    //    IAuthService auth,
+    //    IYoutubeService youtube)
+    //    : IRequestHandler<CreateLink.Command, int>
+    //{
+    //    public async Task<int> Handle(CreateLink.Command cmd, CancellationToken ct)
+    //    {
+    //        var playlist = await playlistRepo.GetByIdAsync(cmd.PlaylistId)
+    //                       ?? throw new MyNotFoundException();
+
+    //        auth.EnsureUserIsOwner(playlist.UserId);
+
+    //        var videoId = YoutubeHelpers.GetVideoId(cmd.Url);
+    //        var title = await youtube.GetVideoTitle(videoId);
+
+    //        var link = playlist.AddLink(cmd.Url, videoId, title);
+
+    //        await uow.SaveChangesAsync(ct);
+    //        return link.Id;
+    //    }
+    //}
 }

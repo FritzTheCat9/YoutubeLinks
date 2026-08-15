@@ -49,8 +49,8 @@ public static class UserExtensions
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             users = users.Where(x =>
-                x.UserName.ToLower().Contains(searchTerm.ToLower())
-                || x.Email.ToLower().Contains(searchTerm.ToLower()));
+                x.UserName.Value.ToLower().Contains(searchTerm.ToLower())
+                || x.Email.Value.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return users;

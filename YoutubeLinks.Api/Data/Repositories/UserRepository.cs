@@ -42,8 +42,8 @@ public class UserRepository(
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             users = users.Where(x =>
-                x.UserName.ToLower().Contains(searchTerm.ToLower())
-                || x.Email.ToLower().Contains(searchTerm.ToLower()));
+                x.UserName.Value.ToLower().Contains(searchTerm.ToLower())
+                || x.Email.Value.ToLower().Contains(searchTerm.ToLower()));
         }
 
         return users;
@@ -57,8 +57,8 @@ public class UserRepository(
         {
             SortOrder.Ascending => users.OrderBy(GetUserSortProperty(query)),
             SortOrder.Descending => users.OrderByDescending(GetUserSortProperty(query)),
-            SortOrder.None => users.OrderBy(x => x.UserName),
-            _ => users.OrderBy(x => x.UserName)
+            SortOrder.None => users.OrderBy(x => x.UserName.Value),
+            _ => users.OrderBy(x => x.UserName.Value)
         };
     }
 
@@ -66,9 +66,9 @@ public class UserRepository(
     {
         return query.SortColumn.ToLowerInvariant() switch
         {
-            "username" => user => user.UserName,
-            "email" => user => user.Email,
-            _ => user => user.UserName
+            "username" => user => user.UserName.Value,
+            "email" => user => user.Email.Value,
+            _ => user => user.UserName.Value
         };
     }
 
@@ -118,7 +118,7 @@ public class UserRepository(
     public async Task<User> GetByEmail(string email)
     {
         var user = await LoadUsers()
-            .FirstOrDefaultAsync(x => x.Email == email);
+            .FirstOrDefaultAsync(x => x.Email.Value == email);
 
         return user;
     }
@@ -126,30 +126,30 @@ public class UserRepository(
     public async Task<User> GetByUserName(string userName)
     {
         var user = await LoadUsers()
-            .FirstOrDefaultAsync(x => x.UserName == userName);
+            .FirstOrDefaultAsync(x => x.UserName.Value == userName);
 
         return user;
     }
 
     public async Task<bool> EmailExists(string email)
     {
-        return await dbContext.Users.AnyAsync(x => x.Email == email);
+        return await dbContext.Users.AnyAsync(x => x.Email.Value == email);
     }
 
     public async Task<bool> UserNameExists(string userName)
     {
-        return await dbContext.Users.AnyAsync(x => x.UserName == userName);
+        return await dbContext.Users.AnyAsync(x => x.UserName.Value == userName);
     }
 
     public async Task<bool> IsEmailConfirmationTokenAssignedToUser(string email, string token)
     {
-        return await dbContext.Users.AnyAsync(x => x.Email == email
+        return await dbContext.Users.AnyAsync(x => x.Email.Value == email
                                                    && x.EmailConfirmationToken == token);
     }
 
     public async Task<bool> IsForgotPasswordTokenAssignedToUser(string email, string token)
     {
-        return await dbContext.Users.AnyAsync(x => x.Email == email
+        return await dbContext.Users.AnyAsync(x => x.Email.Value == email
                                                    && x.ForgotPasswordToken == token);
     }
 

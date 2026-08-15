@@ -24,7 +24,7 @@ public class CreatePlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         Assert.NotNull(playlist);
         Assert.Equal(command.Name, playlist.Name);
-        Assert.Equal(command.Public, playlist.Public);
+        Assert.Equal(command.Public, playlist.IsPublic);
         Assert.Equal(user.UserId, playlist.UserId);
     }
 

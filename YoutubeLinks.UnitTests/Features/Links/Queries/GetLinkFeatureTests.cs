@@ -59,7 +59,7 @@ public class GetLinkFeatureTests
             .Public(true)
             .Build();
 
-        var link = playlist.AddLink("https://youtu.be/public", "public", "Public Video");
+        var link = playlist.AddLink("https://youtu.be/public", "Public Video");
         typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>()).Returns(playlist);
@@ -84,7 +84,7 @@ public class GetLinkFeatureTests
             .Public(false)
             .Build();
 
-        var link = playlist.AddLink("https://youtu.be/owned", "owned", "Owned Video");
+        var link = playlist.AddLink("https://youtu.be/owned", "Owned Video");
         typeof(Link).GetProperty("Id")!.SetValue(link, 1);
 
         _playlistRepository.FindPlaylistContainingLink(Arg.Any<int>()).Returns(playlist);

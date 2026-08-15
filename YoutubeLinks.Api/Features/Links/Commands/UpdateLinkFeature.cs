@@ -66,7 +66,7 @@ public static class UpdateLinkFeature
 
             var link = playlist.GetLink(command.Id);
             
-            if (string.IsNullOrWhiteSpace(link.Title) || command.Url != link.Url)
+            if (string.IsNullOrWhiteSpace(link.Title?.Value) || command.Url != link.Url?.Url)
             {
                 link.SetTitle(await youtubeService.GetVideoTitle(videoId));
             }
@@ -76,7 +76,6 @@ public static class UpdateLinkFeature
             }
 
             link.SetUrl(command.Url);
-            link.SetVideoId(videoId);
             link.SetDownloaded(command.Downloaded);
 
             await playlistRepository.Update(playlist);

@@ -47,7 +47,7 @@ public static class DownloadLinkFeature
                            throw new MyNotFoundException();
 
             var isUserPlaylist = authService.IsLoggedInUser(playlist.UserId);
-            var isPublicPlaylist = playlist.Public;
+            var isPublicPlaylist = playlist.IsPublic;
 
             if (!isUserPlaylist && !isPublicPlaylist)
             {
@@ -57,7 +57,7 @@ public static class DownloadLinkFeature
             var link = playlist.GetLink(command.Id);
 
             var downloader = YoutubeDownloaderHelpers.GetYoutubeDownloader(command.YoutubeFileType, youtubeService);
-            var youtubeFile = await downloader.Download(link.VideoId, link.Title);
+            var youtubeFile = await downloader.Download(link.Url.VideoId, link.Title);
 
             return youtubeFile;
         }
