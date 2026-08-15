@@ -5,8 +5,8 @@
 
 ## Tasks
   - ✅ 01.01-youtubelinks-api: Update YoutubeLinks.Api TargetFramework to net11.0 ([Content](tasks/01.01-youtubelinks-api/task.md), [Progress](tasks/01.01-youtubelinks-api/progress-details.md))
-  - 🔄 01.01-youtubelinks-api: Update YoutubeLinks.Api TargetFramework to net11.0 ([Content](tasks/01.01-youtubelinks-api/task.md))
-  - 🔲 01.01-youtubelinks-api: Update YoutubeLinks.Api TargetFramework to net11.0
+  - ✅ 01.02-youtubelinks-blazor: Update YoutubeLinks.Blazor TargetFramework to net11.0 ([Content](tasks/01.02-youtubelinks-blazor/task.md), [Progress](tasks/01.02-youtubelinks-blazor/progress-details.md))
+  - 🔄 01.02-youtubelinks-blazor: Update YoutubeLinks.Blazor TargetFramework to net11.0 ([Content](tasks/01.02-youtubelinks-blazor/task.md))
   - 🔲 01.02-youtubelinks-blazor: Update YoutubeLinks.Blazor TargetFramework to net11.0
   - 🔲 01.03-youtubelinks-e2e: Update YoutubeLinks.E2E TargetFramework to net11.0
   - 🔲 01.04-youtubelinks-integrationtests: Update YoutubeLinks.IntegrationTests TargetFramework to net11.0
