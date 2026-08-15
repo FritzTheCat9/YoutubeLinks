@@ -9,8 +9,8 @@
   - ✅ 01.03-youtubelinks-e2e: Update YoutubeLinks.E2E TargetFramework to net11.0 ([Content](tasks/01.03-youtubelinks-e2e/task.md), [Progress](tasks/01.03-youtubelinks-e2e/progress-details.md))
   - ✅ 01.04-youtubelinks-integrationtests: Update YoutubeLinks.IntegrationTests TargetFramework to net11.0 ([Content](tasks/01.04-youtubelinks-integrationtests/task.md), [Progress](tasks/01.04-youtubelinks-integrationtests/progress-details.md))
   - ✅ 01.05-youtubelinks-sdk: Update YoutubeLinks.Sdk TargetFramework to net11.0 ([Content](tasks/01.05-youtubelinks-sdk/task.md), [Progress](tasks/01.05-youtubelinks-sdk/progress-details.md))
-  - 🔄 01.05-youtubelinks-sdk: Update YoutubeLinks.Sdk TargetFramework to net11.0 ([Content](tasks/01.05-youtubelinks-sdk/task.md))
-  - 🔲 01.05-youtubelinks-sdk: Update YoutubeLinks.Sdk TargetFramework to net11.0
+  - ✅ 01.06-youtubelinks-shared: Update YoutubeLinks.Shared TargetFramework to net11.0 ([Content](tasks/01.06-youtubelinks-shared/task.md), [Progress](tasks/01.06-youtubelinks-shared/progress-details.md))
+  - 🔄 01.06-youtubelinks-shared: Update YoutubeLinks.Shared TargetFramework to net11.0 ([Content](tasks/01.06-youtubelinks-shared/task.md))
   - 🔲 01.06-youtubelinks-shared: Update YoutubeLinks.Shared TargetFramework to net11.0
   - 🔲 01.07-youtubelinks-unittests: Update YoutubeLinks.UnitTests TargetFramework to net11.0
 - 🔲 02-upgrade-nuget-packages: Upgrade incompatible or deprecated NuGet packages ([Content](tasks/02-upgrade-nuget-packages/task.md))
