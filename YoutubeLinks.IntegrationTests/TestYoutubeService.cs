@@ -10,7 +10,7 @@ public class TestYoutubeService : IYoutubeService
     {
         var title = videoId switch
         {
-            "dQw4w9WgXcQ" => "Rick Astley - Never Gonna Give You Up (Official Music Video)",
+            "dQw4w9WgXcQ" => "Rick Astley - Never Gonna Give You Up (Official Music Video) (4K Remaster)",
             "GtUVQei3nX4" => "Snoop Dogg - Drop It Like It's Hot (Official Music Video) ft. Pharrell Williams",
             "u15tEo0wsQI" => "Dawid Podsiadło, P.T. Adamczyk — Phantom Liberty (Official Cyberpunk 2077 Music Video)",
             _ => "Test Video"
@@ -19,35 +19,39 @@ public class TestYoutubeService : IYoutubeService
         return Task.FromResult(YoutubeHelpers.NormalizeVideoTitle(title));
     }
 
-    public Task<YoutubeFile> GetMp3File(string videoId, string videoTitle = null)
+    public async Task<YoutubeFile> GetMp3File(string videoId, string videoTitle = null)
     {
         var tmp = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3");
         File.WriteAllText(tmp, "dummy mp3 content");
+        var title = await GetVideoTitle(videoId);
 
+        var linkTitle = YoutubeHelpers.NormalizeVideoTitle(title);
         var youtubeFile = new YoutubeFile
         {
             FilePath = tmp,
             ContentType = "audio/mpeg",
-            FileName = Path.GetFileName(tmp),
+            FileName = $"{linkTitle}.{YoutubeHelpers.YoutubeFileTypeToString(YoutubeFileType.Mp3)}",
             YoutubeFileType = YoutubeFileType.Mp3
         };
 
-        return Task.FromResult(youtubeFile);
+        return youtubeFile;
     }
 
-    public Task<YoutubeFile> GetMp4File(string videoId, string videoTitle = null)
+    public async Task<YoutubeFile> GetMp4File(string videoId, string videoTitle = null)
     {
         var tmp = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp4");
         File.WriteAllText(tmp, "dummy mp4 content");
+        var title = await GetVideoTitle(videoId);
 
+        var linkTitle = YoutubeHelpers.NormalizeVideoTitle(title);
         var youtubeFile = new YoutubeFile
         {
             FilePath = tmp,
             ContentType = "video/mp4",
-            FileName = Path.GetFileName(tmp),
+            FileName = $"{linkTitle}.{YoutubeHelpers.YoutubeFileTypeToString(YoutubeFileType.Mp4)}",
             YoutubeFileType = YoutubeFileType.Mp4
         };
 
-        return Task.FromResult(youtubeFile);
+        return youtubeFile;
     }
 }

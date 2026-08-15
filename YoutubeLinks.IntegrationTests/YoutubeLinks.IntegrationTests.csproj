@@ -5,7 +5,6 @@
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IsPackable>false</IsPackable>
-		<RunSettingsFilePath>C:\Users\bartl\source\repos\YoutubeLinks\YoutubeLinks.IntegrationTests\bin\Debug\net11.0\fine-code-coverage\coverage-tool-output\YoutubeLinks.IntegrationTests-fcc-mscodecoverage-generated.runsettings</RunSettingsFilePath>
 	</PropertyGroup>
 
 	<ItemGroup>
