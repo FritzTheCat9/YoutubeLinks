@@ -31,7 +31,7 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         var importedPlaylist = await Context.Playlists
             .Include(playlist => playlist.Links)
-            .FirstOrDefaultAsync(x => x.Name == command.Name);
+            .FirstOrDefaultAsync(x => x.Name.Value == command.Name);
 
         Assert.NotNull(importedPlaylist);
         Assert.Equal(command.Name, importedPlaylist.Name);
@@ -84,7 +84,7 @@ public class ImportPlaylistFeatureTests(IntegrationTestWebAppFactory factory)
 
         var importedPlaylist = await Context.Playlists
             .Include(playlist => playlist.Links)
-            .FirstOrDefaultAsync(x => x.Name == command.Name);
+            .FirstOrDefaultAsync(x => x.Name.Value == command.Name);
 
         Assert.NotNull(importedPlaylist);
         Assert.Equal(command.Name, importedPlaylist.Name);

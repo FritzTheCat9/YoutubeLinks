@@ -18,6 +18,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
              .HasColumnName("Email")
              .HasMaxLength(200)
              .IsRequired();
+            // Create unique index on the owned Email value
+            e.HasIndex(p => p.Value).IsUnique();
         });
 
         builder.OwnsOne(u => u.UserName, un =>
@@ -26,10 +28,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
               .HasColumnName("UserName")
               .HasMaxLength(50)
               .IsRequired();
+            // Create unique index on the owned UserName value
+            un.HasIndex(p => p.Value).IsUnique();
         });
 
-        builder.HasIndex("Email").IsUnique();
-        builder.HasIndex("UserName").IsUnique();
 
         // Relations
         builder.HasMany(u => u.Playlists)

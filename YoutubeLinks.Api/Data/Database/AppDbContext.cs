@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using System.Text.Json;
 using YoutubeLinks.Api.Data.Entities;
 using YoutubeLinks.Api.Data.Events;
@@ -17,11 +16,21 @@ public class AppDbContext(
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
+        // Ensure entities that were created in-memory with explicit Ids do not cause identity insert errors.
+        // If an entity with a non-zero Id is added, clear the Id to let the database generate it.
+        foreach (var entry in ChangeTracker.Entries<Entity>().Where(e => e.State == EntityState.Added))
+        {
+            if (entry.Entity.Id != 0)
+            {
+                entry.Property(nameof(Entity.Id)).CurrentValue = 0;
+            }
+        }
+
         var domainEvents = ChangeTracker.Entries<Entity>()
             .SelectMany(x => x.Entity.Events)
             .ToList();

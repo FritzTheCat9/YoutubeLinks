@@ -4,7 +4,6 @@ namespace YoutubeLinks.Api.Data.Entities;
 
 public class Link : Entity
 {
-    private static int _idCounter = 0;
     public int PlaylistId { get; private set; }
     public Playlist Playlist { get; private set; }
 
@@ -19,7 +18,6 @@ public class Link : Entity
     {
         return new Link
         {
-            Id = System.Threading.Interlocked.Increment(ref _idCounter),
             Url = new YoutubeUrl(url),
             Title = string.IsNullOrWhiteSpace(title) ? null : new Title(title),
             Downloaded = false,

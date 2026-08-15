@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using YoutubeLinks.Api.Auth;
+using YoutubeLinks.Api.Data.Entities;
 using Testcontainers.MsSql;
 using YoutubeLinks.Api.Data.Database;
 using YoutubeLinks.Shared.Abstractions;
@@ -37,6 +39,11 @@ public class IntegrationTestWebAppFactory
     private void AddTestApiClient(IServiceCollection services)
     {
         services.AddScoped<IJwtProvider, TestJwtProvider>();
+
+        // Replace real YoutubeService with a test implementation so integration tests
+        // don't call external binaries (yt-dlp / ffmpeg) during runs.
+        services.RemoveAll<YoutubeLinks.Api.Services.IYoutubeService>();
+        services.AddScoped<YoutubeLinks.Api.Services.IYoutubeService, TestYoutubeService>();
             
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 
@@ -61,13 +68,72 @@ public class IntegrationTestWebAppFactory
         // context.Database.Migrate();
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        return _dbContainer.StartAsync();
+        await _dbContainer.StartAsync();
+
+        // Ensure database schema is created/migrated before tests run.
+        try
+        {
+            var options = new DbContextOptionsBuilder<YoutubeLinks.Api.Data.Database.AppDbContext>()
+                .UseSqlServer(_dbContainer.GetConnectionString())
+                .Options;
+
+            using var ctx = new YoutubeLinks.Api.Data.Database.AppDbContext(options);
+            // Prefer migrations when available; fallback to EnsureCreated
+            try
+            {
+                ctx.Database.Migrate();
+            }
+            catch
+            {
+                ctx.Database.EnsureCreated();
+            }
+
+            // Seed expected integration test users (if not present)
+            try
+            {
+                var passwordService = new PasswordService(new Microsoft.AspNetCore.Identity.PasswordHasher<User>());
+
+                if (!ctx.Users.Any(u => u.Email.Value == "ytlinksapp@gmail.com"))
+                {
+                    var admin = User.Create("ytlinksapp@gmail.com", "ytlinksapp", YoutubeLinks.Shared.Features.Users.Helpers.ThemeColor.Light, true, true);
+                    admin.SetPassword("Asd123!", passwordService);
+                    ctx.Users.Add(admin);
+                }
+
+                if (!ctx.Users.Any(u => u.Email.Value == "ytlinksapp1@gmail.com"))
+                {
+                    var user = User.Create("ytlinksapp1@gmail.com", "ytlinksapp1", YoutubeLinks.Shared.Features.Users.Helpers.ThemeColor.Light, false, true);
+                    user.SetPassword("Asd123!", passwordService);
+                    ctx.Users.Add(user);
+                }
+
+                await ctx.SaveChangesAsync();
+            }
+            catch
+            {
+                // ignore seed errors and let tests surface issues
+            }
+        }
+        catch
+        {
+            // If migration/setup fails here, tests will show schema errors. Let failures surface in test run.
+        }
     }
 
-    public new Task DisposeAsync()
+    public async new Task DisposeAsync()
     {
-        return _dbContainer.StopAsync();
+        // Ensure WebApplicationFactory cleans up its resources
+        try
+        {
+            await base.DisposeAsync();
+        }
+        catch
+        {
+            // ignore
+        }
+
+        await _dbContainer.StopAsync();
     }
 }

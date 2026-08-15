@@ -57,8 +57,8 @@ public class PlaylistRepository(
         {
             SortOrder.Ascending => playlists.OrderBy(GetPlaylistSortProperty(query)),
             SortOrder.Descending => playlists.OrderByDescending(GetPlaylistSortProperty(query)),
-            SortOrder.None => playlists.OrderBy(x => x.Name),
-            _ => playlists.OrderBy(x => x.Name)
+            SortOrder.None => playlists.OrderBy(x => x.Name.Value),
+            _ => playlists.OrderBy(x => x.Name.Value)
         };
     }
 
@@ -66,8 +66,8 @@ public class PlaylistRepository(
     {
         return query.SortColumn.ToLowerInvariant() switch
         {
-            "name" => playlist => playlist.Name,
-            _ => playlist => playlist.Name
+            "name" => playlist => playlist.Name.Value,
+            _ => playlist => playlist.Name.Value
         };
     }
 

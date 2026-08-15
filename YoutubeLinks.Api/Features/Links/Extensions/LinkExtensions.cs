@@ -77,8 +77,8 @@ public static class LinkExtensions
         {
             SortOrder.Ascending => links.OrderBy(GetLinkSortProperty(query)),
             SortOrder.Descending => links.OrderByDescending(GetLinkSortProperty(query)),
-            SortOrder.None => links.OrderBy(x => x.Title),
-            _ => links.OrderBy(x => x.Title)
+            SortOrder.None => links.OrderBy(x => x.Title.Value),
+            _ => links.OrderBy(x => x.Title.Value)
         };
     }
 
@@ -86,9 +86,9 @@ public static class LinkExtensions
     {
         return query.SortColumn.ToLowerInvariant() switch
         {
-            "title" => link => link.Title,
+            "title" => link => link.Title.Value,
             "modified" => link => link.Modified,
-            _ => link => link.Title
+            _ => link => link.Title.Value
         };
     }
 
@@ -105,7 +105,7 @@ public static class LinkExtensions
     public static IQueryable<Link> SortLinks(
         this IQueryable<Link> links)
     {
-        links = links.OrderBy(link => link.Title);
+        links = links.OrderBy(link => link.Title.Value);
         return links;
     }
 

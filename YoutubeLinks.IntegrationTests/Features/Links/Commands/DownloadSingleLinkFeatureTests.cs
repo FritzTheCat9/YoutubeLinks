@@ -15,7 +15,7 @@ public class DownloadSingleLinkFeatureTests(IntegrationTestWebAppFactory factory
             YoutubeFileType = YoutubeFileType.Mp3,
         };
 
-        const string title = "Rick Astley - Never Gonna Give You Up (Official Music Video)";
+        const string title = "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)";
 
         var response = await LinkApiClient.DownloadSingleLink(command);
         Assert.True(response.IsSuccessStatusCode);

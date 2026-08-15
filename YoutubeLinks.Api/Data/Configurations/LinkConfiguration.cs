@@ -29,8 +29,7 @@ public class LinkConfiguration : IEntityTypeConfiguration<Link>
         {
             t.Property(p => p.Value)
              .HasColumnName("Title")
-             .HasMaxLength(300)
-             .IsRequired();
+             .HasMaxLength(300);
         });
 
         builder.Property(l => l.Downloaded)
