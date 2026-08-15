@@ -75,14 +75,14 @@ public class DownloadLinkFeatureTests
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
 
-        _youtubeService.GetMp3File(Arg.Any<string>()).Returns(youtubeFile);
+        _youtubeService.GetMp3File(Arg.Any<string>(), Arg.Any<string>()).Returns(youtubeFile);
 
         var handler = new DownloadLinkFeature.Handler(_authService, _playlistRepository, _youtubeService);
         var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.Equal(youtubeFile, result);
-        await _youtubeService.Received().GetMp3File(Arg.Any<string>());
-        await _youtubeService.DidNotReceive().GetMp4File(Arg.Any<string>());
+        await _youtubeService.Received().GetMp3File(Arg.Any<string>(), Arg.Any<string>());
+        await _youtubeService.DidNotReceive().GetMp4File(Arg.Any<string>(), Arg.Any<string>());
     }
 
     [Fact]
@@ -103,13 +103,13 @@ public class DownloadLinkFeatureTests
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(false);
 
-        _youtubeService.GetMp4File(Arg.Any<string>()).Returns(youtubeFile);
+        _youtubeService.GetMp4File(Arg.Any<string>(), Arg.Any<string>()).Returns(youtubeFile);
 
         var handler = new DownloadLinkFeature.Handler(_authService, _playlistRepository, _youtubeService);
         var result = await handler.Handle(command, CancellationToken.None);
 
         Assert.Equal(youtubeFile, result);
-        await _youtubeService.Received().GetMp4File(Arg.Any<string>());
-        await _youtubeService.DidNotReceive().GetMp3File(Arg.Any<string>());
+        await _youtubeService.Received().GetMp4File(Arg.Any<string>(), Arg.Any<string>());
+        await _youtubeService.DidNotReceive().GetMp3File(Arg.Any<string>(), Arg.Any<string>());
     }
 }

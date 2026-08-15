@@ -23,16 +23,16 @@ public sealed class YoutubeUrl : ValueObject
         if (string.IsNullOrWhiteSpace(url))
             return null;
 
-        // Support multiple YouTube URL formats: v= query, youtu.be short links, and embed URLs
+        // Try common YouTube URL patterns: v=, youtu.be/, embed/
         try
         {
-            var m = System.Text.RegularExpressions.Regex.Match(url, @"(?:v=|youtu\.be/|embed/)([A-Za-z0-9_-]+)");
+            var m = System.Text.RegularExpressions.Regex.Match(url, @"(?:v=|youtu\.be/|embed/)([A-Za-z0-9_-]+)", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
             if (m.Success && m.Groups.Count > 1)
                 return m.Groups[1].Value;
         }
         catch
         {
-            // ignore regex errors and fall through to null
+            // ignore and fall through to null
         }
 
         return null;

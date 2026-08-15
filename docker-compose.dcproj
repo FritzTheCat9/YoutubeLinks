@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
-    <PropertyGroup Label="Globals">
-        <ProjectVersion>2.1</ProjectVersion>
-        <DockerTargetOS>Linux</DockerTargetOS>
-        <DockerPublishLocally>True</DockerPublishLocally>
-        <ProjectGuid>16739ca9-daa2-45c8-9775-7823a25daba1</ProjectGuid>
-        <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-        <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-        <DockerServiceName>youtubelinks.api</DockerServiceName>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Include="docker-compose.yml"/>
-        <None Include=".dockerignore"/>
-    </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <DockerPublishLocally>True</DockerPublishLocally>
+    <ProjectGuid>16739ca9-daa2-45c8-9775-7823a25daba1</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceName>youtubelinks.api</DockerServiceName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01-update-targetframeworks\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.01-youtubelinks-api\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.02-youtubelinks-blazor\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.03-youtubelinks-e2e\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.04-youtubelinks-integrationtests\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.05-youtubelinks-sdk\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.06-youtubelinks-shared\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\01.07-youtubelinks-unittests\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\02-upgrade-nuget-packages\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\03-fix-source-and-binary-incompat\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\04-upgrade-blazor-wasm-and-hosting\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\05-update-sdk-and-global-files\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\06-run-and-fix-tests\" />
+    <Folder Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks\07-final-validation-and-cleanup\" />
+  </ItemGroup>
 </Project>

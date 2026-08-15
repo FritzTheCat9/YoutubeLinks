@@ -6,7 +6,8 @@ namespace YoutubeLinks.Shared.Features.Links.Helpers;
 public static class YoutubeHelpers
 {
     [StringSyntax(StringSyntaxAttribute.Regex)]
-    private const string VideoIdRegex = @"(?:\?|&)v=([^&]+)";
+    // Support v= query, youtu.be short links and embed URLs
+    private const string VideoIdRegex = @"(?:v=|youtu\.be/|embed/)([A-Za-z0-9_-]+)";
 
     public const string VideoPathBase = "https://www.youtube.com/watch?v=";
 

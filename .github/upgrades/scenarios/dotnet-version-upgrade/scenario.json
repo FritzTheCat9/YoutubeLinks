@@ -3,7 +3,7 @@
   "operationId": "f73e3975-28c5-4487-a27e-f49a33271df1",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-08-15T16:25:08.1526377Z",
-  "lastUpdateTime": "2026-08-15T16:37:35.8171295Z",
+  "lastUpdateTime": "2026-08-15T17:28:27.4154603Z",
   "properties": {
     "UpgradeTargetFramework": "net11.0",
     "taskStates": {
@@ -14,7 +14,13 @@
       "01.04-youtubelinks-integrationtests": "Completed",
       "01.05-youtubelinks-sdk": "Completed",
       "01.06-youtubelinks-shared": "Completed",
-      "01.07-youtubelinks-unittests": "Completed"
+      "01.07-youtubelinks-unittests": "Completed",
+      "02-upgrade-nuget-packages": "Completed",
+      "03-fix-source-and-binary-incompat": "InProgress",
+      "04-upgrade-blazor-wasm-and-hosting": "Completed",
+      "05-update-sdk-and-global-files": "Completed",
+      "06-run-and-fix-tests": "Completed",
+      "07-final-validation-and-cleanup": "Completed"
     }
   },
   "folderPath": ""

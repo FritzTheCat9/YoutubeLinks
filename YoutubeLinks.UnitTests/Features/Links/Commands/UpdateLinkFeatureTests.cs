@@ -71,7 +71,6 @@ public class UpdateLinkFeatureTests
 
         _playlistRepository.FindPlaylistContainingLink(1).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
-        playlist.LinkUrlExistsInOtherLinksThan("https://youtu.be/test", 1).Returns(true);
 
         var handler = new UpdateLinkFeature.Handler(_playlistRepository, _authService, _youtubeService, _localizer);
 
@@ -88,7 +87,6 @@ public class UpdateLinkFeatureTests
 
         _playlistRepository.FindPlaylistContainingLink(link.Id).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
-        playlist.LinkUrlExistsInOtherLinksThan(Arg.Any<string>(), Arg.Any<int>()).Returns(false);
         _youtubeService.GetVideoTitle(Arg.Any<string>()).Returns("New Title");
 
         var handler = new UpdateLinkFeature.Handler(_playlistRepository, _authService, _youtubeService, _localizer);
@@ -107,7 +105,6 @@ public class UpdateLinkFeatureTests
 
         _playlistRepository.FindPlaylistContainingLink(link.Id).Returns(playlist);
         _authService.IsLoggedInUser(user.Id).Returns(true);
-        playlist.LinkUrlExistsInOtherLinksThan(Arg.Any<string>(), Arg.Any<int>()).Returns(false);
         _youtubeService.GetVideoTitle(Arg.Any<string>()).Returns("New Video Title");
 
         var handler = new UpdateLinkFeature.Handler(_playlistRepository, _authService, _youtubeService, _localizer);
