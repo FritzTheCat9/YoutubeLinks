@@ -1,0 +1,2791 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net11.0",
+    "targetDisplayName": ".NETCoreApp,Version=v11.0"
+  },
+  "analysisStartTime": "2026-08-15T16:26:07.355077Z",
+  "analysisEndTime": "2026-08-15T16:26:09.6025915Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 8,
+      "issues": 7,
+      "incidents": 89,
+      "effort": 89
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 37,
+        "Optional": 2,
+        "Potential": 50,
+        "Information": 0
+      },
+      "category": {
+        "Project": 7,
+        "Api": 79,
+        "NuGet": 3
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "docker-compose.dcproj",
+      "startingProject": true,
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "docker-compose",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [],
+        "languages": [
+          ""
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 0,
+        "numberOfCodeFiles": 0,
+        "linesTotal": 0,
+        "linesOfCode": 0,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [],
+      "features": []
+    },
+    {
+      "path": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+      "startingProject": true,
+      "issues": 4,
+      "storyPoints": 27,
+      "properties": {
+        "appName": "YoutubeLinks.Api",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 110,
+        "numberOfCodeFiles": 106,
+        "linesTotal": 5378,
+        "linesOfCode": 5179,
+        "totalApiScanned": 5468,
+        "minLinesOfCodeToChange": 26,
+        "maxLinesOfCodeToChange": 26
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "cc574b2f-3062-4cc2-8e44-b995fbd9e9f2",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        },
+        {
+          "incidentId": "cb8dd503-ba0e-4e50-b99c-b685a66fd8a2",
+          "ruleId": "Api.0001",
+          "description": "Breaking change: DynamicallyAccessedMembers annotation removed from trim-unsafe configuration APIs ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.Configure\u003CEmailOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Emails\\EmailExtensions.cs",
+            "snippet": "services.Configure\u003CEmailOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "properties": {
+              "CharCount": "833"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/extensions/10.0/dynamically-accessed-members-configuration.md",
+                "isCustom": false
+              }
+            ],
+            "line": 12,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "3fbda968-83ae-4670-aa5e-28542f56e0bc",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddMediatR(config =\u003E\r\n        {\r\n            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());\r\n            config.AddOpenBehavior(typeof(LoggingBehavior\u003C,\u003E));\r\n            config.AddOpenBehavior(typeof(ValidationBehavior\u003C,\u003E));\r\n            config.AddOpenBehavior(typeof(UnitOfWorkBehavior\u003C,\u003E));\r\n        });",
+              "protected": "T:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Extensions\\MediatRExtensions.cs",
+            "snippet": "services.AddMediatR(config =\u003E\r\n        {\r\n            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());\r\n            config.AddOpenBehavior(typeof(LoggingBehavior\u003C,\u003E));\r\n            config.AddOpenBehavior(typeof(ValidationBehavior\u003C,\u003E));\r\n            config.AddOpenBehavior(typeof(UnitOfWorkBehavior\u003C,\u003E));\r\n        });",
+            "protectedSnippet": "T:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions",
+            "label": "T:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions",
+            "properties": {
+              "CharCount": "925"
+            },
+            "line": 11,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "cf7f469c-40d9-406c-8f38-1f22c967cc32",
+          "ruleId": "Api.0001",
+          "description": "Breaking change: DynamicallyAccessedMembers annotation removed from trim-unsafe configuration APIs ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.Configure\u003CAuthOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Extensions\\MyCorsExtensions.cs",
+            "snippet": "services.Configure\u003CAuthOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "properties": {
+              "CharCount": "1101"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/extensions/10.0/dynamically-accessed-members-configuration.md",
+                "isCustom": false
+              }
+            ],
+            "line": 14,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "5b964860-4bd2-4c83-a865-44a6bf2c7753",
+          "ruleId": "Api.0001",
+          "description": "Breaking change: DynamicallyAccessedMembers annotation removed from trim-unsafe configuration APIs ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.Configure\u003CLogOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Logging\\LoggingExtensions.cs",
+            "snippet": "services.Configure\u003CLogOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "properties": {
+              "CharCount": "1246"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/extensions/10.0/dynamically-accessed-members-configuration.md",
+                "isCustom": false
+              }
+            ],
+            "line": 14,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "e16d6b8e-f0db-4f9c-85ed-fcc5a3feb2f3",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.TokenValidationParameters = new TokenValidationParameters\r\n                {\r\n                    ValidIssuer = authOptions.Issuer,\r\n                    ClockSkew = TimeSpan.Zero,\r\n                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey))\r\n                };",
+              "protected": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.TokenValidationParameters"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.TokenValidationParameters = new TokenValidationParameters\r\n                {\r\n                    ValidIssuer = authOptions.Issuer,\r\n                    ClockSkew = TimeSpan.Zero,\r\n                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey))\r\n                };",
+            "protectedSnippet": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.TokenValidationParameters",
+            "label": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.TokenValidationParameters",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 33,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "e241f1d8-cc34-4d21-9f44-48a80d1b269d",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.IncludeErrorDetails = true;",
+              "protected": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.IncludeErrorDetails"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.IncludeErrorDetails = true;",
+            "protectedSnippet": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.IncludeErrorDetails",
+            "label": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.IncludeErrorDetails",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 32,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "f834c48b-fe8a-4217-bc75-9eb3a0b1d6c2",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.Audience = authOptions.Audience;",
+              "protected": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.Audience"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.Audience = authOptions.Audience;",
+            "protectedSnippet": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.Audience",
+            "label": "P:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions.Audience",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 31,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "7ef50b37-4946-416c-afa3-95958aadd396",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;",
+              "protected": "T:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;",
+            "protectedSnippet": "T:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults",
+            "label": "T:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 27,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "0116fca7-9c86-4214-9995-c81c57a46b5b",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;",
+              "protected": "F:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;",
+            "protectedSnippet": "F:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme",
+            "label": "F:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 27,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "13074aed-87cd-4fb3-9f8a-c58f8abb227f",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;",
+              "protected": "T:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;",
+            "protectedSnippet": "T:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults",
+            "label": "T:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 26,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "e8c43f54-6875-4644-8534-45dc9fe9452e",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;",
+              "protected": "F:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;",
+            "protectedSnippet": "F:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme",
+            "label": "F:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 26,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "a3227e5f-dee9-4e82-915c-ecb30cb148b4",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services\r\n            .AddAuthentication(x =\u003E\r\n            {\r\n                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;\r\n                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;\r\n            })\r\n            .AddJwtBearer(x =\u003E\r\n            {\r\n                x.Audience = authOptions.Audience;\r\n                x.IncludeErrorDetails = true;\r\n                x.TokenValidationParameters = new TokenValidationParameters\r\n                {\r\n                    ValidIssuer = authOptions.Issuer,\r\n                    ClockSkew = TimeSpan.Zero,\r\n                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey))\r\n                };\r\n            });",
+              "protected": "T:Microsoft.Extensions.DependencyInjection.JwtBearerExtensions"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "services\r\n            .AddAuthentication(x =\u003E\r\n            {\r\n                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;\r\n                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;\r\n            })\r\n            .AddJwtBearer(x =\u003E\r\n            {\r\n                x.Audience = authOptions.Audience;\r\n                x.IncludeErrorDetails = true;\r\n                x.TokenValidationParameters = new TokenValidationParameters\r\n                {\r\n                    ValidIssuer = authOptions.Issuer,\r\n                    ClockSkew = TimeSpan.Zero,\r\n                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey))\r\n                };\r\n            });",
+            "protectedSnippet": "T:Microsoft.Extensions.DependencyInjection.JwtBearerExtensions",
+            "label": "T:Microsoft.Extensions.DependencyInjection.JwtBearerExtensions",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 23,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "c2c98e98-446e-4284-8c97-ceae38fc0514",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6. Add package reference to Microsoft.AspNetCore.Authentication.JwtBearer, 8.0.6",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services\r\n            .AddAuthentication(x =\u003E\r\n            {\r\n                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;\r\n                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;\r\n            })\r\n            .AddJwtBearer(x =\u003E\r\n            {\r\n                x.Audience = authOptions.Audience;\r\n                x.IncludeErrorDetails = true;\r\n                x.TokenValidationParameters = new TokenValidationParameters\r\n                {\r\n                    ValidIssuer = authOptions.Issuer,\r\n                    ClockSkew = TimeSpan.Zero,\r\n                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey))\r\n                };\r\n            });",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.JwtBearerExtensions.AddJwtBearer(Microsoft.AspNetCore.Authentication.AuthenticationBuilder,System.Action{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions})"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "services\r\n            .AddAuthentication(x =\u003E\r\n            {\r\n                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;\r\n                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;\r\n            })\r\n            .AddJwtBearer(x =\u003E\r\n            {\r\n                x.Audience = authOptions.Audience;\r\n                x.IncludeErrorDetails = true;\r\n                x.TokenValidationParameters = new TokenValidationParameters\r\n                {\r\n                    ValidIssuer = authOptions.Issuer,\r\n                    ClockSkew = TimeSpan.Zero,\r\n                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SigningKey))\r\n                };\r\n            });",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.JwtBearerExtensions.AddJwtBearer(Microsoft.AspNetCore.Authentication.AuthenticationBuilder,System.Action{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions})",
+            "label": "M:Microsoft.Extensions.DependencyInjection.JwtBearerExtensions.AddJwtBearer(Microsoft.AspNetCore.Authentication.AuthenticationBuilder,System.Action{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions})",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Authentication.JwtBearer",
+              "PackageNewVersion": "8.0.6",
+              "CharCount": "2566"
+            },
+            "line": 23,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "8af6df4b-cce9-4425-8789-cb02913bac77",
+          "ruleId": "Api.0001",
+          "description": "Breaking change: DynamicallyAccessedMembers annotation removed from trim-unsafe configuration APIs ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.Configure\u003CAuthOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\AuthExtensions.cs",
+            "snippet": "services.Configure\u003CAuthOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "properties": {
+              "CharCount": "2566"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/extensions/10.0/dynamically-accessed-members-configuration.md",
+                "isCustom": false
+              }
+            ],
+            "line": 20,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "5a62187c-7e77-47cb-a9db-252aa1d1799b",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var refreshToken = _jwtHandler.WriteToken(jwt);",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var refreshToken = _jwtHandler.WriteToken(jwt);",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 82,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "12963f3a-9b53-4dec-b5d7-248fb13e7ab2",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var refreshToken = _jwtHandler.WriteToken(jwt);",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(Microsoft.IdentityModel.Tokens.SecurityToken)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var refreshToken = _jwtHandler.WriteToken(jwt);",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(Microsoft.IdentityModel.Tokens.SecurityToken)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(Microsoft.IdentityModel.Tokens.SecurityToken)",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 82,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "d840f79c-54cd-4755-a9e5-a0caeaeb4272",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityToken"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityToken",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityToken",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 81,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "b3988990-5a91-4630-aff8-dfa3980c5713",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SigningCredentials)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SigningCredentials)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SigningCredentials)",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 81,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "1801ee5e-cbc0-45f4-b001-6f6a582c52ce",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var accessToken = _jwtHandler.WriteToken(jwt);",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var accessToken = _jwtHandler.WriteToken(jwt);",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 67,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "aac50b96-e42b-433b-9ca6-edfe6017779f",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var accessToken = _jwtHandler.WriteToken(jwt);",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(Microsoft.IdentityModel.Tokens.SecurityToken)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var accessToken = _jwtHandler.WriteToken(jwt);",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(Microsoft.IdentityModel.Tokens.SecurityToken)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(Microsoft.IdentityModel.Tokens.SecurityToken)",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 67,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "aefaaed7-8cf7-4119-b518-e915d05f2360",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityToken"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityToken",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityToken",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 66,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "d0caecbb-5c19-4ef2-b232-0ece9815abdc",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SigningCredentials)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SigningCredentials)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SigningCredentials)",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 66,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "2c538f58-de24-4a15-ba9f-0e465228e588",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "_jwtHandler = new()",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\Authenticator.cs",
+            "snippet": "_jwtHandler = new()",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "properties": {
+              "CharCount": "2655"
+            },
+            "line": 22,
+            "column": 45
+          }
+        },
+        {
+          "incidentId": "b75a7229-923b-4b71-979e-87aa9ddfac24",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return $\u0022{_baseUrl}/{path}?email={Uri.EscapeDataString(email)}\u0026token={Uri.EscapeDataString(token)}\u0022;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\TokenService.cs",
+            "snippet": "return $\u0022{_baseUrl}/{path}?email={Uri.EscapeDataString(email)}\u0026token={Uri.EscapeDataString(token)}\u0022;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1597"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 54,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "167d06a4-94b8-4a95-9444-049836dd3ad4",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return $\u0022{_baseUrl}/{path}?email={Uri.EscapeDataString(email)}\u0026token={Uri.EscapeDataString(token)}\u0022;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Auth\\TokenService.cs",
+            "snippet": "return $\u0022{_baseUrl}/{path}?email={Uri.EscapeDataString(email)}\u0026token={Uri.EscapeDataString(token)}\u0022;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1597"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 54,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "b08c8eb5-079c-4212-a55f-97a7300bd998",
+          "ruleId": "Api.0001",
+          "description": "Breaking change: DynamicallyAccessedMembers annotation removed from trim-unsafe configuration APIs ",
+          "projectPath": "YoutubeLinks.Api\\YoutubeLinks.Api.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.Configure\u003CDatabaseOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Api\\Data\\Database\\DatabaseExtensions.cs",
+            "snippet": "services.Configure\u003CDatabaseOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "properties": {
+              "CharCount": "1081"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/extensions/10.0/dynamically-accessed-members-configuration.md",
+                "isCustom": false
+              }
+            ],
+            "line": 15,
+            "column": 8
+          }
+        }
+      ],
+      "features": [
+        {
+          "featureId": "IdentityModel",
+          "incidents": [
+            "2c538f58-de24-4a15-ba9f-0e465228e588",
+            "d0caecbb-5c19-4ef2-b232-0ece9815abdc",
+            "aefaaed7-8cf7-4119-b518-e915d05f2360",
+            "aac50b96-e42b-433b-9ca6-edfe6017779f",
+            "1801ee5e-cbc0-45f4-b001-6f6a582c52ce",
+            "b3988990-5a91-4630-aff8-dfa3980c5713",
+            "d840f79c-54cd-4755-a9e5-a0caeaeb4272",
+            "12963f3a-9b53-4dec-b5d7-248fb13e7ab2",
+            "5a62187c-7e77-47cb-a9db-252aa1d1799b"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+      "startingProject": true,
+      "issues": 4,
+      "storyPoints": 24,
+      "properties": {
+        "appName": "YoutubeLinks.Blazor",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 102,
+        "numberOfCodeFiles": 55,
+        "linesTotal": 5196,
+        "linesOfCode": 3001,
+        "totalApiScanned": 13194,
+        "minLinesOfCodeToChange": 22,
+        "maxLinesOfCodeToChange": 22
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "ec8ad5ab-4e63-46bc-80b8-558ac5c837ff",
+          "ruleId": "NuGet.0002",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.NET.ILLink.Tasks, 10.0.8\n\nRecommendation:\n\nRemove Microsoft.NET.ILLink.Tasks, and replace with new package Microsoft.NET.ILLink.Tasks 10.0.11",
+              "protected": "Microsoft.NET.ILLink.Tasks, 10.0.8\n\nRecommendation:\n\nRemove Microsoft.NET.ILLink.Tasks, and replace with new package Microsoft.NET.ILLink.Tasks 10.0.11"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+            "snippet": "Microsoft.NET.ILLink.Tasks, 10.0.8\n\nRecommendation:\n\nRemove Microsoft.NET.ILLink.Tasks, and replace with new package Microsoft.NET.ILLink.Tasks 10.0.11",
+            "protectedSnippet": "Microsoft.NET.ILLink.Tasks, 10.0.8\n\nRecommendation:\n\nRemove Microsoft.NET.ILLink.Tasks, and replace with new package Microsoft.NET.ILLink.Tasks 10.0.11",
+            "label": "Microsoft.NET.ILLink.Tasks 10.0.8",
+            "properties": {
+              "PackageId": "Microsoft.NET.ILLink.Tasks",
+              "PackageVersion": "10.0.8",
+              "PackageNewVersion": "10.0.11",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "aded5fd8-c3f0-4bac-99b4-de8ba94a0904",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        },
+        {
+          "incidentId": "583e42df-7f54-4056-aa50-392330c3d8d8",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return new AuthenticationState(new ClaimsPrincipal(\r\n                    new ClaimsIdentity(jsonToken.Claims,\r\n                        Jwt.AuthenticationType,\r\n                        ClaimsIdentity.DefaultNameClaimType,\r\n                        ClaimsIdentity.DefaultRoleClaimType)));",
+              "protected": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Auth\\AuthStateProvider.cs",
+            "snippet": "return new AuthenticationState(new ClaimsPrincipal(\r\n                    new ClaimsIdentity(jsonToken.Claims,\r\n                        Jwt.AuthenticationType,\r\n                        ClaimsIdentity.DefaultNameClaimType,\r\n                        ClaimsIdentity.DefaultRoleClaimType)));",
+            "protectedSnippet": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "label": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "properties": {
+              "CharCount": "1889"
+            },
+            "line": 37,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "fbd87bfe-a428-43f8-82ff-828a14ac1c0a",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (jsonToken.ValidTo \u003C DateTime.UtcNow)\r\n                {\r\n                    return authenticationState;\r\n                }",
+              "protected": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.ValidTo"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Auth\\AuthStateProvider.cs",
+            "snippet": "if (jsonToken.ValidTo \u003C DateTime.UtcNow)\r\n                {\r\n                    return authenticationState;\r\n                }",
+            "protectedSnippet": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.ValidTo",
+            "label": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.ValidTo",
+            "properties": {
+              "CharCount": "1889"
+            },
+            "line": 32,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "0279c434-c95d-4646-931b-bc3f3e06e71e",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (tokenHandler.ReadToken(token.AccessToken) is JwtSecurityToken jsonToken)\r\n            {\r\n                if (jsonToken.ValidTo \u003C DateTime.UtcNow)\r\n                {\r\n                    return authenticationState;\r\n                }\r\n\r\n                return new AuthenticationState(new ClaimsPrincipal(\r\n                    new ClaimsIdentity(jsonToken.Claims,\r\n                        Jwt.AuthenticationType,\r\n                        ClaimsIdentity.DefaultNameClaimType,\r\n                        ClaimsIdentity.DefaultRoleClaimType)));\r\n            }",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ReadToken(System.String)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Auth\\AuthStateProvider.cs",
+            "snippet": "if (tokenHandler.ReadToken(token.AccessToken) is JwtSecurityToken jsonToken)\r\n            {\r\n                if (jsonToken.ValidTo \u003C DateTime.UtcNow)\r\n                {\r\n                    return authenticationState;\r\n                }\r\n\r\n                return new AuthenticationState(new ClaimsPrincipal(\r\n                    new ClaimsIdentity(jsonToken.Claims,\r\n                        Jwt.AuthenticationType,\r\n                        ClaimsIdentity.DefaultNameClaimType,\r\n                        ClaimsIdentity.DefaultRoleClaimType)));\r\n            }",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ReadToken(System.String)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ReadToken(System.String)",
+            "properties": {
+              "CharCount": "1889"
+            },
+            "line": 30,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "1f62caf1-ca24-4ee2-9bdf-23272d36d445",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var isTokenValid = tokenHandler.CanReadToken(token.AccessToken);",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.CanReadToken(System.String)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Auth\\AuthStateProvider.cs",
+            "snippet": "var isTokenValid = tokenHandler.CanReadToken(token.AccessToken);",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.CanReadToken(System.String)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.CanReadToken(System.String)",
+            "properties": {
+              "CharCount": "1889"
+            },
+            "line": 22,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "0a28512a-136c-4d50-85dc-1059a21fb60c",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var tokenHandler = new JwtSecurityTokenHandler();",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Auth\\AuthStateProvider.cs",
+            "snippet": "var tokenHandler = new JwtSecurityTokenHandler();",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "properties": {
+              "CharCount": "1889"
+            },
+            "line": 20,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "1ee10faf-7d5e-49fb-a849-25ccf6ecd6c4",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var tokenHandler = new JwtSecurityTokenHandler();",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.#ctor"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Auth\\AuthStateProvider.cs",
+            "snippet": "var tokenHandler = new JwtSecurityTokenHandler();",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.#ctor",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.#ctor",
+            "properties": {
+              "CharCount": "1889"
+            },
+            "line": 20,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "cc30e6d4-18e4-47dd-b94a-992587cba34c",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                           $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Links\\LinksPage.razor.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                           $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "9679"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 201,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "9c71512d-8cc7-4181-a368-fc8078a6a4aa",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var content = await response.Content.ReadAsStreamAsync();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Links\\LinksPage.razor.cs",
+            "snippet": "var content = await response.Content.ReadAsStreamAsync();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "9679"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 199,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "e8851b10-f136-476d-b8fd-4fd574e2fc0f",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var content = await response.Content.ReadAsStreamAsync();",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Links\\LinksPage.razor.cs",
+            "snippet": "var content = await response.Content.ReadAsStreamAsync();",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "9679"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 199,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "0bfb43d6-2bc1-40f3-b4ba-0eea76a1d76d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}\u0022;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Links\\DownloadLinkPage.razor.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}\u0022;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "3032"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 51,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "ead61b25-3028-4e01-9c3e-5c81981b70f5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Links\\DownloadLinkPage.razor.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "3032"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 48,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "31fd646c-4729-453a-98b9-c2c1f3ddff7a",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Links\\DownloadLinkPage.razor.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(Command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "3032"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 48,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "6320098b-58f1-4da7-87c7-ee6394b0f6ca",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Command.Token = Uri.UnescapeDataString(Token);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Users\\ResetPasswordPage.razor.cs",
+            "snippet": "Command.Token = Uri.UnescapeDataString(Token);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1757"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 30,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "f61e0926-3f57-469f-a4b1-6da124021c0e",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Command.Email = Uri.UnescapeDataString(Email);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Users\\ResetPasswordPage.razor.cs",
+            "snippet": "Command.Email = Uri.UnescapeDataString(Email);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1757"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 29,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "0e6dd76d-55f4-49b5-a338-53c214960a31",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Command.Token = Uri.UnescapeDataString(Token);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Users\\ConfirmEmailPage.razor.cs",
+            "snippet": "Command.Token = Uri.UnescapeDataString(Token);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1775"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 31,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "ca44592f-0eaa-4b47-a637-7215e10ab86a",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Command.Email = Uri.UnescapeDataString(Email);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Users\\ConfirmEmailPage.razor.cs",
+            "snippet": "Command.Email = Uri.UnescapeDataString(Email);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1775"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 30,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "8165f494-6287-401d-8bad-fe1678a7000a",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Playlists\\DownloadPlaylistPage.razor.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "5973"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 137,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "a35bf994-df25-4d3d-a07e-bb8c35302b16",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Playlists\\DownloadPlaylistPage.razor.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "5973"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 134,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "1ededeb0-bd88-482b-b1c1-d5854ec52c45",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Playlists\\DownloadPlaylistPage.razor.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n            {\r\n                var streamRef = new DotNetStreamReference(stream);\r\n                var filename = response.Content.Headers.ContentDisposition?.FileNameStar ??\r\n                               $\u0022default_name.{YoutubeHelpers.YoutubeFileTypeToString(command.YoutubeFileType)}\u0022;\r\n\r\n                await jsRuntime.InvokeVoidAsync(\u0022downloadFile\u0022, filename, streamRef);\r\n            }",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "5973"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 134,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "2fc4d470-006d-4364-abb6-09785f14f205",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ?? $\u0022default_name.{fileExtension}\u0022;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Playlists\\PlaylistsPage.razor.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar ?? $\u0022default_name.{fileExtension}\u0022;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "8055"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 161,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "99636c7a-2838-43fa-a96a-d14476ebd53d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var content = await response.Content.ReadAsStreamAsync();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Playlists\\PlaylistsPage.razor.cs",
+            "snippet": "var content = await response.Content.ReadAsStreamAsync();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "8055"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 159,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "e3d5ea3f-d3fd-414a-a324-af3a7a791d25",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Blazor\\YoutubeLinks.Blazor.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var content = await response.Content.ReadAsStreamAsync();",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Blazor\\Pages\\Playlists\\PlaylistsPage.razor.cs",
+            "snippet": "var content = await response.Content.ReadAsStreamAsync();",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "8055"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 159,
+            "column": 12
+          }
+        }
+      ],
+      "features": [
+        {
+          "featureId": "IdentityModel",
+          "incidents": [
+            "1ee10faf-7d5e-49fb-a849-25ccf6ecd6c4",
+            "0a28512a-136c-4d50-85dc-1059a21fb60c",
+            "1f62caf1-ca24-4ee2-9bdf-23272d36d445",
+            "0279c434-c95d-4646-931b-bc3f3e06e71e",
+            "fbd87bfe-a428-43f8-82ff-828a14ac1c0a",
+            "583e42df-7f54-4056-aa50-392330c3d8d8"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "YoutubeLinks.E2E\\YoutubeLinks.E2E.csproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 1,
+      "properties": {
+        "appName": "YoutubeLinks.E2E",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": true,
+        "numberOfFiles": 10,
+        "numberOfCodeFiles": 8,
+        "linesTotal": 3486,
+        "linesOfCode": 840,
+        "totalApiScanned": 802,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "4c9d08aa-50be-49db-b123-98c3b3df3e2f",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.E2E\\YoutubeLinks.E2E.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.E2E\\YoutubeLinks.E2E.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+      "startingProject": true,
+      "issues": 4,
+      "storyPoints": 21,
+      "properties": {
+        "appName": "YoutubeLinks.IntegrationTests",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": true,
+        "numberOfFiles": 33,
+        "numberOfCodeFiles": 31,
+        "linesTotal": 4439,
+        "linesOfCode": 1793,
+        "totalApiScanned": 3234,
+        "minLinesOfCodeToChange": 19,
+        "maxLinesOfCodeToChange": 19
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "66e12cb4-edf8-4740-b0ce-ea0b206bda7d",
+          "ruleId": "NuGet.0005",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+              "protected": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+            "snippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "protectedSnippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "label": "xunit 2.9.3",
+            "properties": {
+              "PackageId": "xunit",
+              "PackageVersion": "2.9.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d5c8c48c-4d4d-419f-ac7f-352fb7c71937",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        },
+        {
+          "incidentId": "be6f1ae7-1fc3-4f34-a7c2-6b9eb91cae39",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Playlists\\Commands\\ExportPlaylistFeatureTests.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1727"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 40,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "637fd54e-6307-4292-ba0b-7493a9ca0b0b",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Playlists\\Commands\\ExportPlaylistFeatureTests.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1727"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 33,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "21b47aa1-52fe-4005-9614-5e42350bc72d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Playlists\\Commands\\ExportPlaylistFeatureTests.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "1727"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 33,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "b69d8014-91a2-4c07-8f70-1ffcc1d5bf2a",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Assert.Equal(\u0022application/json\u0022, response.Content.Headers.ContentType.MediaType);",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Playlists\\Commands\\ExportPlaylistFeatureTests.cs",
+            "snippet": "Assert.Equal(\u0022application/json\u0022, response.Content.Headers.ContentType.MediaType);",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1727"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 31,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "8e8d559a-387e-4e9f-9dad-9d451dc68e9c",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Assert.NotNull(response.Content.Headers.ContentType);",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Playlists\\Commands\\ExportPlaylistFeatureTests.cs",
+            "snippet": "Assert.NotNull(response.Content.Headers.ContentType);",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1727"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 30,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "94688296-665e-47bc-a3d3-1125f3dc06b3",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Links\\Commands\\DownloadLinkFeatureTests.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1661"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 38,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "c46f98e1-2f0b-477c-be57-fd738c742d8a",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Links\\Commands\\DownloadLinkFeatureTests.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1661"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 31,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "3d8c78a2-9cdd-41bb-a558-5971d2ab6c63",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Links\\Commands\\DownloadLinkFeatureTests.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "1661"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 31,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "cc726f5f-14f9-4e9e-8157-fb0f1b30bac7",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar;",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Links\\Commands\\DownloadSingleLinkFeatureTests.cs",
+            "snippet": "var filename = response.Content.Headers.ContentDisposition?.FileNameStar;",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1333"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 29,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "a454dc45-4e45-4ac7-a9c5-b97e23fd03ad",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Links\\Commands\\DownloadSingleLinkFeatureTests.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "1333"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 22,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "75d6d418-a5b4-49eb-8268-b83df252984d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+              "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\Features\\Links\\Commands\\DownloadSingleLinkFeatureTests.cs",
+            "snippet": "await using (var stream = await response.Content.ReadAsStreamAsync())\r\n        {\r\n            using var memoryStream = new MemoryStream();\r\n            await stream.CopyToAsync(memoryStream);\r\n            Assert.True(memoryStream.Length \u003E 0);\r\n        }",
+            "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
+            "properties": {
+              "CharCount": "1333"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 22,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "a0e44f47-8610-4947-9a6a-2c2195fcd541",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var roles = jsonToken?.Claims.Where(c =\u003E c.Type == ClaimTypes.Role).Select(c =\u003E c.Value).ToList();",
+              "protected": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var roles = jsonToken?.Claims.Where(c =\u003E c.Type == ClaimTypes.Role).Select(c =\u003E c.Value).ToList();",
+            "protectedSnippet": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "label": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 151,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "e84c4b7a-59df-48a5-baa5-b4f1dd3cb29f",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var email = jsonToken?.Claims.FirstOrDefault(c =\u003E c.Type == ClaimTypes.Email)?.Value;",
+              "protected": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var email = jsonToken?.Claims.FirstOrDefault(c =\u003E c.Type == ClaimTypes.Email)?.Value;",
+            "protectedSnippet": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "label": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 150,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "0f074659-44c4-49aa-88c3-d0aa20a69321",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var userName = jsonToken?.Claims.FirstOrDefault(c =\u003E c.Type == ClaimTypes.Name)?.Value;",
+              "protected": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var userName = jsonToken?.Claims.FirstOrDefault(c =\u003E c.Type == ClaimTypes.Name)?.Value;",
+            "protectedSnippet": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "label": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 149,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "bdf7c332-24aa-4355-b0fd-324c3386067d",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var userIdString = jsonToken?.Claims.FirstOrDefault(c =\u003E c.Type == ClaimTypes.NameIdentifier)?.Value;",
+              "protected": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var userIdString = jsonToken?.Claims.FirstOrDefault(c =\u003E c.Type == ClaimTypes.NameIdentifier)?.Value;",
+            "protectedSnippet": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "label": "P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.Claims",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 138,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "e63f6483-d3b7-4e68-8ed1-9110e21c6c37",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var jsonToken = tokenHandler.ReadToken(jwt.AccessToken) as JwtSecurityToken;",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ReadToken(System.String)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var jsonToken = tokenHandler.ReadToken(jwt.AccessToken) as JwtSecurityToken;",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ReadToken(System.String)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ReadToken(System.String)",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 136,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "cbcaa528-5fef-44ff-96f3-a009509cc9ce",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var isTokenValid = tokenHandler.CanReadToken(jwt.AccessToken);",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.CanReadToken(System.String)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var isTokenValid = tokenHandler.CanReadToken(jwt.AccessToken);",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.CanReadToken(System.String)",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.CanReadToken(System.String)",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 130,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "aa05da95-8d6e-4f45-98db-05e5fb998466",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var tokenHandler = new JwtSecurityTokenHandler();",
+              "protected": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var tokenHandler = new JwtSecurityTokenHandler();",
+            "protectedSnippet": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "label": "T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 129,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "15ead346-eb19-407a-92c8-6cb5ee9315b9",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "YoutubeLinks.IntegrationTests\\YoutubeLinks.IntegrationTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var tokenHandler = new JwtSecurityTokenHandler();",
+              "protected": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.#ctor"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.IntegrationTests\\BaseIntegrationTest.cs",
+            "snippet": "var tokenHandler = new JwtSecurityTokenHandler();",
+            "protectedSnippet": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.#ctor",
+            "label": "M:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.#ctor",
+            "properties": {
+              "CharCount": "5704"
+            },
+            "line": 129,
+            "column": 8
+          }
+        }
+      ],
+      "features": [
+        {
+          "featureId": "IdentityModel",
+          "incidents": [
+            "15ead346-eb19-407a-92c8-6cb5ee9315b9",
+            "aa05da95-8d6e-4f45-98db-05e5fb998466",
+            "cbcaa528-5fef-44ff-96f3-a009509cc9ce",
+            "e63f6483-d3b7-4e68-8ed1-9110e21c6c37",
+            "bdf7c332-24aa-4355-b0fd-324c3386067d",
+            "0f074659-44c4-49aa-88c3-d0aa20a69321",
+            "e84c4b7a-59df-48a5-baa5-b4f1dd3cb29f",
+            "a0e44f47-8610-4947-9a6a-2c2195fcd541"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+      "startingProject": true,
+      "issues": 4,
+      "storyPoints": 10,
+      "properties": {
+        "appName": "YoutubeLinks.Sdk",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 6,
+        "numberOfCodeFiles": 6,
+        "linesTotal": 420,
+        "linesOfCode": 420,
+        "totalApiScanned": 341,
+        "minLinesOfCodeToChange": 9,
+        "maxLinesOfCodeToChange": 9
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "6875b830-02b7-4544-be96-fa1420a953bf",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        },
+        {
+          "incidentId": "8725bb50-5029-45dc-9a57-4bed4dca6a84",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var error = await response.Content.ReadAsStringAsync();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClient.cs",
+            "snippet": "var error = await response.Content.ReadAsStringAsync();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "5653"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 146,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "b1e50d41-ec62-400a-9a77-e967b426f461",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "request.Content = JsonContent.Create(tRequest);",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClient.cs",
+            "snippet": "request.Content = JsonContent.Create(tRequest);",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "5653"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 87,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "1664b0a4-d899-46db-ac4f-94ccf74aec03",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var tResponse = await response.Content.ReadFromJsonAsync\u003CTResponse\u003E();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClient.cs",
+            "snippet": "var tResponse = await response.Content.ReadFromJsonAsync\u003CTResponse\u003E();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "5653"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 78,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "9dbf2016-3913-4b62-9095-caf6e71757fb",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var tResponse = await response.Content.ReadFromJsonAsync\u003CTResponse\u003E();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClient.cs",
+            "snippet": "var tResponse = await response.Content.ReadFromJsonAsync\u003CTResponse\u003E();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "properties": {
+              "CharCount": "5653"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 53,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "2f676d55-1e1e-41b3-81f0-389fbb373288",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+              "protected": "M:System.TimeSpan.FromMinutes(System.Int64)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClientsExtensions.cs",
+            "snippet": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+            "protectedSnippet": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "label": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "properties": {
+              "CharCount": "1037"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "aae2924c-d572-4859-88b2-760a91485a72",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClientsExtensions.cs",
+            "snippet": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1037"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "15276d68-0213-42c6-87a8-0b09a89fb277",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClientsExtensions.cs",
+            "snippet": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "properties": {
+              "CharCount": "1037"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "91a379ff-92e4-4d29-84e2-49569f18df5e",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClientsExtensions.cs",
+            "snippet": "services.AddScoped(sp =\u003E new HttpClient\r\n        {\r\n            BaseAddress = new Uri(apiOptions.Url),\r\n            Timeout = TimeSpan.FromMinutes(60)\r\n        });",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "properties": {
+              "CharCount": "1037"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "f91f7e37-e821-490b-9007-2bc393644a10",
+          "ruleId": "Api.0001",
+          "description": "Breaking change: DynamicallyAccessedMembers annotation removed from trim-unsafe configuration APIs ",
+          "projectPath": "YoutubeLinks.Sdk\\YoutubeLinks.Sdk.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.Configure\u003CApiOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Sdk\\Clients\\ApiClientsExtensions.cs",
+            "snippet": "services.Configure\u003CApiOptions\u003E(configuration.GetRequiredSection(_sectionName));",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.OptionsConfigurationServiceCollectionExtensions.Configure\u0060\u00601(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+            "properties": {
+              "CharCount": "1037"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/extensions/10.0/dynamically-accessed-members-configuration.md",
+                "isCustom": false
+              }
+            ],
+            "line": 14,
+            "column": 8
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "YoutubeLinks.Shared\\YoutubeLinks.Shared.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 4,
+      "properties": {
+        "appName": "YoutubeLinks.Shared",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 57,
+        "numberOfCodeFiles": 56,
+        "linesTotal": 1425,
+        "linesOfCode": 1227,
+        "totalApiScanned": 459,
+        "minLinesOfCodeToChange": 3,
+        "maxLinesOfCodeToChange": 3
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "8d14334b-7ad2-47bb-9812-4c6395696ec8",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.Shared\\YoutubeLinks.Shared.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Shared\\YoutubeLinks.Shared.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        },
+        {
+          "incidentId": "f68d7628-e067-481c-a494-d76ed264ac52",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "YoutubeLinks.Shared\\YoutubeLinks.Shared.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "TimeSpan.FromMinutes(5)",
+              "protected": "M:System.TimeSpan.FromMinutes(System.Int64)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Shared\\Features\\Users\\Helpers\\AuthConsts.cs",
+            "snippet": "TimeSpan.FromMinutes(5)",
+            "protectedSnippet": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "label": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "properties": {
+              "CharCount": "322"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 8,
+            "column": 55
+          }
+        },
+        {
+          "incidentId": "63069e39-9307-4df5-8137-69a30064a84c",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "YoutubeLinks.Shared\\YoutubeLinks.Shared.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "TimeSpan.FromDays(7)",
+              "protected": "M:System.TimeSpan.FromDays(System.Int32)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Shared\\Features\\Users\\Helpers\\AuthConsts.cs",
+            "snippet": "TimeSpan.FromDays(7)",
+            "protectedSnippet": "M:System.TimeSpan.FromDays(System.Int32)",
+            "label": "M:System.TimeSpan.FromDays(System.Int32)",
+            "properties": {
+              "CharCount": "322"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 6,
+            "column": 49
+          }
+        },
+        {
+          "incidentId": "8f8bd14a-a345-48cf-ae7f-6d26f6f999d2",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "YoutubeLinks.Shared\\YoutubeLinks.Shared.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "TimeSpan.FromHours(6)",
+              "protected": "M:System.TimeSpan.FromHours(System.Int32)"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.Shared\\Features\\Users\\Helpers\\AuthConsts.cs",
+            "snippet": "TimeSpan.FromHours(6)",
+            "protectedSnippet": "M:System.TimeSpan.FromHours(System.Int32)",
+            "label": "M:System.TimeSpan.FromHours(System.Int32)",
+            "properties": {
+              "CharCount": "322"
+            },
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 4,
+            "column": 48
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "YoutubeLinks.UnitTests\\YoutubeLinks.UnitTests.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 2,
+      "properties": {
+        "appName": "YoutubeLinks.UnitTests",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": true,
+        "numberOfFiles": 41,
+        "numberOfCodeFiles": 39,
+        "linesTotal": 6090,
+        "linesOfCode": 3444,
+        "totalApiScanned": 5353,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "606f8272-d075-4076-ac11-876b6de60cfe",
+          "ruleId": "NuGet.0005",
+          "projectPath": "YoutubeLinks.UnitTests\\YoutubeLinks.UnitTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+              "protected": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.UnitTests\\YoutubeLinks.UnitTests.csproj",
+            "snippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "protectedSnippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "label": "xunit 2.9.3",
+            "properties": {
+              "PackageId": "xunit",
+              "PackageVersion": "2.9.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "55706818-40ec-44db-ae53-11eef2f0bc23",
+          "ruleId": "Project.0002",
+          "projectPath": "YoutubeLinks.UnitTests\\YoutubeLinks.UnitTests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net10.0\nRecommended target framework: net11.0",
+              "protected": "Current target framework: net10.0\nRecommended target framework: net11.0"
+            },
+            "kind": "File",
+            "path": "YoutubeLinks.UnitTests\\YoutubeLinks.UnitTests.csproj",
+            "snippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "protectedSnippet": "Current target framework: net10.0\nRecommended target framework: net11.0",
+            "properties": {
+              "CurrentTargetFramework": "net10.0",
+              "RecommendedTargetFramework": "net11.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0002": {
+      "id": "Api.0002",
+      "isFeature": false,
+      "description": "API is source incompatible for selected .NET version: requires code changes to compile successfully when targeting a new version, such as removing obsolete APIs or changing method signatures.",
+      "label": "Source incompatible for selected .NET version",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0001": {
+      "id": "Api.0001",
+      "isFeature": false,
+      "description": "API is binary incompatible for selected .NET version: affects existing binaries, often requiring recompilation, because the API has changed in a way that prevents older binaries from loading or executing.",
+      "label": "Binary incompatible for selected .NET version",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0003": {
+      "id": "Api.0003",
+      "isFeature": false,
+      "description": "API has a behavioral change in selected .NET version: code and binaries may behave differently at runtime without needing recompilation, but the new behavior might be undesirable and require updates.",
+      "label": "Behavioral change in selected .NET version",
+      "severity": "Potential",
+      "effort": 1
+    },
+    "IdentityModel": {
+      "id": "IdentityModel",
+      "isFeature": false,
+      "description": "Windows Identity Foundation (WIF), SAML, and claims-based authentication APIs that have been replaced by modern identity libraries. WIF was the original identity framework for .NET Framework. Migrate to Microsoft.IdentityModel.* packages (modern identity stack).",
+      "label": "IdentityModel \u0026 Claims-based Security",
+      "severity": "Mandatory",
+      "effort": 4,
+      "links": [
+        {
+          "title": "Microsoft.IdentityModel packages",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2341614",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "NuGet package upgrade is recommended for selected target framework.\n\nStandard .NET packages are recommended to have versions matching version of .NET that project targets.\n\nSome other packages also are known to work better for selected target frameworks.",
+      "label": "NuGet package upgrade is recommended",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0005": {
+      "id": "NuGet.0005",
+      "isFeature": false,
+      "description": "NuGet package is deprecated.\n\nGo to its documentation and if there is a guidance for replacement of functionality provided by this package.",
+      "label": "NuGet package is deprecated",
+      "severity": "Optional",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262531",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
