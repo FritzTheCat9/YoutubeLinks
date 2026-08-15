@@ -20,8 +20,22 @@ public sealed class YoutubeUrl : ValueObject
 
     public static string ExtractVideoId(string url)
     {
-    var parts = url.Split(new[] { "v=" }, StringSplitOptions.None);
-    return parts.Length > 1 ? parts[1].Split('&')[0] : null;
+        if (string.IsNullOrWhiteSpace(url))
+            return null;
+
+        // Support multiple YouTube URL formats: v= query, youtu.be short links, and embed URLs
+        try
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(url, @"(?:v=|youtu\.be/|embed/)([A-Za-z0-9_-]+)");
+            if (m.Success && m.Groups.Count > 1)
+                return m.Groups[1].Value;
+        }
+        catch
+        {
+            // ignore regex errors and fall through to null
+        }
+
+        return null;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

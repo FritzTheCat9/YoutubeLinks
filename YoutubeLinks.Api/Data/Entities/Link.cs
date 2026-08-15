@@ -19,7 +19,7 @@ public class Link : Entity
         return new Link
         {
             Url = new YoutubeUrl(url),
-            Title = new Title(title),
+            Title = string.IsNullOrWhiteSpace(title) ? null : new Title(title),
             Downloaded = false,
             Playlist = playlist
         };
