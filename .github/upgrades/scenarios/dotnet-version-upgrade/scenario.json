@@ -3,7 +3,7 @@
   "operationId": "f73e3975-28c5-4487-a27e-f49a33271df1",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-08-15T16:25:08.1526377Z",
-  "lastUpdateTime": "2026-08-15T16:35:06.2781001Z",
+  "lastUpdateTime": "2026-08-15T16:35:50.8750119Z",
   "properties": {
     "UpgradeTargetFramework": "net11.0",
     "taskStates": {
@@ -11,7 +11,8 @@
       "01.01-youtubelinks-api": "Completed",
       "01.02-youtubelinks-blazor": "Completed",
       "01.03-youtubelinks-e2e": "Completed",
-      "01.04-youtubelinks-integrationtests": "Completed"
+      "01.04-youtubelinks-integrationtests": "Completed",
+      "01.05-youtubelinks-sdk": "Completed"
     }
   },
   "folderPath": ""
